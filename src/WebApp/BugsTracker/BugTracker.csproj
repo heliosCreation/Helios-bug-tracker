@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
@@ -22,12 +22,8 @@
 
 
 	<ItemGroup>
+	  <ProjectReference Include="..\..\BugTracker.Application\BugTracker.Application.csproj" />
 	  <ProjectReference Include="..\..\BugTracker.Identity\BugTracker.Identity.csproj" />
 	  <ProjectReference Include="..\..\BugTracker.Infrastructure\BugTracker.Infrastructure.csproj" />
-	</ItemGroup>
-
-
-	<ItemGroup>
-	  <Folder Include="Areas\Identity\Views\" />
 	</ItemGroup>
 </Project>

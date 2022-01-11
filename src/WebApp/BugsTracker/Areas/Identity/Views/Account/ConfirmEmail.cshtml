@@ -1,0 +1,35 @@
+﻿@model EmailConfirmationModel
+
+@{
+    ViewData["Title"] = "Confirm Email";
+}
+
+<div class="wrapper">
+    <div class="logo"><i class="fas fa-user-secret"></i> </div>
+    <div class="text-center mt-4 name"> Email Confirmation </div>
+    <div class="col email-container">
+        @if (Model.IsVerified == true)
+        {
+            <div class=" alert-success justify-content-center p-3 m-auto" role="alert">
+                Your Account has been verified, welcome !
+            </div>
+
+            <div class="text-center fs-6"> <a asp-action="Login">Login</a></div>
+
+        }
+        else
+        {
+
+            if (Model.IsSent)
+            {
+
+                <div class=" row alert-info text-center p-3" role="alert">
+                    <p>An Email of confirmation has been sent to your address.</p>
+                </div>
+            }
+
+        }
+    </div>
+</div>
+
+

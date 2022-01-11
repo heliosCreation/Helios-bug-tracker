@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
 
-namespace BugsTracker.Areas.Identity.Controllers
+namespace BugTracker.Areas.Identity.Controllers
 {
     [Area("Identity")]
     public class AccountController : Controller
@@ -75,7 +75,7 @@ namespace BugsTracker.Areas.Identity.Controllers
                 if (result.Succeeded)
                 {
                     ModelState.Clear();
-                    return RedirectToAction("Index", "Home", new { area = "Management" });
+                    return RedirectToAction("Index", "Home", new { area = "Tracker" });
                 }
                 if (result.IsNotAllowed)
                 {

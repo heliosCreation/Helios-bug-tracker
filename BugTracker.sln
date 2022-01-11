@@ -21,7 +21,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BugTracker.Identity", "src\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BugTracker.Application", "src\BugTracker.Application\BugTracker.Application.csproj", "{68A2CCF7-442B-48A0-89A7-9F86985A237F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BugsTracker", "src\WebApp\BugsTracker\BugsTracker.csproj", "{08943A65-6E1F-403E-9F7C-FA5700CCC4EB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BugTracker", "src\WebApp\BugsTracker\BugTracker.csproj", "{08943A65-6E1F-403E-9F7C-FA5700CCC4EB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

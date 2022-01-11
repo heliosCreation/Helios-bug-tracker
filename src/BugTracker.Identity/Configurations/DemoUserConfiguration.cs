@@ -13,12 +13,10 @@ namespace BugTracker.Identity.Configurations
             var demoAdmin = new ApplicationUser
             {
                 Id = Guid.NewGuid().ToString(),
-                UserName = "masteradmin",
-                NormalizedUserName = "MASTERADMIN",
-                FirstName = "Master",
-                LastName = "Admin",
-                Email = "SuperAdmin@Admin.com",
-                NormalizedEmail = "ADMIN@ADMIN.COM",
+                UserName = "Demo Admin",
+                NormalizedUserName = "DEMO ADMIN",
+                Email = "DemoAdmin@Admin.com",
+                NormalizedEmail = "DEMOADMIN@ADMIN.COM",
                 PhoneNumber = "XXXXXXXXXXXXX",
                 EmailConfirmed = true,
                 PhoneNumberConfirmed = true,
@@ -28,12 +26,10 @@ namespace BugTracker.Identity.Configurations
             var demoProjectManager = new ApplicationUser
             {
                 Id = Guid.NewGuid().ToString(),
-                UserName = "John",
-                NormalizedUserName = "JOHN",
-                FirstName = "John",
-                LastName = "Doe",
-                Email = "john@gmail.com",
-                NormalizedEmail = "JOHN@GMAIL.COM",
+                UserName = "Demo Project Manager",
+                NormalizedUserName = "DEMO PROJECT MANAGER",
+                Email = "demoPM@gmail.com",
+                NormalizedEmail = "DEMOPM@GMAIL.COM",
                 EmailConfirmed = true,
                 PhoneNumberConfirmed = true,
                 SecurityStamp = new Guid().ToString(),
@@ -41,12 +37,10 @@ namespace BugTracker.Identity.Configurations
             var demoDeveloper = new ApplicationUser
             {
                 Id = Guid.NewGuid().ToString(),
-                UserName = "John",
-                NormalizedUserName = "JOHN",
-                FirstName = "John",
-                LastName = "Doe",
-                Email = "john@gmail.com",
-                NormalizedEmail = "JOHN@GMAIL.COM",
+                UserName = "Demo developer",
+                NormalizedUserName = "DEMO DEVELOPER",
+                Email = "DemoDev@gmail.com",
+                NormalizedEmail = "DEMODEV@GMAIL.COM",
                 EmailConfirmed = true,
                 PhoneNumberConfirmed = true,
                 SecurityStamp = new Guid().ToString(),
@@ -54,10 +48,8 @@ namespace BugTracker.Identity.Configurations
             var demoSubmitter = new ApplicationUser
             {
                 Id = Guid.NewGuid().ToString(),
-                UserName = "John",
-                NormalizedUserName = "JOHN",
-                FirstName = "John",
-                LastName = "Doe",
+                UserName = "Demo submitter",
+                NormalizedUserName = "DEMO SUBMITTER",
                 Email = "john@gmail.com",
                 NormalizedEmail = "JOHN@GMAIL.COM",
                 EmailConfirmed = true,
