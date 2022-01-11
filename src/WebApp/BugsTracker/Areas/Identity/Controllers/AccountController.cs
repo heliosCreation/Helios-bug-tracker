@@ -10,7 +10,6 @@ using System.Threading.Tasks;
 namespace BugsTracker.Areas.Identity.Controllers
 {
     [Area("Identity")]
-    [ApiController]
     public class AccountController : Controller
     {
         private readonly IIdentityService _identityService;
