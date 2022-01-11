@@ -23,5 +23,11 @@
 
 	<ItemGroup>
 	  <ProjectReference Include="..\..\BugTracker.Identity\BugTracker.Identity.csproj" />
+	  <ProjectReference Include="..\..\BugTracker.Infrastructure\BugTracker.Infrastructure.csproj" />
+	</ItemGroup>
+
+
+	<ItemGroup>
+	  <Folder Include="Areas\Identity\Views\" />
 	</ItemGroup>
 </Project>

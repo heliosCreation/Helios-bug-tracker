@@ -1,4 +1,5 @@
 using BugTracker.Identity;
+using BugTracker.Infrastructure;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -25,6 +26,7 @@ namespace BugsTracker
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+            services.AddInfrastructureServices(Configuration);
             services.AddIdentityServices(Configuration);
         }
 
@@ -50,6 +52,11 @@ namespace BugsTracker
 
             app.UseEndpoints(endpoints =>
             {
+
+                endpoints.MapControllerRoute(
+                  name: "areas",
+                  pattern: "{area:exists}/{controller=Account}/{action=Login}");
+
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
