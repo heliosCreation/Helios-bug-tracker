@@ -1,4 +1,4 @@
-﻿using BugTracker.Models;
+﻿using BugsTracker.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -7,7 +7,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace BugTracker.Controllers
+namespace BugsTracker.Controllers
 {
     public class HomeController : Controller
     {
