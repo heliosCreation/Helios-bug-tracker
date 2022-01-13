@@ -6,16 +6,366 @@
     <title>@ViewBag.Title</title>
     <link href="~/lib/font-awesome/css/all.css" rel="stylesheet" />
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/color.css" />
-    <link rel="stylesheet" href="~/css/Auth.css" />
+    <link rel="stylesheet" href="~/css/tracker.css" />
 </head>
 <body>
-    <div class="d-flex justify-content-center align-items-center vh-100">
-        @RenderBody()
-    </div>
+    <div class="wrapper">
+        <div class="body-overlay"></div>
+        <!--------Sidebar-------->
+        <nav class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <h3><img src="~/MockBlob/Img/Profile.jpg" class="img-fluid" alt="sidebar-logo" /> <span>HeliosCreation Design</span></h3>
+            </div>
 
+            <ul class="list-unstyled components">
+                <li class="active">
+                    <a href="" class="dashboard">
+                        <i class="fas fa-chart-bar"></i><span>Dashboard</span>
+                    </a>
+                </li>
+
+                <li>
+                    <div class="small-screen navbar-display">
+                        <ul>
+                            <li class="dropdown d-lg-none d-md-block d-sm-block">
+                                <a href="#homeSubMenu0" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle"></a>
+                                <ul class="collapse list-unstyled menu" id="homeSubMenu0">
+                                    <li> <a href="#">You have 5 new messages</a></li>
+                                </ul>
+                            </li>
+
+                            <li class="dropdown d-lg-none d-md-block d-sm-block">
+                                <a href="#"><i class="material-icons">apps</i><span>apps</span> </a>
+                            </li>
+                            <li class="dropdown d-lg-none d-md-block d-sm-block">
+                                <a href="#"><i class="material-icons">person</i><span>person</span> </a>
+                            </li>
+                            <li class="dropdown d-lg-none d-md-block d-sm-block">
+                                <a href="#"><i class="material-icons">settings</i><span>settings</span> </a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+
+                <li>
+                    <a href="" data-toggle="collapse">
+                        <i class="fas fa-user"></i><span>Manage projects user</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="" data-toggle="collapse">
+                        <i class="fas fa-user-tag"></i><span>Manage Role Assignement</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="" data-toggle="collapse">
+                        <i class="fas fa-project-diagram"></i><span>Projects</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="" data-toggle="collapse">
+                        <i class="fas fa-ticket-alt"></i><span>Tickets</span>
+                    </a>
+                </li>
+            </ul>
+
+
+        </nav>
+
+
+        <!-- Page content -->
+
+        <div id="content">
+            <!-- Top navbar -->
+            <div class="top-navbar">
+                <nav class="navbar navbar-expand-lg">
+                    <div class="d-flex">
+                        <button type="button" id="sidebar-collapse" class="d-xl-block d-lg-block d-md-none d-none">
+                            <span><i class="fas fa-caret-square-left"></i></span>
+                        </button>
+
+                        <a class="navbar-brand" href="#">Dashboard</a>
+                    </div>
+                    <button class="d-inline-block d-lg-none ml-auto more-button" type="button" data-toggle="collapse"
+                            data-target="#navbarcollapse" aria-controls="navbarcollapse" aria-expanded="false" aria-label="Toggle">
+                        <span><i class="fas fa-ellipsis-v"></i></span>
+                    </button>
+
+                    <div class="collapse navbar-collapse d-lg-block d-xl-block d-md-none d-sm-none d-none" id="navbarcollaspse">
+                        <ul class="nav navbar-nav ml-auto">
+                            <li class="nav-item dropdown active">
+                                <a href="#" class=" nav-link" data-toggle="dropdown">
+                                    <span><i class="fas fa-bell"></i></span>
+                                    <span class="notification">4</span>
+                                </a>
+
+                                <ul class="dropdown-menu">
+                                    <li>
+                                        <a href="#">You have 4 new messages</a>
+                                    </li>
+                                </ul>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link" href="">
+                                    <span><i class="far fa-envelope"></i></span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+            </div>
+
+            <!-------------- Main content --------------->
+
+            <div class="main-content">
+
+                <!--First row -->
+                <div class="row d-flex justify-content-center bg-white">
+                    <div class="col-lg-3 col-md-6 col-sm-6">
+                        <div class="card card-stats">
+
+                            <div class="card-header">
+                                <div class="icon icon-low">
+                                    <span><i class="fas fa-bug"></i></span>
+                                </div>
+                            </div>
+
+                            <div class="card-content">
+                                <p class="category"><strong>Low</strong></p>
+                                <h3 class="card-title">10</h3>
+                            </div>
+
+                            <div class="card-footer">
+                                <div class="stats">
+                                    <i class="fas fa-info-circle text-info"></i>
+                                    <a href="#">See detailed report</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="col-lg-3 col-md-6 col-sm-6">
+                        <div class="card card-stats">
+
+                            <div class="card-header">
+                                <div class="icon icon-medium">
+                                    <span><i class="fas fa-spider"></i></span>
+                                </div>
+                            </div>
+
+                            <div class="card-content">
+                                <p class="category"><strong>Medium</strong></p>
+                                <h3 class="card-title">3</h3>
+                            </div>
+
+                            <div class="card-footer">
+                                <div class="stats">
+                                    <i class="fas fa-info-circle text-info"></i>
+                                    <a href="#">See detailed report</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-3 col-md-6 col-sm-6">
+                        <div class="card card-stats">
+
+                            <div class="card-header">
+                                <div class="icon icon-high">
+                                    <span><i class="fas fa-viruses"></i></span>
+                                </div>
+                            </div>
+
+                            <div class="card-content">
+                                <p class="category"><strong>High</strong></p>
+                                <h3 class="card-title">0</h3>
+                            </div>
+
+                            <div class="card-footer">
+                                <div class="stats">
+                                    <i class="fas fa-info-circle text-info"></i>
+                                    <a href="#">See detailed report</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!--Second row -->
+                <div class="row">
+                    <div class="col-lg-7 col-md-12">
+                        <div class="card" style="min-height:485px">
+                            <div class="card-header card-header-text">
+                                <h4 class="card-title">Employee Stats</h4>
+                                <p class="category"> New employee on 15th of december, 2016</p>
+                            </div>
+
+                            <div class="card-content table-responsive">
+                                <table class="table table-hover">
+                                    <thead class="text-primary">
+                                        <tr>
+                                            <th>Id</th>
+                                            <th>Name</th>
+                                            <th>Salary</th>
+                                            <th>Country</th>
+                                        </tr>
+                                    </thead>
+
+                                    <tbody>
+                                        <tr>
+                                            <td>1</td>
+                                            <td>John doe</td>
+                                            <td>23 000$</td>
+                                            <td>USA</td>
+                                        </tr>
+                                        <tr>
+                                            <td>1</td>
+                                            <td>John doe</td>
+                                            <td>23 000$</td>
+                                            <td>USA</td>
+                                        </tr>
+                                        <tr>
+                                            <td>1</td>
+                                            <td>John doe</td>
+                                            <td>23 000$</td>
+                                            <td>USA</td>
+                                        </tr>
+                                        <tr>
+                                            <td>1</td>
+                                            <td>John doe</td>
+                                            <td>23 000$</td>
+                                            <td>USA</td>
+                                        </tr>
+                                        <tr>
+                                            <td>1</td>
+                                            <td>John doe</td>
+                                            <td>23 000$</td>
+                                            <td>USA</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-5 col-md-12">
+                        <div class="card" style="min-height: 485px">
+                            <div class="card-header card-header-text">
+                                <h4 class="card-title">Activities</h4>
+                            </div>
+                            <div class="card-content">
+                                <div class="streamline">
+                                    <div class="sl-item sl-primary">
+                                        <div class="sl-content">
+                                            <small class="text-muted">5 mins ago</small>
+                                            <p>Williams has just joined Project X</p>
+                                        </div>
+                                    </div>
+                                    <div class="sl-item sl-danger">
+                                        <div class="sl-content">
+                                            <small class="text-muted">25 mins ago</small>
+                                            <p>Jane has sent a request for access to the project folder</p>
+                                        </div>
+                                    </div>
+                                    <div class="sl-item sl-success">
+                                        <div class="sl-content">
+                                            <small class="text-muted">40 mins ago</small>
+                                            <p>Kate added you to her team</p>
+                                        </div>
+                                    </div>
+                                    <div class="sl-item">
+                                        <div class="sl-content">
+                                            <small class="text-muted">45 minutes ago</small>
+                                            <p>John has finished his task</p>
+                                        </div>
+                                    </div>
+                                    <div class="sl-item sl-warning">
+                                        <div class="sl-content">
+                                            <small class="text-muted">55 mins ago</small>
+                                            <p>Jim shared a folder with you</p>
+                                        </div>
+                                    </div>
+                                    <div class="sl-item">
+                                        <div class="sl-content">
+                                            <small class="text-muted">60 minutes ago</small>
+                                            <p>John has finished his task</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <!-- footer -->
+
+                <footer class="footer">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <nav class="d-flex">
+                                    <ul class="m-0 p-0">
+                                        <li>
+                                            <a href="#">
+                                                Home
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="#">
+                                                Company
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="#">
+                                                Portfolio
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="#">
+                                                Blog
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </nav>
+
+                            </div>
+                            <div class="col-md-6">
+                                <p class="copyright d-flex justify-content-end">
+                                    &copy 2021 Design by
+                                    <a href="#">Vishweb Design</a> BootStrap Admin Dashboard
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </footer>
+            </div>
+
+        </div>
+    </div>
+    @RenderBody()
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="js/popper.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     @await RenderSectionAsync("Scripts", required: false)
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#sidebar-collapse').on('click', function () {
+                $('#sidebar').toggleClass('active');
+                $('#content').toggleClass('active');
+            });
+
+            $('.more-button,.body-overlay').on('click', function () {
+                console.log("clicked")
+                $('#sidebar,.body-overlay').toggleClass('show-nav');
+            });
+
+        });
+
+    </script>
 </body>
 </html>

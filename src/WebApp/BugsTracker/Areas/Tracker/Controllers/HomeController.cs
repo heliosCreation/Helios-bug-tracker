@@ -2,9 +2,10 @@
 
 namespace BugTracker.Areas.Tracker.Controllers
 {
+    [Area("Tracker")]
     public class HomeController : Controller
     {
-        public IActionResult Index()
+        public IActionResult DashBoard()
         {
             return View();
         }
