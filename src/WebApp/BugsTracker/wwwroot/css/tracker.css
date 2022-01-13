@@ -90,7 +90,7 @@ a:focus {
     bottom: 0;
     left: 0;
     z-index: 11;
-    width: 260px;
+    width: 200px;
     overflow: auto;
     transition: all 0.3s;
     background: #FFFFFF;
@@ -98,62 +98,78 @@ a:focus {
 }
 
 
-    #sidebar::-webkit-scrollbar {
-        width: 5px;
-        border-radius: 10px;
-        background-color: #eee;
-        display: none;
-    }
-
-    #sidebar::-webkit-scrollbar-thumbs {
-        width: 5px;
-        border-radius: 10px;
-        background-color: #333;
-        display: none;
-    }
-
-
-    #sidebar:hover::-webkit-scrollbar {
-        display: block;
-    }
-
-    #sidebar:hover::-webkit-scrollbar-thumbs {
-        display: block;
-    }
-
-    #sidebar .sidebar-header {
-        padding: 20px;
-        background-color: #ffffff;
-        border-bottom: 1px solid #eee;
-    }
-
-.sidebar-header h3 {
-    color: #333;
-    font-size: 17px;
-    margin: 0px;
-    text-transform: uppercase;
-    transition: all 0.5s ease;
-    font-weight: 600;
+#sidebar::-webkit-scrollbar {
+    width: 5px;
+    border-radius: 10px;
+    background-color: #eee;
+    display: none;
 }
 
-    .sidebar-header h3 img {
-        width: 45px;
-        margin-right: 10px;
-    }
+#sidebar::-webkit-scrollbar-thumbs {
+    width: 5px;
+    border-radius: 10px;
+    background-color: #333;
+    display: none;
+}
+
+
+#sidebar:hover::-webkit-scrollbar {
+    display: block;
+}
+
+#sidebar:hover::-webkit-scrollbar-thumbs {
+    display: block;
+}
+
+#sidebar .sidebar-header {
+    padding: 20px;
+    background-color: #ffffff;
+    border-bottom: 1px solid #eee;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    color: #00FFFF;
+}
+
+.sidebar-header h3 {
+    margin: 0px;
+    transition: all 0.5s ease;
+    font-weight: 200;
+    padding-top: 10px;
+    color: black;
+    font-size: 16px;
+}
+.sidebar-header i {
+    font-size: 25px;
+    padding-bottom: 5px;
+    border-bottom: 2px solid black;
+    background: rgb(205,13,0);
+    background: linear-gradient(0deg, rgba(205,13,0,1) 0%, rgba(249,162,0,1) 50%, rgba(250,255,17,1) 100%);
+    background-size: 100%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    -moz-background-clip: text;
+    -moz-text-fill-color: transparent;
+}
+
 
 #sidebar ul li {
     padding: 2px 7px;
+    display:flex;
+    align-items:center;
+    font-size:10px;
 }
 
-    #sidebar ul li.active > a {
-        color: #333;
-        background-color: rgba(200, 200, 200, 0.2);
-    }
+#sidebar ul li.active > a {
+    color: #333;
+    background-color: rgba(200, 200, 200, 0.2);
+}
 
-    #sidebar ul li a:hover {
-        color: #333;
-        background-color: rgba(200, 200, 200, 0.2);
-    }
+#sidebar ul li a:hover {
+    color: #333;
+    background-color: rgba(200, 200, 200, 0.2);
+}
 
 .dropdown-toggle::after {
     position: absolute;
@@ -174,10 +190,8 @@ a:focus {
     padding: 10px;
     line-height: 30px;
     border-radius: 5px;
-    font-size: 15px;
+    font-size: 13px;
     position: relative;
-    ' font-weight: 400;
-    display: block;
 }
 
     #sidebar ul li a span {
@@ -186,9 +200,7 @@ a:focus {
     }
 
     #sidebar ul li a i {
-        position: relative;
         margin-right: 10px;
-        top: 5px;
         color: #555555;
         margin-left: 10px;
     }
@@ -224,7 +236,8 @@ a:focus {
 
 
 .main-content {
-    padding: 10px 20px 0px 20px;
+    padding: 60px 20px 0px 20px;
+    margin-top:40px;
     position: relative;
     width: 100%;
 }
@@ -250,11 +263,11 @@ a:focus {
     border: none;
 }
 
-    .navbar button span {
-        color: #fff;
-    }
+.navbar button span {
+    color: #fff;
+}
 
-#sidebarCollapse {
+#sidebar-collapse {
     border-radius: 50%;
     width: 45px;
     height: 45px;
@@ -266,10 +279,10 @@ a:focus {
     background-color: rgba(0, 0, 0, 0.09);
 }
 
-    #sidebarCollapse span {
-        margin: 9px;
-        padding: 0px;
-    }
+#sidebar-collapse span {
+    margin: 9px;
+    padding: 0px;
+}
 
 
 
@@ -345,7 +358,14 @@ a:focus {
    main-content inner design like card start
    ===============================================*/
 
-
+.first-row{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:white;
+    width:100%;
+    border-radius:5px;
+}
 .card {
     margin: 10px 0;
 }
@@ -641,23 +661,23 @@ footer {
     }
 
 
-        #sidebar.active .sidebar-header h3 span {
-            display: none;
-            transition: all 0.5s ease;
-        }
+    #sidebar.active .sidebar-header h3 {
+        display: none;
+        transition: all 0.5s ease;
+    }
 
-        #sidebar.active ul li a span {
-            display: none;
-            transition: all 0.5s ease;
-        }
+    #sidebar.active ul li a span {
+        display: none;
+        transition: all 0.5s ease;
+    }
 
-        #sidebar.active .dropdown-toggle::after {
-            display: none;
-            transition: all 0.5s ease;
-        }
+    #sidebar.active .dropdown-toggle::after {
+        display: none;
+        transition: all 0.5s ease;
+    }
 
     #content {
-        width: calc(100% - 260px);
+        width: calc(100% - 200px);
         position: relative;
         float: right;
         transition: all 0.3s;
