@@ -92,29 +92,6 @@
                             data-target="#navbarcollapse" aria-controls="navbarcollapse" aria-expanded="false" aria-label="Toggle">
                         <span><i class="fas fa-ellipsis-v"></i></span>
                     </button>
-
-                    <div class="collapse navbar-collapse d-lg-block d-xl-block d-md-none d-sm-none d-none" id="navbarcollaspse">
-                        <ul class="nav navbar-nav ml-auto">
-                            <li class="nav-item dropdown active">
-                                <a href="#" class=" nav-link" data-toggle="dropdown">
-                                    <span><i class="fas fa-bell"></i></span>
-                                    <span class="notification">4</span>
-                                </a>
-
-                                <ul class="dropdown-menu">
-                                    <li>
-                                        <a href="#">You have 4 new messages</a>
-                                    </li>
-                                </ul>
-                            </li>
-
-                            <li class="nav-item">
-                                <a class="nav-link" href="">
-                                    <span><i class="far fa-envelope"></i></span>
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
                 </nav>
             </div>
 
@@ -125,73 +102,48 @@
                 <!--First row -->
                 <div class="row p-3">
                     <div class="first-row">
-                        <div class="col-lg-3 col-md-6 col-sm-6">
-                            <div class="card card-stats">
-
-                                <div class="card-header">
-                                    <div class="icon icon-low">
-                                        <span><i class="fas fa-bug"></i></span>
-                                    </div>
-                                </div>
-
-                                <div class="card-content">
-                                    <p class="category"><strong>Low</strong></p>
-                                    <h3 class="card-title">10</h3>
-                                </div>
-
-                                <div class="card-footer">
-                                    <div class="stats">
-                                        <i class="fas fa-info-circle text-info"></i>
-                                        <a href="#">See detailed report</a>
-                                    </div>
-                                </div>
-                            </div>
+                        <div class="first-row-header row d-flex px-3 py-2 w-100 justify-content-between">
+                            <div class="title"> Projects </div>
+                            <div class="project-add-holder"><a href="#" class="add-project-btn"> New Project</a></div>
                         </div>
 
-
-                        <div class="col-lg-3 col-md-6 col-sm-6">
-                            <div class="card card-stats">
-
-                                <div class="card-header">
-                                    <div class="icon icon-medium">
-                                        <span><i class="fas fa-spider"></i></span>
-                                    </div>
-                                </div>
-
-                                <div class="card-content">
-                                    <p class="category"><strong>Medium</strong></p>
-                                    <h3 class="card-title">3</h3>
-                                </div>
-
-                                <div class="card-footer">
-                                    <div class="stats">
-                                        <i class="fas fa-info-circle text-info"></i>
-                                        <a href="#">See detailed report</a>
-                                    </div>
-                                </div>
+                        <div class="row w-100">
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <thead class="project-thead">
+                                        <tr>
+                                            <th scope="col" class="text-muted">Project</th>
+                                            <th scope="col" class="text-muted">Description</th>
+                                            <th scope="col" class="text-muted">Contributor</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <th scope="row"><a href="#">Bug tracker</a></th>
+                                            <td>Mark</td>
+                                            <td>Otto</td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row"><a href="#">Portfolio Management</a></th>
+                                            <td>Jacob</td>
+                                            <td>Thornton</td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row"><a href="#">Portfolio</a></th>
+                                            <td>Larry</td>
+                                            <td>the Bird</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
                             </div>
+
                         </div>
 
-                        <div class="col-lg-3 col-md-6 col-sm-6">
-                            <div class="card card-stats">
-
-                                <div class="card-header">
-                                    <div class="icon icon-high">
-                                        <span><i class="fas fa-viruses"></i></span>
-                                    </div>
-                                </div>
-
-                                <div class="card-content">
-                                    <p class="category"><strong>High</strong></p>
-                                    <h3 class="card-title">0</h3>
-                                </div>
-
-                                <div class="card-footer">
-                                    <div class="stats">
-                                        <i class="fas fa-info-circle text-info"></i>
-                                        <a href="#">See detailed report</a>
-                                    </div>
-                                </div>
+                        <div class="row d-flex justify-content-start align-items-start w-100" >
+                            <div class="pagination-holder d-flex p-2">
+                                <div class="purple-circle"><i class="fas fa-angle-left"></i></div>
+                                <div class="purple-circle filled">1</div>
+                                <div class="purple-circle"><i class="fas fa-angle-right"></i></div>
                             </div>
                         </div>
                     </div>
@@ -199,159 +151,46 @@
 
                 <!--Second row -->
                 <div class="row">
-                    <div class="col-lg-7 col-md-12">
-                        <div class="card" style="min-height:485px">
-                            <div class="card-header card-header-text">
-                                <h4 class="card-title">Employee Stats</h4>
-                                <p class="category"> New employee on 15th of december, 2016</p>
+                    <div class="col-lg-4 col-md-6 col-sm-6">
+                        <div class="card">
+                            <div class="card-header">
+                                Tickets by Status
                             </div>
-
-                            <div class="card-content table-responsive">
-                                <table class="table table-hover">
-                                    <thead class="text-primary">
-                                        <tr>
-                                            <th>Id</th>
-                                            <th>Name</th>
-                                            <th>Salary</th>
-                                            <th>Country</th>
-                                        </tr>
-                                    </thead>
-
-                                    <tbody>
-                                        <tr>
-                                            <td>1</td>
-                                            <td>John doe</td>
-                                            <td>23 000$</td>
-                                            <td>USA</td>
-                                        </tr>
-                                        <tr>
-                                            <td>1</td>
-                                            <td>John doe</td>
-                                            <td>23 000$</td>
-                                            <td>USA</td>
-                                        </tr>
-                                        <tr>
-                                            <td>1</td>
-                                            <td>John doe</td>
-                                            <td>23 000$</td>
-                                            <td>USA</td>
-                                        </tr>
-                                        <tr>
-                                            <td>1</td>
-                                            <td>John doe</td>
-                                            <td>23 000$</td>
-                                            <td>USA</td>
-                                        </tr>
-                                        <tr>
-                                            <td>1</td>
-                                            <td>John doe</td>
-                                            <td>23 000$</td>
-                                            <td>USA</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
+                            <div class="card-body">
+                                <canvas class="pie-chart" id="ticket-status-pie"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-6 col-sm-6">
+                        <div class="card">
+                            <div class="card-header">
+                                Tickets by Priority
+                            </div>
+                            <div class="card-body">
+                                <canvas class="pie-chart" id="ticket-priority-pie"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-6 col-sm-6">
+                        <div class="card">
+                            <div class="card-header">
+                                Tickets by Type
+                            </div>
+                            <div class="card-body">
+                                <canvas class="pie-chart" id="ticket-type-pie"></canvas>
                             </div>
                         </div>
                     </div>
 
-                    <div class="col-lg-5 col-md-12">
-                        <div class="card" style="min-height: 485px">
-                            <div class="card-header card-header-text">
-                                <h4 class="card-title">Activities</h4>
-                            </div>
-                            <div class="card-content">
-                                <div class="streamline">
-                                    <div class="sl-item sl-primary">
-                                        <div class="sl-content">
-                                            <small class="text-muted">5 mins ago</small>
-                                            <p>Williams has just joined Project X</p>
-                                        </div>
-                                    </div>
-                                    <div class="sl-item sl-danger">
-                                        <div class="sl-content">
-                                            <small class="text-muted">25 mins ago</small>
-                                            <p>Jane has sent a request for access to the project folder</p>
-                                        </div>
-                                    </div>
-                                    <div class="sl-item sl-success">
-                                        <div class="sl-content">
-                                            <small class="text-muted">40 mins ago</small>
-                                            <p>Kate added you to her team</p>
-                                        </div>
-                                    </div>
-                                    <div class="sl-item">
-                                        <div class="sl-content">
-                                            <small class="text-muted">45 minutes ago</small>
-                                            <p>John has finished his task</p>
-                                        </div>
-                                    </div>
-                                    <div class="sl-item sl-warning">
-                                        <div class="sl-content">
-                                            <small class="text-muted">55 mins ago</small>
-                                            <p>Jim shared a folder with you</p>
-                                        </div>
-                                    </div>
-                                    <div class="sl-item">
-                                        <div class="sl-content">
-                                            <small class="text-muted">60 minutes ago</small>
-                                            <p>John has finished his task</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                        </div>
-                    </div>
                 </div>
-
-                <!-- footer -->
-
-                <footer class="footer">
-                    <div class="container-fluid">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <nav class="d-flex">
-                                    <ul class="m-0 p-0">
-                                        <li>
-                                            <a href="#">
-                                                Home
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="#">
-                                                Company
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="#">
-                                                Portfolio
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="#">
-                                                Blog
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </nav>
-
-                            </div>
-                            <div class="col-md-6">
-                                <p class="copyright d-flex justify-content-end">
-                                    &copy 2021 Design by
-                                    <a href="#">Vishweb Design</a> BootStrap Admin Dashboard
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                </footer>
+          
             </div>
 
         </div>
     </div>
     @RenderBody()
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="js/popper.min.js"></script>
+    <script src="~/lib/Chart.js/chart.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     @await RenderSectionAsync("Scripts", required: false)
 
@@ -365,6 +204,98 @@
             $('.more-button,.body-overlay').on('click', function () {
                 console.log("clicked")
                 $('#sidebar,.body-overlay').toggleClass('show-nav');
+            });
+
+            
+            var ticketTypePie = new Chart($("#ticket-type-pie"), {
+                type: 'doughnut',
+
+                data: {
+                    labels: ["Issue", "Bug", "Feature request"],
+                    datasets: [{
+                        label: 'My First Dataset',
+                        data: [300, 50, 100],
+                        backgroundColor: [
+                            'rgb(255, 99, 132)',
+                            'rgb(54, 162, 235)',
+                            'rgb(255, 205, 86)'
+                        ],
+                        hoverOffset: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'right',
+                            labels: {
+                                usePointStyle: true,
+                                boxWidth: 6
+                            }
+                        }
+                    }
+                }
+            });
+
+            var ticketStatusPie = new Chart($("#ticket-status-pie"), {
+                type: 'doughnut',
+
+                data: {
+                    labels: ["Resolved", "New", "In Progress"],
+                    datasets: [{
+                        label: 'My First Dataset',
+                        data: [300, 50, 100],
+                        backgroundColor: [
+                            'rgb(255, 205, 86)',
+                            'rgb(54, 162, 235)',
+                            'rgb(255, 99, 132)'
+                        ],
+                        hoverOffset: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'right',
+                            labels: {
+                                usePointStyle: true,
+                                boxWidth: 6
+                            }
+                        }
+                    }
+                }
+            });
+
+            var ticketPriorityPie = new Chart($("#ticket-priority-pie"), {
+                type: 'doughnut',
+
+                data: {
+                    labels: ["Immediate", "High", "Medium","Low"],
+                    datasets: [{
+                        label: 'My First Dataset',
+                        data: [300, 50, 100,60],
+                        backgroundColor: [
+                            'rgb(255, 99, 132)',
+                            'rgb(54, 162, 235)',
+                            'rgb(255, 205, 86)',
+                            'rgb(100, 205, 186)'
+                        ],
+                        hoverOffset: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'right',
+                            labels: {
+                                usePointStyle: true,
+                                boxWidth: 6
+                            }
+                        }
+                    }
+                }
             });
 
         });

@@ -53,7 +53,7 @@ ul, ol {
 a,
 a:hover,
 a:focus {
-    color: #333;
+    color: white;
     text-decoration: none;
     transition: all 0.3s;
 }
@@ -143,7 +143,6 @@ a:focus {
 .sidebar-header i {
     font-size: 25px;
     padding-bottom: 5px;
-    border-bottom: 2px solid black;
     background: rgb(205,13,0);
     background: linear-gradient(0deg, rgba(205,13,0,1) 0%, rgba(249,162,0,1) 50%, rgba(250,255,17,1) 100%);
     background-size: 100%;
@@ -159,6 +158,7 @@ a:focus {
     display:flex;
     align-items:center;
     font-size:10px;
+    color:black;
 }
 
 #sidebar ul li.active > a {
@@ -197,6 +197,7 @@ a:focus {
     #sidebar ul li a span {
         text-transform: capitalize;
         display: inline-block;
+        color:black;
     }
 
     #sidebar ul li a i {
@@ -225,7 +226,7 @@ a:focus {
 #content {
     position: relative;
     transition: all 0.3s;
-    background-color: #EEEEEE;
+    background-color: #fefefe;
 }
 
 .top-navbar {
@@ -236,7 +237,7 @@ a:focus {
 
 
 .main-content {
-    padding: 60px 20px 0px 20px;
+    padding: 30px 20px 0px 20px;
     margin-top:40px;
     position: relative;
     width: 100%;
@@ -245,13 +246,15 @@ a:focus {
 
 
 .navbar {
-    background-color: #2196F3;
+    background: rgb(3,0,255);
+    background: linear-gradient(184deg, rgba(3,0,255,1) 0%, rgba(124,209,250,1) 100%);
     color: #FFFFFF;
-    height:150px;
-    display:flex;
-    justify-content:flex-start;align-items:flex-start;
-    position:absolute;
-    width:100%;
+    height: 180px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    position: absolute;
+    width: 100%;
 }
 
 .navbar-brand {
@@ -358,13 +361,72 @@ a:focus {
    main-content inner design like card start
    ===============================================*/
 
-.first-row{
+.first-row {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    background: white;
+    width: 100%;
+    border-radius: 5px;
+    box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
+}
+
+.first-row .title{
+    font-weight:bold;
+    font-size:15px;
+}
+.add-project-btn {
+    color: white;
+    background: #3a06fb;
+    padding: 5px;
+    border-radius: 5px;
+}
+
+.project-thead tr {
+    background-color: #21252914;
+}
+.project-thead tr th {
+    text-transform: uppercase;
+    font-size:10px!important;
+}
+td {
+    font-size:14px;
+}
+
+tbody tr th a{
+    font-size: 13px;
+    color: #5d00ff;
+}
+
+tbody tr th a:hover {
+    color: #0300ff;
+}
+
+tbody tr:last-of-type {
+    border-bottom: 1px solid #dee2e6
+}
+
+.purple-circle {
+    padding: 10px;
+    border: 1px solid;
+    border-color:rgba(3,0,255,0.26);
+    color:#0300ff;
+    border-radius:50%;
+    height:30px;
+    width:30px;
     display:flex;
     justify-content:center;
     align-items:center;
-    background:white;
-    width:100%;
-    border-radius:5px;
+    font-size:15px;
+    line-height:25px;
+    margin:2px;
+    cursor:pointer;
+}
+
+.purple-circle.filled{
+    background:#0300ff;
+    color:white;
 }
 .card {
     margin: 10px 0;
@@ -384,6 +446,7 @@ a:focus {
     border-radius: 6px;
     color: rgba(0,0,0, 0.87);
     background: #fff;
+    box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
 }
 
 .card-stats .card-header {
@@ -500,11 +563,7 @@ a:focus {
     text-decoration: none;
 }
 
-.table > thead > tr > th {
-    border-bottom-width: 1px;
-    font-size: 16px;
-    font-weight: 400;
-}
+
 
 
 .card .card-content {
@@ -522,18 +581,20 @@ a:focus {
     border-left: 1px solid #ccc;
 }
 
+.pie-chart {
+    max-height: 150px;
+}
 
-
-    .streamline .sl-item:before {
-        content: '';
-        position: absolute;
-        left: -6px;
-        top: 0;
-        background-color: #ccc;
-        width: 12px;
-        height: 12px;
-        border-radius: 100%;
-    }
+.streamline .sl-item:before {
+    content: '';
+    position: absolute;
+    left: -6px;
+    top: 0;
+    background-color: #ccc;
+    width: 12px;
+    height: 12px;
+    border-radius: 100%;
+}
 
 .streamline .sl-primary:before, .streamline .sl-primary:last-child:after {
     background-color: #188ae2;
@@ -681,7 +742,7 @@ footer {
         position: relative;
         float: right;
         transition: all 0.3s;
-        background-color: #EEEEEE;
+        background-color: #fefefe;
     }
 
         #content.active {
@@ -731,6 +792,7 @@ footer {
         transition: all 150ms linear;
         box-shadow: none !important;
     }
+
 
     .body-overlay {
         position: fixed;
