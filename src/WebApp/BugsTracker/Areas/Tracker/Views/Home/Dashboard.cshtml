@@ -1,5 +1,183 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
+﻿<!--First row -->
+<div class="row p-3">
+    <div class="first-row">
+        <div class="first-row-header row d-flex px-3 py-2 w-100 justify-content-between">
+            <div class="title"> Projects </div>
+            <div class="project-add-holder"><a href="#" class="add-project-btn"> New Project</a></div>
+        </div>
+
+        <div class="row w-100">
+            <div class="table-responsive">
+                <table class="table">
+                    <thead class="project-thead">
+                        <tr>
+                            <th scope="col" class="text-muted">Project</th>
+                            <th scope="col" class="text-muted">Description</th>
+                            <th scope="col" class="text-muted">Contributor</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th scope="row"><a asp-area="Tracker" asp-controller="Project" asp-action="Details" asp-route-id="1">Bug tracker</a></th>
+                            <td>Mark</td>
+                            <td>Otto</td>
+                        </tr>
+                        <tr>
+                            <th scope="row"><a href="#">Portfolio Management</a></th>
+                            <td>Jacob</td>
+                            <td>Thornton</td>
+                        </tr>
+                        <tr>
+                            <th scope="row"><a href="#">Portfolio</a></th>
+                            <td>Larry</td>
+                            <td>the Bird</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+
+        <div class="row d-flex justify-content-start align-items-start w-100">
+            <div class="pagination-holder d-flex p-2">
+                <div class="purple-circle"><i class="fas fa-angle-left"></i></div>
+                <div class="purple-circle filled">1</div>
+                <div class="purple-circle"><i class="fas fa-angle-right"></i></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--Second row -->
+<div class="row">
+    <div class="col-lg-4 col-md-6 col-sm-6">
+        <div class="card">
+            <div class="card-header">
+                Tickets by Status
+            </div>
+            <div class="card-body">
+                <canvas class="pie-chart" id="ticket-status-pie"></canvas>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-4 col-md-6 col-sm-6">
+        <div class="card">
+            <div class="card-header">
+                Tickets by Priority
+            </div>
+            <div class="card-body">
+                <canvas class="pie-chart" id="ticket-priority-pie"></canvas>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-4 col-md-6 col-sm-6">
+        <div class="card">
+            <div class="card-header">
+                Tickets by Type
+            </div>
+            <div class="card-body">
+                <canvas class="pie-chart" id="ticket-type-pie"></canvas>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+@section scripts {
+    <script src="~/lib/Chart.js/chart.min.js"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var ticketTypePie = new Chart($("#ticket-type-pie"), {
+                type: 'doughnut',
+
+                data: {
+                    labels: ["Issue", "Bug", "Feature request"],
+                    datasets: [{
+                        label: 'My First Dataset',
+                        data: [300, 50, 100],
+                        backgroundColor: [
+                            'rgb(255, 99, 132)',
+                            'rgb(54, 162, 235)',
+                            'rgb(255, 205, 86)'
+                        ],
+                        hoverOffset: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'right',
+                            labels: {
+                                usePointStyle: true,
+                                boxWidth: 6
+                            }
+                        }
+                    }
+                }
+            });
+
+            var ticketStatusPie = new Chart($("#ticket-status-pie"), {
+                type: 'doughnut',
+
+                data: {
+                    labels: ["Resolved", "New", "In Progress"],
+                    datasets: [{
+                        label: 'My First Dataset',
+                        data: [300, 50, 100],
+                        backgroundColor: [
+                            'rgb(255, 205, 86)',
+                            'rgb(54, 162, 235)',
+                            'rgb(255, 99, 132)'
+                        ],
+                        hoverOffset: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'right',
+                            labels: {
+                                usePointStyle: true,
+                                boxWidth: 6
+                            }
+                        }
+                    }
+                }
+            });
+
+            var ticketPriorityPie = new Chart($("#ticket-priority-pie"), {
+                type: 'doughnut',
+
+                data: {
+                    labels: ["Immediate", "High", "Medium", "Low"],
+                    datasets: [{
+                        label: 'My First Dataset',
+                        data: [300, 50, 100, 60],
+                        backgroundColor: [
+                            'rgb(255, 99, 132)',
+                            'rgb(54, 162, 235)',
+                            'rgb(255, 205, 86)',
+                            'rgb(100, 205, 186)'
+                        ],
+                        hoverOffset: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'right',
+                            labels: {
+                                usePointStyle: true,
+                                boxWidth: 6
+                            }
+                        }
+                    }
+                }
+            });
+        });
+    </script>
 }

@@ -58,8 +58,24 @@ a:focus {
     transition: all 0.3s;
 }
 
+.col-4_5{
+    flex: 0 0 35%;
+    max-width:35%;
+}
 
+.research-input {
+    border: none;
+    border-bottom: 1px solid #94cbe0;
+    transition:all 0.2s ease-in-out;
+}
 
+.research-input:focus {
+    outline: none;
+    border-radius:5px;
+    background-color:rgba(148,203,224,0.4)
+
+}
+    
 /*=======================================================
   material-icons  copy & paste form site google material-icons
   ==================================================*/
@@ -67,7 +83,7 @@ a:focus {
 
 
 
-.wrapper {
+    .wrapper {
     position: relative;
     width: 100%;
     overflow: auto;
@@ -227,6 +243,7 @@ a:focus {
     position: relative;
     transition: all 0.3s;
     background-color: #fefefe;
+    font-size:12px!important;
 }
 
 .top-navbar {
@@ -281,10 +298,12 @@ a:focus {
     color: #FFFFFF;
     background-color: rgba(0, 0, 0, 0.09);
 }
-
+#sidebar-collapse.active {
+    transform:rotate(180deg);
+}
 #sidebar-collapse span {
-    margin: 9px;
-    padding: 0px;
+margin: 9px;
+padding: 0px;
 }
 
 
@@ -326,7 +345,6 @@ a:focus {
 
 
 .dropdown-menu li > a {
-    font-size: 13px;
     padding: 10px 20px;
     margin: 0 5px;
     border-radius: 2px;
@@ -374,7 +392,7 @@ a:focus {
 
 .first-row .title{
     font-weight:bold;
-    font-size:15px;
+    font-size:13px;
 }
 .add-project-btn {
     color: white;
@@ -391,11 +409,11 @@ a:focus {
     font-size:10px!important;
 }
 td {
-    font-size:14px;
+    font-size:12px;
 }
 
 tbody tr th a{
-    font-size: 13px;
+    font-size: 12px;
     color: #5d00ff;
 }
 
@@ -418,7 +436,7 @@ tbody tr:last-of-type {
     display:flex;
     justify-content:center;
     align-items:center;
-    font-size:15px;
+    font-size:13px;
     line-height:25px;
     margin:2px;
     cursor:pointer;
@@ -461,19 +479,6 @@ tbody tr:last-of-type {
     border-bottom: none;
 }
 
-.card .card-footer .stats .material-icons {
-    position: relative;
-    top: 4px;
-    font-size: 16px;
-}
-
-.card-stats .card-header span {
-    font-size: 36px;
-    line-height: 56px;
-    width: 56px;
-    height: 56px;
-}
-
 .icon{
     height:50px;
     width:50px;
@@ -482,11 +487,7 @@ tbody tr:last-of-type {
     align-items:center;
 }
 
-.icon i{
-    font-size:30px;
-    line-height:50px;
 
-}
 
 .icon.icon-low i {
     color:yellow;
@@ -520,29 +521,6 @@ tbody tr:last-of-type {
     padding-top: 10px;
 }
 
-.card .card-content {
-    padding: 15px 20px;
-    position: relative;
-}
-
-    .card .card-content .category {
-        margin-bottom: 0;
-    }
-
-.card .category:not([class*="text-"]) {
-    color: #555555;
-    font-size: 14px;
-    font-weight: 400;
-}
-
-.card .card-title:not(.card-calendar .card-title) {
-    margin-top: 0;
-    margin-bottom: 5px;
-}
-
-.card-stats .card-title {
-    margin: 0;
-}
 
 .card .card-footer .stats {
     line-height: 22px;
@@ -713,8 +691,8 @@ footer {
     #sidebar.active {
         width: 80px;
         height: 100% !important;
-        position: absolute !important;
-        overflow: visible !important;
+/*        position: absolute !important;
+*/        overflow: visible !important;
         top: 0 !important;
         z-index: 666;
         float: left !important;
