@@ -25,28 +25,6 @@
                     </a>
                 </li>
 
-                <li>
-                    <div class="small-screen navbar-display">
-                        <ul>
-                            <li class="dropdown d-lg-none d-md-block d-sm-block">
-                                <a href="#homeSubMenu0" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle"></a>
-                                <ul class="collapse list-unstyled menu" id="homeSubMenu0">
-                                    <li> <a href="#">You have 5 new messages</a></li>
-                                </ul>
-                            </li>
-
-                            <li class="dropdown d-lg-none d-md-block d-sm-block">
-                                <a href="#"><i class="material-icons">apps</i><span>apps</span> </a>
-                            </li>
-                            <li class="dropdown d-lg-none d-md-block d-sm-block">
-                                <a href="#"><i class="material-icons">person</i><span>person</span> </a>
-                            </li>
-                            <li class="dropdown d-lg-none d-md-block d-sm-block">
-                                <a href="#"><i class="material-icons">settings</i><span>settings</span> </a>
-                            </li>
-                        </ul>
-                    </div>
-                </li>
 
                 <li>
                     <a href="" data-toggle="collapse">
@@ -78,16 +56,17 @@
         <!-- Page content -->
 
         <div id="content">
+            <div class="d-flex navigation-items-holder">
+                <button type="button" id="sidebar-collapse" class="d-xl-block d-lg-block d-md-none d-none">
+                    <span><i class="fas fa-caret-square-left"></i></span>
+                </button>
+
+                <a class="navbar-brand" href="#">Dashboard</a>
+            </div>
             <!-- Top navbar -->
             <div class="top-navbar">
                 <nav class="navbar navbar-expand-lg">
-                    <div class="d-flex">
-                        <button type="button" id="sidebar-collapse" class="d-xl-block d-lg-block d-md-none d-none">
-                            <span><i class="fas fa-caret-square-left"></i></span>
-                        </button>
 
-                        <a class="navbar-brand" href="#">Dashboard</a>
-                    </div>
                     <button class="d-inline-block d-lg-none ml-auto more-button" type="button" data-toggle="collapse"
                             data-target="#navbarcollapse" aria-controls="navbarcollapse" aria-expanded="false" aria-label="Toggle">
                         <span><i class="fas fa-ellipsis-v"></i></span>
@@ -115,6 +94,7 @@
                 $('#sidebar').toggleClass('active');
                 $('#content').toggleClass('active');
                 $(this).toggleClass('active');
+                $(".navigation-items-holder").toggleClass('folded');
             });
 
             $('.more-button,.body-overlay').on('click', function () {

@@ -120,11 +120,6 @@ a:focus {
     margin-top:15px;
     margin-bottom:15px;
 }
-/*=======================================================
-  material-icons  copy & paste form site google material-icons
-  ==================================================*/
-
-
 
 
     .wrapper {
@@ -296,10 +291,20 @@ a:focus {
     position: relative;
 }
 
+.navigation-items-holder{
+    position:fixed;
+    top:5px;
+    left:216px;
+    z-index:1001;
+    transition:all 0.2s ease-in-out;
+}
 
+.navigation-items-holder.folded {
+    left: 100px;
+}
 .main-content {
     padding: 30px 20px 0px 20px;
-    margin-top:40px;
+    margin-top:15px;
     position: relative;
     width: 100%;
 }
@@ -515,7 +520,7 @@ tbody tr th a:hover {
     border-radius: 6px;
     color: rgba(0,0,0, 0.87);
     background: #fff;
-    box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
+    box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px !important;
 }
 
 .card-stats .card-header {
@@ -573,15 +578,6 @@ tbody tr th a:hover {
 }
 
 
-.card .card-footer .stats {
-    line-height: 22px;
-    color: #555555;
-    font-size: 15px;
-}
-
-.card .card-footer div {
-    display: inline-block;
-}
 
 .card .card-header-text h4 {
     margin-top: 0;
@@ -611,7 +607,7 @@ tbody tr th a:hover {
 }
 
 .pie-chart {
-    max-height: 150px;
+    max-height: 100px;
 }
 
 .streamline .sl-item:before {
@@ -833,3 +829,12 @@ tbody tr th a:hover {
 /* ---------------------------------------------------
     MEDIAQUERIES
 ----------------------------------------------------- */
+@media only screen and (max-width:992px) {
+    .top-navbar{
+        height:50px;
+    }
+
+   .navigation-items-holder{
+        left:25px;
+    }
+}
