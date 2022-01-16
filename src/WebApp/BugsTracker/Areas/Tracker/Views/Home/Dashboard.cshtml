@@ -7,7 +7,7 @@
         </div>
 
         <div class="row w-100">
-            <div class="table-responsive">
+            <div class="table-responsive project-table">
                 <table class="table">
                     <thead class="project-thead">
                         <tr>
@@ -85,10 +85,12 @@
 
 @section scripts {
     <script src="~/lib/Chart.js/chart.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@0.7.0"></script>
 
     <script type="text/javascript">
         $(document).ready(function () {
-            var ticketTypePie = new Chart($("#ticket-type-pie"), {
+            var ticketTypePie = new Chart($("#ticket-type-pie"),
+                {
                 type: 'doughnut',
 
                 data: {
@@ -112,6 +114,11 @@
                             labels: {
                                 usePointStyle: true,
                                 boxWidth: 6
+                            }
+                        },
+                        datalabels: {
+                            formatter: function (value) {
+                                return value + " kWh";
                             }
                         }
                     }
