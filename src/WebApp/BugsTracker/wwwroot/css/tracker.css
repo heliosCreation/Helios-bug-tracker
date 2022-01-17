@@ -1,5 +1,8 @@
 ﻿@import url('https://fonts.googleapis.com/css?family=Nova+Slim&display=swap');
 
+:root {
+    --text-purple: #5d00ff;
+}
 * {
     margin: 0;
     padding: 0;
@@ -227,19 +230,9 @@ a:focus {
 }
 
 .dropdown-toggle::after {
-    position: absolute;
-    right: 10px;
-    top: 23px;
+    display:none;
 }
 
-#sidebar ul li.drodown {
-    position: sticky;
-}
-
-
-#sidebar ul.components {
-    padding: 20px 0;
-}
 
 #sidebar ul li a {
     padding: 10px;
@@ -681,8 +674,9 @@ tbody tr th a:hover {
     font-size:12px;
 }
 
-.ticket-list-table tr:first-child{
+.ticket-list-table tr td:nth-child(1){
     cursor:pointer;
+    color:var(--text-purple);
 }
 .ticket-table th{
     font-size:10px;
@@ -777,18 +771,7 @@ tbody tr th a:hover {
 
 
 @media only screen and (min-width:992px) {
-    .dropdown-menu {
-        border: 0;
-        box-shadow: 0 2px 5px 0 rgb(0 0 0 / 26%);
-        transform: translate3d(0, -20px, 0);
-        visibility: hidden;
-        transition: all 150ms linear;
-        display: block;
-        min-width: 15rem;
-        right: 0;
-        left: auto;
-        opacity: 0;
-    }
+
 }
 
 
