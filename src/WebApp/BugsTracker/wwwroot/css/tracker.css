@@ -4,6 +4,8 @@
     --text-purple: #5d00ff;
     --text-gray: #c8c5ce;
     --blue: rgb(3,0,255,1);
+    --bg-black-50: #eaeaf4;
+    --bg-scrollbar: #c7c7c7;
 }
 * {
     margin: 0;
@@ -27,6 +29,27 @@ body{
     text-transform:none;
 }
 
+::-webkit-scrollbar {
+    width: 20px;
+    height: 15px;
+    cursor: pointer;
+}
+
+
+/* Track */
+::-webkit-scrollbar-track {
+    background: var(--bg-black-50);
+    border-radius: 10px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    width: 24px;
+    background-color: var(--bg-scrollbar);
+    border: 5px solid var(--bg-black-50);
+    border-radius: 15px;
+    cursor: pointer;
+}
 h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4 {
     font-weight: 400;
     line-height: 1.5em;
