@@ -1,0 +1,300 @@
+﻿<!--First row -->
+<div class="row p-3">
+    <div class="first-row">
+        <div class="first-row-header row d-flex px-3 py-2 w-100 justify-content-between">
+            <div class="title"> Projects </div>
+            <div class="project-add-holder"><a href="#" data-toggle="modal" data-target="#crupdateProject" class="add-project-btn"> New Project</a></div>
+        </div>
+
+        <div class="row w-100">
+            <div class="table-responsive project-table">
+                <table class="table">
+                    <thead class="project-thead">
+                        <tr>
+                            <th scope="col" class="text-muted">Project</th>
+                            <th scope="col" class="text-muted">Description</th>
+                            <th scope="col" class="text-muted">Contributor</th>
+                            <th scope="col" class="text-muted text-center">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><a asp-area="Tracker" asp-controller="Project" asp-action="Details" asp-route-id="1">Bug tracker</a></td>
+                            <td>Mark</td>
+                            <td>Otto</td>
+                            <td class="text-center">
+                                <div class="dropdown">
+                                    <a href="#" class="dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <i class="fas fa-ellipsis-v"></i>
+                                    </a>
+                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                        <a class="dropdown-item" href="#" data-toggle="modal" data-target="#crupdateProjectModal"> Edit</a>
+                                        <a class="dropdown-item" href="#" data-toggle="modal" data-target="#deleteProjectModal"> Delete</a>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><a href="#">Portfolio Management</a></td>
+                            <td>Jacob</td>
+                            <td>Thornton</td>
+                            <td class="text-center">
+                                <div class="dropdown">
+                                    <a href="#" class="dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <i class="fas fa-ellipsis-v"></i>
+                                    </a>
+                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                        <a class="dropdown-item" href="#" data-toggle="modal" data-target="#crupdateTicketModal"> Edit</a>
+                                        <a class="dropdown-item" href="#">Delete</a>
+                                    </div>
+                                </div>
+                            </td>
+
+                        </tr>
+                        <tr>
+                            <td><a href="#">Portfolio</a></td>
+                            <td>Larry</td>
+                            <td>the Bird</td>
+                            <td class="text-center">
+                                <div class="dropdown">
+                                    <a href="#" class="dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <i class="fas fa-ellipsis-v"></i>
+                                    </a>
+                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                        <a class="dropdown-item" href="#" data-toggle="modal" data-target="#crupdateTicketModal"> Edit</a>
+                                        <a class="dropdown-item" href="#"> Delete</a>
+                                    </div>
+                                </div>
+                            </td>
+
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="row d-flex justify-content-start align-items-start w-100">
+            <div class="pagination-holder d-flex p-2">
+                <div class="purple-circle"><i class="fas fa-angle-left"></i></div>
+                <div class="purple-circle filled">1</div>
+                <div class="purple-circle"><i class="fas fa-angle-right"></i></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--Second row -->
+<div class="row">
+    <div class="col-lg-4 col-md-6 col-sm-6">
+        <div class="card">
+            <div class="card-header">
+                Tickets by Status
+            </div>
+            <div class="card-body">
+                <canvas class="pie-chart" id="ticket-status-pie"></canvas>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-4 col-md-6 col-sm-6">
+        <div class="card">
+            <div class="card-header">
+                Tickets by Priority
+            </div>
+            <div class="card-body">
+                <canvas class="pie-chart" id="ticket-priority-pie"></canvas>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-4 col-md-6 col-sm-6">
+        <div class="card">
+            <div class="card-header">
+                Tickets by Type
+            </div>
+            <div class="card-body">
+                <canvas class="pie-chart" id="ticket-type-pie"></canvas>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+<!-- Temporary modals TODO Create partial-->
+<div class="modal fade" id="crupdateProjectModal" tabindex="-1" role="dialog" aria-labelledby="crupdateProjectModal" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Create new project</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <form>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="Name" class="col-form-label">Name:</label>
+                        <input type="text" class="form-control" id="recipient-name">
+                    </div>
+                    <div class="form-group">
+                        <label for="Description" class="col-form-label">Description:</label>
+                        <textarea class="form-control" id="message-text" rows="7"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="Team" class="col-form-label">Team:</label>
+                        <select class="form-control" id="recipient-name" multiple>
+                            <option>John doe</option>
+                            <option>Jane doe</option>
+                            <option>Jack Elfman</option>
+                            <option>Jack Elfman</option>
+                            <option>Jack Elfman</option>
+                            <option>Jack Elfman</option>
+                            <option>Jack Elfman</option>
+                            <option>Jack Elfman</option>
+                        </select>
+                    </div>
+                </div>
+
+
+                <div class="modal-footer">
+                    <input type="submit" class="green-btn" value="Create new project" />
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="deleteProjectModal" tabindex="-1" role="dialog" aria-labelledby="deleteProjectModal" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Delete project</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to delete the project <span class="text-purple"><strong>Bug tracker</strong> </span>?</p>
+                <p>The deletion of this information is irreversible, and will delete all related data.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="green-btn">Delete project</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--End of temporaray modals-->
+@section scripts {
+    <script src="~/lib/Chart.js/chart.min.js"></script>
+    <script src="~/lib/chartjs-plugin-datalabels/chartjs-plugin-datalabels.min.js"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            Chart.register(ChartDataLabels);
+
+            var ticketTypePie = new Chart($("#ticket-type-pie"),
+                {
+                    type: 'doughnut',
+
+                    data: {
+                        labels: ["Issue", "Bug", "Feature request"],
+                        datasets: [{
+                            label: 'My First Dataset',
+                            data: [300, 50, 100],
+                            backgroundColor: [
+                                'rgb(255, 99, 132)',
+                                'rgb(54, 162, 235)',
+                                'rgb(255, 205, 86)'
+                            ],
+                            hoverOffset: 4
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            legend: {
+                                position: 'right',
+                                labels: {
+                                    usePointStyle: true,
+                                    boxWidth: 6
+                                }
+                            },
+                            datalabels: {
+                                color: "white"
+                            }
+                        }
+                    }
+                });
+
+            var ticketStatusPie = new Chart($("#ticket-status-pie"), {
+                type: 'doughnut',
+
+                data: {
+                    labels: ["Resolved", "New", "In Progress"],
+                    datasets: [{
+                        label: 'My First Dataset',
+                        data: [300, 50, 100],
+                        backgroundColor: [
+                            'rgb(255, 205, 86)',
+                            'rgb(54, 162, 235)',
+                            'rgb(255, 99, 132)'
+                        ],
+                        hoverOffset: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'right',
+                            labels: {
+                                usePointStyle: true,
+                                boxWidth: 6
+                            }
+                        },
+                        datalabels: {
+                            color: "white"
+                        }
+                    }
+                }
+            });
+
+            var ticketPriorityPie = new Chart($("#ticket-priority-pie"), {
+                type: 'doughnut',
+
+                data: {
+                    labels: ["Immediate", "High", "Medium", "Low"],
+                    datasets: [{
+                        label: 'My First Dataset',
+                        data: [300, 50, 100, 60],
+                        backgroundColor: [
+                            'rgb(255, 99, 132)',
+                            'rgb(54, 162, 235)',
+                            'rgb(255, 205, 86)',
+                            'rgb(100, 205, 186)'
+                        ],
+                        hoverOffset: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'right',
+                            labels: {
+                                usePointStyle: true,
+                                boxWidth: 6
+                            }
+                        },
+                        datalabels: {
+                            color: "white"
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+}

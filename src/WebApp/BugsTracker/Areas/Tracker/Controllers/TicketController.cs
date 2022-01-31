@@ -3,9 +3,10 @@
 namespace BugTracker.Areas.Tracker.Controllers
 {
     [Area("Tracker")]
-    public class HomeController : Controller
+
+    public class TicketController : Controller
     {
-        public IActionResult DashBoard()
+        public IActionResult Details(int Id)
         {
             return View();
         }

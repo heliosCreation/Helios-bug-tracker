@@ -6,16 +6,103 @@
     <title>@ViewBag.Title</title>
     <link href="~/lib/font-awesome/css/all.css" rel="stylesheet" />
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/color.css" />
-    <link rel="stylesheet" href="~/css/Auth.css" />
+    <link rel="stylesheet" href="~/css/tracker.css" />
 </head>
 <body>
-    <div class="d-flex justify-content-center align-items-center vh-100">
-        @RenderBody()
-    </div>
+    <div class="wrapper">
+        <div class="body-overlay"></div>
+        <!--------Sidebar-------->
+        <nav class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <i class="fab fa-hornbill"></i>
+                <h3>Bug Tracker</h3>
+                <div class="mt-2">
+                    <p>- Welcome Quentin -</p>
+                    <p>Current role: <span>Admin</span></p>
+                </div>
+            </div>
 
+            <ul class="list-unstyled components">
+                <li class="active">
+                    <a asp-controller="Home" asp-action="Dashboard" class="dashboard">
+                        <i class="fas fa-chart-bar"></i><span>Dashboard</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="" data-toggle="collapse">
+                        <i class="fas fa-project-diagram"></i><span>Projects</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="" data-toggle="collapse">
+                        <i class="fas fa-ticket-alt"></i><span>Tickets</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="" data-toggle="collapse">
+                        <i class="fas fa-user-tag"></i><span>Role Assignement</span>
+                    </a>
+                </li>
+            </ul>
+
+
+        </nav>
+
+
+        <!-- Page content -->
+
+        <div id="content">
+            <div class="d-flex navigation-items-holder">
+                <button type="button" id="sidebar-collapse" class="d-xl-block d-lg-block d-md-none d-none">
+                    <span><i class="fas fa-caret-square-left"></i></span>
+                </button>
+
+                <a class="navbar-brand" id="sectionName" href="#">Dashboard</a>
+            </div>
+            <!-- Top navbar -->
+            <div class="top-navbar">
+                <nav class="navbar navbar-expand-lg">
+
+                    <button class="d-inline-block d-lg-none ml-auto more-button" type="button" data-toggle="collapse"
+                            data-target="#navbarcollapse" aria-controls="navbarcollapse" aria-expanded="false" aria-label="Toggle">
+                        <span><i class="fas fa-ellipsis-v"></i></span>
+                    </button>
+                </nav>
+            </div>
+
+            <!-------------- Main content --------------->
+
+            <div class="main-content">
+
+                @RenderBody()
+
+            </div>
+
+        </div>
+    </div>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     @await RenderSectionAsync("Scripts", required: false)
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#sidebar-collapse').on('click', function () {
+                $('#sidebar').toggleClass('active');
+                $('#content').toggleClass('active');
+                $(this).toggleClass('active');
+                $(".navigation-items-holder").toggleClass('folded');
+                $(".sidebar-header p").toggleClass("d-none");
+            });
+
+            $('.more-button,.body-overlay').on('click', function () {
+                console.log("clicked")
+                $('#sidebar,.body-overlay').toggleClass('show-nav');
+            });
+
+            
+        });
+
+    </script>
 </body>
 </html>

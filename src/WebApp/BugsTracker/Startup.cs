@@ -52,6 +52,9 @@ namespace BugTracker
 
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapControllerRoute(
+                  name: "areas",
+                  pattern: "{area:exists}/{controller=Home}/{action=DashBoard}");
 
                 endpoints.MapControllerRoute(
                   name: "areas",
