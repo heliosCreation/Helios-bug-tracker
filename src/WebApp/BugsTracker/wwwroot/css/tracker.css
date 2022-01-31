@@ -24,6 +24,7 @@ body, html {
 }
 body{
     min-height:100vh;
+    text-transform:none;
 }
 
 h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4 {
@@ -185,6 +186,9 @@ overflow: auto;
     cursor: pointer;
     border: none;
 }
+.green-btn:hover {
+    background: #1e8135;
+}
 /* ---------------------------------------------------
     SIDEBAR STYLE start
 ----------------------------------------------------- */
@@ -329,7 +333,7 @@ overflow: auto;
     position: relative;
     transition: all 0.3s;
     background-color: #fefefe;
-    font-size:12px!important;
+    font-size:13px!important;
 }
 
 .top-navbar {
@@ -549,7 +553,8 @@ padding: 0px;
     font-size:10px!important;
 }
 td {
-    font-size:12px;
+    font-size: 12px;
+    border-bottom: 1px solid #dee2e6;
 }
 
 tbody tr td a{

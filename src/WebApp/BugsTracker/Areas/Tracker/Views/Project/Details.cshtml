@@ -23,7 +23,7 @@
                         <th scope="col" class="text-muted">Ticket Title</th>
                         <th scope="col" class="text-muted">Description</th>
                         <th scope="col" class="text-muted">Creator</th>
-                        <th scope="col" class="text-muted">Action</th>
+                        <th scope="col" class="text-muted text-center">Action</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -37,8 +37,8 @@
                                     <i class="fas fa-ellipsis-v"></i>
                                 </a>
                                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#crupdateTicketModal"> <i class="fas fa-pencil-alt"></i> Edit</a>
-                                    <a class="dropdown-item" href="#"> <i class="fas fa-trash-alt"></i> Delete</a>
+                                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#crupdateTicketModal">Edit</a>
+                                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#deleteTicketModal">Delete</a>
                                 </div>
                             </div>
                         </td>
@@ -304,7 +304,7 @@
                             </div>
                         </div>
                     </div>
-                </div>  
+                </div>
             </div>
             <div class="modal-footer">
             </div>
@@ -386,8 +386,9 @@
                         </div>
 
                         <div class="form-group w-100 d-flex">
-                            <input type="submit" class="green-btn d-block ml-auto mr-2" value="Remove Team member" />
-                            <a class="red-btn px-4" id="cancelTeamRemove">Cancel</a>
+                            <a class="red-btn px-4 ml-auto mr-2" id="cancelTeamRemove">Cancel</a>
+
+                            <input type="submit" class="green-btn d-block" value="Remove Team member" />
                         </div>
                     </form>
                 </div>
@@ -401,6 +402,27 @@
                         <div class="purple-circle"><i class="fas fa-angle-right"></i></div>
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="deleteTicketModal" tabindex="-1" role="dialog" aria-labelledby="deleteTicketModal" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Delete ticket</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to delete the ticket <span class="text-purple"> Name </span>?</p>
+                <p>The deletion of this information is irreversible, and will delete all related data.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="green-btn">Delete ticket</button>
             </div>
         </div>
     </div>
