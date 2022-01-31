@@ -29,6 +29,7 @@
 
 
 	<ItemGroup>
+	  <Folder Include="Areas\Tracker\Views\Shared\Partial\" />
 	  <Folder Include="wwwroot\MockBlob\Img\" />
 	</ItemGroup>
 </Project>
