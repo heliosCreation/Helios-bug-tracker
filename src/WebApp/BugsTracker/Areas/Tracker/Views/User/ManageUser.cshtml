@@ -44,8 +44,8 @@
                                 </a>
                                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                     <a class="dropdown-item" href="#" data-toggle="modal" data-target="#editUserRoleModal">Edit</a>
-                                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#editUserRoleModal">Lock <i class="fa fa-lock" aria-hidden="true"></i></a>
-                                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#deleteTicketModal">Delete</a>
+                                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#LockUserModal">Lock <i class="fa fa-lock" aria-hidden="true"></i></a>
+                                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#deleteUserModal">Delete</a>
                                 </div>
                             </div>
                         </td>
@@ -74,7 +74,7 @@
                         <td>N/A</td>
                         <td class="text-center">
                             <div class="dropdown">
-                                <a class="dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <a class="dropdown-toggle"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     <i class="fas fa-ellipsis-v"></i>
                                 </a>
                                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
@@ -233,12 +233,56 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <input type="submit" class="green-btn px-4" value="Update"/>
+                <input type="submit" class="green-btn px-4" value="Update" />
             </div>
         </div>
     </div>
 </div>
 
+
+<div class="modal fade" id="deleteUserModal" tabindex="-1" role="dialog" aria-labelledby="deleteUserModal" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title text-center" id="exampleModalLongTitle">Delete user <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form>
+                <div class="modal-body text-center">
+                    <p>Are you sure you want to delete the user <span class="text-purple font-weight-bold">John Doe</span> ?</p>
+                    <p>The deletion of this information is irreversible, and will delete every accesses for this user.</p>
+                    <p>Type <span class="text-green">Synchronize</span> to authorize the operation:</p>
+                    <input type="text"/>
+                </div>
+                <div class="modal-footer text-center">
+                    <button type="button" class="green-btn">Delete User</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="LockUserModal" tabindex="-1" role="dialog" aria-labelledby="LockUserModal" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Lock user <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to Lock the user <span class="text-purple font-weight-bold">John Doe</span> ?</p>
+                <p>User will bel locked from accessing any resource.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="green-btn">Lock User</button>
+            </div>
+        </div>
+    </div>
+</div>
 @section scripts {
     <script src="~/lib/Chart.js/chart.min.js"></script>
 
