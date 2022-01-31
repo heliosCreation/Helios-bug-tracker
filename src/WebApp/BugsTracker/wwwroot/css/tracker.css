@@ -291,6 +291,9 @@ overflow: auto;
     -moz-text-fill-color: transparent;
 }
 
+.sidebar.active .sidebar-header p{
+    display:none;
+}
 .sidebar-header p{
     margin-bottom:0;
 }
@@ -361,7 +364,6 @@ overflow: auto;
 
 #content {
     position: relative;
-    transition: all 0.3s;
     background-color: #fefefe;
     font-size:13px!important;
 }
