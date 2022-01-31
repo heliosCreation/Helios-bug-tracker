@@ -435,6 +435,16 @@
                 $(".team-remove-container").removeClass("d-none");
             });
 
+            $(".ticket-link").click(() => {
+                let btn = $("#show-comments-btn");
+                btn.text("Show Comments")
+                btn.addClass("blue-btn");
+                btn.removeClass("yellow-btn");
+                $("#ticket-details-modal-label").text("Ticket details");
+                $("#ticket-details").removeClass("d-none");
+                $("#comments").addClass("d-none");
+            });
+
             $("#show-comments-btn").click(() => {
                 $("#ticket-details").toggleClass("d-none");
                 $("#comments").toggleClass("d-none");
@@ -452,8 +462,6 @@
                     $(event.target).addClass("blue-btn");
                     $(event.target).removeClass("yellow-btn");
                     $("#ticket-details-modal-label").text("Ticket details");
-
-
                 }
             });
 
