@@ -176,6 +176,15 @@ overflow: auto;
 .yellow-btn:hover {
     background-color: #e0a800;
 }
+
+.green-btn {
+    background: #28a745;
+    color: white !important;
+    padding: 5px;
+    border-radius: 5px;
+    cursor: pointer;
+    border: none;
+}
 /* ---------------------------------------------------
     SIDEBAR STYLE start
 ----------------------------------------------------- */
@@ -219,13 +228,13 @@ overflow: auto;
 
 #sidebar .sidebar-header {
     padding: 20px;
+    font-size:12px;
     background-color: #ffffff;
     border-bottom: 1px solid #eee;
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    color: #00FFFF;
 }
 
 .sidebar-header h3 {
@@ -248,7 +257,13 @@ overflow: auto;
     -moz-text-fill-color: transparent;
 }
 
+.sidebar-header p{
+    margin-bottom:0;
+}
 
+.sidebar-header span{
+    color:var(--blue);
+}
 #sidebar ul li {
     padding: 2px 7px;
     display:flex;
@@ -259,12 +274,12 @@ overflow: auto;
 
 #sidebar ul li.active > a {
     color: #333;
-    background-color: rgba(200, 200, 200, 0.2);
+    background-color: rgba(23 172 246 / 20%);
 }
 
-#sidebar ul li a:hover {
+#sidebar ul li:not(.active) a:hover {
     color: #333;
-    background-color: rgba(200, 200, 200, 0.2);
+    background-color: rgba(23 172 246 / 10%);
 }
 
 .dropdown-toggle::after {
@@ -278,19 +293,20 @@ overflow: auto;
     border-radius: 5px;
     font-size: 13px;
     position: relative;
+    width:100%;
 }
 
-    #sidebar ul li a span {
-        text-transform: capitalize;
-        display: inline-block;
-        color:black;
-    }
+#sidebar ul li a span {
+    text-transform: capitalize;
+    display: inline-block;
+    color:black;
+}
 
-    #sidebar ul li a i {
-        margin-right: 10px;
-        color: #555555;
-        margin-left: 10px;
-    }
+#sidebar ul li a i {
+    margin-right: 10px;
+    color: #555555;
+    margin-left: 10px;
+}
 
 
 
