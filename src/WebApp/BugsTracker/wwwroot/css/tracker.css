@@ -98,9 +98,8 @@ a:focus {
 
 .research-input:focus {
     outline: none;
-    border-radius:5px;
-    background-color:rgba(148,203,224,0.4)
-
+    border-radius: 5px;
+    background-color: rgb(148 224 195 / 40%);
 }
 .text-purple {
     color: #5d00ff!important;
