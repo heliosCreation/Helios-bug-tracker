@@ -2,6 +2,8 @@
 
 :root {
     --text-purple: #5d00ff;
+    --text-gray: #c8c5ce;
+    --blue: rgb(3,0,255,1);
 }
 * {
     margin: 0;
@@ -125,22 +127,58 @@ a:focus {
 }
 
 
-    .wrapper {
-    position: relative;
-    width: 100%;
-    overflow: auto;
+.wrapper {
+position: relative;
+width: 100%;
+overflow: auto;
 }
 
 
+.fa-ellipsis-v{
+    color:var(--text-gray);
+}
 
+.box-shadow-1 {
+    border-radius: 5px;
+    box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
+}
+.box-shadow-2 {
+    box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
+}
 
+.linear-blue {
+    background: linear-gradient( 184deg, rgba(3,0,255,1) 0%, rgba(124,209,250,1) 100%);
+}
+.blue-theme{
+    background-color:var(--blue);
+}
 
+.blue-btn {
+    color: white!important;
+    background: #3a06fb;
+    padding: 5px;
+    border-radius: 5px;
+    cursor:pointer;
+}
+
+.blue-btn:hover {
+    background-color: #2402a4;
+}
+
+.yellow-btn {
+    color: white !important;
+    background: #ffc107;
+    padding: 5px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.yellow-btn:hover {
+    background-color: #e0a800;
+}
 /* ---------------------------------------------------
     SIDEBAR STYLE start
 ----------------------------------------------------- */
-
-
-
 #sidebar {
     position: fixed;
     height: 100vh !important;
@@ -285,15 +323,15 @@ a:focus {
 }
 
 .navigation-items-holder{
-    position:fixed;
+    position:absolute;
     top:5px;
-    left:216px;
+    left:40px;
     z-index:1001;
     transition:all 0.2s ease-in-out;
 }
 
 .navigation-items-holder.folded {
-    left: 100px;
+    left: 45px;
 }
 .main-content {
     padding: 30px 20px 0px 20px;
@@ -418,7 +456,7 @@ padding: 0px;
 
 
 /*=======================================================
-   main-content inner design like card start
+   main-content Details
    ===============================================*/
 
 .first-row,
@@ -433,22 +471,59 @@ padding: 0px;
     box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
 }
 
-.box-shadow-1 {
-    border-radius: 5px;
-    box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
-}
+
 
 .title{
     font-weight:bold;
     font-size:13px;
 }
+
+/******* CUSTOM BTN SECTION   ******/
+.add-member-btn,
 .add-project-btn {
     color: white;
     background: #3a06fb;
     padding: 5px;
     border-radius: 5px;
 }
+.add-member-btn:hover,
+.add-project-btn:hover{
+    background-color:#2402a4;
+}
+.manage-team-btn {
+    color: white;
+    background: #34d834;
+    padding: 5px;
+    border-radius: 5px;
+    border:1px solid transparent;
+}
+.manage-team-btn:hover {
+    background-color: #299a29;
+}
+.show-team-btn {
+    color: white;
+    background: #ffc107;
+    padding: 5px;
+    border-radius: 5px;
+}
 
+.show-team-btn:hover{
+    background-color:#e0a800;
+}
+
+.red-btn {
+    color: white !important;
+    background: #ff0707;
+    padding: 5px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.red-btn:hover{
+    background-color:#ca0606;
+}
+
+/*****CUSTOM BTN ENDS ******/
 .project-thead tr,
 .ticket-thead tr{
     background-color: #21252914;
@@ -461,13 +536,13 @@ td {
     font-size:12px;
 }
 
-tbody tr th a{
+tbody tr td a{
     font-size: 12px;
-    color: #5d00ff;
+    color: var(--text-purple);
 }
 
-tbody tr th a:hover {
-    color: #0300ff;
+tbody tr td a:hover {
+    color: var(--text-purple);
 }
 
 .project-table tbody tr:last-of-type {
@@ -491,10 +566,16 @@ tbody tr th a:hover {
     cursor:pointer;
 }
 
+.purple-circle:hover{
+    background-color:rgba(15,0,255,0.05);
+
+}
+
 .purple-circle.filled{
     background:#0300ff;
     color:white;
 }
+
 .card {
     margin: 10px 0;
 }
@@ -528,31 +609,7 @@ tbody tr th a:hover {
     border-bottom: none;
 }
 
-.icon{
-    height:50px;
-    width:50px;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-}
 
-
-
-.icon.icon-low i {
-    color:yellow;
-}
-
-.icon.icon-medium {
-    color:darkorange;
-}
-
-.icon.icon-high {
-    color:orangered;
-}
-
-.icon.icon-info {
-    color: #00bcd4;
-}
 
 .card .card-footer {
     margin: 0 7px 0px;
@@ -670,22 +727,33 @@ tbody tr th a:hover {
 /*=============================================
   Details design start
   =========================================*/
+
+#project-details-container{
+    height:500px;
+    background:green;
+}
+
 .ticket-details-holder{
     font-size:12px;
 }
 
-.ticket-list-table tr td:nth-child(1){
-    cursor:pointer;
-    color:var(--text-purple);
+.ticket-list-table tr td:nth-child(1) {
+    cursor: pointer;
+    color: var(--text-purple);
+}
+.ticket-list-table tr td{
+    padding:8px;
 }
 .ticket-table th{
     font-size:10px;
     color:rgba(0,0,0,0.25);
 }
 
+
+
 .comments-holder{
     overflow-y:auto;
-    max-height:180px;
+    max-height:347px;
 }
 .comment-writter-holder{
     display:flex;
@@ -709,8 +777,52 @@ tbody tr th a:hover {
 }
 
 
+/* ---------------------------------------------------
+    Custom Modal
+----------------------------------------------------- */
+.modal-title{
+    text-transform:none!important; 
+}
+
+.modal.right .modal-dialog {
+    position: fixed;
+    margin: auto;
+    width: 650px!important;
+    max-width:1000px!important;     
+    height: 100%;
+
+    -webkit-transform: translate3d(0%, 0, 0);
+    -ms-transform: translate3d(0%, 0, 0);
+    -o-transform: translate3d(0%, 0, 0);
+    transform: translate3d(0%, 0, 0);
+}
+
+.modal.right .modal-content {
+    height: 100%;
+    overflow-y: auto;
+    border-radius: 0;
+}
+
+.modal.right .modal-body {
+    padding: 0!important;
+}
 
 
+.modal.right.fade .modal-dialog {
+    right: -320px;
+    -webkit-transition: opacity 0.3s linear, right 0.3s ease-out;
+    -moz-transition: opacity 0.3s linear, right 0.3s ease-out;
+    -o-transition: opacity 0.3s linear, right 0.3s ease-out;
+    transition: opacity 0.3s linear, right 0.3s ease-out;
+}
+
+.modal.right.fade.show .modal-dialog {
+    right: 0;
+}
+
+.modal.right .modal-dialog .modal-footer{
+    border-top:none;
+}
 
 /* ---------------------------------------------------
     MEDIAQUERIES
@@ -821,3 +933,14 @@ tbody tr th a:hover {
         left:25px;
     }
 }
+
+.modal-dialog-large {
+    max-height: 90vh;
+    min-width: 80vw;
+    margin-left:auto;
+}
+
+
+/* ---------------------------------------------------
+    MEDIAQUERIES
+----------------------------------------------------- */

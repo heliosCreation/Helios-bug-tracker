@@ -1,129 +1,129 @@
-﻿<!--First row -->
-<div class="row p-3 d-flex justify-content-around h-50">
-    <div class="first-row col-4_5 mr-2 h-100">
+﻿    <!--First row -->
+<div class="py-4 row d-flex justify-content-around h-50">
+
+    <div class="first-row col-11 p-0">
         <div class="first-row-header row d-flex px-3 py-2 w-100 justify-content-between">
-            <div class="title"> Team </div>
-            <div class="project-add-holder"><a href="#" class="add-project-btn"> New Member</a></div>
-        </div>
-
-        <div class="row w-100">
-            <div class="table-responsive">
-                <table class="table">
-                    <thead class="project-thead">
-                        <tr>
-                            <th scope="col" class="text-muted">Name</th>
-                            <th scope="col" class="text-muted">E-mail</th>
-                            <th scope="col" class="text-muted">Phone</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <th scope="row">John doe</a></th>
-                            <td>Johndoe@gmail.com</td>
-                            <td>07 65 10 38 75</td>
-                        </tr>
-                        <tr>
-                            <th scope="row"><a href="#">Jane Doe</a></th>
-                            <td>Janedoe@gmail.com</td>
-                            <td>06 17 18 31 04</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-
-        </div>
-
-        <div class="row d-flex justify-content-start align-items-start w-100">
-            <div class="pagination-holder d-flex p-2">
-                <div class="purple-circle"><i class="fas fa-angle-left"></i></div>
-                <div class="purple-circle filled">1</div>
-                <div class="purple-circle"><i class="fas fa-angle-right"></i></div>
-            </div>
-        </div>
-    </div>
-
-    <div class="first-row col-7 h-100">
-        <div class="first-row-header row d-flex px-3 py-2 w-100 justify-content-between">
-            <div class="title">Bug tracker Tickets </div>
             <div class="research-input-wrapper">
                 <input type="text" class="research-input" placeholder="Reseach..." />
                 <i class="fas fa-search"></i>
             </div>
-            <div class="project-add-holder"><a href="#" class="add-project-btn"> New Ticket</a></div>
-        </div>
-
-        <div class="row w-100">
-            <div class="table-responsive">
-                <table class="table ticket-list-table">
-                    <thead class="ticket-thead">
-                        <tr>
-                            <th scope="col" class="text-muted">Ticket Title</th>
-                            <th scope="col" class="text-muted">Description</th>
-                            <th scope="col" class="text-muted">Creator</th>
-                            <th scope="col" class="text-muted">Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td scope="row" class="text-purple">Deploy Project</td>
-                            <td>Deploy With As Little Cost As Possible</td>
-                            <td>John doe</td>
-                            <td class="text-center">
-                                <div class="dropdown">
-                                    <a class="dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        <i class="fas fa-ellipsis-v"></i>
-                                    </a>
-                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                        <a class="dropdown-item" href="#">Edit</a>
-                                        <a class="dropdown-item" href="#">Delete</a>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Add user management</td>
-                            <td>Add the possibility to assign user to project</td>
-                            <td>Jane Doe</td>
-                            <td class="text-center">
-                                <div class="dropdown">
-                                    <a class="dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        <i class="fas fa-ellipsis-v"></i>
-                                    </a>
-                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                        <a class="dropdown-item" href="#">Edit</a>
-                                        <a class="dropdown-item" href="#">Delete</a>
-                                    </div>
-                                </div>
-                            </td>
-
-                        </tr>
-                        <tr>
-                            <td>Add role management</td>
-                            <td>Add the possibility to manage user/role</td>
-                            <td> Jack Elfman</td>
-                            <td class="text-center">
-                                <div class="dropdown">
-                                    <a class="dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        <i class="fas fa-ellipsis-v"></i>
-                                    </a>
-                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                        <a class="dropdown-item" href="#">Edit</a>
-                                        <a class="dropdown-item" href="#">Delete</a>
-                                    </div>
-                                </div>
-                            </td>
-
-                        </tr>
-                    </tbody>
-                </table>
+            <div class="">
+                <a href="#" data-toggle="modal" data-target="#showProjectTeam" class="show-team-btn">Manage Team</a>
             </div>
 
+            <div class="project-add-holder">
+                <a href="#" data-toggle="modal" data-target="#createTicketModal" class="add-project-btn"> New Ticket</a>
+            </div>
+        </div>
+
+        <div class="table-responsive w-100">
+            <table class="table ticket-list-table">
+                <thead class="ticket-thead">
+                    <tr>
+                        <th scope="col" class="text-muted">Ticket Title</th>
+                        <th scope="col" class="text-muted">Description</th>
+                        <th scope="col" class="text-muted">Creator</th>
+                        <th scope="col" class="text-muted">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td scope="row" class="text-purple"><a data-toggle="modal" data-target="#showTicketDetails" class="ticket-link">Deploy Project</a></td>
+                        <td>Deploy With As Little Cost As Possible</td>
+                        <td>John doe</td>
+                        <td class="text-center">
+                            <div class="dropdown">
+                                <a href="#" class="dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <i class="fas fa-ellipsis-v"></i>
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                    <a class="dropdown-item" href="#"> <i class="fas fa-pencil-alt"></i> Edit</a>
+                                    <a class="dropdown-item" href="#"> <i class="fas fa-trash-alt"></i> Delete</a>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Add user management</td>
+                        <td>Add the possibility to assign user to project</td>
+                        <td>Jane Doe</td>
+                        <td class="text-center">
+                            <div class="dropdown">
+                                <a href="#" class="dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <i class="fas fa-ellipsis-v"></i>
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                    <a class="dropdown-item" href="#"> <i class="fas fa-pencil-alt"></i> Edit</a>
+                                    <a class="dropdown-item" href="#"> <i class="fas fa-trash-alt"></i> Delete</a>
+                                </div>
+
+                            </div>
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td>Add role management</td>
+                        <td>Add the possibility to manage user/role</td>
+                        <td> Jack Elfman</td>
+                        <td class="text-center">
+                            <div class="dropdown">
+                                <a class="dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <i class="fas fa-ellipsis-v"></i>
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                    <a class="dropdown-item" href="#"> <i class="fas fa-pencil-alt"></i> Edit</a>
+                                    <a class="dropdown-item" href="#"> <i class="fas fa-trash-alt"></i> Delete</a>
+                                </div>
+
+                            </div>
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td>Add role management</td>
+                        <td>Add the possibility to manage user/role</td>
+                        <td> Jack Elfman</td>
+                        <td class="text-center">
+                            <div class="dropdown">
+                                <a class="dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <i class="fas fa-ellipsis-v"></i>
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                    <a class="dropdown-item" href="#"> <i class="fas fa-pencil-alt"></i> Edit</a>
+                                    <a class="dropdown-item" href="#"> <i class="fas fa-trash-alt"></i> Delete</a>
+                                </div>
+
+                            </div>
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td>Add role management</td>
+                        <td>Add the possibility to manage user/role</td>
+                        <td> Jack Elfman</td>
+                        <td class="text-center">
+                            <div class="dropdown">
+                                <a href="#" class="dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <i class="fas fa-ellipsis-v"></i>
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                    <a class="dropdown-item" href="#"> <i class="fas fa-pencil-alt"></i> Edit</a>
+                                    <a class="dropdown-item" href="#"> <i class="fas fa-trash-alt"></i> Delete</a>
+                                </div>
+
+                            </div>
+                        </td>
+
+                    </tr>
+                </tbody>
+            </table>
         </div>
 
         <div class="row d-flex justify-content-start align-items-start w-100">
             <div class="pagination-holder d-flex p-2">
                 <div class="purple-circle"><i class="fas fa-angle-left"></i></div>
                 <div class="purple-circle filled">1</div>
+                <div class="purple-circle">2</div>
                 <div class="purple-circle"><i class="fas fa-angle-right"></i></div>
             </div>
         </div>
@@ -131,17 +131,96 @@
 
 </div>
 
-<!--second  row -->
-<div class="row p-3 d-flex justify-content-center h-50">
-    <div class="second-row ticket-details-holder h-100">
-        <div class="second-row-header row d-flex px-3  w-100 justify-content-between">
-            <div class="title"> Ticket Info </div>
-        </div>
 
-        <div class="row w-100 d-flex justify-content-around backgound-overlay">
-            <div class="col-6 box-shadow-1 m-1 mr-2 bg-white">
-                <div class="row h-50 w-100">
-                    <div class="h-50 w-100">
+<!-- Temporary Modals-->
+
+<div class="modal fade" id="createTicketModal" tabindex="-1" role="dialog" aria-labelledby="createTicketModal" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-large" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Create Ticket</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form class="row">
+                    <div class="col-6">
+                        <div class="form-group">
+                            <label for="Name" class="col-form-label">Name:</label>
+                            <input type="text" class="form-control" id="recipient-name">
+                        </div>
+                        <div class="form-group">
+                            <label for="message-text" class="col-form-label">Description:</label>
+                            <textarea class="form-control" id="message-text" rows="7"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="col-6">
+                        <div class="form-group">
+                            <label for="estimated-hours" class="col-form-label">Estimated hours</label>
+                            <input type="number" class="form-control" id="estimated-hours">
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-4">
+                                <label for="Name" class="col-form-label">Priority:</label>
+                                <select class="form-control" id="recipient-name">
+                                    <option>Immediate</option>
+                                    <option>High</option>
+                                    <option>Medium</option>
+                                    <option>Low</option>
+                                </select>
+                            </div>
+                            <div class="col-4">
+                                <label for="Name" class="col-form-label">Type:</label>
+                                <select class="form-control" id="recipient-name">
+                                    <option>Issue</option>
+                                    <option>Bug Fix</option>
+                                    <option>Feature</option>
+                                </select>
+                            </div>
+                            <div class="col-4">
+                                <label for="Name" class="col-form-label">Status</label>
+                                <select class="form-control" id="recipient-name">
+                                    <option>Opened</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="estimated-hours" class="col-form-label">Assigned Dev</label>
+                            <select class="form-control" id="recipient-name" multiple>
+                                <option>John doe</option>
+                                <option>Jane doe</option>
+                                <option>Jack Elfman</option>
+                            </select>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-success">Create new Ticket</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="modal right fade" id="showTicketDetails" tabindex="-1" role="dialog" aria-labelledby="showTicketDetailsModal" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header d-flex justify-content-center align-items-center">
+                <h5 class="modal-title" id="ticket-details-modal-label">Ticket details</h5>
+                <a class="ml-5 blue-btn" id="show-comments-btn">Show Comments</a>
+
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="bg-white" id="ticket-details">
+                    <div class="d-flex justify-content-center align-items-center flex-column h-50 w-100 px-3">
                         <table class="ticket-table table table-sm table-borderless w-100">
                             <thead>
                                 <tr>
@@ -158,74 +237,228 @@
                                 </tr>
                             </tbody>
                         </table>
-                    </div>
 
-                    <div class="h-50 w-100">
-                        <table class="ticket-table table table-sm table-borderless">
-                            <thead>
-                                <tr>
-                                    <th scope="col">Status</th>
-                                    <th scope="col">Priority</th>
-                                    <th scope="col">Type</th>
-                                    <th scope="col">Time estimated (Hour)</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td><span class="purple-pill">In Progress</span></td>
-                                    <td><span class="purple-pill">High</span></td>
-                                    <td><span class="purple-pill">Feature</span></td>
-                                    <td><span class="text-purple">5</span></td>
-                                </tr>
-                            </tbody>
-                        </table>
+                        <div class="h-50 w-100">
+                            <table class="ticket-table table table-sm table-borderless">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Status</th>
+                                        <th scope="col">Priority</th>
+                                        <th scope="col">Type</th>
+                                        <th scope="col">Time estimated (Hour)</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><span class="purple-pill">In Progress</span></td>
+                                        <td><span class="purple-pill">High</span></td>
+                                        <td><span class="purple-pill">Feature</span></td>
+                                        <td><span class="text-purple">5</span></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
-                </div>
-                <div class="w-100 separator"></div>
-                <div class="row h-40 w-100">
-                    <div class="col-12">
-                        <div class="row px-3">
+                    <div class="w-100 separator"></div>
+                    <div class="h-40 w-100">
+                        <div class="px-3">
                             Assigned developper
                         </div>
-                        <div class="row px-3 w-100">
+                        <div class="px-3 w-100">
                             @{
-                                for (int i = 0; i < 8; i++)
+                                for (int i = 0; i < 3; i++)
                                 {
                                     <span class="green-pill d-inline-block">John Doe</span>
 
                                 }
                             }
                         </div>
-                    </div>
-                </div>
-            </div>
 
-            <div class="max-width-45 box-shadow-1 m-1 mr-2 bg-white">
-                <div class="h-10">
-                    <div class="title p-2">Comments</div>
+                    </div>
+
                 </div>
-                <div class="h-70 bg-light comments-holder">
-                    @{
-                        for (int i = 0; i < 9; i++)
-                        {
-                            <div class="comment p-2 w-100">
-                                <p class="title">John Doe <span>12/01/2021 4:02 pm</span> <span class="float-right pr-2"><i class="far fa-comments"></i></span></p>
-                                <p>Would need your attention on that.</p>
-                            </div>  
-                        }
-                    }
-                </div>
-                <div class="h-20 px-3 comment-writter-holder">
-                    <div class="input-group">
-                        <input type="text" class="form-control" placeholder="Type Comment" aria-label="Type Comment" aria-describedby="basic-addon2">
-                        <div class="input-group-append">
-                            <button class="btn btn-primary" type="button">Send</button>
+
+
+                <div class="w-100 d-none" id="comments">
+                    <div class="d-flex flex-column box-shadow-2 bg-white w-100">
+                        <div class="h-10 d-flex align-items-center text-white blue-theme">
+                            <div class="title p-2">Comments</div>
                         </div>
+                        <div class="h-70 bg-light comments-holder">
+                            @{
+                                for (int i = 0; i < 9; i++)
+                                {
+                                    <div class="comment p-2 w-100">
+                                        <p class="title">John Doe <span>12/01/2021 4:02 pm</span> <span class="float-right pr-2"><i class="far fa-comments"></i></span></p>
+                                        <p>Would need your attention on that.</p>
+                                    </div>
+                                }
+                            }
+                        </div>
+                        <div class="h-30 p-3 comment-writter-holder">
+                            <div class="input-group">
+                                <input type="text" class="form-control" placeholder="Type Comment" aria-label="Type Comment" aria-describedby="basic-addon2">
+                                <div class="input-group-append">
+                                    <button class="btn btn-primary" type="button">Send</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>  
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="showProjectTeam" tabindex="-1" role="dialog" aria-labelledby="showProjectTeamModal" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Project Team</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="w-100 box-shadow-1" id="teamDisplay">
+                    <div class="first-row-header  d-flex px-1 py-2 w-100 justify-content-between">
+                        <div class="title ml-1"> Team </div>
+                        <div class="mr-1"><a href="#" class="add-member-btn"> New Member</a></div>
+                    </div>
+
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead class="project-thead">
+                                <tr>
+                                    <th scope="col" class="text-muted">Name</th>
+                                    <th scope="col" class="text-muted">E-mail</th>
+                                    <th scope="col" class="text-muted">Phone</th>
+                                    <th scope="col" class="text-muted">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>John doe</a></td>
+                                    <td>Johndoe@gmail.com</td>
+                                    <td>07 65 10 38 75</td>
+                                    <td> <a class="red-btn delete-team-member"><i class="fas fa-trash-alt"></i></a> </td>
+                                </tr>
+                                <tr>
+                                    <td>Jane doe</td>
+                                    <td>Janedoe@gmail.com</td>
+                                    <td>06 17 18 31 04</td>
+                                    <td> <a class="red-btn delete-team-member"><i class="fas fa-trash-alt"></i></a> </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+
+
+                </div>
+
+                <div class="w-100 team-add-container p-2 d-none">
+                    <form>
+                        <div class="form-group">
+                            <label for="estimated-hours" class="col-form-label">Assigned Dev</label>
+                            <select class="form-control" id="recipient-name" multiple>
+                                <option>John doe</option>
+                                <option>Jane doe</option>
+                                <option>Jack Elfman</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group w-100 d-flex">
+                            <input type="submit" class="manage-team-btn d-block ml-auto" value="Add Team member(s)" />
+                            <a class="red-btn ml-2" id="cancelTeamAdd">Cancel <i class="far fa-window-close ml-1"></i> </a>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="w-100 team-remove-container p-2 d-none">
+                    <form>
+                        <div class="form-group">
+                            <label for="estimated-hours" class="col-form-label">Delete Team Member</label>
+                            <p> Are you sure you want to remove <span class="text-purple">John doe</span> from the ticket <span class="text-purple">Ticket name</span> ?</p>
+                        </div>
+
+                        <div class="form-group w-100 d-flex">
+                            <input type="submit" class="manage-team-btn d-block ml-auto" value="Remove Team member" />
+                            <a class="red-btn ml-2" id="cancelTeamRemove">Cancel <i class="far fa-window-close ml-1"></i> </a>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <div class="row d-flex justify-content-start align-items-start w-100 d-none">
+                    <div class="pagination-holder d-flex p-2">
+                        <div class="purple-circle"><i class="fas fa-angle-left"></i></div>
+                        <div class="purple-circle filled">1</div>
+                        <div class="purple-circle"><i class="fas fa-angle-right"></i></div>
                     </div>
                 </div>
             </div>
         </div>
-
     </div>
-
 </div>
+
+
+@section scripts {
+    <script src="~/lib/Chart.js/chart.min.js"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            $("#sectionName").text("Bug Tracker");
+
+            $("#cancelTeamAdd , #cancelTeamRemove").click(() => {
+                $(".modal-footer").removeClass("d-none");
+                $("#teamDisplay").removeClass("d-none");
+                $(".team-add-container").addClass("d-none");
+                $(".team-remove-container").addClass("d-none");
+
+            });
+
+            $(".add-member-btn").click(() => {
+                $(".modal-footer").addClass("d-none");
+                $("#teamDisplay").addClass("d-none");
+                $(".team-add-container").removeClass("d-none");
+            });
+
+            $(".delete-team-member").click(() => {
+                $(".modal-footer").addClass("d-none");
+                $("#teamDisplay").addClass("d-none");
+                $(".team-remove-container").removeClass("d-none");
+            });
+
+            $("#show-comments-btn").click(() => {
+                $("#ticket-details").toggleClass("d-none");
+                $("#comments").toggleClass("d-none");
+
+                if ($(event.target).hasClass("blue-btn")) {
+                    $(event.target).text("Show Ticket Details")
+                    $(event.target).removeClass("blue-btn");
+                    $(event.target).addClass("yellow-btn");
+                    $("#ticket-details-modal-label").text("Write to your team");
+
+
+                }
+                else {
+                    $(event.target).text("Show Comments")
+                    $(event.target).addClass("blue-btn");
+                    $(event.target).removeClass("yellow-btn");
+                    $("#ticket-details-modal-label").text("Ticket details");
+
+
+                }
+            });
+
+        });
+
+
+    </script>
+}
