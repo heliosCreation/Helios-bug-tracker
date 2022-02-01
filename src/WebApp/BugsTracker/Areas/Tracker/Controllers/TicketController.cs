@@ -6,7 +6,7 @@ namespace BugTracker.Areas.Tracker.Controllers
 
     public class TicketController : Controller
     {
-        public IActionResult Details(int Id)
+        public IActionResult GetAll()
         {
             return View();
         }
