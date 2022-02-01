@@ -39,9 +39,9 @@
                     </a>
                 </li>
 
-                <li>
-                    <a href="" data-toggle="collapse">
-                        <i class="fas fa-user-tag"></i><span>Role Assignement</span>
+                <li id="user-management-link">
+                    <a asp-controller="User" asp-action="ManageUser">
+                        <i class="fas fa-user-tag"></i><span>User management</span>
                     </a>
                 </li>
             </ul>
@@ -87,12 +87,26 @@
 
     <script type="text/javascript">
         $(document).ready(function () {
+
+            var navBarState = localStorage.getItem('navbar-state');
+            if (localStorage.getItem('navbar-state') && localStorage.getItem('navbar-state') === "false") {
+                $('.sidebar').addClass('active');
+                $('#content').addClass('active');
+            }
+            console.log(navBarState)
             $('#sidebar-collapse').on('click', function () {
                 $('#sidebar').toggleClass('active');
                 $('#content').toggleClass('active');
                 $(this).toggleClass('active');
                 $(".navigation-items-holder").toggleClass('folded');
-                $(".sidebar-header p").toggleClass("d-none");
+
+                if (!$('#sidebar').hasClass("active")) {
+                    localStorage.setItem('navbar-state', true)
+                }
+                else {
+                    localStorage.setItem('navbar-state', false)
+
+                }
             });
 
             $('.more-button,.body-overlay').on('click', function () {
