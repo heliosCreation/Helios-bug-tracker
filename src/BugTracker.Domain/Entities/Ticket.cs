@@ -1,11 +1,11 @@
-﻿using BugTracker.Application.Model.Identity;
-using BugTracker.Domain.Common;
+﻿using BugTracker.Domain.Common;
 using BugTracker.Domain.Enums;
+using BugTracker.Domain.Identity;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 
-using Type =  BugTracker.Domain.Enums.Type;
+using Type = BugTracker.Domain.Enums.Type;
 
 namespace BugTracker.Domain.Entities
 {

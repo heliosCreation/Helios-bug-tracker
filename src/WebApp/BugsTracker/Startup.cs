@@ -28,6 +28,7 @@ namespace BugTracker
 
             services.AddInfrastructureServices(Configuration);
             services.AddIdentityServices(Configuration);
+            services.AddPersistenceService();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -1,5 +1,5 @@
-﻿using BugTracker.Application.Model.Identity;
-using BugTracker.Domain.Common;
+﻿using BugTracker.Domain.Common;
+using BugTracker.Domain.Identity;
 using System.Collections.Generic;
 
 namespace BugTracker.Domain.Entities

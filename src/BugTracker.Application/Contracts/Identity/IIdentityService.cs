@@ -1,12 +1,8 @@
-﻿using BugTracker.Application.Model.Identity;
-using BugTracker.Application.Model.Identity.Authentication;
+﻿using BugTracker.Application.Model.Identity.Authentication;
 using BugTracker.Application.Model.Identity.ConfirmationAndReset;
 using BugTracker.Application.Model.Identity.Registration;
+using BugTracker.Domain.Identity;
 using Microsoft.AspNetCore.Identity;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace BugTracker.Application.Contracts.Identity
