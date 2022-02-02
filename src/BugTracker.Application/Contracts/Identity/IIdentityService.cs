@@ -20,6 +20,7 @@ namespace BugTracker.Application.Contracts.Identity
         Task<IdentityResult> ResetPassword(ResetPasswordModel model);
         Task SignOutAsync();
         Task<bool> UserEmailExist(string email);
+        Task<bool> UserIdExists(string id);
         Task<bool> UsernameExist(string name);
     }
 }
