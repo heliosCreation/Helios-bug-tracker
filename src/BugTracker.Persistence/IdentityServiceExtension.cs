@@ -1,7 +1,5 @@
 ﻿using BugTracker.Application.Contracts.Identity;
-using BugTracker.Application.Model.Identity;
 using BugTracker.Domain.Identity;
-using BugTracker.Persistence;
 using BugTracker.Persistence.Services.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
