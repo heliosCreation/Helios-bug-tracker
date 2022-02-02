@@ -26,7 +26,7 @@ namespace BugTracker.Domain.Entities
 
         [ForeignKey("CreatorId")]
         public ApplicationUser Creator { get; set; }
-        public Guid CreatorId { get; set; }
+        public string CreatorId { get; set; }
 
         public ICollection<ApplicationUser> Team { get; set; }
 
