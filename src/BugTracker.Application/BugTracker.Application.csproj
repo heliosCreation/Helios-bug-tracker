@@ -16,4 +16,14 @@
 	<ItemGroup>
 	  <ProjectReference Include="..\BugTracker.Domain\BugTracker.Domain.csproj" />
 	</ItemGroup>
+	
+	<ItemGroup>
+	  <Folder Include="Features\Comments\Commands\" />
+	  <Folder Include="Features\Comments\Queries\" />
+	  <Folder Include="Features\Projects\Commands\" />
+	  <Folder Include="Features\Projects\Queries\" />
+	  <Folder Include="Features\Tickets\Commands\" />
+	  <Folder Include="Features\Tickets\Queries\" />
+	  <Folder Include="Profiles\" />
+	</ItemGroup>
 </Project>
