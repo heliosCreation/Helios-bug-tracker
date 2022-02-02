@@ -1,5 +1,5 @@
-﻿using BugTracker.Application.Model.Identity;
-using BugTracker.Domain.Entities;
+﻿using BugTracker.Domain.Entities;
+using BugTracker.Domain.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
