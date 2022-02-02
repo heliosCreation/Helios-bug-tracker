@@ -20,7 +20,6 @@
 	<ItemGroup>
 	  <Folder Include="Features\Comments\Commands\" />
 	  <Folder Include="Features\Comments\Queries\" />
-	  <Folder Include="Features\Projects\Commands\Delete\" />
 	  <Folder Include="Features\Projects\Queries\Get\" />
 	  <Folder Include="Features\Projects\Queries\GetAll\" />
 	  <Folder Include="Features\Tickets\Commands\" />
