@@ -20,10 +20,11 @@
 	<ItemGroup>
 	  <Folder Include="Features\Comments\Commands\" />
 	  <Folder Include="Features\Comments\Queries\" />
-	  <Folder Include="Features\Projects\Commands\" />
-	  <Folder Include="Features\Projects\Queries\" />
+	  <Folder Include="Features\Projects\Commands\Delete\" />
+	  <Folder Include="Features\Projects\Commands\Update\" />
+	  <Folder Include="Features\Projects\Queries\Get\" />
+	  <Folder Include="Features\Projects\Queries\GetAll\" />
 	  <Folder Include="Features\Tickets\Commands\" />
 	  <Folder Include="Features\Tickets\Queries\" />
-	  <Folder Include="Profiles\" />
 	</ItemGroup>
 </Project>

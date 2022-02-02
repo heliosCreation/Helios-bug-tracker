@@ -101,6 +101,11 @@ namespace BugTracker.Persistence.Services.Identity
             return await _userManager.FindByEmailAsync(email) != null;
         }
 
+        public async Task<bool> UserIdExists(string id)
+        {
+            return await _userManager.FindByIdAsync(id) != null;
+        }
+
         public async Task<ApplicationUser> GetUserOrNullAsync(string email)
         {
             return await _userManager.FindByEmailAsync(email);
