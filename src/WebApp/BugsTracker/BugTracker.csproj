@@ -23,8 +23,8 @@
 
 	<ItemGroup>
 	  <ProjectReference Include="..\..\BugTracker.Application\BugTracker.Application.csproj" />
-	  <ProjectReference Include="..\..\BugTracker.Identity\BugTracker.Identity.csproj" />
 	  <ProjectReference Include="..\..\BugTracker.Infrastructure\BugTracker.Infrastructure.csproj" />
+	  <ProjectReference Include="..\..\BugTracker.Persistence\BugTracker.Persistence.csproj" />
 	</ItemGroup>
 
 

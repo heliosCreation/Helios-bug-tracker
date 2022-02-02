@@ -3,27 +3,24 @@ using BugTracker.Application.Model.Identity;
 using BugTracker.Application.Model.Identity.Authentication;
 using BugTracker.Application.Model.Identity.ConfirmationAndReset;
 using BugTracker.Application.Model.Identity.Registration;
-using BugTracker.Identity.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.WebUtilities;
-using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BugTracker.Identity.Services
+namespace BugTracker.Persistence.Services.Identity
 {
     public class IdentityService : IIdentityService
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
-        private readonly IdentityDbContext _context;
+        private readonly ApplicationDbContext _context;
 
         public IdentityService(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
-            IdentityDbContext context)
+            ApplicationDbContext context)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -46,7 +43,7 @@ namespace BugTracker.Identity.Services
             };
 
             return await _userManager.CreateAsync(user, model.Password);
-        
+
         }
         public async Task<string> GenerateRegistrationEncodedToken(string id)
         {
@@ -73,7 +70,7 @@ namespace BugTracker.Identity.Services
             await _signInManager.SignOutAsync();
         }
 
-        public async Task<IdentityResult> AddUserToRole(ApplicationUser user, string role )
+        public async Task<IdentityResult> AddUserToRole(ApplicationUser user, string role)
         {
             return await _userManager.AddToRoleAsync(user, role);
 

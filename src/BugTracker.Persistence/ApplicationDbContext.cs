@@ -1,13 +1,14 @@
 ﻿using BugTracker.Application.Model.Identity;
+using BugTracker.Domain.Entities;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 
-namespace BugTracker.Identity.Data
+namespace BugTracker.Persistence
 {
-    public class IdentityDbContext : IdentityDbContext<ApplicationUser>
+    public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
-        public IdentityDbContext(DbContextOptions<IdentityDbContext> options)
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
         }
@@ -18,5 +19,9 @@ namespace BugTracker.Identity.Data
 
             base.OnModelCreating(builder);
         }
+
+        public DbSet<Project> Projects { get; set; }
+        public DbSet<Ticket> Tickets { get; set; }
+        public DbSet<Comment> Comments { get; set; }
     }
 }
