@@ -1,4 +1,5 @@
 ﻿using BugTracker.Application.Model.Identity;
+using BugTracker.Domain.Entities;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
@@ -18,5 +19,7 @@ namespace BugTracker.Persistence
 
             base.OnModelCreating(builder);
         }
+
+        public DbSet<Project> Projects { get; set; }
     }
 }

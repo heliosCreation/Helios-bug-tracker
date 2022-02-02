@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
@@ -18,13 +18,13 @@
 	</ItemGroup>
 	
   <ItemGroup>
-    <Folder Include="Configurations\Data\" />
     <Folder Include="Migrations\" />
     <Folder Include="Services\Data\" />
   </ItemGroup>
 	
   <ItemGroup>
     <ProjectReference Include="..\BugTracker.Application\BugTracker.Application.csproj" />
+    <ProjectReference Include="..\BugTracker.Domain\BugTracker.Domain.csproj" />
   </ItemGroup>
 
 </Project>
