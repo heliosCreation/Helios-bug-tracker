@@ -1,26 +1,26 @@
 ﻿using BugTracker.Application.Contracts.Identity;
 using BugTracker.Application.Model.Identity;
-using BugTracker.Identity.Data;
-using BugTracker.Identity.Services;
+using BugTracker.Persistence;
+using BugTracker.Persistence.Services.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 
-namespace BugTracker.Identity
+namespace BugTracker.Persistence
 {
     public static class IdentityServiceExtension
     {
         public static void AddIdentityServices(this IServiceCollection services, IConfiguration configuration)
         {
 
-            services.AddDbContext<IdentityDbContext>(options => options.UseSqlServer(configuration.GetConnectionString("IdentityDb"),
-               b => b.MigrationsAssembly(typeof(IdentityDbContext).Assembly.FullName)));
+            services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(configuration.GetConnectionString("BugTrackerDb"),
+               b => b.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName)));
 
 
             services.AddIdentity<ApplicationUser, IdentityRole>()
-                .AddEntityFrameworkStores<IdentityDbContext>().AddDefaultTokenProviders();
+                .AddEntityFrameworkStores<ApplicationDbContext>().AddDefaultTokenProviders();
 
             services.Configure<IdentityOptions>(opt =>
             {

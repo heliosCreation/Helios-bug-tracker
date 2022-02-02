@@ -1,6 +1,6 @@
 using BugTracker.Attributes;
-using BugTracker.Identity;
 using BugTracker.Infrastructure;
+using BugTracker.Persistence;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;

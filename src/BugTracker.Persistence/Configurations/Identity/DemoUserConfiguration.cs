@@ -1,4 +1,4 @@
-﻿using BugTracker.Application.Model.Identity;
+﻿using BugTracker.Persistence;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
