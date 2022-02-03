@@ -3,9 +3,16 @@
 
     <div class="first-row col-11 p-0">
         <div class="first-row-header row d-flex px-3 py-2 w-100 justify-content-between">
-            <div class="research-input-wrapper">
-                <input type="text" class="research-input" placeholder="Reseach..." />
-                <i class="fas fa-search"></i>
+            <div class="research-input-wrapper d-flex justify-content-center align-items-center">
+                <p class="mb-0 mr-2">Find by </p>
+                <select class="h-100 table-sorter-select">
+                    <option>Name</option>
+                    <option>Author</option>
+                    <option>Priority</option>
+                    <option>Status</option>
+                    <option>Assigned developer</option>
+                </select>
+                <input type="text" class="table-sorter-input ml-1" placeholder="Reseach..." />
             </div>
             <div class="">
                 <a href="#" data-toggle="modal" data-target="#showProjectTeam" class="show-team-btn">Manage Team</a>
@@ -23,6 +30,9 @@
                         <th scope="col" class="text-muted">Ticket Title</th>
                         <th scope="col" class="text-muted">Description</th>
                         <th scope="col" class="text-muted">Creator</th>
+                        <th scope="col" class="text-muted">Priority</th>
+                        <th scope="col" class="text-muted">Status</th>
+                        <th scope="col" class="text-muted">Type</th>
                         <th scope="col" class="text-muted text-center">Action</th>
                     </tr>
                 </thead>
@@ -31,6 +41,10 @@
                         <td scope="row" class="text-purple"><a data-toggle="modal" data-target="#showTicketDetails" class="ticket-link">Deploy Project</a></td>
                         <td>Deploy With As Little Cost As Possible</td>
                         <td>John doe</td>
+                        <td>High</td>
+                        <td>Open</td>
+                        <td>Feature request</td>
+
                         <td class="text-center">
                             <div class="dropdown">
                                 <a href="#" class="dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

@@ -219,6 +219,22 @@ overflow: auto;
 .green-btn:hover {
     background: #1e8135;
 }
+
+.table-sorter-select,
+.table-sorter-input {
+    border: 1px solid #00000075;
+    border-radius: 5px;
+}
+.table-sorter-select:focus{
+    outline:none;
+}
+
+.table-sorter-input:active,
+.table-sorter-input:focus {
+    border: 2px solid #216ee29c;
+    outline: none;
+    border-radius: 5px;
+}
 /* ---------------------------------------------------
     SIDEBAR STYLE start
 ----------------------------------------------------- */
