@@ -17,8 +17,8 @@ namespace BugTracker.Application.Profiles
             #region project
             CreateMap<CreateProjectCommand, Project>();
             CreateMap<UpdateProjectCommand, Project>();
-            CreateMap<Project, ProjectVm>()
-                .ForMember(dest => dest.TeamNames, opt => opt.MapFrom(src => src.Team.Select(t => t.UserName)));
+            //CreateMap<Project, ProjectVm>()
+            //    .ForMember(dest => dest.TeamNames, opt => opt.MapFrom(src => src.Team.Select(t => t.UserName)));
             CreateMap<Project, ProjectWithTicketsVm>();
             #endregion
 

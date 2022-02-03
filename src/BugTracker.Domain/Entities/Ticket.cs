@@ -23,12 +23,7 @@ namespace BugTracker.Domain.Entities
         public Project Project { get; set; }
         public Guid ProjectId { get; set; }
 
-
-        [ForeignKey("CreatorId")]
-        public ApplicationUser Creator { get; set; }
-        public string CreatorId { get; set; }
-
-        public ICollection<ApplicationUser>? Team { get; set; }
+        public ICollection<ApplicationUser> Team { get; set; }
 
 
     }

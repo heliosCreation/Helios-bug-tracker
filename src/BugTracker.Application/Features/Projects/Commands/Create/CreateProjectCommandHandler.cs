@@ -34,7 +34,7 @@ namespace BugTracker.Application.Features.Projects.Commands.Create
             var project = new Project { Name = request.Name, Description = request.Description };
             foreach (var id in request.Team)
             {
-                project.Team.Add(new ApplicationUser() { Id = id.ToString()});
+                //project.Team.Add(new ApplicationUser() { Id = id.ToString()});
             }
 
             var createdProject = await _projectRepository.AddAsync(project);
