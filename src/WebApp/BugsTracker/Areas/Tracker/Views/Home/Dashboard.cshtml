@@ -1,4 +1,6 @@
-﻿<!--First row -->
+﻿@model DashboardViewModel
+
+<!--First row -->
 <div class="row p-3">
     <div class="first-row">
         <div class="first-row-header row d-flex px-3 py-2 w-100 justify-content-between">
@@ -19,7 +21,7 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <td><a asp-area="Tracker" asp-controller="Project" asp-action="Details" asp-route-id="1">Bug tracker</a></td>
+                            <td><a asp-controller="Project" asp-action="Details" asp-route-id="1">Bug tracker</a></td>
                             <td>Mark</td>
                             <td>Otto</td>
                             <td class="text-center">
@@ -34,40 +36,34 @@
                                 </div>
                             </td>
                         </tr>
-                        <tr>
-                            <td><a href="#">Portfolio Management</a></td>
-                            <td>Jacob</td>
-                            <td>Thornton</td>
-                            <td class="text-center">
-                                <div class="dropdown">
-                                    <a href="#" class="dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        <i class="fas fa-ellipsis-v"></i>
-                                    </a>
-                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                        <a class="dropdown-item" href="#" data-toggle="modal" data-target="#crupdateTicketModal"> Edit</a>
-                                        <a class="dropdown-item" href="#">Delete</a>
-                                    </div>
-                                </div>
-                            </td>
 
-                        </tr>
-                        <tr>
-                            <td><a href="#">Portfolio</a></td>
-                            <td>Larry</td>
-                            <td>the Bird</td>
-                            <td class="text-center">
-                                <div class="dropdown">
-                                    <a href="#" class="dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        <i class="fas fa-ellipsis-v"></i>
-                                    </a>
-                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                        <a class="dropdown-item" href="#" data-toggle="modal" data-target="#crupdateTicketModal"> Edit</a>
-                                        <a class="dropdown-item" href="#"> Delete</a>
+                        @foreach (var project in Model.Projects)
+                        {
+                            <tr>
+                                <td><a asp-controller="Project" asp-action="Details" asp-route-id="@project.Id">@project.Name</a></td>
+                                <td>@project.Description</td>
+                                <td>
+                                    <ul>
+                                        @foreach (var teamMember in project.TeamNames)
+                                        {
+                                            <li>@teamMember</li>
+                                        }
+                                    </ul>
+                                </td>
+                                <td class="text-center">
+                                    <div class="dropdown">
+                                        <a href="#" class="dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <i class="fas fa-ellipsis-v"></i>
+                                        </a>
+                                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                            <a class="dropdown-item" href="#" data-toggle="modal" data-target="#crupdateProjectModal"> Edit</a>
+                                            <a class="dropdown-item" href="#" data-toggle="modal" data-target="#deleteProjectModal"> Delete</a>
+                                        </div>
                                     </div>
-                                </div>
-                            </td>
+                                </td>
+                            </tr>
 
-                        </tr>
+                        }
                     </tbody>
                 </table>
             </div>
@@ -130,28 +126,24 @@
                 </button>
             </div>
 
-            <form>
+            <form method="post" asp-controller="Project" asp-action="Create">
                 <div class="modal-body">
                     <div class="form-group">
-                        <label for="Name" class="col-form-label">Name:</label>
-                        <input type="text" class="form-control" id="recipient-name">
+                        <label asp-for="createCommand.Name" class="col-form-label"/>
+                        <input asp-for="createCommand.Name" class="form-control" id="recipient-name">
                     </div>
                     <div class="form-group">
-                        <label for="Description" class="col-form-label">Description:</label>
-                        <textarea class="form-control" id="message-text" rows="7"></textarea>
+                        <label asp-for="createCommand.Description" class="col-form-label"></label>
+                        <textarea asp-for="createCommand.Description" class="form-control" id="message-text" rows="5"></textarea>
                     </div>
 
                     <div class="form-group">
                         <label for="Team" class="col-form-label">Team:</label>
                         <select class="form-control" id="recipient-name" multiple>
-                            <option>John doe</option>
-                            <option>Jane doe</option>
-                            <option>Jack Elfman</option>
-                            <option>Jack Elfman</option>
-                            <option>Jack Elfman</option>
-                            <option>Jack Elfman</option>
-                            <option>Jack Elfman</option>
-                            <option>Jack Elfman</option>
+                             @foreach (var teamMember in Model.Team)
+                             {
+                                <option value="@teamMember.Id">@teamMember.FirstName @teamMember.LastName</option>
+                             }
                         </select>
                     </div>
                 </div>

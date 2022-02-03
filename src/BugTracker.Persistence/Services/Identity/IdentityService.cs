@@ -3,10 +3,14 @@ using BugTracker.Application.Model.Identity;
 using BugTracker.Application.Model.Identity.Authentication;
 using BugTracker.Application.Model.Identity.ConfirmationAndReset;
 using BugTracker.Application.Model.Identity.Registration;
+using BugTracker.Application.ViewModel;
 using BugTracker.Domain.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.WebUtilities;
+using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -16,15 +20,18 @@ namespace BugTracker.Persistence.Services.Identity
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
         private readonly ApplicationDbContext _context;
 
         public IdentityService(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
+            RoleManager<IdentityRole> roleManager,
             ApplicationDbContext context)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _roleManager = roleManager;
             _context = context;
         }
 
@@ -52,60 +59,76 @@ namespace BugTracker.Persistence.Services.Identity
             var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
             return WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
         }
-
         public async Task<IdentityResult> ConfirmEmail(string uid, string token)
         {
             token = Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(token));
             return await _userManager.ConfirmEmailAsync(await _userManager.FindByIdAsync(uid), token);
         }
-
         public async Task<SignInResult> AuthenticateAsync(AuthenticationModel request)
         {
             var signedUser = await _userManager.FindByEmailAsync(request.Email);
             var result = await _signInManager.PasswordSignInAsync(signedUser, request.Password, false, false);
             return result;
         }
-
         public async Task SignOutAsync()
         {
             await _signInManager.SignOutAsync();
         }
-
         public async Task<IdentityResult> AddUserToRole(ApplicationUser user, string role)
         {
             return await _userManager.AddToRoleAsync(user, role);
 
         }
-
         public async Task<IdentityResult> RemoveUserFromRole(ApplicationUser user, string role)
         {
             return await _userManager.RemoveFromRoleAsync(user, role);
         }
 
+        public async Task<ICollection<ApplicationUser>>GetAllAccessibleUsers(string uid)
+        {
+            //Get current user role
+            var currentUserRole = await _userManager.GetRolesAsync(new ApplicationUser { Id = uid });
+            var accessibleTeam = new List<ApplicationUser>();
+
+            if (currentUserRole == null)
+            {
+                return accessibleTeam;
+            }
+
+            if (currentUserRole[0] == "Admin")
+            {
+                accessibleTeam = await _context.Users.ToListAsync();
+            }
+            else if(currentUserRole[0] == "Project Manager")
+            {
+                var devs = await _userManager.GetUsersInRoleAsync("Developer");
+                var submitter = await _userManager.GetUsersInRoleAsync("Submitter");
+
+                foreach (var user in devs.Concat(submitter).ToList())
+                {
+                    accessibleTeam.Add(user);
+                }
+            }
+            return accessibleTeam;
+        }
         public async Task<string> GeneratePasswordForgottenMailToken(string email)
         {
             var user = await _userManager.FindByEmailAsync(email);
             var token = await _userManager.GeneratePasswordResetTokenAsync(user);
             return token;
         }
-
         public async Task<IdentityResult> ResetPassword(ResetPasswordModel model)
         {
             return await _userManager.ResetPasswordAsync(await _userManager.FindByIdAsync(model.Uid), model.Token, model.NewPassword);
         }
-
-
-
         public async Task<bool> UserEmailExist(string email)
         {
             return await _userManager.FindByEmailAsync(email) != null;
         }
-
         public async Task<bool> UserIdExists(string id)
         {
             return await _userManager.FindByIdAsync(id) != null;
         }
-
         public async Task<ApplicationUser> GetUserOrNullAsync(string email)
         {
             return await _userManager.FindByEmailAsync(email);
@@ -114,8 +137,5 @@ namespace BugTracker.Persistence.Services.Identity
         {
             return await _userManager.FindByNameAsync(name) != null;
         }
-
-
-
     }
 }

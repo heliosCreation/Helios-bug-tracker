@@ -1,8 +1,12 @@
+using BugTracker.Application;
+using BugTracker.Application.Contracts.Identity;
 using BugTracker.Attributes;
 using BugTracker.Infrastructure;
 using BugTracker.Persistence;
+using BugTracker.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -26,6 +30,10 @@ namespace BugTracker
                 opt.Filters.Add(typeof(ModelValidationAttribute));
             }).AddRazorRuntimeCompilation();
 
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddScoped<ILoggedInUserService, LoggedInUserService>();
+
+            services.AddApplicationService();
             services.AddInfrastructureServices(Configuration);
             services.AddIdentityServices(Configuration);
             services.AddPersistenceService();

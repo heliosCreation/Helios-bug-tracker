@@ -3,6 +3,8 @@ using BugTracker.Application.Model.Identity.ConfirmationAndReset;
 using BugTracker.Application.Model.Identity.Registration;
 using BugTracker.Domain.Identity;
 using Microsoft.AspNetCore.Identity;
+using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace BugTracker.Application.Contracts.Identity
@@ -14,6 +16,7 @@ namespace BugTracker.Application.Contracts.Identity
         Task<IdentityResult> ConfirmEmail(string email, string token);
         Task<string> GeneratePasswordForgottenMailToken(string email);
         Task<string> GenerateRegistrationEncodedToken(string id);
+        Task<ICollection<ApplicationUser>> GetAllAccessibleUsers(string uid);
         Task<ApplicationUser> GetUserOrNullAsync(string email);
         Task<IdentityResult> Register(RegistrationModel model);
         Task<IdentityResult> RemoveUserFromRole(ApplicationUser user, string role);

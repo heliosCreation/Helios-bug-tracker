@@ -20,6 +20,9 @@
 	<ItemGroup>
 	  <Folder Include="Features\Comments\Commands\" />
 	  <Folder Include="Features\Comments\Queries\" />
+	  <Folder Include="Features\Team\Commands\" />
+	  <Folder Include="Features\Team\Queries\GetAllMembersOfTeam\" />
+	  <Folder Include="Features\Team\Queries\GetAllMembers\" />
 	  <Folder Include="Features\Tickets\Commands\" />
 	</ItemGroup>
 </Project>
