@@ -12,7 +12,7 @@ namespace BugTracker.Application.Responses
 
         public T Data { get; set; }
 
-        public List<T> DataList { get; set; }
+        public List<T> DataList { get; set; } = new List<T>();
 
 
         public ApiResponse<T> setNotFoundResponse(string message = null)

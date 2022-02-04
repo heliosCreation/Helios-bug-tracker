@@ -18,6 +18,7 @@ namespace BugTracker.Application.Contracts.Identity
         Task<string> GenerateRegistrationEncodedToken(string id);
         Task<ICollection<ApplicationUser>> GetAllAccessibleUsers(string uid);
         Task<ApplicationUser> GetUserOrNullAsync(string email);
+        Task<ICollection<string>> GetUserRolesById(string id);
         Task<IdentityResult> Register(RegistrationModel model);
         Task<IdentityResult> RemoveUserFromRole(ApplicationUser user, string role);
         Task<IdentityResult> ResetPassword(ResetPasswordModel model);

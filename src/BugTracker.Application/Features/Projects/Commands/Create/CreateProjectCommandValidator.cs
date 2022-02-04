@@ -2,6 +2,7 @@
 using BugTracker.Application.Contracts.Identity;
 using FluentValidation;
 using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -38,11 +39,14 @@ namespace BugTracker.Application.Features.Projects.Commands.Create
 
         private async Task<bool> UserIdsAreValid(CreateProjectCommand e, CancellationToken c)
         {
-            foreach (var Id in e.Team)
+            if (e.Team.Any())
             {
-                if (!await _identityService.UserEmailExist(Id.ToString()))
+                foreach (var Id in e.Team)
                 {
-                    return false;
+                    if (!await _identityService.UserIdExists(Id.ToString()))
+                    {
+                        return false;
+                    }
                 }
             }
 

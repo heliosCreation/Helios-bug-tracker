@@ -5,6 +5,7 @@ using BugTracker.Application.ViewModel;
 using MediatR;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -28,7 +29,18 @@ namespace BugTracker.Application.Features.Team.Queries.GetAllAccessibleMembers
             var response = new ApiResponse<UserViewModel>();
             var uid = _loggedInUserService.UserId;
 
-            response.DataList = _mapper.Map<List<UserViewModel>>(await _identityService.GetAllAccessibleUsers(uid));
+            var accessibleUsers = _mapper.Map<List<UserViewModel>>(await _identityService.GetAllAccessibleUsers(uid));
+
+            foreach (var user in accessibleUsers)
+            {
+                var roles = await _identityService.GetUserRolesById(user.Id.ToString());
+                if (roles.Any())
+                {
+                    user.Role = roles.ToList()[0];
+                    response.DataList.Add(user);
+                }
+            }
+            response.DataList = response.DataList.OrderBy(tm => tm.Role).ToList();
             return response;
             
         }

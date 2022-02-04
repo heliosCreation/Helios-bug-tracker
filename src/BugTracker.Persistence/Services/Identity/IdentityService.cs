@@ -84,6 +84,11 @@ namespace BugTracker.Persistence.Services.Identity
             return await _userManager.RemoveFromRoleAsync(user, role);
         }
 
+        public async Task<ICollection<string>> GetUserRolesById(string id)
+        {
+            return  await _userManager.GetRolesAsync(new ApplicationUser {Id = id });
+        }
+
         public async Task<ICollection<ApplicationUser>>GetAllAccessibleUsers(string uid)
         {
             //Get current user role
@@ -127,7 +132,7 @@ namespace BugTracker.Persistence.Services.Identity
         }
         public async Task<bool> UserIdExists(string id)
         {
-            return await _userManager.FindByIdAsync(id) != null;
+            return await _context.Users.AsNoTracking().FirstOrDefaultAsync(u => u.Id == id) != null;
         }
         public async Task<ApplicationUser> GetUserOrNullAsync(string email)
         {

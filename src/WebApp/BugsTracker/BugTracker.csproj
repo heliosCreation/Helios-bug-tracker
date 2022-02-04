@@ -4,11 +4,19 @@
     <TargetFramework>net5.0</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Compile Remove="Areas\Tracker\Views\Shared\Partial\**" />
+    <Content Remove="Areas\Tracker\Views\Shared\Partial\**" />
+    <EmbeddedResource Remove="Areas\Tracker\Views\Shared\Partial\**" />
+    <None Remove="Areas\Tracker\Views\Shared\Partial\**" />
+  </ItemGroup>
+
 
 	<ItemGroup>
 		<PackageReference Include="AutoMapper" Version="10.1.1" />
 		<PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.1.1" />
-
+		<PackageReference Include="FluentValidation" Version="10.3.6" />
+		<PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.2.5" />
 		<PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="5.0.11" />
 		<PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="5.0.2" />
 		<PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="5.0.11" />
@@ -29,7 +37,6 @@
 
 
 	<ItemGroup>
-	  <Folder Include="Areas\Tracker\Views\Shared\Partial\" />
 	  <Folder Include="wwwroot\MockBlob\Img\" />
 	</ItemGroup>
 </Project>

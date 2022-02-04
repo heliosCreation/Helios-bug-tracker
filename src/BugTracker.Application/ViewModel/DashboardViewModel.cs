@@ -1,6 +1,5 @@
 ﻿using BugTracker.Application.Features.Projects;
 using BugTracker.Application.Features.Projects.Commands.Create;
-using BugTracker.Domain.Identity;
 using System.Collections.Generic;
 
 namespace BugTracker.Application.ViewModel

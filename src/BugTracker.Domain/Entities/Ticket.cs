@@ -22,9 +22,5 @@ namespace BugTracker.Domain.Entities
         [ForeignKey("ProjectId")]
         public Project Project { get; set; }
         public Guid ProjectId { get; set; }
-
-        public ICollection<ApplicationUser> Team { get; set; }
-
-
     }
 }

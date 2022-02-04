@@ -1,6 +1,9 @@
 ﻿using BugTracker.Application.Contracts.Data;
 using BugTracker.Domain.Entities;
+using BugTracker.Domain.Identity;
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace BugTracker.Persistence.Services.Data
@@ -12,6 +15,18 @@ namespace BugTracker.Persistence.Services.Data
 
         }
 
+        public async Task<Project> AddProjectAsync(Project entity, ICollection<string> teamIds)
+        {
+
+            await _dbContext.Projects.AddAsync(entity);
+            foreach (var id in teamIds)
+            {
+                await _dbContext.ProjectTeamMembers.AddAsync(new ProjectTeamMember { ProjectId = entity.Id, UserId = id });
+            }
+
+            await _dbContext.SaveChangesAsync();
+            return entity;
+        }
         public async Task<bool> NameIsUnique(string name)
         {
             return await _dbContext.Projects.SingleOrDefaultAsync(p => p.Name == name) == null;

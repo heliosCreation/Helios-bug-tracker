@@ -31,13 +31,10 @@ namespace BugTracker.Application.Features.Projects.Commands.Create
         {
             var response = new ApiResponse<ProjectVm>();
 
-            var project = new Project { Name = request.Name, Description = request.Description };
-            foreach (var id in request.Team)
-            {
-                project.Team.Add(new ApplicationUser() { Id = id.ToString() });
-            }
+            var project = _mapper.Map<Project>(request);
+            var teamIds = request.Team.Select(t => t.ToString()).ToList();
 
-            var createdProject = await _projectRepository.AddAsync(project);
+            var createdProject = await _projectRepository.AddProjectAsync(project,teamIds);
             response.Data = _mapper.Map<ProjectVm>(createdProject);
             return response;
         }

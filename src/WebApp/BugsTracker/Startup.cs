@@ -1,9 +1,9 @@
 using BugTracker.Application;
 using BugTracker.Application.Contracts.Identity;
-using BugTracker.Attributes;
 using BugTracker.Infrastructure;
 using BugTracker.Persistence;
 using BugTracker.Services;
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -25,10 +25,8 @@ namespace BugTracker
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllersWithViews(opt =>
-            {
-                opt.Filters.Add(typeof(ModelValidationAttribute));
-            }).AddRazorRuntimeCompilation();
+            services.AddControllersWithViews()
+                .AddRazorRuntimeCompilation();
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddScoped<ILoggedInUserService, LoggedInUserService>();
@@ -57,6 +55,7 @@ namespace BugTracker
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
