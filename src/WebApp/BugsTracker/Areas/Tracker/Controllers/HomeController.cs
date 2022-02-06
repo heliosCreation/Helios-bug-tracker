@@ -1,7 +1,6 @@
 ﻿using BugTracker.Application.Features.Projects.Queries.GetAll;
 using BugTracker.Application.Features.Team.Queries.GetAllAccessibleMembers;
 using BugTracker.Application.ViewModel;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 

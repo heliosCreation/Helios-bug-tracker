@@ -55,9 +55,16 @@
                                 <td>@project.Description</td>
                                 <td>
                                     <ul>
-                                        @foreach (var teamMember in project.TeamNames)
+                                        @if (project.TeamNames != null && project.TeamNames.Any())
                                         {
-                                            <li>@teamMember</li>
+                                            @foreach (var teamMember in project.TeamNames)
+                                            {
+                                                <li>@teamMember</li>
+                                            }
+                                        }
+                                        else
+                                        {
+                                            <li class="text-muted">None</li>
                                         }
                                     </ul>
                                 </td>

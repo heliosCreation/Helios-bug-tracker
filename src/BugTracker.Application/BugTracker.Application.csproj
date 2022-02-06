@@ -25,6 +25,5 @@
 	  <Folder Include="Features\Team\Queries\GetAllMembersOfTeam\" />
 	  <Folder Include="Features\Team\Queries\GetAllMembers\" />
 	  <Folder Include="Features\Tickets\Commands\" />
-	  <Folder Include="Dto\" />
 	</ItemGroup>
 </Project>
