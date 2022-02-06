@@ -1,5 +1,4 @@
 ﻿using BugTracker.Domain.Common;
-using BugTracker.Domain.Identity;
 using System.Collections.Generic;
 
 namespace BugTracker.Domain.Entities
@@ -8,7 +7,7 @@ namespace BugTracker.Domain.Entities
     {
         public string Name { get; set; }
         public string Description { get; set; }
-        public ICollection<ApplicationUser> Team { get; set; }
-        public ICollection<Ticket> Tickets { get; set; }
+        public ICollection<ProjectTeamMember> ProjectTeamMembers { get; set; }
+
     }
 }

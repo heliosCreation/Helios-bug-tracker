@@ -75,7 +75,7 @@ namespace BugTracker.Areas.Identity.Controllers
                 if (result.Succeeded)
                 {
                     ModelState.Clear();
-                    return RedirectToAction("Index", "Home", new { area = "Tracker" });
+                    return RedirectToAction("Dashboard", "Home", new { area = "Tracker" });
                 }
                 if (result.IsNotAllowed)
                 {
