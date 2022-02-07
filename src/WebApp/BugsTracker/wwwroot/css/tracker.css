@@ -78,6 +78,9 @@ ul, ol {
 }
 
 
+option.selected {
+    background: #b3f2c18a;
+}
 
 a,
 a:hover,
@@ -206,6 +209,10 @@ overflow: auto;
 
 .yellow-btn:hover {
     background-color: #e0a800;
+}
+
+.border-radius-0{
+    border-radius:0!important;
 }
 
 .green-btn {

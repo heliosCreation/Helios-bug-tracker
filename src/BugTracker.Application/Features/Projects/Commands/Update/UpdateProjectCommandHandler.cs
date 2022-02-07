@@ -31,7 +31,7 @@ namespace BugTracker.Application.Features.Projects.Commands.Update
                 return response.setNotFoundResponse($"Project with id {request.Id} was not found");
             }
             _mapper.Map(request, project, typeof(UpdateProjectCommand), typeof(Project));
-            await _projectRepository.UpdateAsync(project);
+            await _projectRepository.UpdateProjectAsync(project, request.Team);
 
             return response;
         }

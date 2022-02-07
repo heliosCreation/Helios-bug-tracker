@@ -1,7 +1,6 @@
 ﻿using BugTracker.Application.Contracts.Data;
-using BugTracker.Application.Dto;
+using BugTracker.Application.Dto.Projects;
 using BugTracker.Domain.Entities;
-using BugTracker.Domain.Identity;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -30,10 +29,36 @@ namespace BugTracker.Persistence.Services.Data
             return entity;
         }
 
+        public async Task UpdateProjectAsync(Project entity, ICollection<string> teamIds)
+        {
+            _dbContext.Entry(entity).State = EntityState.Modified;
+            var dbProjectMemberIds = await _dbContext.
+                                    ProjectTeamMembers.
+                                    Where(ptm => ptm.ProjectId == entity.Id).
+                                    Select(ptm => ptm.UserId).ToListAsync();
+
+            foreach (var id in dbProjectMemberIds)
+            {
+                if (!teamIds.Contains(id))
+                {
+                    _dbContext.ProjectTeamMembers.Remove(new ProjectTeamMember { ProjectId = entity.Id, UserId = id });
+                }
+            }
+            foreach (var id in teamIds)
+            {
+                if (!dbProjectMemberIds.Contains(id))
+                {
+                    await _dbContext.ProjectTeamMembers.AddAsync(new ProjectTeamMember { ProjectId = entity.Id, UserId = id });
+                }
+            }
+
+
+            await _dbContext.SaveChangesAsync();
+        }
         public async Task<ICollection<ProjectWithTeamDto>> ListAllWithTeam()
         {
             var response = new List<ProjectWithTeamDto>();
-            var projects = await _dbContext.Projects.ToListAsync();
+            var projects = await _dbContext.Projects.OrderBy(p => p.CreatedDate).ToListAsync();
 
             foreach (var project in projects)
             {
@@ -51,8 +76,17 @@ namespace BugTracker.Persistence.Services.Data
 
             return response;
         }
-        public async Task<bool> NameIsUnique(string name)
+
+        public async Task<ICollection<string>> GetProjectTeamIds(Guid id)
         {
+            return await _dbContext.ProjectTeamMembers.Where(ptm => ptm.ProjectId == id).Select(ptm => ptm.UserId).ToListAsync();
+        }
+        public async Task<bool> NameIsUnique(string name, bool isAnUpdate, Guid id)
+        {
+            if (isAnUpdate)
+            {
+                return await _dbContext.Projects.SingleOrDefaultAsync(p => p.Name == name && p.Id != id) == null;
+            }
             return await _dbContext.Projects.SingleOrDefaultAsync(p => p.Name == name) == null;
         }
     }

@@ -1,24 +1,18 @@
 ﻿@model DashboardViewModel
-@{
-    if (ViewBag.isSuccess == true)
-    {
-        <div class="alert alert-success alert-dismissible fade show" role="alert">
-            <strong>Success - </strong> Your project was created.
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
-    }
 
-}
+<partial name="../Shared/Partial/Common/_modalHolderPartial.cshtml" />
+
 <!--First row -->
 <div class="row p-3">
     <div class="first-row">
         <div class="first-row-header row d-flex px-3 py-2 w-100 justify-content-between">
             <div class="title"> Projects </div>
-            <div class="project-add-holder"><a href="#" data-toggle="modal" data-target="#crupdateProjectModal" class="add-project-btn"> New Project</a></div>
+            <div class="project-add-holder"><a href="#" id="create-project" data-toggle="modal" data-target="#crupdateProjectModal" class="add-project-btn"> New Project</a></div>
         </div>
-
+        @if (ViewBag.isSuccess == true)
+        {
+            <partial name="../Shared/Partial/Common/_successAlertPartial.cshtml" model="new List<string>(){ViewBag.type, ViewBag.actionReturned }" />
+        }
         <div class="row w-100">
             <div class="table-responsive project-table">
                 <table class="table">
@@ -31,26 +25,11 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td><a asp-controller="Project" asp-action="Details" asp-route-id="1">Bug tracker</a></td>
-                            <td>Mark</td>
-                            <td>Otto</td>
-                            <td class="text-center">
-                                <div class="dropdown">
-                                    <a href="#" class="dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        <i class="fas fa-ellipsis-v"></i>
-                                    </a>
-                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                        <a class="dropdown-item" href="#" data-toggle="modal" data-target="#crupdateProjectModal"> Edit</a>
-                                        <a class="dropdown-item" href="#" data-toggle="modal" data-target="#deleteProjectModal"> Delete</a>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-
                         @foreach (var project in Model.Projects)
                         {
                             <tr>
+                                <td class="d-none">@project.Id</td>
+
                                 <td><a asp-controller="Project" asp-action="Details" asp-route-id="@project.Id">@project.Name</a></td>
                                 <td>@project.Description</td>
                                 <td>
@@ -74,8 +53,8 @@
                                             <i class="fas fa-ellipsis-v"></i>
                                         </a>
                                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                            <a class="dropdown-item" href="#" data-toggle="modal" data-target="#crupdateProjectModal"> Edit</a>
-                                            <a class="dropdown-item" href="#" data-toggle="modal" data-target="#deleteProjectModal"> Delete</a>
+                                            <a class="dropdown-item update-btn" href="#" data-toggle="modal" data-target="#crupdateProjectModal"> Edit</a>
+                                            <a class="dropdown-item delete-btn" href="#" data-toggle="modal" data-target="#deleteProjectModal"> Delete</a>
                                         </div>
                                     </div>
                                 </td>
@@ -133,79 +112,20 @@
 </div>
 
 
-<!-- Temporary modals TODO Create partial-->
-<div class="modal fade" id="crupdateProjectModal" tabindex="-1" role="dialog" aria-labelledby="crupdateProjectModal" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Create new project</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-
-            <form method="POST" asp-controller="Project" asp-action="Create">
-                <div class="modal-body">
-                    <div class="form-group">
-                        <label asp-for="createCommand.Name" class="col-form-label"></label>
-                        <input asp-for="createCommand.Name" class="form-control" id="recipient-name">
-                        <span asp-validation-for="createCommand.Name" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="createCommand.Description" class="col-form-label"></label>
-                        <textarea asp-for="createCommand.Description" class="form-control" id="message-text" rows="3"></textarea>
-                        <span asp-validation-for="createCommand.Description" class="text-danger"></span>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="Team" class="col-form-label">Team:</label>
-                        <select asp-for="createCommand.Team" class="form-control" id="recipient-name" multiple>
-                            @foreach (var teamMember in Model.Team)
-                            {
-                            <option value="@teamMember.Id">@teamMember.Username  - @teamMember.Role</option>
-                            }
-                        </select>
-                    </div>
-                </div>
-
-
-                <div class="modal-footer">
-                    <input type="submit" class="green-btn" value="Create new project" />
-                </div>
-            </form>
-
-        </div>
-    </div>
-</div>
-
-<div class="modal fade" id="deleteProjectModal" tabindex="-1" role="dialog" aria-labelledby="deleteProjectModal" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLongTitle">Delete project</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <p>Are you sure you want to delete the project <span class="text-purple"><strong>Bug tracker</strong> </span>?</p>
-                <p>The deletion of this information is irreversible, and will delete all related data.</p>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="green-btn">Delete project</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!--End of temporaray modals-->
 @section scripts {
     @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+
+    <script src="~/js/Tracker.js"></script>
     <script src="~/lib/Chart.js/chart.min.js"></script>
     <script src="~/lib/chartjs-plugin-datalabels/chartjs-plugin-datalabels.min.js"></script>
 
     <script type="text/javascript">
         $(document).ready(function () {
+            CreatePies();
+            handleModals();
+        });
+
+        function CreatePies() {
             Chart.register(ChartDataLabels);
 
             var ticketTypePie = new Chart($("#ticket-type-pie"),
@@ -308,6 +228,21 @@
                     }
                 }
             });
-        });
+        }
+
+        function handleModals() {
+            const createModalUrl = '/Tracker/Project/loadCreateModal';
+            const updateModalUrl = '/Tracker/Project/loadUpdateModal';
+            const deleteModalUrl = '/Tracker/Project/loadDeleteModal';
+            var createBtn = $("#create-project");
+            var updateBtns = document.querySelectorAll('.update-btn');
+            var deleteBtns = document.querySelectorAll('.delete-btn');
+            $(document).ajaxComplete(function () {
+                $.validator.unobtrusive.parse(document);
+            });
+            AttachModalCreateListener(createBtn, createModalUrl);
+            AttachTableModalListeners(updateBtns, updateModalUrl);
+            AttachTableModalListeners(deleteBtns, deleteModalUrl);
+        }
     </script>
 }

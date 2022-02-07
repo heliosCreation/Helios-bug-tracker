@@ -9,16 +9,16 @@ namespace BugTracker.Areas.Tracker.Controllers
     [Area("Tracker")]
     public class HomeController : BaseController
     {
-        public async Task<IActionResult> DashBoard(bool isSuccess = false)
+        public async Task<IActionResult> DashBoard(bool isSuccess = false, string type = null, string actionReturned = null)
         {
             ViewBag.isSuccess = isSuccess;
+            ViewBag.type = type;
+            ViewBag.actionReturned = actionReturned;
             var viewModel = new DashboardViewModel();
 
             var projectResponse = await Mediator.Send(new GetAllProjectQuery());
-            var teamResponse = await Mediator.Send(new GetAllAccessibleMembersQuery());
 
             viewModel.Projects = projectResponse.DataList;
-            viewModel.Team = teamResponse.DataList;
 
             return View(viewModel);
         }

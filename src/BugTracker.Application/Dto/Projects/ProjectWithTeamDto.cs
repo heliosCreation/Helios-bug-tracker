@@ -1,12 +1,8 @@
 ﻿using BugTracker.Domain.Entities;
 using BugTracker.Domain.Identity;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace BugTracker.Application.Dto
+namespace BugTracker.Application.Dto.Projects
 {
     public class ProjectWithTeamDto
     {

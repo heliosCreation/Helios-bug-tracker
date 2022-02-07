@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using BugTracker.Application.Dto;
+using BugTracker.Application.Dto.Projects;
 using BugTracker.Application.Features.Projects;
 using BugTracker.Application.Features.Projects.Commands.Create;
 using BugTracker.Application.Features.Projects.Commands.Update;
@@ -27,6 +28,7 @@ namespace BugTracker.Application.Profiles
             CreateMap<Project, ProjectVm>()
                 .ForMember(dest => dest.TeamNames, opt => opt.MapFrom(src => src.Name));
             CreateMap<Project, ProjectWithTicketsVm>();
+            CreateMap<Project, ProjectWithTeamIdsVm>();
             #endregion
 
             #region user

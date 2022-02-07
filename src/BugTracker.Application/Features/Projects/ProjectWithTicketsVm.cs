@@ -1,11 +1,8 @@
 ﻿using BugTracker.Application.Features.Tickets.Queries;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace BugTracker.Application.Features.Projects.Queries
+namespace BugTracker.Application.Features.Projects
 {
     public class ProjectWithTicketsVm
     {

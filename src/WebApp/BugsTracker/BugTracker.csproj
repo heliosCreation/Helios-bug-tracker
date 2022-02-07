@@ -4,13 +4,6 @@
     <TargetFramework>net5.0</TargetFramework>
   </PropertyGroup>
 
-  <ItemGroup>
-    <Compile Remove="Areas\Tracker\Views\Shared\Partial\**" />
-    <Content Remove="Areas\Tracker\Views\Shared\Partial\**" />
-    <EmbeddedResource Remove="Areas\Tracker\Views\Shared\Partial\**" />
-    <None Remove="Areas\Tracker\Views\Shared\Partial\**" />
-  </ItemGroup>
-
 
 	<ItemGroup>
 		<PackageReference Include="AutoMapper" Version="10.1.1" />
