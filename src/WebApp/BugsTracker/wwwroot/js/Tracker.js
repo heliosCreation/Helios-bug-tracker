@@ -34,7 +34,6 @@ function AttachTableModalListeners(buttons, url) {
                     $('#modal-holder .modal-content').html(result);
                 },
                 error: function (data) {
-                    alert("Error loading dynamic data");
                     console.log(data)
                 }
             });

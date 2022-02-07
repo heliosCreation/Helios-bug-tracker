@@ -1,6 +1,7 @@
 ﻿using BugTracker.Application.Dto.Projects;
 using BugTracker.Application.Features.Projects.Commands.Create;
 using BugTracker.Application.Features.Projects.Commands.Update;
+using BugTracker.Application.Features.Projects.Queries.Get;
 using BugTracker.Application.Features.Projects.Queries.GetWithTeam;
 using BugTracker.Application.Features.Team.Queries.GetAllAccessibleMembers;
 using Microsoft.AspNetCore.Mvc;
@@ -12,12 +13,14 @@ namespace BugTracker.Areas.Tracker.Controllers
     [Area("Tracker")]
     public class ProjectController : BaseController
     {
-        private const string CreateModalPath = "~/Areas/Tracker/Views/Shared/Partial/Project/_createProjectModalPartial.cshtml";
-        private const string UpdateModalPath = "~/Areas/Tracker/Views/Shared/Partial/Project/_updateProjectModalPartial.cshtml";
-        private const string DeleteModalPath = "~/Areas/Management/Views/Shared/Inspiration/_deleteInspirationModal.cshtml";
+        private const string ModalBasePath = "~/Areas/Tracker/Views/Shared/Partial/Project/";
+        private const string ModalType = "ProjectModalPartial.cshtml";
+        private const string CreateModalPath = ModalBasePath + "_create" + ModalType;
+        private const string UpdateModalPath = ModalBasePath + "_update" + ModalType;
+        private const string DeleteModalPath = ModalBasePath + "_delete" + ModalType;
 
         [HttpPost]
-        public async Task<IActionResult> Create([Bind(Prefix = "createCommand")] CreateProjectCommand command)
+        public async Task<IActionResult> Create([Bind(Prefix = "Command")] CreateProjectCommand command)
         {
             var response = await Mediator.Send(command);
             if (!response.Succeeded)
@@ -63,13 +66,10 @@ namespace BugTracker.Areas.Tracker.Controllers
             return PartialView(UpdateModalPath, dto);
         }
 
-        public async Task<IActionResult> LoadDeleteModal()
+        public async Task<IActionResult> LoadDeleteModal(Guid id)
         {
-            var dto = new CreateProjectDto();
-            var response = await Mediator.Send(new GetAllAccessibleMembersQuery());
-            dto.Team = response.DataList;
-
-            return PartialView(CreateModalPath, dto);
+            var response = await Mediator.Send(new GetProjectQuery(id));
+            return PartialView(DeleteModalPath, response.Data);
         }
     }
 }

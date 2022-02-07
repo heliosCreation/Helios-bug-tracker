@@ -9,7 +9,6 @@
             </button>
         </div>
     }
-
 }
 
 <partial name="../Shared/Partial/_modalHolderPartial.cshtml" />
@@ -34,23 +33,6 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td><a asp-controller="Project" asp-action="Details" asp-route-id="1">Bug tracker</a></td>
-                            <td>Mark</td>
-                            <td>Otto</td>
-                            <td class="text-center">
-                                <div class="dropdown">
-                                    <a href="#" class="dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        <i class="fas fa-ellipsis-v"></i>
-                                    </a>
-                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                        <a class="dropdown-item" href="#" data-toggle="modal" data-target="#crupdateProjectModal"> Edit</a>
-                                        <a class="dropdown-item" href="#" data-toggle="modal" data-target="#deleteProjectModal"> Delete</a>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-
                         @foreach (var project in Model.Projects)
                         {
                             <tr>
@@ -138,28 +120,6 @@
 </div>
 
 
-
-<div class="modal fade" id="deleteProjectModal" tabindex="-1" role="dialog" aria-labelledby="deleteProjectModal" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLongTitle">Delete project</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <p>Are you sure you want to delete the project <span class="text-purple"><strong>Bug tracker</strong> </span>?</p>
-                <p>The deletion of this information is irreversible, and will delete all related data.</p>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="green-btn">Delete project</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!--End of temporaray modals-->
 @section scripts {
     @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
 

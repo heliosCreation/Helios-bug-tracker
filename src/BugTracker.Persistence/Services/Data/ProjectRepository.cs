@@ -1,8 +1,6 @@
 ﻿using BugTracker.Application.Contracts.Data;
-using BugTracker.Application.Dto;
 using BugTracker.Application.Dto.Projects;
 using BugTracker.Domain.Entities;
-using BugTracker.Domain.Identity;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -43,7 +41,7 @@ namespace BugTracker.Persistence.Services.Data
             {
                 if (!teamIds.Contains(id))
                 {
-                     _dbContext.ProjectTeamMembers.Remove(new ProjectTeamMember { ProjectId = entity.Id, UserId = id });
+                    _dbContext.ProjectTeamMembers.Remove(new ProjectTeamMember { ProjectId = entity.Id, UserId = id });
                 }
             }
             foreach (var id in teamIds)
@@ -60,7 +58,7 @@ namespace BugTracker.Persistence.Services.Data
         public async Task<ICollection<ProjectWithTeamDto>> ListAllWithTeam()
         {
             var response = new List<ProjectWithTeamDto>();
-            var projects = await _dbContext.Projects.ToListAsync();
+            var projects = await _dbContext.Projects.OrderBy(p => p.CreatedDate).ToListAsync();
 
             foreach (var project in projects)
             {
@@ -87,7 +85,7 @@ namespace BugTracker.Persistence.Services.Data
         {
             if (isAnUpdate)
             {
-                return await _dbContext.Projects.SingleOrDefaultAsync(p => p.Name == name && p.Id != id ) == null;
+                return await _dbContext.Projects.SingleOrDefaultAsync(p => p.Name == name && p.Id != id) == null;
             }
             return await _dbContext.Projects.SingleOrDefaultAsync(p => p.Name == name) == null;
         }
