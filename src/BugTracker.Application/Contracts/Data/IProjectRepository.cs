@@ -1,4 +1,4 @@
-﻿using BugTracker.Application.Dto;
+﻿using BugTracker.Application.Dto.Projects;
 using BugTracker.Domain.Entities;
 using System.Collections.Generic;
 using System.Threading.Tasks;

@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using BugTracker.Application.Dto;
+using BugTracker.Application.Dto.Projects;
 using BugTracker.Application.Features.Projects;
 using BugTracker.Application.Features.Projects.Commands.Create;
 using BugTracker.Application.Features.Projects.Commands.Update;

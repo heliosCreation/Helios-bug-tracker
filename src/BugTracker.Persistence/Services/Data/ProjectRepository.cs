@@ -1,5 +1,6 @@
 ﻿using BugTracker.Application.Contracts.Data;
 using BugTracker.Application.Dto;
+using BugTracker.Application.Dto.Projects;
 using BugTracker.Domain.Entities;
 using BugTracker.Domain.Identity;
 using Microsoft.EntityFrameworkCore;
