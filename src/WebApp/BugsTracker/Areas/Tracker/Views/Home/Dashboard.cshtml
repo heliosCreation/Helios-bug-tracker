@@ -1,17 +1,6 @@
 ﻿@model DashboardViewModel
-@{
-    if (ViewBag.isSuccess == true)
-    {
-        <div class="alert alert-success alert-dismissible fade show" role="alert">
-            <strong>Success - </strong> Your project was created.
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
-    }
-}
 
-<partial name="../Shared/Partial/_modalHolderPartial.cshtml" />
+<partial name="../Shared/Partial/Common/_modalHolderPartial.cshtml" />
 
 <!--First row -->
 <div class="row p-3">
@@ -20,7 +9,10 @@
             <div class="title"> Projects </div>
             <div class="project-add-holder"><a href="#" id="create-project" data-toggle="modal" data-target="#crupdateProjectModal" class="add-project-btn"> New Project</a></div>
         </div>
-
+        @if (ViewBag.isSuccess == true)
+        {
+            <partial name="../Shared/Partial/Common/_successAlertPartial.cshtml" model="new List<string>(){ViewBag.type, ViewBag.actionReturned }" />
+        }
         <div class="row w-100">
             <div class="table-responsive project-table">
                 <table class="table">

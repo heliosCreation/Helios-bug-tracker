@@ -211,6 +211,10 @@ overflow: auto;
     background-color: #e0a800;
 }
 
+.border-radius-0{
+    border-radius:0!important;
+}
+
 .green-btn {
     background: #28a745;
     color: white !important;

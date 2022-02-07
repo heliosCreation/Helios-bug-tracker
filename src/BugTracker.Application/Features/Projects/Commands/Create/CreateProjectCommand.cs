@@ -9,6 +9,6 @@ namespace BugTracker.Application.Features.Projects.Commands.Create
     {
         public string Name { get; set; }
         public string Description { get; set; }
-        public ICollection<Guid> Team { get; set; }
+        public ICollection<Guid> Team { get; set; } = new List<Guid>();
     }
 }

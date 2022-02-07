@@ -1,5 +1,6 @@
 ﻿using BugTracker.Application.Dto.Projects;
 using BugTracker.Application.Features.Projects.Commands.Create;
+using BugTracker.Application.Features.Projects.Commands.Delete;
 using BugTracker.Application.Features.Projects.Commands.Update;
 using BugTracker.Application.Features.Projects.Queries.Get;
 using BugTracker.Application.Features.Projects.Queries.GetWithTeam;
@@ -26,9 +27,8 @@ namespace BugTracker.Areas.Tracker.Controllers
             if (!response.Succeeded)
             {
                 return RedirectToAction("Dashboard", "Home", new { isFailed = true });
-
             }
-            return RedirectToAction("Dashboard", "Home", new { isSuccess = true });
+            return RedirectToAction("Dashboard", "Home", new { isSuccess = true, type = "project", actionReturned = "created" });
         }
 
         public async Task<IActionResult> Update([Bind(Prefix = "Command")] UpdateProjectCommand command)
@@ -39,9 +39,18 @@ namespace BugTracker.Areas.Tracker.Controllers
                 return RedirectToAction("Dashboard", "Home", new { isFailed = true });
 
             }
-            return RedirectToAction("Dashboard", "Home", new { isSuccess = true });
+            return RedirectToAction("Dashboard", "Home", new { isSuccess = true, type = "project", actionReturned = "updated" });
         }
+        public async Task<IActionResult> Delete(DeleteProjectCommand command)
+        {
+            var response = await Mediator.Send(command);
+            if (!response.Succeeded)
+            {
+                return RedirectToAction("Dashboard", "Home", new { isFailed = true });
 
+            }
+            return RedirectToAction("Dashboard", "Home", new { isSuccess = true, type = "project", actionReturned = "deleted" });
+        }
         public async Task<IActionResult> LoadCreateModal()
         {
             var dto = new CreateProjectDto();

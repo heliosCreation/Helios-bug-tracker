@@ -10,6 +10,7 @@
 
 
     <form method="POST" asp-controller="Project" asp-action="Delete" asp-route-id="@(Model.Id)">
+        <input type="hidden" asp-for="Id" />
         <div class="modal-body text-center">
             <p>Are you sure you want to delete the project <span class="text-purple font-weight-bold">@Model.Name</span> ?</p>
             <p>The deletion of this information is irreversible, and will delete all related information(s).</p>
