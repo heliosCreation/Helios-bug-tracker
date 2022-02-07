@@ -15,10 +15,8 @@ namespace BugTracker.Areas.Tracker.Controllers
             var viewModel = new DashboardViewModel();
 
             var projectResponse = await Mediator.Send(new GetAllProjectQuery());
-            var teamResponse = await Mediator.Send(new GetAllAccessibleMembersQuery());
 
             viewModel.Projects = projectResponse.DataList;
-            viewModel.Team = teamResponse.DataList;
 
             return View(viewModel);
         }

@@ -6,19 +6,19 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace BugTracker.Application.Features.Projects.Queries.Get
+namespace BugTracker.Application.Features.Projects.Queries.GetWithTickets
 {
-    public class GetProjectQueryHandler : IRequestHandler<GetProjectQuery, ApiResponse<ProjectWithTicketsVm>>
+    public class GetProjectWithTicketsQueryHandler : IRequestHandler<GetProjectWithTicketsQuery, ApiResponse<ProjectWithTicketsVm>>
     {
         private readonly IProjectRepository _projectRepository;
         private readonly IMapper _mapper;
 
-        public GetProjectQueryHandler(IProjectRepository projectRepository,IMapper mapper)
+        public GetProjectWithTicketsQueryHandler(IProjectRepository projectRepository, IMapper mapper)
         {
             _projectRepository = projectRepository ?? throw new ArgumentNullException(nameof(projectRepository));
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
-        public async Task<ApiResponse<ProjectWithTicketsVm>> Handle(GetProjectQuery request, CancellationToken cancellationToken)
+        public async Task<ApiResponse<ProjectWithTicketsVm>> Handle(GetProjectWithTicketsQuery request, CancellationToken cancellationToken)
         {
             var response = new ApiResponse<ProjectWithTicketsVm>();
             var project = await _projectRepository.GetByIdAsync(request.Id);

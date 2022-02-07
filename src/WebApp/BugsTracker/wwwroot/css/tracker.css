@@ -78,6 +78,9 @@ ul, ol {
 }
 
 
+option.selected {
+    background: #b3f2c18a;
+}
 
 a,
 a:hover,

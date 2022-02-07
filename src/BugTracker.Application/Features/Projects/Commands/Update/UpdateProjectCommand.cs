@@ -10,6 +10,6 @@ namespace BugTracker.Application.Features.Projects.Commands.Update
         public Guid Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
-        public ICollection<Guid> Team { get; set; }
+        public ICollection<string> Team { get; set; } = new List<string>();
     }
 }

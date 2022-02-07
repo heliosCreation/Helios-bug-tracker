@@ -280,8 +280,8 @@
 
         function handleModals() {
             const createModalUrl = '/Tracker/Project/loadCreateModal';
-            const updateModalUrl = '/Management/Project/loadUpdateModal';
-            const deleteModalUrl = '/Management/Project/loadDeleteModal';
+            const updateModalUrl = '/Tracker/Project/loadUpdateModal';
+            const deleteModalUrl = '/Tracker/Project/loadDeleteModal';
             var createBtn = $("#create-project");
             var updateBtns = document.querySelectorAll('.update-btn');
             var deleteBtns = document.querySelectorAll('.delete-btn');
@@ -289,8 +289,8 @@
                 $.validator.unobtrusive.parse(document);
             });
             AttachModalCreateListener(createBtn, createModalUrl);
-            //AttachTableModalListeners(updateBtns, updateModalUrl);
-            //AttachTableModalListeners(deleteBtns, deleteModalUrl);
+            AttachTableModalListeners(updateBtns, updateModalUrl);
+            AttachTableModalListeners(deleteBtns, deleteModalUrl);
         }
     </script>
 }
