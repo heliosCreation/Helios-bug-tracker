@@ -4,6 +4,7 @@ using BugTracker.Application.Features.Projects.Commands.Delete;
 using BugTracker.Application.Features.Projects.Commands.Update;
 using BugTracker.Application.Features.Projects.Queries.Get;
 using BugTracker.Application.Features.Projects.Queries.GetWithTeam;
+using BugTracker.Application.Features.Projects.Queries.GetWithTickets;
 using BugTracker.Application.Features.Team.Queries.GetAllAccessibleMembers;
 using Microsoft.AspNetCore.Mvc;
 using System;

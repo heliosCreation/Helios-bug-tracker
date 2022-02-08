@@ -27,7 +27,7 @@ namespace BugTracker.Application.Profiles
 
             CreateMap<Project, ProjectVm>()
                 .ForMember(dest => dest.TeamNames, opt => opt.MapFrom(src => src.Name));
-            CreateMap<Project, ProjectWithTicketsVm>();
+            CreateMap<Project, ProjectWithTicketsAndTeamVm>();
             CreateMap<Project, ProjectWithTeamIdsVm>();
             #endregion
 

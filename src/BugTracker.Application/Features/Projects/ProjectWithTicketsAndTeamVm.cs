@@ -1,10 +1,10 @@
-﻿using BugTracker.Application.Features.Tickets.Queries;
+﻿using BugTracker.Application.Features.Tickets;
 using System;
 using System.Collections.Generic;
 
 namespace BugTracker.Application.Features.Projects
 {
-    public class ProjectWithTicketsVm
+    public class ProjectWithTicketsAndTeamVm
     {
         public Guid Id { get; set; }
         public string Name { get; set; }

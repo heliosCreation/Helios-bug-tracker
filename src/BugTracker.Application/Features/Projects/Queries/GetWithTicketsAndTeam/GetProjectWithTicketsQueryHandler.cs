@@ -8,25 +8,25 @@ using System.Threading.Tasks;
 
 namespace BugTracker.Application.Features.Projects.Queries.GetWithTickets
 {
-    public class GetProjectWithTicketsQueryHandler : IRequestHandler<GetProjectWithTicketsQuery, ApiResponse<ProjectWithTicketsVm>>
+    public class GetProjectWithTicketsAndTeamQueryHandler : IRequestHandler<GetProjectWithTicketsAndTeamQuery, ApiResponse<ProjectWithTicketsAndTeamVm>>
     {
         private readonly IProjectRepository _projectRepository;
         private readonly IMapper _mapper;
 
-        public GetProjectWithTicketsQueryHandler(IProjectRepository projectRepository, IMapper mapper)
+        public GetProjectWithTicketsAndTeamQueryHandler(IProjectRepository projectRepository, IMapper mapper)
         {
             _projectRepository = projectRepository ?? throw new ArgumentNullException(nameof(projectRepository));
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
-        public async Task<ApiResponse<ProjectWithTicketsVm>> Handle(GetProjectWithTicketsQuery request, CancellationToken cancellationToken)
+        public async Task<ApiResponse<ProjectWithTicketsAndTeamVm>> Handle(GetProjectWithTicketsAndTeamQuery request, CancellationToken cancellationToken)
         {
-            var response = new ApiResponse<ProjectWithTicketsVm>();
+            var response = new ApiResponse<ProjectWithTicketsAndTeamVm>();
             var project = await _projectRepository.GetByIdAsync(request.Id);
             if (project == null)
             {
-                return response.setNotFoundResponse($"Category with id {request.Id} was not found");
+                return response.setNotFoundResponse($"Project with id {request.Id} was not found");
             }
-            response.Data = _mapper.Map<ProjectWithTicketsVm>(project);
+            response.Data = _mapper.Map<ProjectWithTicketsAndTeamVm>(project);
             return response;
         }
     }
