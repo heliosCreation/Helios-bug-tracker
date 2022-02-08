@@ -46,7 +46,7 @@
                         <td>High</td>
                         <td>Open</td>
                         <td>Feature request</td>
-                        <td>5</td>
+                        <td class="text-center">5</td>
 
                         <td class="text-center">
                             <div class="dropdown">
@@ -302,10 +302,23 @@
 
             $(".ticket-link").click(() => {
                 setTimeout(function () {
-                    console.dir($("#comments-holder")[0].scrollHeight)
                     $("#comments-holder").scrollTop($("#comments-holder")[0].scrollHeight)
                 }, 200);
             });
+
+            $(".ticket-tabs .nav-item").click(function (e) {
+                $(".ticket-tabs .nav-item .nav-link.active").removeClass("active");
+                e.currentTarget.children[0].classList.add("active");
+                if (e.currentTarget.children[0].firstChild.data === "Comments") {
+                    $("#comments").removeClass("d-none");
+                    $("#ticket-team").addClass("d-none");
+                }
+                else {
+                    $("#comments").addClass("d-none");
+                    $("#ticket-team").removeClass("d-none");
+
+                }
+            })
 
             $("#show-comments-btn").click(() => {
                 $("#ticket-details").toggleClass("d-none");

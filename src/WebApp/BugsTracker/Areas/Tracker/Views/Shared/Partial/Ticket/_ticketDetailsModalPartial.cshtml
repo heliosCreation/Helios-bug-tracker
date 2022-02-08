@@ -9,13 +9,13 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <ul class="nav nav-tabs">
+                <ul class="nav nav-tabs ticket-tabs">
    
                     <li class="nav-item">
-                        <a class="nav-link active" href="#">Team</a>
+                        <a class="nav-link active" href="#">Comments</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Comments</a>
+                        <a class="nav-link" href="#">Team</a>
                     </li>
                 </ul>
             </div>
@@ -40,6 +40,25 @@
                                 <button class="btn btn-primary" type="button">Send</button>
                             </div>
                         </div>
+                    </div>
+                </div>
+            
+                <div class="w-100 h-100 d-none" id="ticket-team">
+                    <div class="p-3 w-100">
+                        <div class="ticket-project-manager-holder p-2">
+                            <span class="purple-pill d-inline-block">Frank loyd - Project manager</span>
+                        </div>
+                        <div class="ticket-dev-holder p-2">
+                            @for (int i = 0; i < 12; i++)
+                            {
+                            <span class="green-pill d-inline-block">John Doe - Dev</span>
+
+                            }
+                        </div>
+                        <div class="ticket-submitter-holder p-2">
+                            <span class="yellow-pill d-inline-block">Alan Wu - Submitter</span>
+                        </div>
+                            
                     </div>
                 </div>
             </div>
