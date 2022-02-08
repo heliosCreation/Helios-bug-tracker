@@ -26,9 +26,9 @@ namespace BugTracker
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews()
-                .AddRazorRuntimeCompilation();
+                    .AddRazorRuntimeCompilation();
 
-            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddHttpContextAccessor();
             services.AddScoped<ILoggedInUserService, LoggedInUserService>();
 
             services.AddApplicationService();

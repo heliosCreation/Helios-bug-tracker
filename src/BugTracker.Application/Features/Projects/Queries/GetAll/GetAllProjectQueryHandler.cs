@@ -26,7 +26,7 @@ namespace BugTracker.Application.Features.Projects.Queries.GetAll
         public async Task<ApiResponse<ProjectVm>> Handle(GetAllProjectQuery request, CancellationToken cancellationToken)
         {
             var response = new ApiResponse<ProjectVm>();
-            var allProject = (await _projectRepository.ListAllWithTeam()).OrderBy(x => x.Project.CreatedDate);
+            var allProject = (await _projectRepository.ListAllWithTeam()).OrderByDescending(x => x.Project.CreatedDate);
             response.DataList = _mapper.Map<List<ProjectVm>>(allProject);
             return response;
         }
