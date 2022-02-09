@@ -19,7 +19,6 @@
 	</ItemGroup>
 	
 	<ItemGroup>
-	  <Folder Include="Dto\Tickets\" />
 	  <Folder Include="Features\Comments\Commands\" />
 	  <Folder Include="Features\Comments\Queries\" />
 	  <Folder Include="Features\Team\Commands\" />

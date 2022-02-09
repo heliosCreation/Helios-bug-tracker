@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BugTracker.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220203142246_third")]
-    partial class third
+    [Migration("20220209133000_iur")]
+    partial class iur
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -81,20 +81,35 @@ namespace BugTracker.Persistence.Migrations
                     b.ToTable("Projects");
                 });
 
+            modelBuilder.Entity("BugTracker.Domain.Entities.ProjectTeamMember", b =>
+                {
+                    b.Property<Guid>("ProjectId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("ProjectId", "UserId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("ProjectTeamMembers");
+                });
+
             modelBuilder.Entity("BugTracker.Domain.Entities.Ticket", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<string>("ApplicationUserId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<Guid>("CreatedBy")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
-
-                    b.Property<string>("CreatorId")
-                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
@@ -131,11 +146,26 @@ namespace BugTracker.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CreatorId");
+                    b.HasIndex("ApplicationUserId");
 
                     b.HasIndex("ProjectId");
 
                     b.ToTable("Tickets");
+                });
+
+            modelBuilder.Entity("BugTracker.Domain.Entities.TicketsTeamMembers", b =>
+                {
+                    b.Property<Guid>("TicketId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("TicketId", "UserId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("TicketsTeamMembers");
                 });
 
             modelBuilder.Entity("BugTracker.Domain.Identity.ApplicationUser", b =>
@@ -211,15 +241,15 @@ namespace BugTracker.Persistence.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "8e961af6-cf8b-474c-b01c-75c9e9282259",
+                            Id = "eadba81b-531d-4be8-b3a3-a2210fa92e97",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "3954d639-b2a5-4efa-943e-61ea33524aaf",
+                            ConcurrencyStamp = "165e5ac3-88b7-4a7c-8ff5-66a8b0a14eab",
                             Email = "DemoAdmin@Admin.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "DEMOADMIN@ADMIN.COM",
                             NormalizedUserName = "DEMO ADMIN",
-                            PasswordHash = "AQAAAAEAACcQAAAAEBTvADW+cudljArDLeE8EHRRhQeKgJmw2dTdF8rUvTisFIR8PIBtgTjqMMlCEvrkbQ==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEJ4MA2YgT/c4AQtqtnCFQIzJhI4bJlKcVKWNj+nG3wCExwO1U0WdEVZo5++yohIg2w==",
                             PhoneNumber = "XXXXXXXXXXXXX",
                             PhoneNumberConfirmed = true,
                             SecurityStamp = "00000000-0000-0000-0000-000000000000",
@@ -228,15 +258,15 @@ namespace BugTracker.Persistence.Migrations
                         },
                         new
                         {
-                            Id = "d99bb16f-40ba-406a-8c48-d72f1ba6e5a2",
+                            Id = "d8aa6410-0513-4b19-8a0e-1947605bc1f5",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "6975981b-5091-45bc-b53c-01be17d75a39",
+                            ConcurrencyStamp = "06ba59ef-eb40-49be-b3ff-4b828d4a9669",
                             Email = "DemoDev@gmail.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "DEMODEV@GMAIL.COM",
                             NormalizedUserName = "DEMO DEVELOPER",
-                            PasswordHash = "AQAAAAEAACcQAAAAEI6MNMQNHedD7NtsytGNwadgZDWbvIh+g414ikY4E9MvhngAZAXlb0hVEEEQyjpCjQ==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEH6dRERBNYAjXPkvN2wWSNbyKju+ZBrbMHMUg4I3wj74zK4U5leb6Bd7SZaVo3NZ8g==",
                             PhoneNumberConfirmed = true,
                             SecurityStamp = "00000000-0000-0000-0000-000000000000",
                             TwoFactorEnabled = false,
@@ -244,15 +274,15 @@ namespace BugTracker.Persistence.Migrations
                         },
                         new
                         {
-                            Id = "7e1bcd79-75c2-4fb6-8a92-c523d5e45bc4",
+                            Id = "a7604b52-6d35-4ec9-bbbb-2ed882ea26fe",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "77dd760f-be75-4afd-bc14-13625a37e7d4",
+                            ConcurrencyStamp = "544211e1-e416-48d2-85da-3adc4fb84fa1",
                             Email = "john@gmail.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "JOHN@GMAIL.COM",
                             NormalizedUserName = "DEMO SUBMITTER",
-                            PasswordHash = "AQAAAAEAACcQAAAAELqA++hkBU+cEvwT+MjXV+ioGU9cjeV2PhqZwMr3yPombtxJfdTpAELBoAcHDvGwIQ==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEJKO8/hu7wBFMvlxFN9nRSCeGIjvvfLAX0yZhUNuM5qp9U/dVIwm9RjWJE3q7gSskQ==",
                             PhoneNumberConfirmed = true,
                             SecurityStamp = "00000000-0000-0000-0000-000000000000",
                             TwoFactorEnabled = false,
@@ -260,19 +290,138 @@ namespace BugTracker.Persistence.Migrations
                         },
                         new
                         {
-                            Id = "a44f0655-bbc5-4f38-a5a4-fbb38f885936",
+                            Id = "dcc77498-60cd-4716-97f0-75b03de2f020",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "11848102-b37f-41e0-bf97-8a5a94a9bd45",
+                            ConcurrencyStamp = "24599ad1-48b5-4058-8138-9d9400b1e1f7",
                             Email = "demoPM@gmail.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "DEMOPM@GMAIL.COM",
                             NormalizedUserName = "DEMO PROJECT MANAGER",
-                            PasswordHash = "AQAAAAEAACcQAAAAEHiG6+3grQfEMUUG/rlJ/yIzh4xzaLNKFlUpJCDJ6z+RjDyukuAQDqWtxF+8ciF50Q==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEDatM0Hmq0BwY/BFZf1AqcG7k/xgEdg2e28lEBc7CZBE3lc0AkblQ9G9zXgzGhADBg==",
                             PhoneNumberConfirmed = true,
                             SecurityStamp = "00000000-0000-0000-0000-000000000000",
                             TwoFactorEnabled = false,
                             UserName = "Demo Project Manager"
+                        },
+                        new
+                        {
+                            Id = "21bbccc8-fc2a-4881-b746-ed9d90fbff9b",
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "408be9cb-0392-4f38-a156-caae7c74fa09",
+                            Email = "quentin.coui@hotmail.com",
+                            EmailConfirmed = true,
+                            LockoutEnabled = false,
+                            NormalizedEmail = "QUENTIN.COUI@HOTMAIL.COM",
+                            NormalizedUserName = "ADMIN",
+                            PasswordHash = "AQAAAAEAACcQAAAAEI2ejs0jbS1fizyT6LaTtoT42K50vdYm7wZz1U4cifrfNsafjuSoc10SP8HApj2HeA==",
+                            PhoneNumber = "XXXXXXXXXXXXX",
+                            PhoneNumberConfirmed = true,
+                            SecurityStamp = "00000000-0000-0000-0000-000000000000",
+                            TwoFactorEnabled = false,
+                            UserName = "Admin"
+                        },
+                        new
+                        {
+                            Id = "355daad8-1cb5-4caa-8538-e82508b5248a",
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "7fb55b2c-17a9-4447-8b9b-2f8d0bf04fd5",
+                            Email = "john.doe@hotmail.com",
+                            EmailConfirmed = true,
+                            LockoutEnabled = false,
+                            NormalizedEmail = "JOHN.DOE@HOTMAIL.COM",
+                            NormalizedUserName = "JOHN DOE",
+                            PasswordHash = "AQAAAAEAACcQAAAAECgCMSCj10+AuAbIuBchV1LZ9V1ZK7Z5Ob2R6iZOrDXR+EVQGu3pWWhhfUsJuISS2g==",
+                            PhoneNumber = "XXXXXXXXXXXXX",
+                            PhoneNumberConfirmed = true,
+                            SecurityStamp = "00000000-0000-0000-0000-000000000000",
+                            TwoFactorEnabled = false,
+                            UserName = "John doe"
+                        },
+                        new
+                        {
+                            Id = "c31a5e3d-a2ef-4065-a12c-2f9647f24070",
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "a4036007-fc00-4abc-9573-d4687760684f",
+                            Email = "jane.doe@hotmail.com",
+                            EmailConfirmed = true,
+                            LockoutEnabled = false,
+                            NormalizedEmail = "JANE.DOE@HOTMAIL.COM",
+                            NormalizedUserName = "JANE DOE",
+                            PasswordHash = "AQAAAAEAACcQAAAAEKkRq7ZTTw8R3bNctHzfZ/9bBAvufC9df50eFV7Gkjs2Yxl1KfeaZF36Pfq3wPwBvQ==",
+                            PhoneNumber = "XXXXXXXXXXXXX",
+                            PhoneNumberConfirmed = true,
+                            SecurityStamp = "00000000-0000-0000-0000-000000000000",
+                            TwoFactorEnabled = false,
+                            UserName = "Jane doe"
+                        },
+                        new
+                        {
+                            Id = "8c66bb8b-1fc7-491b-a4ef-d8de9ecc8e63",
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "66a32132-5da2-4179-99d0-f873277084e1",
+                            Email = "jack.nicklefrost@hotmail.com",
+                            EmailConfirmed = true,
+                            LockoutEnabled = false,
+                            NormalizedEmail = "JACK.NICKLEFROST@HOTMAIL.COM",
+                            NormalizedUserName = "JACK NICKEFROST",
+                            PasswordHash = "AQAAAAEAACcQAAAAEBlvicRZtNfbNXIbyQ2OGMLOof9N4y2Y3wIhNot9rMYmlADSBC70/qRik8PGnmS44Q==",
+                            PhoneNumber = "XXXXXXXXXXXXX",
+                            PhoneNumberConfirmed = true,
+                            SecurityStamp = "00000000-0000-0000-0000-000000000000",
+                            TwoFactorEnabled = false,
+                            UserName = "Jack nicklefrost"
+                        },
+                        new
+                        {
+                            Id = "68f84753-8203-45a0-ac1e-b2a06411d49a",
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "76e725f2-f96f-4955-94cd-ac73eb77566e",
+                            Email = "hanna.steinbeck@hotmail.com",
+                            EmailConfirmed = true,
+                            LockoutEnabled = false,
+                            NormalizedEmail = "HANNA.STEINBECK@HOTMAIL.COM",
+                            NormalizedUserName = "HANNA STEINBECK",
+                            PasswordHash = "AQAAAAEAACcQAAAAENShB9lt2kQ6xp95iYJK3UMMJHJhpguuvhRq7aPzGILkYsJIXORmQwfYHntWjrHSYQ==",
+                            PhoneNumber = "XXXXXXXXXXXXX",
+                            PhoneNumberConfirmed = true,
+                            SecurityStamp = "00000000-0000-0000-0000-000000000000",
+                            TwoFactorEnabled = false,
+                            UserName = "Hanna steinbeck"
+                        },
+                        new
+                        {
+                            Id = "b964514f-fc0c-47f2-b16b-dfd7cbf8c167",
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "a639d254-e455-40d8-bfc9-ed8004555d71",
+                            Email = "alice.cooper@hotmail.com",
+                            EmailConfirmed = true,
+                            LockoutEnabled = false,
+                            NormalizedEmail = "ALICE.COOPER@HOTMAIL.COM",
+                            NormalizedUserName = "ALICE COOPER",
+                            PasswordHash = "AQAAAAEAACcQAAAAEIyn83Ee2gGoMg3ilyAIRgMatWUopzp2E6qYftHMJM1fxwpM3ZlCmpNk3E99BU0qIQ==",
+                            PhoneNumber = "XXXXXXXXXXXXX",
+                            PhoneNumberConfirmed = true,
+                            SecurityStamp = "00000000-0000-0000-0000-000000000000",
+                            TwoFactorEnabled = false,
+                            UserName = "Alice cooper"
+                        },
+                        new
+                        {
+                            Id = "df656ced-7b29-4504-baeb-60d628c56739",
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "65759116-95d0-4ac5-a87b-e3088924ee59",
+                            Email = "dean.moriarty@hotmail.com",
+                            EmailConfirmed = true,
+                            LockoutEnabled = false,
+                            NormalizedEmail = "DEAN.MORIARTY@HOTMAIL.COM",
+                            NormalizedUserName = "DEAN MORIARTY",
+                            PasswordHash = "AQAAAAEAACcQAAAAEDZPXh2t+mUp+oBamVmsRpdjbATu70xttKkHACLuHrcjZgQNru66UGt5c5DMiU0YVg==",
+                            PhoneNumber = "XXXXXXXXXXXXX",
+                            PhoneNumberConfirmed = true,
+                            SecurityStamp = "00000000-0000-0000-0000-000000000000",
+                            TwoFactorEnabled = false,
+                            UserName = "Dean Moriarty"
                         });
                 });
 
@@ -305,57 +454,57 @@ namespace BugTracker.Persistence.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "201f37ed-ef6c-46a1-baee-8b91b1015afe",
-                            ConcurrencyStamp = "445659d0-df3a-4165-a53b-4b333821cbe2",
+                            Id = "ffd183c1-9d6f-4f65-8e4c-c08d5c6d3e65",
+                            ConcurrencyStamp = "16891915-22a5-4d6c-9a34-d4f98ee914d8",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "33e54577-2cc8-440b-a662-6cf0988ee144",
-                            ConcurrencyStamp = "dca57389-dcff-4821-b5fc-7e680209ff07",
+                            Id = "6e8006e3-e50a-49be-94ea-03ab653713cc",
+                            ConcurrencyStamp = "21fe0334-2880-4d87-9adf-86a9f04c7112",
                             Name = "Project Manager",
                             NormalizedName = "PROJECT MANAGER"
                         },
                         new
                         {
-                            Id = "617f7e8b-1113-4c6d-a5af-b581afcf1fe9",
-                            ConcurrencyStamp = "ef34c1df-bee1-4e4e-a5ee-e1148f0d694e",
+                            Id = "04614fbc-b0b7-4344-a2e9-8046742ac7cb",
+                            ConcurrencyStamp = "b62bc358-7704-4155-b599-be128a4fd74c",
                             Name = "Developer",
                             NormalizedName = "DEVELOPER"
                         },
                         new
                         {
-                            Id = "2949bb27-bf03-4292-aa83-33cc2d51e6d7",
-                            ConcurrencyStamp = "e50572da-5da0-4582-b968-76e272d80228",
+                            Id = "6cdee224-4d18-482a-b084-e54fa1788095",
+                            ConcurrencyStamp = "e991318e-cedf-4aea-af4f-1ce95735c05a",
                             Name = "Submitter",
                             NormalizedName = "SUBMITTER"
                         },
                         new
                         {
-                            Id = "f0eef021-5290-41a6-a3a5-3efbd0defc8e",
-                            ConcurrencyStamp = "d8339263-0609-41b4-9695-a7a8b5db580e",
+                            Id = "75946676-683b-4b8a-be4b-680f04cbbf2b",
+                            ConcurrencyStamp = "23293f8c-768d-4ad1-82e4-8e3b3d6762e7",
                             Name = "Demo Admin",
                             NormalizedName = "DEMO_ADMIN"
                         },
                         new
                         {
-                            Id = "33371c20-f3f3-425e-9bce-8ebc34164628",
-                            ConcurrencyStamp = "b94ff578-ad27-42a4-b0cb-53f9dd0968d7",
+                            Id = "9a313d8c-eff2-4672-8f11-7fafd308a9b3",
+                            ConcurrencyStamp = "7ca53a5b-e7bb-4287-bbf7-fc9e9a76c4f5",
                             Name = " Demo Project Manager",
                             NormalizedName = "DEMO PROJECT MANAGER"
                         },
                         new
                         {
-                            Id = "e1cd1e56-6e51-487c-9d19-192ad3930b41",
-                            ConcurrencyStamp = "d2e6f5ee-b645-4191-8e50-f6fa8392d3a3",
+                            Id = "d150a0d5-13cb-4b4e-8c75-0df5d161ad10",
+                            ConcurrencyStamp = "7bfb1a98-4d7c-42e5-b067-c6fdd95e9791",
                             Name = "Demo Developer",
                             NormalizedName = "DEMO DEVELOPER"
                         },
                         new
                         {
-                            Id = "9326d96f-710c-4271-a1bf-3ce42fc4d304",
-                            ConcurrencyStamp = "1766bcaf-30d4-495a-aa42-13167dc02190",
+                            Id = "88800da5-17d5-44d9-972a-e7130abb9c77",
+                            ConcurrencyStamp = "1e461d3d-5f8e-4d19-973e-09ea8428511b",
                             Name = "Demo Submitter",
                             NormalizedName = "DEMO SUBMITTER"
                         });
@@ -444,6 +593,13 @@ namespace BugTracker.Persistence.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("AspNetUserRoles");
+
+                    b.HasData(
+                        new
+                        {
+                            UserId = "21bbccc8-fc2a-4881-b746-ed9d90fbff9b",
+                            RoleId = "ffd183c1-9d6f-4f65-8e4c-c08d5c6d3e65"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
@@ -476,11 +632,30 @@ namespace BugTracker.Persistence.Migrations
                     b.Navigation("Project");
                 });
 
+            modelBuilder.Entity("BugTracker.Domain.Entities.ProjectTeamMember", b =>
+                {
+                    b.HasOne("BugTracker.Domain.Entities.Project", "Project")
+                        .WithMany("ProjectTeamMembers")
+                        .HasForeignKey("ProjectId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("BugTracker.Domain.Identity.ApplicationUser", "User")
+                        .WithMany("ProjectTeamMembers")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Project");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("BugTracker.Domain.Entities.Ticket", b =>
                 {
-                    b.HasOne("BugTracker.Domain.Identity.ApplicationUser", "Creator")
-                        .WithMany()
-                        .HasForeignKey("CreatorId");
+                    b.HasOne("BugTracker.Domain.Identity.ApplicationUser", null)
+                        .WithMany("Tickets")
+                        .HasForeignKey("ApplicationUserId");
 
                     b.HasOne("BugTracker.Domain.Entities.Project", "Project")
                         .WithMany()
@@ -488,9 +663,26 @@ namespace BugTracker.Persistence.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Creator");
-
                     b.Navigation("Project");
+                });
+
+            modelBuilder.Entity("BugTracker.Domain.Entities.TicketsTeamMembers", b =>
+                {
+                    b.HasOne("BugTracker.Domain.Entities.Ticket", "Ticket")
+                        .WithMany("TicketsTeamMembers")
+                        .HasForeignKey("TicketId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("BugTracker.Domain.Identity.ApplicationUser", "User")
+                        .WithMany("TicketsTeamMembers")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Ticket");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -542,6 +734,25 @@ namespace BugTracker.Persistence.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("BugTracker.Domain.Entities.Project", b =>
+                {
+                    b.Navigation("ProjectTeamMembers");
+                });
+
+            modelBuilder.Entity("BugTracker.Domain.Entities.Ticket", b =>
+                {
+                    b.Navigation("TicketsTeamMembers");
+                });
+
+            modelBuilder.Entity("BugTracker.Domain.Identity.ApplicationUser", b =>
+                {
+                    b.Navigation("ProjectTeamMembers");
+
+                    b.Navigation("Tickets");
+
+                    b.Navigation("TicketsTeamMembers");
                 });
 #pragma warning restore 612, 618
         }

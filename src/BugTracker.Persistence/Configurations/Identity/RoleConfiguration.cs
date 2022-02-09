@@ -12,31 +12,33 @@ namespace BugTracker.Identity.Configurations
         {
             builder.HasData(new IdentityRole
             {
-                Id = Guid.NewGuid().ToString(),
+                Id = "ffd183c1-9d6f-4f65-8e4c-c08d5c6d3e65",
                 Name = "Admin",
                 NormalizedName = "ADMIN"
             });
 
             builder.HasData(new IdentityRole
             {
-                Id = Guid.NewGuid().ToString(),
+                Id = "6e8006e3-e50a-49be-94ea-03ab653713cc",
                 Name = "Project Manager",
                 NormalizedName = "PROJECT MANAGER"
             });
 
             builder.HasData(new IdentityRole
             {
-                Id = Guid.NewGuid().ToString(),
+                Id = "04614fbc-b0b7-4344-a2e9-8046742ac7cb",
                 Name = "Developer",
                 NormalizedName = "DEVELOPER"
             });
 
             builder.HasData(new IdentityRole
             {
-                Id = Guid.NewGuid().ToString(),
+                Id = "6cdee224-4d18-482a-b084-e54fa1788095",
                 Name = "Submitter",
                 NormalizedName = "SUBMITTER"
-            }); builder.HasData(new IdentityRole
+            });
+            
+            builder.HasData(new IdentityRole
             {
                 Id = Guid.NewGuid().ToString(),
                 Name = "Demo Admin",

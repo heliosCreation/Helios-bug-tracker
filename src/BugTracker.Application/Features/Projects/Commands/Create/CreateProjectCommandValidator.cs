@@ -28,7 +28,7 @@ namespace BugTracker.Application.Features.Projects.Commands.Create
                 .MaximumLength(100).WithMessage("{PropertyName} can't exceed 100 characters.");
 
             RuleFor(e => e)
-                .MustAsync(NameIsUnique).WithMessage("A category with the same given name already exists.")
+                .MustAsync(NameIsUnique).WithMessage("A project with the same given name already exists.")
                 .MustAsync(UserIdsAreValid).WithMessage("One of the selected user, does not hold a valid Id");
         }
 
