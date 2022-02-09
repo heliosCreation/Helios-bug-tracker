@@ -1,9 +1,7 @@
 ﻿using BugTracker.Application.Contracts.Identity;
-using BugTracker.Application.Model.Identity;
 using BugTracker.Application.Model.Identity.Authentication;
 using BugTracker.Application.Model.Identity.ConfirmationAndReset;
 using BugTracker.Application.Model.Identity.Registration;
-using BugTracker.Application.ViewModel;
 using BugTracker.Domain.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.WebUtilities;
@@ -86,10 +84,10 @@ namespace BugTracker.Persistence.Services.Identity
 
         public async Task<ICollection<string>> GetUserRolesById(string id)
         {
-            return  await _userManager.GetRolesAsync(new ApplicationUser {Id = id });
+            return await _userManager.GetRolesAsync(new ApplicationUser { Id = id });
         }
 
-        public async Task<ICollection<ApplicationUser>>GetAllAccessibleUsers(string uid)
+        public async Task<ICollection<ApplicationUser>> GetAllAccessibleUsers(string uid)
         {
             //Get current user role
             var currentUserRole = await _userManager.GetRolesAsync(new ApplicationUser { Id = uid });
@@ -102,9 +100,12 @@ namespace BugTracker.Persistence.Services.Identity
 
             if (currentUserRole[0] == "Admin")
             {
+                var admins = await _userManager.GetUsersInRoleAsync("Admin");
+
                 accessibleTeam = await _context.Users.ToListAsync();
+                accessibleTeam = accessibleTeam.Except(admins).ToList();
             }
-            else if(currentUserRole[0] == "Project Manager")
+            else if (currentUserRole[0] == "Project Manager")
             {
                 var devs = await _userManager.GetUsersInRoleAsync("Developer");
                 var submitter = await _userManager.GetUsersInRoleAsync("Submitter");

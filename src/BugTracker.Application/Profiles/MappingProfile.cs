@@ -5,6 +5,7 @@ using BugTracker.Application.Features.Projects;
 using BugTracker.Application.Features.Projects.Commands.Create;
 using BugTracker.Application.Features.Projects.Commands.Update;
 using BugTracker.Application.Features.Projects.Queries;
+using BugTracker.Application.Features.Tickets.Commands.Create;
 using BugTracker.Application.ViewModel;
 using BugTracker.Domain.Entities;
 using BugTracker.Domain.Identity;
@@ -33,6 +34,10 @@ namespace BugTracker.Application.Profiles
 
             #region user
             CreateMap<ApplicationUser, UserViewModel>();
+            #endregion
+
+            #region ticket
+            CreateMap<CreateTicketCommand, Ticket>();
             #endregion
         }
     }

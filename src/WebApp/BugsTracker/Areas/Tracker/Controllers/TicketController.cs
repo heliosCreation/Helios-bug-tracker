@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using BugTracker.Application.Dto.Tickets;
+using BugTracker.Application.Features.Team.Queries.GetAllAccessibleMembers;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
 
@@ -26,11 +28,11 @@ namespace BugTracker.Areas.Tracker.Controllers
 
         public async Task<IActionResult> LoadCreateModal()
         {
-            //var dto = new CreateProjectDto();
-            //var response = await Mediator.Send(new GetAllAccessibleMembersQuery());
-            //dto.Team = response.DataList;
+            var dto = new CreateTicketDto();
+            var response = await Mediator.Send(new GetAllAccessibleMembersQuery());
+            dto.Team = response.DataList;
 
-            return PartialView(CreateModalPath);
+            return PartialView(CreateModalPath, dto);
         }
     }
 }
