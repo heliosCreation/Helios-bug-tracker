@@ -2,9 +2,11 @@
 
 :root {
     --text-purple: #5d00ff;
-    --text-green:#28a745;
+    --text-green: #28a745;
     --text-gray: #c8c5ce;
     --blue: rgb(3,0,255,1);
+    --light-blue: #00f9b31c;
+    --light-gray-blue: #f2f7fd;
     --bg-black-50: #eaeaf4;
     --bg-scrollbar: #c7c7c7;
 }
@@ -200,7 +202,12 @@ overflow: auto;
 .blue-theme{
     background-color:var(--blue);
 }
-
+.light-gray-blue-theme{
+    background:var(--light-gray-blue);
+}
+.light-blue-theme{
+    background:var(--light-blue);
+}
 .blue-btn {
     color: white!important;
     background: #3a06fb;
@@ -229,6 +236,9 @@ overflow: auto;
     border-radius:0!important;
 }
 
+.border-radius-10 {
+    border-radius: 10px !important;
+}
 .green-btn {
     background: #28a745;
     color: white !important;
@@ -840,10 +850,13 @@ tbody tr td a:hover {
 }
 
 
-
-#comments-holder{
-    overflow-y:auto;
-    max-height:410px;
+.ticket-tabs .nav-item .nav-link.active {
+    background: #cefcff73 !important;
+}
+#comments-holder {
+    overflow-y: auto;
+    height: 410px;
+    max-height: 410px;
 }
 .comment-writter-holder{
     display:flex;
@@ -1026,7 +1039,7 @@ tbody tr td a:hover {
 
 .modal-dialog-large {
     max-height: 90vh;
-    min-width: 80vw;
+    min-width: 90vw;
     margin-left:auto;
 }
 

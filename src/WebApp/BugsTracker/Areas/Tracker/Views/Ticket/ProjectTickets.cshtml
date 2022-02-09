@@ -1,5 +1,7 @@
 ﻿@model BugTracker.Application.Features.Projects.ProjectWithTicketsAndTeamVm
 
+<partial name="../Shared/Partial/Common/_modalHolderPartial.cshtml" />
+
 <div class="py-4 row d-flex justify-content-around h-50">
 
     <div class="first-row col-11 p-0">
@@ -20,7 +22,7 @@
             </div>
 
             <div class="project-add-holder">
-                <a href="#" data-toggle="modal" data-target="#crupdateTicketModal" class="add-project-btn"> New Ticket</a>
+                <a href="#" data-toggle="modal" data-target="#createTicketModal" class="add-project-btn" id="create-ticket"> New Ticket</a>
             </div>
         </div>
 
@@ -79,84 +81,11 @@
 
 <!-- Temporary Modals-->
 
-<div class="modal fade" id="crupdateTicketModal" tabindex="-1" role="dialog" aria-labelledby="crupdateTicketModal" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-large" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Create Ticket</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-
-            </div>
-            <div class="modal-body">
-                <form class="row">
-                    <div class="col-6">
-                        <div class="form-group">
-                            <label for="Name" class="col-form-label">Name:</label>
-                            <input type="text" class="form-control" id="recipient-name">
-                        </div>
-                        <div class="form-group">
-                            <label for="message-text" class="col-form-label">Description:</label>
-                            <textarea class="form-control" id="message-text" rows="7"></textarea>
-                        </div>
-                    </div>
-
-                    <div class="col-6">
-                        <div class="form-group">
-                            <label for="estimated-hours" class="col-form-label">Estimated hours</label>
-                            <input type="number" class="form-control" id="estimated-hours">
-                        </div>
-                        <div class="form-group row">
-                            <div class="col-4">
-                                <label for="Name" class="col-form-label">Priority:</label>
-                                <select class="form-control" id="recipient-name">
-                                    <option>Immediate</option>
-                                    <option>High</option>
-                                    <option>Medium</option>
-                                    <option>Low</option>
-                                </select>
-                            </div>
-                            <div class="col-4">
-                                <label for="Name" class="col-form-label">Type:</label>
-                                <select class="form-control" id="recipient-name">
-                                    <option>Issue</option>
-                                    <option>Bug Fix</option>
-                                    <option>Feature</option>
-                                </select>
-                            </div>
-                            <div class="col-4">
-                                <label for="Name" class="col-form-label">Status</label>
-                                <select class="form-control" id="recipient-name">
-                                    <option>Opened</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="estimated-hours" class="col-form-label">Assigned Dev</label>
-                            <select class="form-control" id="recipient-name" multiple>
-                                <option>John doe</option>
-                                <option>Jane doe</option>
-                                <option>Jack Elfman</option>
-                            </select>
-                        </div>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-outline-success">Create new Ticket</button>
-            </div>
-        </div>
-    </div>
-</div>
+@*<partial name="../Shared/Partial/Ticket/_detailsTicketModalPartial.cshtml" />*@
+@*<partial name="../Shared/Partial/Ticket/_createTicketModalPartial.cshtml" />*@
 
 
-
-<partial name="../Shared/Partial/Ticket/_ticketDetailsModalPartial.cshtml" />
-
-
-<div class="modal fade" id="showProjectTeam" tabindex="-1" role="dialog" aria-labelledby="showProjectTeamModal" aria-hidden="true">
+@*<div class="modal fade" id="showProjectTeam" tabindex="-1" role="dialog" aria-labelledby="showProjectTeamModal" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -269,17 +198,20 @@
             </div>
         </div>
     </div>
-</div>
+</div>*@
 
 
 @section scripts {
+
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+    <script src="~/js/Tracker.js"></script>
     <script src="~/lib/Chart.js/chart.min.js"></script>
 
     <script type="text/javascript">
         $(document).ready(function () {
 
             $("#sectionName").text("Project");
-
+            handleModals();
             $("#cancelTeamAdd , #cancelTeamRemove").click(() => {
                 $(".modal-footer").removeClass("d-none");
                 $("#teamDisplay").removeClass("d-none");
@@ -320,28 +252,24 @@
                 }
             })
 
-            $("#show-comments-btn").click(() => {
-                $("#ticket-details").toggleClass("d-none");
-                $("#comments").toggleClass("d-none");
-
-                if ($(event.target).hasClass("blue-btn")) {
-                    $(event.target).text("Show Ticket Details")
-                    $(event.target).removeClass("blue-btn");
-                    $(event.target).addClass("yellow-btn");
-                    $("#ticket-details-modal-label").text("Write to your team");
-
-
-                }
-                else {
-                    $(event.target).text("Show Comments")
-                    $(event.target).addClass("blue-btn");
-                    $(event.target).removeClass("yellow-btn");
-                    $("#ticket-details-modal-label").text("Ticket details");
-                }
-            });
 
         });
 
+
+        function handleModals() {
+            const createModalUrl = '/Tracker/Ticket/loadCreateModal';
+            const updateModalUrl = '/Tracker/Ticket/loadUpdateModal';
+            const deleteModalUrl = '/Tracker/Ticket/loadDeleteModal';
+            var createBtn = $("#create-ticket");
+            var updateBtns = document.querySelectorAll('.update-btn');
+            var deleteBtns = document.querySelectorAll('.delete-btn');
+            $(document).ajaxComplete(function () {
+                $.validator.unobtrusive.parse(document);
+            });
+            AttachModalCreateListener(createBtn, createModalUrl, true);
+            AttachTableModalListeners(updateBtns, updateModalUrl);
+            AttachTableModalListeners(deleteBtns, deleteModalUrl);
+        }
 
     </script>
 }

@@ -22,12 +22,12 @@
             <div class="modal-body">
 
                 <div class="w-100 h-100" id="comments">
-                    <div class="bg-light" id="comments-holder">
+                    <div class="light-gray-blue-theme d-flex align-items-center flex-column-reverse p-1" id="comments-holder">
                         @{
-                            for (int i = 0; i < 9; i++)
+                            for (int i = 0; i < 12; i++)
                             {
-                                <div class="comment p-2 w-100">
-                                    <p class="title">John Doe <span>12/01/2021 4:02 pm</span> <span class="float-right pr-2"><i class="far fa-comments"></i></span></p>
+                                <div class="comment bg-white  my-1 px-2 border-radius-10  w-100">
+                                    <p class="title">John Doe - <span>12/01/2021 - 4:0@(i) pm</span> <span class="float-right pr-2"><i class="far fa-comments"></i></span></p>
                                     <p>Would need your attention on that.</p>
                                 </div>
                             }

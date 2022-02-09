@@ -18,6 +18,7 @@ namespace BugTracker.Domain.Entities
         public string Description { get; set; }
         public int EstimatedAmountOfHours { get; set; }
 
+        public ICollection<TicketsTeamMembers> TicketsTeamMembers { get; set; }
 
         [ForeignKey("ProjectId")]
         public Project Project { get; set; }

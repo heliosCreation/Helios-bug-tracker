@@ -1,4 +1,4 @@
-﻿function AttachModalCreateListener(createBtnId, url) {
+﻿function AttachModalCreateListener(createBtnId, url, modalLarge) {
     createBtnId.on('click', function () {
         var options = { "backdrop": "static", keyboard: true };
         $.ajax({
@@ -7,8 +7,11 @@
             contentType: "application/json; charset=utf-8",
             datatype: "json",
             success: function (result) {
-                $("#modal-holder").modal("show")
                 $(' #modal-holder .modal-content').html(result);
+                if (modalLarge) {
+                    $(".modal-dialog")[0].classList.add("modal-dialog-large")
+                }
+                $("#modal-holder").modal("show")
             },
             error: function (data) {
                 alert("Error loading dynamic data");

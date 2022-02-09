@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Threading.Tasks;
 
 namespace BugTracker.Areas.Tracker.Controllers
 {
@@ -7,6 +8,12 @@ namespace BugTracker.Areas.Tracker.Controllers
 
     public class TicketController : BaseController
     {
+        private const string ModalBasePath = "~/Areas/Tracker/Views/Shared/Partial/Ticket/";
+        private const string ModalType = "TicketModalPartial.cshtml";
+        private const string CreateModalPath = ModalBasePath + "_create" + ModalType;
+        private const string UpdateModalPath = ModalBasePath + "_update" + ModalType;
+        private const string DeleteModalPath = ModalBasePath + "_delete" + ModalType;
+
         public IActionResult GetAll()
         {
             return View();
@@ -15,6 +22,15 @@ namespace BugTracker.Areas.Tracker.Controllers
         public IActionResult GetTickets(Guid projectID)
         {
             return View("ProjectTickets");
+        }
+
+        public async Task<IActionResult> LoadCreateModal()
+        {
+            //var dto = new CreateProjectDto();
+            //var response = await Mediator.Send(new GetAllAccessibleMembersQuery());
+            //dto.Team = response.DataList;
+
+            return PartialView(CreateModalPath);
         }
     }
 }

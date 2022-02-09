@@ -35,6 +35,7 @@ namespace BugTracker.Persistence
         public DbSet<Project> Projects { get; set; }
         public DbSet<ProjectTeamMember> ProjectTeamMembers { get; set; }
         public DbSet<Ticket> Tickets { get; set; }
+        public DbSet<TicketsTeamMembers> TicketsTeamMembers { get; set; }
         public DbSet<Comment> Comments { get; set; }
 
         public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())

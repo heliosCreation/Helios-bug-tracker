@@ -1,0 +1,88 @@
+﻿<div class="modal-content">
+    <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Create Ticket</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+
+    </div>
+    <div class="modal-body">
+        <form class="d-flex">
+            <div class="col-6">
+                <div class="form-group">
+                    <label for="Name" class="col-form-label">Name:</label>
+                    <input type="text" class="form-control" id="recipient-name">
+                </div>
+                <div class="form-group">
+                    <label for="message-text" class="col-form-label">Description:</label>
+                    <textarea class="form-control" id="message-text" rows="7"></textarea>
+                </div>
+
+            </div>
+
+            <div class="col-6">
+                <div class="form-group">
+                    <label for="estimated-hours" class="col-form-label">Estimated hours</label>
+                    <input type="number" class="form-control" id="estimated-hours">
+                </div>
+                <div class="form-group row">
+                    <div class="col-4">
+                        <label for="Name" class="col-form-label">Priority:</label>
+                        <select class="form-control" id="recipient-name">
+                            <option>Immediate</option>
+                            <option>High</option>
+                            <option>Medium</option>
+                            <option>Low</option>
+                        </select>
+                    </div>
+                    <div class="col-4">
+                        <label for="Name" class="col-form-label">Type:</label>
+                        <select class="form-control" id="recipient-name">
+                            <option>Issue</option>
+                            <option>Bug Fix</option>
+                            <option>Feature</option>
+                        </select>
+                    </div>
+                    <div class="col-4">
+                        <label for="Name" class="col-form-label">Status</label>
+                        <select class="form-control" id="recipient-name">
+                            <option>Opened</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-4">
+                        <label for="estimated-hours" class="col-form-label">Assigned Project manager</label>
+                        <select class="form-control" id="recipient-name" multiple>
+                            <option>John doe</option>
+                            <option>Jane doe</option>
+                            <option>Jack Elfman</option>
+                        </select>
+                    </div>
+                    <div class="col-4">
+                        <label for="estimated-hours" class="col-form-label">Assigned Dev</label>
+                        <select class="form-control" id="recipient-name" multiple>
+                            <option>John doe</option>
+                            <option>Jane doe</option>
+                            <option>Jack Elfman</option>
+                        </select>
+                    </div>
+
+                    <div class="col-4">
+                        <label for="estimated-hours" class="col-form-label">Assigned submitter</label>
+                        <select class="form-control" id="recipient-name" multiple>
+                            <option>John doe</option>
+                            <option>Jane doe</option>
+                            <option>Jack Elfman</option>
+                        </select>
+                    </div>
+
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-outline-success">Create new Ticket</button>
+    </div>
+</div>

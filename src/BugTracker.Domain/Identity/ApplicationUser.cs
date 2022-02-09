@@ -11,5 +11,6 @@ namespace BugTracker.Domain.Identity
 
         public ICollection<Ticket> Tickets { get; set; }
         public ICollection<ProjectTeamMember> ProjectTeamMembers { get; set; }
+        public ICollection<TicketsTeamMembers> TicketsTeamMembers { get; set; }
     }
 }
