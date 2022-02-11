@@ -15,22 +15,26 @@ namespace BugTracker.Persistence.Configurations.Data
                 new Priority
                 {
                     Id = Guid.NewGuid(),
-                    Name = "Low"
+                    Name = "Low",
+                    Order = 1
                 },
                 new Priority
                 {
                     Id = Guid.NewGuid(),
-                    Name = "Medium"
+                    Name = "Medium",
+                    Order = 2
                 },
                 new Priority
                 {
                     Id = Guid.NewGuid(),
-                    Name = "High"
+                    Name = "High",
+                    Order = 3,
                 },
                 new Priority
                 {
                     Id = Guid.NewGuid(),
-                    Name = "Immediate"
+                    Name = "Immediate",
+                    Order = 4
                 },
             };
 

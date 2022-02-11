@@ -16,22 +16,26 @@ namespace BugTracker.Persistence.Configurations.Data
                 new Type
                 {
                     Id = Guid.NewGuid(),
-                    Name = "Bug - Error"
+                    Name = "Bug - Error",
+                    Order = 1
                 },
                 new Type
                 {
                     Id = Guid.NewGuid(),
-                    Name = "Feature request"
+                    Name = "Feature request",
+                    Order = 2,
                 },
                 new Type
                 {
                     Id = Guid.NewGuid(),
-                    Name = "Training"
+                    Name = "Training",
+                    Order = 3
                 },
                 new Type
                 {
                     Id = Guid.NewGuid(),
-                    Name = "Documentation"
+                    Name = "Documentation",
+                    Order = 4
                 },
             };
 

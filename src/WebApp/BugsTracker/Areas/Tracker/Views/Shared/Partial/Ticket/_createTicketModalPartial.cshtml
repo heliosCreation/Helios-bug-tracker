@@ -25,32 +25,36 @@
 
                 <div class="form-group row">
                     <div class="col-4">
-                        <label asp-for="Command.Priority" class="col-form-label">Priority:</label>
-                        <select asp-for="Command.Priority" class="form-control" id="recipient-name">
-                            <option>Immediate</option>
-                            <option>High</option>
-                            <option>Medium</option>
-                            <option>Low</option>
+                        <label asp-for="Command.PriorityId" class="col-form-label">Priority:</label>
+                        <select asp-for="Command.PriorityId" class="form-control" id="recipient-name">
+                            @foreach (var priority in Model.TicketConfigurations.Priorities)
+                            {
+                                <option value="@priority.Id">@priority.Name</option>
+                            }
                         </select>
-                        <span asp-validation-for="Command.Priority" class="text-danger"></span>
+                        <span asp-validation-for="Command.PriorityId" class="text-danger"></span>
 
                     </div>
                     <div class="col-4">
-                        <label asp-for="Command.Type" class="col-form-label">Type:</label>
-                        <select asp-for="Command.Type" class="form-control" id="recipient-name">
-                            <option>Issue</option>
-                            <option>Bug Fix</option>
-                            <option>Feature</option>
+                        <label asp-for="Command.TypeId" class="col-form-label">Type:</label>
+                        <select asp-for="Command.TypeId" class="form-control" id="recipient-name">
+                            @foreach (var type in Model.TicketConfigurations.Types)
+                            {
+                                <option value="@type.Id">@type.Name</option>
+                            }
                         </select>
-                        <span asp-validation-for="Command.Type" class="text-danger"></span>
+                        <span asp-validation-for="Command.TypeId" class="text-danger"></span>
 
                     </div>
                     <div class="col-4">
-                        <label asp-for="Command.Status" for="Name" class="col-form-label">Status</label>
-                        <select asp-for="Command.Status" class="form-control" id="recipient-name">
-                            <option>Opened</option>
+                        <label asp-for="Command.StatusId" for="Name" class="col-form-label">Status</label>
+                        <select asp-for="Command.StatusId" class="form-control" id="recipient-name">
+                            @foreach (var status in Model.TicketConfigurations.Statuses.Where(s => s.Name.ToLower() == "new"))
+                            {
+                                <option value="@status.Id">@status.Name</option>
+                            }
                         </select>
-                        <span asp-validation-for="Command.Status" class="text-danger"></span>
+                        <span asp-validation-for="Command.StatusId" class="text-danger"></span>
 
                     </div>
                 </div>

@@ -1,5 +1,6 @@
 ﻿using BugTracker.Application.Dto.Tickets;
 using BugTracker.Application.Features.Team.Queries.GetAllAccessibleMembers;
+using BugTracker.Application.Features.TicketConfigurations.Queries.GetAll;
 using BugTracker.Application.Features.Tickets.Commands.Create;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -40,8 +41,12 @@ namespace BugTracker.Areas.Tracker.Controllers
         public async Task<IActionResult> LoadCreateModal()
         {
             var dto = new CreateTicketDto();
-            var response = await Mediator.Send(new GetAllAccessibleMembersQuery());
-            dto.Team = response.DataList;
+
+            var teamResponse = await Mediator.Send(new GetAllAccessibleMembersQuery());
+            var ticketConfigurationResponse = await Mediator.Send(new GetAllTicketConfigurationsQuery());
+
+            dto.Team = teamResponse.DataList;
+            dto.TicketConfigurations = ticketConfigurationResponse.Data;
 
             return PartialView(CreateModalPath, dto);
         }

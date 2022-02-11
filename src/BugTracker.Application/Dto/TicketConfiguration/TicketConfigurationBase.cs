@@ -1,11 +1,10 @@
 ﻿using System;
 
-namespace BugTracker.Domain.Entities
+namespace BugTracker.Application.Dto.TicketConfiguration
 {
-    public class Priority
+    public class TicketConfigurationBase
     {
         public Guid Id { get; set; }
         public string Name { get; set; }
-        public int Order { get; set; }
     }
 }

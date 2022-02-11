@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using BugTracker.Application.Dto;
 using BugTracker.Application.Dto.Projects;
+using BugTracker.Application.Dto.TicketConfiguration;
 using BugTracker.Application.Features.Projects;
 using BugTracker.Application.Features.Projects.Commands.Create;
 using BugTracker.Application.Features.Projects.Commands.Update;
@@ -37,11 +38,11 @@ namespace BugTracker.Application.Profiles
             #endregion
 
             #region ticket
-            CreateMap<CreateTicketCommand, Ticket>()
-                .ForMember(dest => dest.Type, opt => opt.MapFrom(src => src.Type))
-                .ForMember(dest => dest.Priority, opt => opt.MapFrom(src => src.Priority))
-                .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status));
+            CreateMap<CreateTicketCommand, Ticket>();
 
+            CreateMap<Status, StatusDto>();
+            CreateMap<Priority, PriorityDto>();
+            CreateMap<Type, TypeDto>();
             #endregion
         }
     }

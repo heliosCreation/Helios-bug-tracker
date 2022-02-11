@@ -32,13 +32,13 @@ namespace BugTracker.Application.Features.Tickets.Commands.Create
                 .NotEmpty()
                 .GreaterThan(0);
 
-            RuleFor(p => p.Priority)
+            RuleFor(p => p.PriorityId)
                 .NotNull();
 
-            RuleFor(p => p.Type)
+            RuleFor(p => p.TypeId)
                 .NotNull();
 
-            RuleFor(p => p.Status)
+            RuleFor(p => p.StatusId)
                 .NotNull();
 
             RuleFor(e => e)

@@ -15,22 +15,27 @@ namespace BugTracker.Persistence.Configurations.Data
                 new Status
                 {
                     Id = Guid.NewGuid(),
-                    Name = "New"
+                    Name = "New",
+                    Order = 1
                 },
                 new Status
                 {
                     Id = Guid.NewGuid(),
-                    Name = "Open"
+                    Name = "Open",
+                    Order = 2
                 },
                 new Status
                 {
                     Id = Guid.NewGuid(),
-                    Name = "In progress"
+                    Name = "In progress",
+                    Order = 3
                 },
                 new Status
                 {
                     Id = Guid.NewGuid(),
-                    Name = "Resolved"
+                    Name = "Resolved",
+                    Order = 4
+
                 },
             };
 
