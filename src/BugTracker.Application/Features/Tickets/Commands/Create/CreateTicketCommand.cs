@@ -7,6 +7,10 @@ namespace BugTracker.Application.Features.Tickets.Commands.Create
 {
     public class CreateTicketCommand : IRequest<ApiResponse<IdResponse>>
     {
+        public CreateTicketCommand()
+        {
+
+        }
         public CreateTicketCommand(Guid projectId)
         {
             ProjectId = projectId;
