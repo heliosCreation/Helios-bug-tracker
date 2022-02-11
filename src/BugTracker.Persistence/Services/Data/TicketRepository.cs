@@ -17,6 +17,8 @@ namespace BugTracker.Persistence.Services.Data
         {
 
             await _dbContext.Tickets.AddAsync(entity);
+            await _dbContext.SaveChangesAsync();
+
             foreach (var id in teamIds)
             {
                 await _dbContext.TicketsTeamMembers.AddAsync(new TicketsTeamMembers { TicketId = entity.Id, UserId = id });
@@ -28,7 +30,7 @@ namespace BugTracker.Persistence.Services.Data
 
         public async Task<bool> NameIsUnique(string name)
         {
-            return await _dbContext.Tickets.AnyAsync(t => t.Name == name) == false;
+            return await _dbContext.Tickets.AsNoTracking().AnyAsync(t => t.Name == name) == false;
         }
     }
 }

@@ -37,7 +37,11 @@ namespace BugTracker.Application.Profiles
             #endregion
 
             #region ticket
-            CreateMap<CreateTicketCommand, Ticket>();
+            CreateMap<CreateTicketCommand, Ticket>()
+                .ForMember(dest => dest.Type, opt => opt.MapFrom(src => src.Type))
+                .ForMember(dest => dest.Priority, opt => opt.MapFrom(src => src.Priority))
+                .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status));
+
             #endregion
         }
     }

@@ -1,5 +1,6 @@
 ﻿using BugTracker.Application.Features.Tickets.Commands.Create;
 using BugTracker.Application.ViewModel;
+using System;
 using System.Collections.Generic;
 
 namespace BugTracker.Application.Dto.Tickets

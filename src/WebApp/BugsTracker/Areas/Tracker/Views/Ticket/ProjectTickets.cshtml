@@ -25,7 +25,10 @@
                 <a href="#" data-toggle="modal" data-target="#createTicketModal" class="add-project-btn" id="create-ticket"> New Ticket</a>
             </div>
         </div>
-
+        @if (ViewBag.isSuccess == true)
+        {
+            <partial name="../Shared/Partial/Common/_successAlertPartial.cshtml" model="new List<string>(){ViewBag.type, ViewBag.actionReturned }" />
+        }
         <div class="table-responsive w-100">
             <table class="table ticket-list-table">
                 <thead class="ticket-thead">

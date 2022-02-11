@@ -2,9 +2,7 @@
 using BugTracker.Application.Contracts.Identity;
 using FluentValidation;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -35,16 +33,13 @@ namespace BugTracker.Application.Features.Tickets.Commands.Create
                 .GreaterThan(0);
 
             RuleFor(p => p.Priority)
-                .NotNull()
-                .NotEmpty().WithMessage("{PropertyName} is required");
+                .NotNull();
 
             RuleFor(p => p.Type)
-                .NotNull()
-                .NotEmpty().WithMessage("{PropertyName} is required");
+                .NotNull();
 
             RuleFor(p => p.Status)
-                .NotNull()
-                .NotEmpty().WithMessage("{PropertyName} is required");
+                .NotNull();
 
             RuleFor(e => e)
                 .MustAsync(NameIsUnique).WithMessage("A ticket with the same given name already exists.")

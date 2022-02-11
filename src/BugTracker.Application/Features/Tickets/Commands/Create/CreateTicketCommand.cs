@@ -1,10 +1,10 @@
 ﻿using BugTracker.Application.Responses;
-using BugTracker.Domain.Enums;
+using BugTracker.Domain.Entities;
 using MediatR;
 using System;
 using System.Collections.Generic;
 
-using Type = BugTracker.Domain.Enums.Type;
+using Type = BugTracker.Domain.Entities.Type;
 
 namespace BugTracker.Application.Features.Tickets.Commands.Create
 {
