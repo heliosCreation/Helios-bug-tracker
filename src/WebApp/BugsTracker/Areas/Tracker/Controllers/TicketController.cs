@@ -23,8 +23,9 @@ namespace BugTracker.Areas.Tracker.Controllers
             return View();
         }
 
-        public IActionResult GetTickets(Guid projectID, bool isSuccess = false, bool isFailed = false, string type = null, string action = null)
+        public IActionResult GetTickets(Guid projectId, bool isSuccess = false, bool isFailed = false, string type = null, string action = null)
         {
+            ViewBag.projectId = projectId;
             ViewBag.Type = type;
             ViewBag.Action = action;
             return View("ProjectTickets");
@@ -38,13 +39,12 @@ namespace BugTracker.Areas.Tracker.Controllers
             }
             return RedirectToAction("GetTickets", new { isFailed = true });
         }
-        public async Task<IActionResult> LoadCreateModal()
+        public async Task<IActionResult> LoadCreateModal(Guid projectId)
         {
-            var dto = new CreateTicketDto();
+            var dto = new CreateTicketDto(projectId);
 
             var teamResponse = await Mediator.Send(new GetAllAccessibleMembersQuery());
             var ticketConfigurationResponse = await Mediator.Send(new GetAllTicketConfigurationsQuery());
-
             dto.Team = teamResponse.DataList;
             dto.TicketConfigurations = ticketConfigurationResponse.Data;
 

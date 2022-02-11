@@ -1,7 +1,6 @@
 ﻿@model BugTracker.Application.Features.Projects.ProjectWithTicketsAndTeamVm
 
 <partial name="../Shared/Partial/Common/_modalHolderPartial.cshtml" />
-
 <div class="py-4 row d-flex justify-content-around h-50">
 
     <div class="first-row col-11 p-0">
@@ -212,9 +211,10 @@
 
     <script type="text/javascript">
         $(document).ready(function () {
-
             $("#sectionName").text("Project");
+
             handleModals();
+
             $("#cancelTeamAdd , #cancelTeamRemove").click(() => {
                 $(".modal-footer").removeClass("d-none");
                 $("#teamDisplay").removeClass("d-none");
@@ -260,6 +260,8 @@
 
 
         function handleModals() {
+            var projectId = '@ViewBag.projectId';
+
             const createModalUrl = '/Tracker/Ticket/loadCreateModal';
             const updateModalUrl = '/Tracker/Ticket/loadUpdateModal';
             const deleteModalUrl = '/Tracker/Ticket/loadDeleteModal';
@@ -269,7 +271,7 @@
             $(document).ajaxComplete(function () {
                 $.validator.unobtrusive.parse(document);
             });
-            AttachModalCreateListener(createBtn, createModalUrl, true);
+            AttachModalCreateListener(createBtn, createModalUrl, true, projectId);
             AttachTableModalListeners(updateBtns, updateModalUrl);
             AttachTableModalListeners(deleteBtns, deleteModalUrl);
         }

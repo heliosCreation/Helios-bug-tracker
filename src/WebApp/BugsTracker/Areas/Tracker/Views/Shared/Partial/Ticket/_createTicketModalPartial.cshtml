@@ -10,6 +10,7 @@
     </div>
     <form asp-controller="Ticket" asp-action="create" >
 
+        <input type="hidden" asp-for="Command.ProjectId" />
         <div class="modal-body d-flex">
             <div class="col-6">
                 <div class="form-group">

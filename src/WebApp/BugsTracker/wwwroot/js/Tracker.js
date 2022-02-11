@@ -1,9 +1,11 @@
-﻿function AttachModalCreateListener(createBtnId, url, modalLarge) {
+﻿function AttachModalCreateListener(createBtnId, url, modalLarge, data) {
     createBtnId.on('click', function () {
+        console.log(data)
         var options = { "backdrop": "static", keyboard: true };
         $.ajax({
             type: "GET",
             url: url,
+            data: jQuery.param({ projectId: data }),
             contentType: "application/json; charset=utf-8",
             datatype: "json",
             success: function (result) {
