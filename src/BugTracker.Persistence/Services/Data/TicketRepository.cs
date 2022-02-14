@@ -1,7 +1,9 @@
 ﻿using BugTracker.Application.Contracts.Data;
 using BugTracker.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace BugTracker.Persistence.Services.Data
@@ -28,6 +30,13 @@ namespace BugTracker.Persistence.Services.Data
             return entity;
         }
 
+        public async Task<IEnumerable<Ticket>> GetTicketsByProject(Guid id)
+        {
+            return await _dbContext.Tickets.Include(t => t.Priority).Include(t => t.Status).Include(t => t.Type)
+                        .Where(t => t.ProjectId == id)
+                        .OrderBy(t => t.CreatedDate)
+                        .ToListAsync();
+        }
         public async Task<bool> NameIsUnique(string name)
         {
             return await _dbContext.Tickets.AsNoTracking().AnyAsync(t => t.Name == name) == false;

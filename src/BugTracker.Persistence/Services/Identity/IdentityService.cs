@@ -86,6 +86,10 @@ namespace BugTracker.Persistence.Services.Identity
         {
             return await _userManager.GetRolesAsync(new ApplicationUser { Id = id });
         }
+        public async Task<string> GetUserNameById(string id)
+        {
+            return await _context.Users.Where(u => u.Id == id).Select(u => u.UserName).FirstOrDefaultAsync();
+        }
 
         public async Task<ICollection<ApplicationUser>> GetAllAccessibleUsers(string uid)
         {

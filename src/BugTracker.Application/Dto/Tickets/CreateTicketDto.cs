@@ -12,6 +12,7 @@ namespace BugTracker.Application.Dto.Tickets
             Command = new CreateTicketCommand(projectId);
         }
 
+        public string ProjectName { get; set; }
         public CreateTicketCommand Command { get; set; }
         public List<UserViewModel> Team { get; set; }
         public  TicketConfigurationEntitiesViewModel TicketConfigurations { get; set; }

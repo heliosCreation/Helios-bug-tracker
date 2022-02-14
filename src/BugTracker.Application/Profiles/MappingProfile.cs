@@ -6,6 +6,7 @@ using BugTracker.Application.Features.Projects;
 using BugTracker.Application.Features.Projects.Commands.Create;
 using BugTracker.Application.Features.Projects.Commands.Update;
 using BugTracker.Application.Features.Projects.Queries;
+using BugTracker.Application.Features.Tickets;
 using BugTracker.Application.Features.Tickets.Commands.Create;
 using BugTracker.Application.ViewModel;
 using BugTracker.Domain.Entities;
@@ -39,7 +40,7 @@ namespace BugTracker.Application.Profiles
 
             #region ticket
             CreateMap<CreateTicketCommand, Ticket>();
-
+            CreateMap<Ticket, TicketVm>().ReverseMap();
             CreateMap<Status, StatusDto>();
             CreateMap<Priority, PriorityDto>();
             CreateMap<Type, TypeDto>();

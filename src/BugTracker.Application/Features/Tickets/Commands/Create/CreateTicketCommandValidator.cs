@@ -27,10 +27,10 @@ namespace BugTracker.Application.Features.Tickets.Commands.Create
             RuleFor(p => p.Description)
                 .MaximumLength(100).WithMessage("{PropertyName} can't exceed 100 characters.");
 
-            RuleFor(p => p.EstimatedHours)
+            RuleFor(p => p.EstimatedAmountOfHours)
                 .NotNull()
                 .NotEmpty()
-                .GreaterThan(0);
+                .InclusiveBetween(1,100);
 
             RuleFor(p => p.PriorityId)
                 .NotNull();

@@ -2,6 +2,8 @@
 using BugTracker.Application.Features.Team.Queries.GetAllAccessibleMembers;
 using BugTracker.Application.Features.TicketConfigurations.Queries.GetAll;
 using BugTracker.Application.Features.Tickets.Commands.Create;
+using BugTracker.Application.Features.Tickets.Queries.GetProjectTickets;
+using BugTracker.Application.ViewModel;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
@@ -23,23 +25,26 @@ namespace BugTracker.Areas.Tracker.Controllers
             return View();
         }
 
-        public IActionResult GetTickets(Guid projectId, bool isSuccess = false, bool isFailed = false, string type = null, string action = null)
+        public async Task<IActionResult> ByProject(Guid projectId, string projectName, bool isSuccess = false, bool isFailed = false, string type = null, string action = null)
         {
             ViewBag.projectId = projectId;
             ViewBag.Type = type;
             ViewBag.Action = action;
-            return View("ProjectTickets");
+
+            var response = await Mediator.Send(new GetProjectTicketsQuery(projectId));
+            var viewModel = new ProjectWithTicketVm(projectId,projectName, response.DataList);
+            return View("ProjectTickets", viewModel);
         }
-        public async Task<IActionResult> Create(CreateTicketCommand command)
+        public async Task<IActionResult> Create(CreateTicketCommand command, Guid projectId, string projectName)
         {
             var response = await Mediator.Send(command);
             if (response.Succeeded)
             {
-                return RedirectToAction("GetTickets", new { isSuccess = true, type = "ticket", action = "created" });
+                return RedirectToAction("ByProject", new {projectId = projectId, projectName = projectName, isSuccess = true, type = "ticket", action = "created" });
             }
-            return RedirectToAction("GetTickets", new { isFailed = true });
+            return RedirectToAction("ByProject", new { projectId = projectId, projectName = projectName, isFailed = true });
         }
-        public async Task<IActionResult> LoadCreateModal(Guid projectId)
+        public async Task<IActionResult> LoadCreateModal(Guid projectId, string projectName)
         {
             var dto = new CreateTicketDto(projectId);
 
@@ -47,6 +52,7 @@ namespace BugTracker.Areas.Tracker.Controllers
             var ticketConfigurationResponse = await Mediator.Send(new GetAllTicketConfigurationsQuery());
             dto.Team = teamResponse.DataList;
             dto.TicketConfigurations = ticketConfigurationResponse.Data;
+            dto.ProjectName = projectName;
 
             return PartialView(CreateModalPath, dto);
         }

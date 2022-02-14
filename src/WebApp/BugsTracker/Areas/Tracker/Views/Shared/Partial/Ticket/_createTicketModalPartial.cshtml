@@ -8,7 +8,7 @@
         </button>
 
     </div>
-    <form asp-controller="Ticket" asp-action="create" >
+    <form asp-controller="Ticket" asp-action="create" asp-route-projectId="@Model.Command.ProjectId" asp-route-projectName="" >
 
         <input type="hidden" asp-for="Command.ProjectId" />
         <div class="modal-body d-flex">
@@ -61,9 +61,9 @@
                 </div>
 
                 <div class="form-group">
-                    <label asp-for="Command.EstimatedHours" class="col-form-label">Estimated hours</label>
-                    <input asp-for="Command.EstimatedHours" class="form-control" id="estimated-hours">
-                    <span asp-validation-for="Command.EstimatedHours" class="text-danger"></span>
+                    <label asp-for="Command.EstimatedAmountOfHours" class="col-form-label">Estimated hours</label>
+                    <input asp-for="Command.EstimatedAmountOfHours" class="form-control" id="estimated-hours">
+                    <span asp-validation-for="Command.EstimatedAmountOfHours" class="text-danger"></span>
                 </div>
 
             </div>

@@ -1,4 +1,4 @@
-﻿@model BugTracker.Application.Features.Projects.ProjectWithTicketsAndTeamVm
+﻿@model BugTracker.Application.ViewModel.ProjectWithTicketVm
 
 <partial name="../Shared/Partial/Common/_modalHolderPartial.cshtml" />
 <div class="py-4 row d-flex justify-content-around h-50">
@@ -64,6 +64,32 @@
                             </div>
                         </td>
                     </tr>
+
+                    @foreach (var ticket in Model.Tickets)
+                    {
+                        <tr>
+                            <td scope="row" class="text-purple"><a data-toggle="modal" data-target="#showTicketDetails" class="ticket-link">@ticket.Name</td>
+                            <td>@ticket.Description</td>
+                            <td>@ticket.Author</td>
+                            <td>@ticket.Priority</td>
+                            <td>@ticket.Status</td>
+                            <td>@ticket.Type</td>
+                            <td class="text-center">@ticket.EstimatedAmountOfHours</td>
+
+                            <td class="text-center">
+                                <div class="dropdown">
+                                    <a href="#" class="dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <i class="fas fa-ellipsis-v"></i>
+                                    </a>
+                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                        <a class="dropdown-item" href="#" data-toggle="modal" data-target="#crupdateTicketModal">Edit</a>
+                                        <a class="dropdown-item" href="#" data-toggle="modal" data-target="#deleteTicketModal">Delete</a>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+
+                    }
                 </tbody>
             </table>
         </div>
@@ -83,7 +109,7 @@
 
 <!-- Temporary Modals-->
 
-@*<partial name="../Shared/Partial/Ticket/_detailsTicketModalPartial.cshtml" />*@
+<partial name="../Shared/Partial/Ticket/_detailsTicketModalPartial.cshtml" />
 @*<partial name="../Shared/Partial/Ticket/_createTicketModalPartial.cshtml" />*@
 
 
@@ -211,7 +237,7 @@
 
     <script type="text/javascript">
         $(document).ready(function () {
-            $("#sectionName").text("Project");
+            $("#sectionName").text('@(Model.Name)');
 
             handleModals();
 
