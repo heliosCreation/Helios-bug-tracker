@@ -9,6 +9,7 @@ namespace BugTracker.Application.Contracts.Data
     {
         Task<Ticket> AddTicketAsync(Ticket entity, ICollection<string> teamIds);
         Task<IEnumerable<Ticket>> GetTicketsByProject(Guid id);
-        Task<bool> NameIsUnique(string name);
+        Task<bool> NameIsUnique(string name, bool isAnUpdate, Guid id = new Guid());
+        Task<bool> UpdateTicketAsync(Ticket entity, ICollection<string> teamIds);
     }
 }

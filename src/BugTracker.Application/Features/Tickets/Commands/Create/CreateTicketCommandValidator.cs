@@ -48,7 +48,7 @@ namespace BugTracker.Application.Features.Tickets.Commands.Create
 
         private async Task<bool> NameIsUnique(CreateTicketCommand e, CancellationToken c)
         {
-            return await _ticketRepository.NameIsUnique(e.Name);
+            return await _ticketRepository.NameIsUnique(e.Name, false);
         }
 
         private async Task<bool> UserIdsAreValid(CreateTicketCommand e, CancellationToken c)

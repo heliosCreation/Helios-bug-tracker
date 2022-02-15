@@ -1,12 +1,31 @@
-﻿using System;
+﻿using BugTracker.Application.Responses;
+using MediatR;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BugTracker.Application.Features.Tickets.Commands.Update
 {
-    class UpdateTicketCommand
+    public class UpdateTicketCommand : IRequest<ApiResponse<object>>
     {
+        public UpdateTicketCommand()
+        {
+
+        }
+        public UpdateTicketCommand(Guid ticketId, Guid projectId)
+        {
+            TicketId = ticketId;
+            ProjectId = projectId;
+        }
+
+        public string Name { get; set; }
+        public string Description { get; set; }
+        public int EstimatedAmountOfHours { get; set; }
+        public Guid PriorityId { get; set; }
+        public Guid TypeId { get; set; }
+        public Guid StatusId { get; set; }
+
+        public ICollection<Guid> Team { get; set; } = new List<Guid>();
+        public Guid TicketId { get; }
+        public Guid ProjectId { get; set; }
     }
 }
