@@ -2,6 +2,7 @@
 using BugTracker.Application.Contracts.Data;
 using BugTracker.Application.Contracts.Identity;
 using BugTracker.Application.Responses;
+using BugTracker.Application.ViewModel;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -11,33 +12,39 @@ using System.Threading.Tasks;
 
 namespace BugTracker.Application.Features.Tickets.Queries.GetProjectTickets
 {
-    public class GetProjectTicketsQueryHandler : IRequestHandler<GetProjectTicketsQuery, ApiResponse<TicketVm>>
+    public class GetProjectTicketsQueryHandler : IRequestHandler<GetProjectTicketsQuery, ApiResponse<ProjectWithTicketVm>>
     {
         private readonly IMapper _mapper;
         private readonly ITicketRepository _ticketRepository;
+        private readonly IProjectRepository _projectRepository;
         private readonly IIdentityService _identityService;
         private readonly ITicketConfigurationRepository _ticketConfigurationRepository;
 
         public GetProjectTicketsQueryHandler(
             IMapper mapper,
             ITicketRepository ticketRepository,
+            IProjectRepository projectRepository,
             IIdentityService identityService,
             ITicketConfigurationRepository ticketConfigurationRepository)
         {
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
             _ticketRepository = ticketRepository ?? throw new ArgumentNullException(nameof(ticketRepository));
+            _projectRepository = projectRepository ?? throw new ArgumentNullException(nameof(projectRepository));
             _identityService = identityService ?? throw new ArgumentNullException(nameof(identityService));
             _ticketConfigurationRepository = ticketConfigurationRepository ?? throw new ArgumentNullException(nameof(ticketConfigurationRepository));
         }
-        public async Task<ApiResponse<TicketVm>> Handle(GetProjectTicketsQuery request, CancellationToken cancellationToken)
+        public async Task<ApiResponse<ProjectWithTicketVm>> Handle(GetProjectTicketsQuery request, CancellationToken cancellationToken)
         {
-            var response = new ApiResponse<TicketVm>();
+            var response = new ApiResponse<ProjectWithTicketVm>();
+
+            var project = await _projectRepository.GetByIdAsync(request.ProjectId);
             var tickets = (await _ticketRepository.GetTicketsByProject(request.ProjectId)).ToList();
 
-            response.DataList = _mapper.Map<List<TicketVm>>(tickets.ToList());
-            for (int i = 0; i < response.DataList.Count(); i++)
+            response.Data = new ProjectWithTicketVm(project.Id, project.Name, _mapper.Map<List<TicketVm>>(tickets.ToList()));
+
+            for (int i = 0; i < response.Data.Tickets.Count(); i++)
             {
-                var target = response.DataList[i];
+                var target = response.Data.Tickets[i];
                 target.Author = await _identityService.GetUserNameById(tickets[i].CreatedBy.ToString());
                 target.Priority = tickets[i].Priority.Name;
                 target.Status = tickets[i].Status.Name;

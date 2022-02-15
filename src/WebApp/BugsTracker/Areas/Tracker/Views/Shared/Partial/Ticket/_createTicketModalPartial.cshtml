@@ -8,7 +8,7 @@
         </button>
 
     </div>
-    <form asp-controller="Ticket" asp-action="create" asp-route-projectId="@Model.Command.ProjectId" asp-route-projectName="" >
+    <form asp-controller="Ticket" asp-action="create" asp-route-projectId="@Model.Command.ProjectId">
 
         <input type="hidden" asp-for="Command.ProjectId" />
         <div class="modal-body d-flex">

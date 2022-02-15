@@ -1,0 +1,21 @@
+﻿@model BugTracker.Application.Dto.Tickets.DeleteTicketDto
+
+
+<div class="modal-content">
+    <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Delete ticket</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <form asp-controller="Ticket" asp-action="Delete" asp-route-id="@Model.Id" asp-route-projectId="@Model.ProjectId">
+        <div class="modal-body">
+            <p>Are you sure you want to delete the ticket <span class="text-purple"> @Model.Name </span>?</p>
+            <p>The deletion of this information is irreversible, and will delete all related data.</p>
+        </div>
+        <div class="modal-footer">
+            <input type="submit" class="green-btn" value="Delete ticket" />
+        </div>
+    </form>
+
+</div>

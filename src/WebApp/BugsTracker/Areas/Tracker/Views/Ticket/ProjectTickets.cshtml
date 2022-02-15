@@ -43,32 +43,12 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td scope="row" class="text-purple"><a data-toggle="modal" data-target="#showTicketDetails" class="ticket-link">Deploy Project</a></td>
-                        <td>Deploy With As Little Cost As Possible</td>
-                        <td>John doe</td>
-                        <td>High</td>
-                        <td>Open</td>
-                        <td>Feature request</td>
-                        <td class="text-center">5</td>
-
-                        <td class="text-center">
-                            <div class="dropdown">
-                                <a href="#" class="dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <i class="fas fa-ellipsis-v"></i>
-                                </a>
-                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#crupdateTicketModal">Edit</a>
-                                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#deleteTicketModal">Delete</a>
-                                </div>
-                            </div>
-                        </td>
-                    </tr>
 
                     @foreach (var ticket in Model.Tickets)
                     {
                         <tr>
-                            <td scope="row" class="text-purple"><a data-toggle="modal" data-target="#showTicketDetails" class="ticket-link">@ticket.Name</td>
+                            <td class="d-none">@ticket.Id</td>
+                            <td scope="row" class="text-purple"><a data-toggle="modal" data-target="#showTicketDetails" class="ticket-link" >@ticket.Name </a></td>
                             <td>@ticket.Description</td>
                             <td>@ticket.Author</td>
                             <td>@ticket.Priority</td>
@@ -82,8 +62,8 @@
                                         <i class="fas fa-ellipsis-v"></i>
                                     </a>
                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                        <a class="dropdown-item" href="#" data-toggle="modal" data-target="#crupdateTicketModal">Edit</a>
-                                        <a class="dropdown-item" href="#" data-toggle="modal" data-target="#deleteTicketModal">Delete</a>
+                                        <a class="dropdown-item update-btn" href="#" data-toggle="modal" data-target="#crupdateTicketModal">Edit</a>
+                                        <a class="dropdown-item delete-btn" href="#" data-toggle="modal" data-target="#deleteTicketModal">Delete</a>
                                     </div>
                                 </div>
                             </td>
@@ -208,25 +188,7 @@
 </div>
 
 
-<div class="modal fade" id="deleteTicketModal" tabindex="-1" role="dialog" aria-labelledby="deleteTicketModal" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLongTitle">Delete ticket</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <p>Are you sure you want to delete the ticket <span class="text-purple"> Name </span>?</p>
-                <p>The deletion of this information is irreversible, and will delete all related data.</p>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="green-btn">Delete ticket</button>
-            </div>
-        </div>
-    </div>
-</div>*@
+*@
 
 
 @section scripts {
@@ -286,20 +248,20 @@
 
 
         function handleModals() {
-            var projectId = '@ViewBag.projectId';
+            var projectId = '@Model.Id';
 
-            const createModalUrl = '/Tracker/Ticket/loadCreateModal';
+            const createModalUrl = '/Tracker/Ticket/loadCreateModal?projectId=' + projectId;
             const updateModalUrl = '/Tracker/Ticket/loadUpdateModal';
-            const deleteModalUrl = '/Tracker/Ticket/loadDeleteModal';
+            const deleteModalUrl = '/Tracker/Ticket/loadDeleteModal?projectId=' + projectId;
             var createBtn = $("#create-ticket");
             var updateBtns = document.querySelectorAll('.update-btn');
             var deleteBtns = document.querySelectorAll('.delete-btn');
             $(document).ajaxComplete(function () {
                 $.validator.unobtrusive.parse(document);
             });
-            AttachModalCreateListener(createBtn, createModalUrl, true, projectId);
+            AttachModalCreateListener(createBtn, createModalUrl, true);
             AttachTableModalListeners(updateBtns, updateModalUrl);
-            AttachTableModalListeners(deleteBtns, deleteModalUrl);
+            AttachTableModalListeners(deleteBtns, deleteModalUrl, true);
         }
 
     </script>

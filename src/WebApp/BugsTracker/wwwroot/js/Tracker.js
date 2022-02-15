@@ -1,11 +1,9 @@
-﻿function AttachModalCreateListener(createBtnId, url, modalLarge, data) {
+﻿function AttachModalCreateListener(createBtnId, url, modalLarge) {
     createBtnId.on('click', function () {
-        console.log(data)
         var options = { "backdrop": "static", keyboard: true };
         $.ajax({
             type: "GET",
             url: url,
-            data: jQuery.param({ projectId: data }),
             contentType: "application/json; charset=utf-8",
             datatype: "json",
             success: function (result) {
@@ -23,16 +21,22 @@
     });
 }
 
-function AttachTableModalListeners(buttons, url) {
+function AttachTableModalListeners(buttons, url, getName = false) {
     buttons.forEach((btn) => {
         $(btn).on('click', () => {
             let parentContainer = btn.closest("tr");
             let targetId = parentContainer.querySelector(".d-none").innerText;
+
+            if (getName === true) {
+                var name = parentContainer.querySelector(".text-purple a.ticket-link").innerText;
+                console.log("here" + name)
+            }
+
             $.ajax({
                 type: "GET",
                 url: url,
                 contentType: "application/json; charset=utf-8",
-                data: { Id: targetId },
+                data: (getName === true) ? { id: targetId, name: name } : { id: targetId },
                 datatype: "json",
                 success: function (result) {
                     $("#modal-holder").modal("show")

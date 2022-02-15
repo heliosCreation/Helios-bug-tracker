@@ -15,6 +15,6 @@ namespace BugTracker.Application.ViewModel
         public Guid Id { get; set; }
         public string Name { get; set; }
 
-        public ICollection<TicketVm> Tickets { get; set; }
+        public List<TicketVm> Tickets { get; set; } = new List<TicketVm>();
     }
 }
