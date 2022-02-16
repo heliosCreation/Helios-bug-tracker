@@ -1,7 +1,8 @@
-﻿@model BugTracker.Application.Dto.Tickets.CreateTicketDto
+﻿@model BugTracker.Application.Dto.Tickets.UpdateTicketDto
+
 <div class="modal-header  d-flex flex-column pl-0 pb-0">
     <div class="w-100 d-flex align-items-center pl-2 pb-2">
-        <h5 class="modal-title" id="ticket-update-modal-label">Create ticket</h5>
+        <h5 class="modal-title" id="ticket-update-modal-label">Update ticket</h5>
 
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
@@ -17,8 +18,8 @@
         </li>
     </ul>
 </div>
-<form asp-controller="Ticket" asp-action="Create">
-    <input type="hidden" asp-for="Command.ProjectId"/>
+<form asp-controller="Ticket" asp-action="Update" asp-route-projectId="@Model.Command.TicketId">
+
     <div class="modal-body">
         <div class="col-12" id="ticket-configuration">
             <div class="form-group d-flex">
@@ -83,35 +84,52 @@
             <div class="form-group">
 
                 <div class="p-2">
-                    <label asp-for="Command.Team" class="col-form-label">Assigned Project manager</label>
+                    <div class="d-flex">
+                        <label asp-for="Command.Team" class="col-form-label">Assigned Project manager</label>
 
+                        <div class="ml-auto d-flex justify-content-center align-items-center flex-wrap-reverse">
+                            <input type="button" class="x-btn purple small select-cleaner" value="Clear" />
+                        </div>
+                    </div>
                     <select asp-for="Command.Team" class="form-control" id="pm-team-select" multiple>
                         @foreach (var pm in Model.Team.Where(tm => tm.Role.ToLower() == "project manager"))
                         {
-                            <option value="@pm.Id">@pm.Username - @pm.Role </option>
+                            <option value="@pm.Id" class="@(Model.Command.Team.Contains(pm.Id)? "selected":"")">@pm.Username - @pm.Role </option>
                         }
                     </select>
                     <span asp-validation-for="Command.Team" class="text-danger"></span>
                 </div>
                 <div class="p-2">
-                    <label class="col-form-label">Assigned Dev</label>
+                    <div class="d-flex">
 
+                        <label class="col-form-label">Assigned Dev</label>
+
+                        <div class="ml-auto d-flex justify-content-center align-items-center flex-wrap-reverse">
+                            <input type="button" class="x-btn purple small select-cleaner" value="Clear" />
+                        </div>
+
+                    </div>
                     <select asp-for="Command.Team" class="form-control" id="dev-team-select" multiple>
                         @foreach (var dev in Model.Team.Where(tm => tm.Role.ToLower() == "developer"))
                         {
-                            <option value="@dev.Id">@dev.Username - @dev.Role </option>
+                            <option value="@dev.Id" class="@(Model.Command.Team.Contains(dev.Id)? "selected":"")">@dev.Username - @dev.Role </option>
                         }
                     </select>
                     <span asp-validation-for="Command.Team" class="text-danger"></span>
                 </div>
 
                 <div class="p-2">
-                    <label class="col-form-label">Assigned submitter</label>
+                    <div class="d-flex">
+                        <label class="col-form-label">Assigned submitter</label>
 
+                        <div class="ml-auto d-flex justify-content-center align-items-center flex-wrap-reverse">
+                            <input type="button" class="x-btn purple small select-cleaner" value="Clear" />
+                        </div>
+                    </div>
                     <select asp-for="Command.Team" class="form-control" id="sub-team-select" multiple>
                         @foreach (var sub in Model.Team.Where(tm => tm.Role.ToLower() == "submitter"))
                         {
-                            <option value="@sub.Id">@sub.Username - @sub.Role </option>
+                            <option value="@sub.Id" class="@(Model.Command.Team.Contains(sub.Id)? "selected":"")">@sub.Username - @sub.Role </option>
                         }
                     </select>
                     <span asp-validation-for="Command.Team" class="text-danger"></span>
@@ -124,5 +142,4 @@
         <input type="submit" class="x-btn green" />
     </div>
 </form>
-
 

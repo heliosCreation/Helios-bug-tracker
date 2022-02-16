@@ -1,15 +1,7 @@
 ﻿@import url('https://fonts.googleapis.com/css?family=Nova+Slim&display=swap');
+@import "root.css";
+@import "button.css";
 
-:root {
-    --text-purple: #5d00ff;
-    --text-green: #28a745;
-    --text-gray: #c8c5ce;
-    --blue: rgb(3,0,255,1);
-    --light-blue: #00f9b31c;
-    --light-gray-blue: #f2f7fd;
-    --bg-black-50: #eaeaf4;
-    --bg-scrollbar: #c7c7c7;
-}
 * {
     margin: 0;
     padding: 0;
@@ -208,29 +200,7 @@ overflow: auto;
 .light-blue-theme{
     background:var(--light-blue);
 }
-.blue-btn {
-    color: white!important;
-    background: #3a06fb;
-    padding: 5px;
-    border-radius: 5px;
-    cursor:pointer;
-}
 
-.blue-btn:hover {
-    background-color: #2402a4;
-}
-
-.yellow-btn {
-    color: white !important;
-    background: #ffc107;
-    padding: 5px;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-.yellow-btn:hover {
-    background-color: #e0a800;
-}
 
 .border-radius-0{
     border-radius:0!important;
@@ -239,17 +209,7 @@ overflow: auto;
 .border-radius-10 {
     border-radius: 10px !important;
 }
-.green-btn {
-    background: #28a745;
-    color: white !important;
-    padding: 5px;
-    border-radius: 5px;
-    cursor: pointer;
-    border: none;
-}
-.green-btn:hover {
-    background: #1e8135;
-}
+
 
 .table-sorter-select,
 .table-sorter-input {
@@ -577,52 +537,6 @@ padding: 0px;
     font-size:13px;
 }
 
-/******* CUSTOM BTN SECTION   ******/
-.add-member-btn,
-.add-project-btn {
-    color: white;
-    background: #3a06fb;
-    padding: 5px;
-    border-radius: 5px;
-}
-.add-member-btn:hover,
-.add-project-btn:hover{
-    background-color:#2402a4;
-}
-.manage-team-btn {
-    color: white;
-    background: #34d834;
-    padding: 5px;
-    border-radius: 5px;
-    border:1px solid transparent;
-}
-.manage-team-btn:hover {
-    background-color: #299a29;
-}
-.show-team-btn {
-    color: white;
-    background: #ffc107;
-    padding: 5px;
-    border-radius: 5px;
-}
-
-.show-team-btn:hover{
-    background-color:#e0a800;
-}
-
-.red-btn {
-    color: white !important;
-    background: #ff0707;
-    padding: 5px;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-.red-btn:hover{
-    background-color:#ca0606;
-}
-
-/*****CUSTOM BTN ENDS ******/
 .project-thead tr,
 .ticket-thead tr{
     background-color: #21252914;
@@ -849,7 +763,7 @@ tbody tr td a:hover {
     color:rgba(0,0,0,0.25);
 }
 
-
+.crupdate-ticket-tabs .nav-item .nav-link.active, 
 .ticket-tabs .nav-item .nav-link.active {
     background: #cefcff73 !important;
 }
@@ -883,6 +797,11 @@ tbody tr td a:hover {
 /* ---------------------------------------------------
     Custom Modal
 ----------------------------------------------------- */
+.modal-body:not(.modal-right) {
+    max-height: calc(100vh - 200px);
+    overflow-y: auto;
+}
+
 .modal-title{
     text-transform:none!important; 
 }
@@ -927,6 +846,10 @@ tbody tr td a:hover {
     border-top:none;
 }
 
+.modal-dialog-large {
+    min-width: 60vw;
+    margin-left: auto;
+}
 /* ---------------------------------------------------
     MEDIAQUERIES
 ----------------------------------------------------- */
@@ -1032,16 +955,12 @@ tbody tr td a:hover {
         height:50px;
     }
 
-   .navigation-items-holder{
+    .navigation-items-holder{
         left:25px;
     }
 }
 
-.modal-dialog-large {
-    max-height: 90vh;
-    min-width: 90vw;
-    margin-left:auto;
-}
+
 
 
 /* ---------------------------------------------------

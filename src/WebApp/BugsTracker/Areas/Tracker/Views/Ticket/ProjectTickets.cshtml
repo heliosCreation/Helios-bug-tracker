@@ -16,13 +16,11 @@
                 </select>
                 <input type="text" class="table-sorter-input ml-1" placeholder="Reseach..." />
             </div>
-            <div class="">
-                <a href="#" data-toggle="modal" data-target="#showProjectTeam" class="show-team-btn">Manage Team</a>
-            </div>
+                <a href="#" data-toggle="modal" data-target="#showProjectTeam" class="x-btn yellow">Manage Team</a>
 
-            <div class="project-add-holder">
-                <a href="#" data-toggle="modal" data-target="#createTicketModal" class="add-project-btn" id="create-ticket"> New Ticket</a>
-            </div>
+
+            <a href="#" data-toggle="modal" data-target="#createTicketModal" class="x-btn blue" id="create-ticket"> New Ticket</a>
+
         </div>
         @if (ViewBag.isSuccess == true)
         {
@@ -243,7 +241,6 @@
                 }
             })
 
-
         });
 
 
@@ -259,8 +256,8 @@
             $(document).ajaxComplete(function () {
                 $.validator.unobtrusive.parse(document);
             });
-            AttachModalCreateListener(createBtn, createModalUrl, true);
-            AttachTableModalListeners(updateBtns, updateModalUrl);
+            AttachModalCreateListener(createBtn, createModalUrl, true,true);
+            AttachTableModalListeners(updateBtns, updateModalUrl,false,true,true);
             AttachTableModalListeners(deleteBtns, deleteModalUrl, true);
         }
 

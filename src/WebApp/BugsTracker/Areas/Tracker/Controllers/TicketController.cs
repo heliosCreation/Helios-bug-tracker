@@ -3,10 +3,13 @@ using BugTracker.Application.Features.Team.Queries.GetAllAccessibleMembers;
 using BugTracker.Application.Features.TicketConfigurations.Queries.GetAll;
 using BugTracker.Application.Features.Tickets.Commands.Create;
 using BugTracker.Application.Features.Tickets.Commands.Delete;
+using BugTracker.Application.Features.Tickets.Commands.Update;
 using BugTracker.Application.Features.Tickets.Queries.GetProjectTickets;
+using BugTracker.Application.Features.Tickets.Queries.GetTicket;
 using BugTracker.Application.ViewModel;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace BugTracker.Areas.Tracker.Controllers
@@ -43,7 +46,6 @@ namespace BugTracker.Areas.Tracker.Controllers
             }
             return RedirectToAction("ByProject", new { projectId = command.ProjectId, isFailed = true });
         }
-
         public async Task<IActionResult> Delete(DeleteTicketCommand command, Guid projectId)
         {
             var response = await Mediator.Send(command);
@@ -65,7 +67,29 @@ namespace BugTracker.Areas.Tracker.Controllers
 
             return PartialView(CreateModalPath, dto);
         }
+        public async Task<IActionResult> LoadUpdateModal(Guid id, Guid projectId)
+        {
+            var dto = new UpdateTicketDto(id);
 
+            var ticket = (await Mediator.Send(new GetTicketQuery(id))).Data;
+
+            var teamResponse = await Mediator.Send(new GetAllAccessibleMembersQuery());
+            var ticketConfigurationResponse = await Mediator.Send(new GetAllTicketConfigurationsQuery());
+
+            dto.Team = teamResponse.DataList;
+            dto.TicketConfigurations = ticketConfigurationResponse.Data;
+
+            dto.Command = new UpdateTicketCommand(id);
+            dto.Command.Name = ticket.Name;
+            dto.Command.Description = ticket.Description;
+            dto.Command.PriorityId = ticket.Priority.Id;
+            dto.Command.TypeId = ticket.Type.Id;
+            dto.Command.StatusId = ticket.Status.Id;
+            dto.Command.Team = ticket.TicketsTeamMembers.Select(ttm => ttm.Id).ToList();
+            dto.Command.EstimatedAmountOfHours = ticket.EstimatedAmountOfHours;
+
+            return PartialView(UpdateModalPath, dto);
+        }
         public IActionResult LoadDeleteModal(Guid id, Guid projectId, string name)
         {
             var dto = new DeleteTicketDto(id, projectId, name);

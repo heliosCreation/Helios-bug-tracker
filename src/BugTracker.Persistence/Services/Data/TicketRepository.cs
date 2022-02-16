@@ -14,7 +14,15 @@ namespace BugTracker.Persistence.Services.Data
         {
         }
 
-
+        public async Task<Ticket> GetTicketWithTeamAndConfiguration(Guid id)
+        {
+            return await _dbContext.Tickets
+                    .Include(t => t.TicketsTeamMembers)
+                    .Include(t => t.Status)
+                    .Include(t => t.Priority)
+                    .Include(t => t.Type)
+                    .FirstOrDefaultAsync();
+        }
         public async Task<Ticket> AddTicketAsync(Ticket entity, ICollection<string> teamIds)
         {
 

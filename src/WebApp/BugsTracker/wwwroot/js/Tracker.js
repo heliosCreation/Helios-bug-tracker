@@ -1,4 +1,5 @@
-﻿function AttachModalCreateListener(createBtnId, url, modalLarge) {
+﻿
+function AttachModalCreateListener(createBtnId, url, modalLarge = false, isTicket = false) {
     createBtnId.on('click', function () {
         var options = { "backdrop": "static", keyboard: true };
         $.ajax({
@@ -11,7 +12,12 @@
                 if (modalLarge) {
                     $(".modal-dialog")[0].classList.add("modal-dialog-large")
                 }
-                $("#modal-holder").modal("show")
+                $("#modal-holder").modal("show");
+                if (isTicket) {
+                    setTicketTabsListener();
+                    setSelectCleaner();
+                }
+
             },
             error: function (data) {
                 alert("Error loading dynamic data");
@@ -21,7 +27,7 @@
     });
 }
 
-function AttachTableModalListeners(buttons, url, getName = false) {
+function AttachTableModalListeners(buttons, url, getName = false, modalLarge = false, ticketUpdate = false) {
     buttons.forEach((btn) => {
         $(btn).on('click', () => {
             let parentContainer = btn.closest("tr");
@@ -29,7 +35,6 @@ function AttachTableModalListeners(buttons, url, getName = false) {
 
             if (getName === true) {
                 var name = parentContainer.querySelector(".text-purple a.ticket-link").innerText;
-                console.log("here" + name)
             }
 
             $.ajax({
@@ -40,7 +45,18 @@ function AttachTableModalListeners(buttons, url, getName = false) {
                 datatype: "json",
                 success: function (result) {
                     $("#modal-holder").modal("show")
+                    if (modalLarge) {
+                        $(".modal-dialog")[0].classList.add("modal-dialog-large")
+                    }
+                    else {
+                        if ($(".modal-dialog")[0].classList.contains("modal-dialog-large")) {
+                            $(".modal-dialog")[0].classList.remove("modal-dialog-large")
+                        }
+                    }
                     $('#modal-holder .modal-content').html(result);
+                    if (ticketUpdate) {
+                        setTicketTabsListener();
+                    }
                 },
                 error: function (data) {
                     console.log(data)
@@ -50,6 +66,37 @@ function AttachTableModalListeners(buttons, url, getName = false) {
     })
 }
 
+function setTicketTabsListener() {
+    $(".crupdate-ticket-tabs .nav-item").click(function (e) {
+        $(".crupdate-ticket-tabs .nav-item .nav-link.active").removeClass("active");
+        e.target.classList.add("active");
+        if (e.currentTarget.children[0].firstChild.data === "Ticket") {
+            $("#ticket-configuration").removeClass("d-none");
+            $("#ticket-team").addClass("d-none");
+        }
+        else {
+            $("#ticket-configuration").addClass("d-none");
+            $("#ticket-team").removeClass("d-none");
+
+        }
+    })
+
+}
+function setSelectCleaner() {
+    $(".select-cleaner").click(function (e) {
+        var closestSelectId = e.target.closest("div").parentElement.nextElementSibling.id;
+        var targets = $("#" + closestSelectId + " option");
+
+        for (var i = 0; i < targets.length; i++) {
+            if (targets[i].selected) {
+                console.log(targets[i].classList)
+                targets[i].classList.value ="";
+                targets[i].removeAttribute("selected");
+            }
+        }
+    });
+
+}
 function setCoverListeners() {
     var imageInput = document.getElementById("cover-input");
     var imageBtn = document.getElementById("cover-btn");

@@ -7,9 +7,9 @@ namespace BugTracker.Application.Dto.Tickets
 {
     public class UpdateTicketDto
     {
-        public UpdateTicketDto(Guid ticketId, Guid projectId)
+        public UpdateTicketDto(Guid ticketId)
         {
-            Command = new UpdateTicketCommand(ticketId, projectId);
+            Command = new UpdateTicketCommand(ticketId);
         }
 
         public UpdateTicketCommand Command { get; set; }

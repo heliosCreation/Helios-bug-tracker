@@ -11,10 +11,9 @@ namespace BugTracker.Application.Features.Tickets.Commands.Update
         {
 
         }
-        public UpdateTicketCommand(Guid ticketId, Guid projectId)
+        public UpdateTicketCommand(Guid ticketId)
         {
             TicketId = ticketId;
-            ProjectId = projectId;
         }
 
         public string Name { get; set; }
@@ -26,6 +25,5 @@ namespace BugTracker.Application.Features.Tickets.Commands.Update
 
         public ICollection<Guid> Team { get; set; } = new List<Guid>();
         public Guid TicketId { get; }
-        public Guid ProjectId { get; set; }
     }
 }

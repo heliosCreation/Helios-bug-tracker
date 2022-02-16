@@ -1,43 +1,40 @@
 ﻿@model BugTracker.Application.Dto.Projects.UpdateProjectDto
 
-<div class="modal-content">
-    <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Update project</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-        </button>
+<div class="modal-header">
+    <h5 class="modal-title" id="exampleModalLabel">Update project</h5>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+
+<form method="POST" asp-controller="Project" asp-action="Update">
+    <div class="modal-body">
+        <div class="form-group">
+            <input type="hidden" asp-for="Command.Id" />
+
+            <label asp-for="Command.Name" class="col-form-label"></label>
+            <input asp-for="Command.Name" class="form-control" id="recipient-name">
+            <span asp-validation-for="Command.Name" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Command.Description" class="col-form-label"></label>
+            <textarea asp-for="Command.Description" class="form-control" id="message-text" rows="3"></textarea>
+            <span asp-validation-for="Command.Description" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label for="Team" class="col-form-label">Team:</label>
+            <select asp-for="Command.Team" class="form-control" id="recipient-name" multiple>
+                @foreach (var teamMember in Model.Team)
+                {
+                    <option value="@teamMember.Id" class="@(Model.Command.Team.Contains(teamMember.Id.ToString())? "selected":"")">@teamMember.Username  - @teamMember.Role</option>
+                }
+            </select>
+        </div>
     </div>
 
-    <form method="POST" asp-controller="Project" asp-action="Update">
-        <div class="modal-body">
-            <div class="form-group">
-                <input type="hidden" asp-for="Command.Id"/>
 
-                <label asp-for="Command.Name" class="col-form-label"></label>
-                <input asp-for="Command.Name" class="form-control" id="recipient-name">
-                <span asp-validation-for="Command.Name" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Command.Description" class="col-form-label"></label>
-                <textarea asp-for="Command.Description" class="form-control" id="message-text" rows="3"></textarea>
-                <span asp-validation-for="Command.Description" class="text-danger"></span>
-            </div>
-
-            <div class="form-group">
-                <label for="Team" class="col-form-label">Team:</label>
-                <select asp-for="Command.Team" class="form-control" id="recipient-name" multiple>
-                    @foreach (var teamMember in Model.Team)
-                    {
-                    <option value="@teamMember.Id" class="@(Model.Command.Team.Contains(teamMember.Id.ToString())? "selected":"")">@teamMember.Username  - @teamMember.Role</option>
-                    }
-                </select>
-            </div>
-        </div>
-
-
-        <div class="modal-footer">
-            <input type="submit" class="green-btn" value=" Update project" />
-        </div>
-    </form>
-
-</div>
+    <div class="modal-footer">
+        <input type="submit" class="x-btn green" value=" Update project" />
+    </div>
+</form>
