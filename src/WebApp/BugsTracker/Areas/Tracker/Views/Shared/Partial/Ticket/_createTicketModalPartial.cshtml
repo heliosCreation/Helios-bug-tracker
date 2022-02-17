@@ -9,16 +9,16 @@
     </div>
     <ul class="nav nav-tabs crupdate-ticket-tabs">
 
-        <li class="nav-item">
+        <li class="nav-item configuration-tab">
             <a class="nav-link active" href="#">Ticket</a>
         </li>
-        <li class="nav-item">
+        <li class="nav-item team-tab">
             <a class="nav-link" href="#">Team</a>
         </li>
     </ul>
 </div>
 <form asp-controller="Ticket" asp-action="Create">
-    <input type="hidden" asp-for="Command.ProjectId"/>
+    <input type="hidden" asp-for="Command.ProjectId" />
     <div class="modal-body">
         <div class="col-12" id="ticket-configuration">
             <div class="form-group d-flex">
@@ -121,8 +121,7 @@
         </div>
     </div>
     <div class="modal-footer">
-        <input type="submit" class="x-btn green" />
+        <input type="submit" class="x-btn green ticket-save-btn" />
     </div>
 </form>
-
 
