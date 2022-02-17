@@ -24,6 +24,6 @@ namespace BugTracker.Application.Features.Tickets.Commands.Update
         public Guid StatusId { get; set; }
 
         public ICollection<Guid> Team { get; set; } = new List<Guid>();
-        public Guid TicketId { get; }
+        public Guid TicketId { get; set; }
     }
 }

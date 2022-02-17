@@ -12,6 +12,8 @@ namespace BugTracker.Application.Dto.Tickets
             Command = new UpdateTicketCommand(ticketId);
         }
 
+
+        public Guid ProjectId { get; set; }
         public UpdateTicketCommand Command { get; set; }
         public List<UserViewModel> Team { get; set; }
         public TicketConfigurationEntitiesViewModel TicketConfigurations { get; set; }

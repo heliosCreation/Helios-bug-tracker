@@ -29,10 +29,12 @@ namespace BugTracker.Areas.Tracker.Controllers
             return View();
         }
 
-        public async Task<IActionResult> ByProject(Guid projectId, bool isSuccess = false, bool isFailed = false, string type = null, string action = null)
+        public async Task<IActionResult> ByProject(Guid projectId, bool isSuccess = false, bool isFailed = false, string type = null, string actionReturned = null)
         {
+            ViewBag.isSuccess = isSuccess;
+            ViewBag.isFailed = isFailed;
             ViewBag.Type = type;
-            ViewBag.Action = action;
+            ViewBag.actionReturned = actionReturned;
 
             var response = await Mediator.Send(new GetProjectTicketsQuery(projectId));
             return View("ProjectTickets", response.Data);
@@ -42,7 +44,7 @@ namespace BugTracker.Areas.Tracker.Controllers
             var response = await Mediator.Send(command);
             if (response.Succeeded)
             {
-                return RedirectToAction("ByProject", new {projectId = command.ProjectId, isSuccess = true, type = "ticket", action = "created" });
+                return RedirectToAction("ByProject", new {projectId = command.ProjectId, isSuccess = true, type = "ticket", actionReturned = "created" });
             }
             return RedirectToAction("ByProject", new { projectId = command.ProjectId, isFailed = true });
         }
@@ -51,11 +53,19 @@ namespace BugTracker.Areas.Tracker.Controllers
             var response = await Mediator.Send(command);
             if (response.Succeeded)
             {
-                return RedirectToAction("ByProject", new { projectId = projectId, isSuccess = true, type = "ticket", action = "created" });
+                return RedirectToAction("ByProject", new { projectId = projectId, isSuccess = true, type = "ticket", actionReturned = "deleted" });
             }
             return RedirectToAction("ByProject", new {  isFailed = true });
         }
-
+        public async Task<IActionResult> Update(UpdateTicketCommand command, Guid projectId)
+        {
+            var response = await Mediator.Send(command);
+            if (response.Succeeded)
+            {
+                return RedirectToAction("ByProject", new { projectId = projectId, isSuccess = true, type = "ticket", actionReturned = "updated" });
+            }
+            return RedirectToAction("ByProject", new {projectId = projectId, isFailed = true });
+        }
         public async Task<IActionResult> LoadCreateModal(Guid projectId)
         {
             var dto = new CreateTicketDto(projectId);
@@ -76,6 +86,7 @@ namespace BugTracker.Areas.Tracker.Controllers
             var teamResponse = await Mediator.Send(new GetAllAccessibleMembersQuery());
             var ticketConfigurationResponse = await Mediator.Send(new GetAllTicketConfigurationsQuery());
 
+            dto.ProjectId = projectId;
             dto.Team = teamResponse.DataList;
             dto.TicketConfigurations = ticketConfigurationResponse.Data;
 

@@ -70,12 +70,9 @@ ul, ol {
     margin: 0px;
     list-style: none;
 }
-
-
-option.selected {
-    background: #b3f2c18a;
+select option:checked {
+    background: #b3f2c18a !important;
 }
-
 a,
 a:hover,
 a:focus {

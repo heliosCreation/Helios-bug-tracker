@@ -15,7 +15,6 @@ function AttachModalCreateListener(createBtnId, url, modalLarge = false, isTicke
                 $("#modal-holder").modal("show");
                 if (isTicket) {
                     setTicketTabsListener();
-                    setSelectCleaner();
                 }
 
             },
@@ -56,6 +55,7 @@ function AttachTableModalListeners(buttons, url, getName = false, modalLarge = f
                     $('#modal-holder .modal-content').html(result);
                     if (ticketUpdate) {
                         setTicketTabsListener();
+                        setSelectCleaner();
                     }
                 },
                 error: function (data) {
@@ -88,11 +88,7 @@ function setSelectCleaner() {
         var targets = $("#" + closestSelectId + " option");
 
         for (var i = 0; i < targets.length; i++) {
-            if (targets[i].selected) {
-                console.log(targets[i].classList)
-                targets[i].classList.value ="";
-                targets[i].removeAttribute("selected");
-            }
+            targets[i].removeAttribute("selected");
         }
     });
 

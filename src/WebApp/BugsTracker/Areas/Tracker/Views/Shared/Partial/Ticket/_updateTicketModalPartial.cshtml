@@ -18,9 +18,11 @@
         </li>
     </ul>
 </div>
-<form asp-controller="Ticket" asp-action="Update" asp-route-projectId="@Model.Command.TicketId">
+<form asp-controller="Ticket" asp-action="Update" asp-route-projectId="@Model.ProjectId">
 
     <div class="modal-body">
+        <input type="hidden" asp-for="@Model.Command.TicketId" />
+
         <div class="col-12" id="ticket-configuration">
             <div class="form-group d-flex">
                 <div class="w-50 pr-2">
@@ -94,7 +96,7 @@
                     <select asp-for="Command.Team" class="form-control" id="pm-team-select" multiple>
                         @foreach (var pm in Model.Team.Where(tm => tm.Role.ToLower() == "project manager"))
                         {
-                            <option value="@pm.Id" class="@(Model.Command.Team.Contains(pm.Id)? "selected":"")">@pm.Username - @pm.Role </option>
+                            <option value="@pm.Id">@pm.Username - @pm.Role</option>
                         }
                     </select>
                     <span asp-validation-for="Command.Team" class="text-danger"></span>
@@ -112,7 +114,7 @@
                     <select asp-for="Command.Team" class="form-control" id="dev-team-select" multiple>
                         @foreach (var dev in Model.Team.Where(tm => tm.Role.ToLower() == "developer"))
                         {
-                            <option value="@dev.Id" class="@(Model.Command.Team.Contains(dev.Id)? "selected":"")">@dev.Username - @dev.Role </option>
+                            <option value="@dev.Id">@dev.Username - @dev.Role </option>
                         }
                     </select>
                     <span asp-validation-for="Command.Team" class="text-danger"></span>
@@ -129,7 +131,7 @@
                     <select asp-for="Command.Team" class="form-control" id="sub-team-select" multiple>
                         @foreach (var sub in Model.Team.Where(tm => tm.Role.ToLower() == "submitter"))
                         {
-                            <option value="@sub.Id" class="@(Model.Command.Team.Contains(sub.Id)? "selected":"")">@sub.Username - @sub.Role </option>
+                            <option value="@sub.Id">@sub.Username - @sub.Role </option>
                         }
                     </select>
                     <span asp-validation-for="Command.Team" class="text-danger"></span>
