@@ -1,5 +1,6 @@
 ﻿@import url('https://fonts.googleapis.com/css?family=Nova+Slim&display=swap');
 @import "root.css";
+@import "pills.css";
 @import "button.css";
 
 * {
@@ -136,28 +137,7 @@ a:focus {
 }
 /*text color end*/
 
-.purple-pill {
-    background-color: rgb(114 18 240 / 13%);
-    border-radius: 10px;
-    color: rgb(114 18 240);
-    padding: 7px 10px;
-}
 
-.green-pill {
-    background-color: rgb(31 224 126 / 13%);
-    border-radius: 10px;
-    color: rgb(31 224 126);
-    padding: 7px 10px;
-    margin:2px;
-}
-
-.yellow-pill {
-    background-color: rgb(224 213 31 / 13%);
-    border-radius: 10px;
-    color: rgb(222 224 31);
-    padding: 7px 10px;
-    margin: 2px;
-}
 .separator{
     height:2px;
     background-color:rgb(0 0 0 / 5%);

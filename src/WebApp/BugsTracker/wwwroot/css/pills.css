@@ -1,0 +1,37 @@
+﻿.pill {
+    border-radius: 10px;
+    padding: 7px 10px;
+}
+
+/******Priority ******/
+.pill.low,
+.pill.lightblue {
+    background-color: rgb(114 18 240 / 13%);
+    color:rgb(114 18 240);
+
+}
+
+.pill.immediate,
+.pill.red {
+    background-color: rgb(242 0 0 / 36%);
+    color:rgb(242 0 0);
+}
+
+.pill.purple {
+    background-color: rgb(114 18 240 / 13%);
+    color: rgb(114 18 240);
+}
+
+.pill.medium,
+.pill.green {
+    background-color: rgb(31 224 126 / 13%);
+    color:rgb(31 224 126);
+}
+
+.pill.high,
+.pill.yellow {
+    background-color: rgb(224 213 31 / 13%);
+    color:rgb(224 213 31);
+}
+/******Priority ends ******/
+

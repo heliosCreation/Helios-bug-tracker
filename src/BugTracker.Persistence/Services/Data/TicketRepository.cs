@@ -21,6 +21,7 @@ namespace BugTracker.Persistence.Services.Data
                     .Include(t => t.Status)
                     .Include(t => t.Priority)
                     .Include(t => t.Type)
+                    .Where(t => t.Id == id)
                     .FirstOrDefaultAsync();
         }
         public async Task<Ticket> AddTicketAsync(Ticket entity, ICollection<string> teamIds)
