@@ -1,12 +1,13 @@
-﻿using BugTracker.Application.Dto.Tickets;
-using BugTracker.Application.Features.Team.Queries.GetAllAccessibleMembers;
+﻿using BugTracker.Application.Dto.Projects;
+using BugTracker.Application.Dto.Tickets;
+using BugTracker.Application.Features.ProjectTeam.Queries.GetAllAccessibleMembers;
 using BugTracker.Application.Features.TicketConfigurations.Queries.GetAll;
 using BugTracker.Application.Features.Tickets.Commands.Create;
 using BugTracker.Application.Features.Tickets.Commands.Delete;
 using BugTracker.Application.Features.Tickets.Commands.Update;
 using BugTracker.Application.Features.Tickets.Queries.GetProjectTickets;
 using BugTracker.Application.Features.Tickets.Queries.GetTicket;
-using BugTracker.Application.ViewModel;
+using BugTracker.Application.Features.TicketTeam.Query;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Linq;
@@ -20,9 +21,11 @@ namespace BugTracker.Areas.Tracker.Controllers
     {
         private const string ModalBasePath = "~/Areas/Tracker/Views/Shared/Partial/Ticket/";
         private const string ModalType = "TicketModalPartial.cshtml";
+
         private const string CreateModalPath = ModalBasePath + "_create" + ModalType;
         private const string UpdateModalPath = ModalBasePath + "_update" + ModalType;
         private const string DeleteModalPath = ModalBasePath + "_delete" + ModalType;
+        private const string ProjectTeamModalPath = "~/Areas/Tracker/Views/Shared/Partial/Project/_projectTeamModalPartial.cshtml";
 
         public IActionResult GetAll()
         {
@@ -44,7 +47,7 @@ namespace BugTracker.Areas.Tracker.Controllers
             var response = await Mediator.Send(command);
             if (response.Succeeded)
             {
-                return RedirectToAction("ByProject", new {projectId = command.ProjectId, isSuccess = true, type = "ticket", actionReturned = "created" });
+                return RedirectToAction("ByProject", new { projectId = command.ProjectId, isSuccess = true, type = "ticket", actionReturned = "created" });
             }
             return RedirectToAction("ByProject", new { projectId = command.ProjectId, isFailed = true });
         }
@@ -55,7 +58,7 @@ namespace BugTracker.Areas.Tracker.Controllers
             {
                 return RedirectToAction("ByProject", new { projectId = projectId, isSuccess = true, type = "ticket", actionReturned = "deleted" });
             }
-            return RedirectToAction("ByProject", new {  isFailed = true });
+            return RedirectToAction("ByProject", new { isFailed = true });
         }
         public async Task<IActionResult> Update(UpdateTicketCommand command, Guid projectId)
         {
@@ -64,13 +67,15 @@ namespace BugTracker.Areas.Tracker.Controllers
             {
                 return RedirectToAction("ByProject", new { projectId = projectId, isSuccess = true, type = "ticket", actionReturned = "updated" });
             }
-            return RedirectToAction("ByProject", new {projectId = projectId, isFailed = true });
+            return RedirectToAction("ByProject", new { projectId = projectId, isFailed = true });
         }
+        
+        
         public async Task<IActionResult> LoadCreateModal(Guid projectId)
         {
             var dto = new CreateTicketDto(projectId);
 
-            var teamResponse = await Mediator.Send(new GetAllAccessibleMembersQuery());
+            var teamResponse = await Mediator.Send(new GetAllAccessibleTicketMembersQuery(projectId));
             var ticketConfigurationResponse = await Mediator.Send(new GetAllTicketConfigurationsQuery());
             dto.Team = teamResponse.DataList;
             dto.TicketConfigurations = ticketConfigurationResponse.Data;
@@ -83,7 +88,7 @@ namespace BugTracker.Areas.Tracker.Controllers
 
             var ticket = (await Mediator.Send(new GetTicketQuery(id))).Data;
 
-            var teamResponse = await Mediator.Send(new GetAllAccessibleMembersQuery());
+            var teamResponse = await Mediator.Send(new GetAllAccessibleTicketMembersQuery(projectId));
             var ticketConfigurationResponse = await Mediator.Send(new GetAllTicketConfigurationsQuery());
 
             dto.ProjectId = projectId;
@@ -105,6 +110,16 @@ namespace BugTracker.Areas.Tracker.Controllers
         {
             var dto = new DeleteTicketDto(id, projectId, name);
             return PartialView(DeleteModalPath, dto);
+        }
+        public async Task<IActionResult> LoadProjectTeamModal(Guid projectId)
+        {
+            var dto = new ProjectTeamManagementDto();
+            var teamResponse = await Mediator.Send(new GetAllAccessibleProjectMembersQuery());
+
+            dto.ProjectId = projectId;
+            dto.Team = teamResponse.DataList;
+
+            return PartialView(ProjectTeamModalPath);
         }
     }
 }

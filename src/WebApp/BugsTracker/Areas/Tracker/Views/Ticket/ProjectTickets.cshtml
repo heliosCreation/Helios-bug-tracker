@@ -16,10 +16,12 @@
                 </select>
                 <input type="text" class="table-sorter-input ml-1" placeholder="Reseach..." />
             </div>
-                <a href="#" data-toggle="modal" data-target="#showProjectTeam" class="x-btn yellow">Manage Team</a>
+            <div>
+                <a href="#" data-toggle="modal" id="project-update-btn" class="x-btn purple">Edit Project</a>
 
 
-            <a href="#" data-toggle="modal" data-target="#createTicketModal" class="x-btn blue" id="create-ticket"> New Ticket</a>
+                <a href="#" data-toggle="modal" class="x-btn blue" id="create-ticket"> New Ticket</a>
+            </div>
 
         </div>
         @if (ViewBag.isSuccess == true)
@@ -250,15 +252,20 @@
             const createModalUrl = '/Tracker/Ticket/loadCreateModal?projectId=' + projectId;
             const updateModalUrl = '/Tracker/Ticket/loadUpdateModal?projectId=' + projectId;
             const deleteModalUrl = '/Tracker/Ticket/loadDeleteModal?projectId=' + projectId;
+            const updateProjectModalUrl = '/Tracker/Project/loadUpdateModal?id=' + projectId + '&fromTicket=' + true;
+
             var createBtn = $("#create-ticket");
             var updateBtns = document.querySelectorAll('.update-btn');
             var deleteBtns = document.querySelectorAll('.delete-btn');
+            var projectUpdateBtn = $('#project-update-btn');
+
             $(document).ajaxComplete(function () {
                 $.validator.unobtrusive.parse(document);
             });
             AttachModalCreateListener(createBtn, createModalUrl, true,true);
             AttachTableModalListeners(updateBtns, updateModalUrl,false,true,true);
             AttachTableModalListeners(deleteBtns, deleteModalUrl, true);
+            AttachProjectUpdateModalListener(projectUpdateBtn, updateProjectModalUrl, true);
         }
 
     </script>

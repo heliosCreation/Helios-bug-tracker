@@ -16,7 +16,8 @@ namespace BugTracker.Application.Contracts.Identity
         Task<IdentityResult> ConfirmEmail(string email, string token);
         Task<string> GeneratePasswordForgottenMailToken(string email);
         Task<string> GenerateRegistrationEncodedToken(string id);
-        Task<ICollection<ApplicationUser>> GetAllAccessibleUsers(string uid);
+        Task<ICollection<ApplicationUser>> GetAccessibleTicketTeam(string uid, Guid projectId);
+        Task<ICollection<ApplicationUser>> GetAllAccessibleUsersPerRole(string uid);
         Task<string> GetUserNameById(string id);
         Task<ApplicationUser> GetUserOrNullAsync(string email);
         Task<ICollection<string>> GetUserRolesById(string id);

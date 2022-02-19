@@ -203,6 +203,18 @@ overflow: auto;
     outline: none;
     border-radius: 5px;
 }
+
+.gradient-lightbulb {
+    font-size: 15px;
+    padding-bottom: 5px;
+    background: rgb(255,255,0);
+    background: linear-gradient(180deg, rgba(255,255,0,1) 0%, rgba(215,215,184,1) 70%, rgba(11,11,0,1) 84%, rgba(0,0,0,1) 100%);
+    background-size: 100%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    -moz-background-clip: text;
+    -moz-text-fill-color: transparent;
+}
 /* ---------------------------------------------------
     SIDEBAR STYLE start
 ----------------------------------------------------- */
@@ -740,8 +752,7 @@ tbody tr td a:hover {
     color:rgba(0,0,0,0.25);
 }
 
-.crupdate-ticket-tabs .nav-item .nav-link.active, 
-.ticket-tabs .nav-item .nav-link.active {
+ .nav-item .nav-link.active {
     background: #cefcff73 !important;
 }
 #comments-holder {

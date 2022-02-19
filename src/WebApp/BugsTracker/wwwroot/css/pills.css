@@ -3,6 +3,18 @@
     padding: 7px 10px;
 }
 
+.pill-rounded {
+    border-radius: 50%;
+    height: 20px;
+    width: 20px;
+    line-height: 20px;
+    color: white;
+    font-size: 13px;
+    font-weight: bolder;
+    text-align: center;
+    background: rgb(6 12 242 / 65%);
+    cursor: pointer;
+}
 /******Priority ******/
 .pill.low,
 .pill.lightblue {

@@ -83,13 +83,27 @@
             <div class="form-group">
 
                 <div class="p-2">
-                    <label asp-for="Command.Team" class="col-form-label">Assigned Project manager</label>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <label asp-for="Command.Team" class="col-form-label">Assigned Project manager</label>
+                        <button type="button" class="pill-rounded border-0" id="popoverData"
+                                data-toggle="popover"
+                                data-trigger="hover"
+                                data-html="true"
+                                data-placement="right" title="Tips <i class='fas fa-lightbulb gradient-lightbulb'></i>"
+                                data-content="Assign project manager to the project to access it here.">
+                            ?
+                        </button>
+                    </div>
 
                     <select asp-for="Command.Team" class="form-control" id="pm-team-select" multiple>
-                        @foreach (var pm in Model.Team.Where(tm => tm.Role.ToLower() == "project manager"))
-                        {
-                            <option value="@pm.Id">@pm.Username - @pm.Role </option>
+                        @{
+
+                            foreach (var pm in Model.Team.Where(tm => tm.Role.ToLower() == "project manager"))
+                            {
+                                <option value="@pm.Id">@pm.Username - @pm.Role </option>
+                            }
                         }
+
                     </select>
                     <span asp-validation-for="Command.Team" class="text-danger"></span>
                 </div>

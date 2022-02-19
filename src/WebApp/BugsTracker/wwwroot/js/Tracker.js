@@ -16,6 +16,7 @@ function AttachModalCreateListener(createBtnId, url, modalLarge = false, isTicke
                 if (isTicket) {
                     setTicketTabsListener();
                     addTicketHandler();
+                    $('#popoverData').popover();
                 }
             },
             error: function (data) {
@@ -64,6 +65,60 @@ function AttachTableModalListeners(buttons, url, getName = false, modalLarge = f
     })
 }
 
+function AttachProjectUpdateModalListener(button, url, modalLarge) {
+    $(button).on('click', () => {
+        $.ajax({
+            type: "GET",
+            url: url,
+            contentType: "application/json; charset=utf-8",
+            datatype: "json",
+            success: function (result) {
+                $("#modal-holder").modal("show")
+                $('#modal-holder .modal-content').html(result);
+                handleModalSize(modalLarge);
+                setProjectTabListener();
+                setSelectCleaner();
+                $.validator.setDefaults({ ignore: [] });
+            },
+            error: function (data) {
+                console.log(data)
+            }
+        });
+    })
+
+}
+
+function setProjectTabListener() {
+    var tabs = ['.project-details-tab', '.project-organization-tab'];
+
+    for (var i = 0; i < tabs.length; i++) {
+
+        if (i == 0) {
+            let tick = i; 
+            $(tabs[tick]).click(() => {
+                $(tabs[tick] + " a").addClass("active");
+                $(tabs[tick + 1] + " a").removeClass("active");
+
+                $(tabs[tick].replace("-tab", "")).removeClass("d-none");
+                $(tabs[tick+1].replace("-tab", "")).addClass("d-none");
+            });
+        }
+        else {
+            let tick = i;
+            $(tabs[tick]).click(() => {
+                $(tabs[tick] + " a").addClass("active");
+                $(tabs[tick - 1] + " a").removeClass("active");
+
+                $(tabs[tick].replace("-tab", "")).removeClass("d-none");
+                $(tabs[tick - 1].replace("-tab", "")).addClass("d-none");
+                console.log(tick)
+
+            });
+        }
+
+    }
+
+}
 function setTicketTabsListener() {
     $(".crupdate-ticket-tabs .nav-item").click(function (e) {
         $(".crupdate-ticket-tabs .nav-item .nav-link.active").removeClass("active");

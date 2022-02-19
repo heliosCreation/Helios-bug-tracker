@@ -4,8 +4,7 @@ using BugTracker.Application.Features.Projects.Commands.Delete;
 using BugTracker.Application.Features.Projects.Commands.Update;
 using BugTracker.Application.Features.Projects.Queries.Get;
 using BugTracker.Application.Features.Projects.Queries.GetWithTeam;
-using BugTracker.Application.Features.Projects.Queries.GetWithTickets;
-using BugTracker.Application.Features.Team.Queries.GetAllAccessibleMembers;
+using BugTracker.Application.Features.ProjectTeam.Queries.GetAllAccessibleMembers;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
@@ -32,7 +31,7 @@ namespace BugTracker.Areas.Tracker.Controllers
             return RedirectToAction("Dashboard", "Home", new { isSuccess = true, type = "project", actionReturned = "created" });
         }
 
-        public async Task<IActionResult> Update([Bind(Prefix = "Command")] UpdateProjectCommand command)
+        public async Task<IActionResult> Update([Bind(Prefix = "Command")] UpdateProjectCommand command, bool fromTicket = false)
         {
             var response = await Mediator.Send(command);
             if (!response.Succeeded)
@@ -40,7 +39,9 @@ namespace BugTracker.Areas.Tracker.Controllers
                 return RedirectToAction("Dashboard", "Home", new { isFailed = true });
 
             }
-            return RedirectToAction("Dashboard", "Home", new { isSuccess = true, type = "project", actionReturned = "updated" });
+            return (fromTicket ?
+                    RedirectToAction("ByProject", "Ticket", new { projectId = command.Id, isSuccess = true, type = "project", actionReturned = "updated" }) :
+                    RedirectToAction("Dashboard", "Home", new { isSuccess = true, type = "project", actionReturned = "updated" }));
         }
         public async Task<IActionResult> Delete(DeleteProjectCommand command)
         {
@@ -55,18 +56,19 @@ namespace BugTracker.Areas.Tracker.Controllers
         public async Task<IActionResult> LoadCreateModal()
         {
             var dto = new CreateProjectDto();
-            var response = await Mediator.Send(new GetAllAccessibleMembersQuery());
+            var response = await Mediator.Send(new GetAllAccessibleProjectMembersQuery());
             dto.Team = response.DataList;
 
             return PartialView(CreateModalPath, dto);
         }
 
-        public async Task<IActionResult> LoadUpdateModal(Guid id)
+        public async Task<IActionResult> LoadUpdateModal(Guid id, bool fromTicket = false)
         {
+            ViewBag.fromTicket = fromTicket;
             var dto = new UpdateProjectDto();
             dto.Command = new UpdateProjectCommand();
-            var teamResponse = await Mediator.Send(new GetAllAccessibleMembersQuery());
-            var projectResponse = await Mediator.Send(new GetProjectWithTeamQuery() {Id = id });
+            var teamResponse = await Mediator.Send(new GetAllAccessibleProjectMembersQuery());
+            var projectResponse = await Mediator.Send(new GetProjectWithTeamQuery() { Id = id });
             dto.Team = teamResponse.DataList;
             dto.Command.Id = projectResponse.Data.Id;
             dto.Command.Name = projectResponse.Data.Name;
