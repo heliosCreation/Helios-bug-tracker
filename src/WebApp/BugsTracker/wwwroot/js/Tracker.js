@@ -16,8 +16,7 @@ function AttachModalCreateListener(createBtnId, url, modalLarge = false, isTicke
                 if (isTicket) {
                     setTicketTabsListener();
                     addTicketHandler();
-                    $('#popoverData').popover();
-                }
+                    $('[data-toggle="popover"]').popover()                }
             },
             error: function (data) {
                 alert("Error loading dynamic data");
