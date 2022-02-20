@@ -15,6 +15,9 @@
     background: rgb(6 12 242 / 65%);
     cursor: pointer;
 }
+.pill-rounded:hover {
+    background: rgb(6 12 242 / 55%);
+}
 /******Priority ******/
 .pill.low,
 .pill.lightblue {

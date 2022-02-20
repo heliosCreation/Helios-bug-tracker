@@ -37,11 +37,23 @@ namespace BugTracker.Persistence.Services.Data
                                     Where(ptm => ptm.ProjectId == entity.Id).
                                     Select(ptm => ptm.UserId).ToListAsync();
 
-            foreach (var id in dbProjectMemberIds)
+            var relatedTicketsId = await _dbContext.Tickets.Where(t => t.ProjectId == entity.Id).Select(t => t.Id).ToListAsync();
+            
+            foreach (var dbProjectMemberId in dbProjectMemberIds)
             {
-                if (!teamIds.Contains(id))
+                if (!teamIds.Contains(dbProjectMemberId))
                 {
-                    _dbContext.ProjectTeamMembers.Remove(new ProjectTeamMember { ProjectId = entity.Id, UserId = id });
+                    _dbContext.ProjectTeamMembers.Remove(new ProjectTeamMember { ProjectId = entity.Id, UserId = dbProjectMemberId });
+
+                    //Remove related ticket team members if they are no longer project members.
+                    foreach (var ticketId in relatedTicketsId)
+                    {
+                        var target = new TicketsTeamMembers() { TicketId = ticketId, UserId = dbProjectMemberId };
+                        if(_dbContext.TicketsTeamMembers.Contains(target))
+                        {
+                            _dbContext.TicketsTeamMembers.Remove(target);
+                        }
+                    }                    
                 }
             }
             foreach (var id in teamIds)
