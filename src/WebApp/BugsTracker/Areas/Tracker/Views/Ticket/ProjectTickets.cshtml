@@ -36,9 +36,9 @@
                         <th scope="col" class="text-muted">Description</th>
                         <th scope="col" class="text-muted">Author</th>
                         <th scope="col" class="text-muted">Priority</th>
-                        <th scope="col" class="text-muted">Status</th>
                         <th scope="col" class="text-muted">Type</th>
                         <th scope="col" class="text-muted">Estimated hours</th>
+                        <th scope="col" class="text-muted">Status</th>
                         <th scope="col" class="text-muted text-center">Action</th>
                     </tr>
                 </thead>
@@ -46,28 +46,28 @@
 
                     @foreach (var ticket in Model.Tickets)
                     {
-                        <tr>
-                            <td class="d-none">@ticket.Id</td>
-                            <td scope="row" class="text-purple"><a data-toggle="modal" data-target="#showTicketDetails" class="ticket-link" >@ticket.Name </a></td>
-                            <td>@ticket.Description</td>
-                            <td>@ticket.Author</td>
-                            <td><span class="pill @(ticket.Priority.ToLower())">@ticket.Priority</span></td>
-                            <td>@ticket.Status</td>
-                            <td>@ticket.Type</td>
-                            <td class="text-center">@ticket.EstimatedAmountOfHours</td>
+                    <tr>
+                        <td class="d-none">@ticket.Id</td>
+                        <td scope="row" class="text-purple"><a data-toggle="modal" data-target="#showTicketDetails" class="ticket-link">@ticket.Name </a></td>
+                        <td>@ticket.Description</td>
+                        <td>@ticket.Author</td>
+                        <td><span class="pill @(ticket.Priority.ToLower())">@ticket.Priority</span></td>
+                        <td>@ticket.Type</td>
+                        <td class="text-center">@ticket.EstimatedAmountOfHours</td>
+                        <td>@ticket.Status</td>
 
-                            <td class="text-center">
-                                <div class="dropdown">
-                                    <a href="#" class="dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        <i class="fas fa-ellipsis-v"></i>
-                                    </a>
-                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                        <a class="dropdown-item update-btn" href="#" data-toggle="modal" data-target="#crupdateTicketModal">Edit</a>
-                                        <a class="dropdown-item delete-btn" href="#" data-toggle="modal" data-target="#deleteTicketModal">Delete</a>
-                                    </div>
+                        <td class="text-center">
+                            <div class="dropdown">
+                                <a href="#" class="dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <i class="fas fa-ellipsis-v"></i>
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                    <a class="dropdown-item update-btn" href="#" data-toggle="modal" data-target="#crupdateTicketModal">Edit</a>
+                                    <a class="dropdown-item delete-btn" href="#" data-toggle="modal" data-target="#deleteTicketModal">Delete</a>
                                 </div>
-                            </td>
-                        </tr>
+                            </div>
+                        </td>
+                    </tr>
 
                     }
                 </tbody>

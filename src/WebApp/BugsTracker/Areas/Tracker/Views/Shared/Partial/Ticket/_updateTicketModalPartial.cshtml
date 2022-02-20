@@ -69,7 +69,7 @@
                 <div class="col-4">
                     <label asp-for="Command.StatusId" for="Name" class="col-form-label">Status</label>
                     <select asp-for="Command.StatusId" class="form-control" id="recipient-name">
-                        @foreach (var status in Model.TicketConfigurations.Statuses.Where(s => s.Name.ToLower() == "new"))
+                        @foreach (var status in Model.TicketConfigurations.Statuses)
                         {
                             <option value="@status.Id">@status.Name</option>
                         }

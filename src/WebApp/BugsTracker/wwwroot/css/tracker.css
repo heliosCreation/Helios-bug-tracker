@@ -72,8 +72,16 @@ ul, ol {
     list-style: none;
 }
 select option:checked {
-    background: #b3f2c18a !important;
+    color: #0abc31fc !important;
+    background: white;
+    position:relative;
 }
+select option:checked::after {
+    content: "\002714";
+    position:absolute;
+    right:0;
+}
+
 a,
 a:hover,
 a:focus {
