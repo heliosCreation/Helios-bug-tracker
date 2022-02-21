@@ -567,6 +567,7 @@ td {
 tbody tr td a{
     font-size: 12px;
     color: var(--text-purple);
+    cursor:pointer;
 }
 
 tbody tr td a:hover {

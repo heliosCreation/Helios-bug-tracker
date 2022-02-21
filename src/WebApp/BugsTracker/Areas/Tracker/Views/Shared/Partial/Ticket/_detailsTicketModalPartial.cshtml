@@ -26,8 +26,15 @@
                 </ul>
             </div>
             <div class="modal-body modal-right">
-
-                <div class="w-100 h-100" id="comments">
+                <div id="ticket-description" class="w-100 h-100 tab-content">
+                    Description
+                </div>
+               
+                <div id="ticket-history" class="w-100 h-100 tab-content d-none">
+                    history
+                </div>
+                
+                <div class="w-100 h-100 tab-content d-none" id="ticket-comments">
                     <div class="light-gray-blue-theme d-flex align-items-center flex-column-reverse p-1" id="comments-holder">
                         @{
                             for (int i = 0; i < 12; i++)
@@ -49,7 +56,7 @@
                     </div>
                 </div>
             
-                <div class="w-100 h-100 d-none" id="ticket-team">
+                <div class="w-100 h-100 tab-content d-none" id="ticket-team">
                     <div class="p-3 w-100">
                         <div class="ticket-project-manager-holder p-2">
                             <span class="purple-pill d-inline-block">Frank loyd - Project manager</span>

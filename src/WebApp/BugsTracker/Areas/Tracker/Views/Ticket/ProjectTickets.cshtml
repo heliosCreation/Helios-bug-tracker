@@ -71,108 +71,13 @@
 </div>
 
 
-<!-- Temporary Modals-->
-
 <partial name="../Shared/Partial/Ticket/_detailsTicketModalPartial.cshtml" />
-@*<partial name="../Shared/Partial/Ticket/_createTicketModalPartial.cshtml" />*@
-
-
-@*<div class="modal fade" id="showProjectTeam" tabindex="-1" role="dialog" aria-labelledby="showProjectTeamModal" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Project Team</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <div class="w-100 box-shadow-1" id="teamDisplay">
-                    <div class="first-row-header  d-flex px-1 py-2 w-100 justify-content-between">
-                        <div class="title ml-1"> Team </div>
-                        <div class="mr-1"><a href="#" class="add-member-btn"> New Member</a></div>
-                    </div>
-
-                    <div class="table-responsive">
-                        <table class="table">
-                            <thead class="project-thead">
-                                <tr>
-                                    <th scope="col" class="text-muted">Name</th>
-                                    <th scope="col" class="text-muted">E-mail</th>
-                                    <th scope="col" class="text-muted">Phone</th>
-                                    <th scope="col" class="text-muted">Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>John doe</a></td>
-                                    <td>Johndoe@gmail.com</td>
-                                    <td>07 65 10 38 75</td>
-                                    <td> <a class="red-btn delete-team-member"><i class="fas fa-trash-alt"></i></a> </td>
-                                </tr>
-                                <tr>
-                                    <td>Jane doe</td>
-                                    <td>Janedoe@gmail.com</td>
-                                    <td>06 17 18 31 04</td>
-                                    <td> <a class="red-btn delete-team-member"><i class="fas fa-trash-alt"></i></a> </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
 
 
 
-                </div>
-
-                <div class="w-100 team-add-container p-2 d-none">
-                    <form>
-                        <div class="form-group">
-                            <label for="estimated-hours" class="col-form-label">Assigned Dev</label>
-                            <select class="form-control" id="recipient-name" multiple>
-                                <option>John doe</option>
-                                <option>Jane doe</option>
-                                <option>Jack Elfman</option>
-                            </select>
-                        </div>
-
-                        <div class="form-group w-100 d-flex">
-                            <input type="submit" class="green-btn d-block ml-auto" value="Add Team member(s)" />
-                            <a class="red-btn ml-2 px-4" id="cancelTeamAdd">Cancel</a>
-                        </div>
-                    </form>
-                </div>
-
-                <div class="w-100 team-remove-container p-2 d-none">
-                    <form>
-                        <div class="form-group">
-                            <label for="estimated-hours" class="col-form-label">Delete Team Member</label>
-                            <p> Are you sure you want to remove <span class="text-purple">John doe</span> from the ticket <span class="text-purple">Ticket name</span> ?</p>
-                        </div>
-
-                        <div class="form-group w-100 d-flex">
-                            <a class="red-btn px-4 ml-auto mr-2" id="cancelTeamRemove">Cancel</a>
-
-                            <input type="submit" class="green-btn d-block" value="Remove Team member" />
-                        </div>
-                    </form>
-                </div>
-
-            </div>
-            <div class="modal-footer">
-                <div class="row d-flex justify-content-start align-items-start w-100 d-none">
-                    <div class="pagination-holder d-flex p-2">
-                        <div class="purple-circle"><i class="fas fa-angle-left"></i></div>
-                        <div class="purple-circle filled">1</div>
-                        <div class="purple-circle"><i class="fas fa-angle-right"></i></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
 
 
-*@
+
 
 
 @section scripts {
@@ -187,26 +92,6 @@
 
             handleModals();
 
-            $("#cancelTeamAdd , #cancelTeamRemove").click(() => {
-                $(".modal-footer").removeClass("d-none");
-                $("#teamDisplay").removeClass("d-none");
-                $(".team-add-container").addClass("d-none");
-                $(".team-remove-container").addClass("d-none");
-
-            });
-
-            $(".add-member-btn").click(() => {
-                $(".modal-footer").addClass("d-none");
-                $("#teamDisplay").addClass("d-none");
-                $(".team-add-container").removeClass("d-none");
-            });
-
-            $(".delete-team-member").click(() => {
-                $(".modal-footer").addClass("d-none");
-                $("#teamDisplay").addClass("d-none");
-                $(".team-remove-container").removeClass("d-none");
-            });
-
             $(".ticket-link").click(() => {
                 setTimeout(function () {
                     $("#comments-holder").scrollTop($("#comments-holder")[0].scrollHeight)
@@ -216,15 +101,16 @@
             $(".ticket-tabs .nav-item").click(function (e) {
                 $(".ticket-tabs .nav-item .nav-link.active").removeClass("active");
                 e.currentTarget.children[0].classList.add("active");
-                if (e.currentTarget.children[0].firstChild.data === "Comments") {
-                    $("#comments").removeClass("d-none");
-                    $("#ticket-team").addClass("d-none");
-                }
-                else {
-                    $("#comments").addClass("d-none");
-                    $("#ticket-team").removeClass("d-none");
+                var clickedTextContent = e.currentTarget.children[0].firstChild.data;
+                var targetToShow = $("#ticket-" + clickedTextContent.toLowerCase());
+                var targetsToHide = $(".tab-content");
+                console.log(targetsToHide)
 
-                }
+                targetsToHide.each(function () {
+                    $(this).addClass("d-none");
+                })
+
+                targetToShow.removeClass("d-none");
             })
 
         });
