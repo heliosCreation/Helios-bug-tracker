@@ -34,13 +34,14 @@ namespace BugTracker.Application.Features.Tickets.Queries.GetProjectTickets
             _identityService = identityService ?? throw new ArgumentNullException(nameof(identityService));
             _ticketConfigurationRepository = ticketConfigurationRepository ?? throw new ArgumentNullException(nameof(ticketConfigurationRepository));
         }
+
         public async Task<ApiResponse<ProjectWithTicketVm>> Handle(GetProjectTicketsQuery request, CancellationToken cancellationToken)
         {
             var response = new ApiResponse<ProjectWithTicketVm>();
 
             var setCount = (await _ticketRepository.ListAllAsync()).Count();
             var project = await _projectRepository.GetByIdAsync(request.ProjectId);
-            var tickets = (await _ticketRepository.GetTicketsByProject(request.ProjectId,request.Page,request.ItemPerPage)).ToList();
+            var tickets = (await _ticketRepository.GetTicketsByProject(request.ProjectId,request.Page,request.ItemPerPage, request.SearchString)).ToList();
             var pager = new Pager(setCount, request.Page, request.ItemPerPage) {RelatedId = project.Id };
 
             response.Data = new ProjectWithTicketVm(project.Id, project.Name, _mapper.Map<List<TicketVm>>(tickets), pager);

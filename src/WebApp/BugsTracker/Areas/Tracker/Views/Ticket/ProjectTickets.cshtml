@@ -6,15 +6,12 @@
     <div class="first-row col-11 p-0">
         <div class="first-row-header row d-flex px-3 py-2 w-100 justify-content-between">
             <div class="research-input-wrapper d-flex justify-content-center align-items-center">
-                <p class="mb-0 mr-2">Find by </p>
-                <select class="h-100 table-sorter-select">
-                    <option>Name</option>
-                    <option>Author</option>
-                    <option>Priority</option>
-                    <option>Status</option>
-                    <option>Assigned developer</option>
-                </select>
-                <input type="text" class="table-sorter-input ml-1" placeholder="Reseach..." />
+                <form asp-action="ByProject" asp-route-projectId="@Model.Id">
+                    <input type="text" name="searchString" class="table-sorter-input ml-1" placeholder="Reseach..." />
+                    <button type="submit" class="x-btn blue mx-1">
+                        <i class="fa fa-search"></i>
+                    </button>
+                </form>
             </div>
             <div>
                 <a href="#" data-toggle="modal" id="project-update-btn" class="x-btn yellow">Edit Project</a>

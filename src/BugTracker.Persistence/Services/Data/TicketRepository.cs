@@ -50,17 +50,42 @@ namespace BugTracker.Persistence.Services.Data
             return await _dbContext.SaveChangesAsync() > 0;
         }
 
-        public async Task<IEnumerable<Ticket>> GetTicketsByProject(Guid id, int page, int itemPerPage)
+        public async Task<IEnumerable<Ticket>> GetTicketsByProject(Guid id, int page, int itemPerPage, string searchString)
         {
+            var tickets = new List<Ticket>();
             var toSkip = (page - 1) * itemPerPage;
-            var tickets = await _dbContext.Tickets
-                        .Where(t => t.ProjectId == id)
-                        .OrderByDescending(t => t.CreatedDate)
-                        .Skip(toSkip)
-                        .Take(itemPerPage)
 
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                searchString = searchString.ToLower();
+                var userId = _dbContext.Users
+                    .Where(u => !u.UserName.ToLower().Contains("demo admin"))
+                    .Where(u => u.UserName.ToLower().Contains(searchString))
+                    .Select(u => u.Id)
+                    .FirstOrDefault();
+
+                tickets = await _dbContext.Tickets
                         .Include(t => t.Priority).Include(t => t.Status).Include(t => t.Type)
+                        .Where(t => t.ProjectId == id)
+                        .Where(t => t.Name.ToLower().Contains(searchString)
+                       || t.Priority.Name.ToLower().Contains(searchString) 
+                       || t.Status.Name.ToLower().Contains(searchString) 
+                       || t.Type.Name.ToLower().Contains(searchString)
+                       || t.CreatedBy.ToString() == userId)
                         .ToListAsync();
+            }
+            else
+            {
+                tickets = await _dbContext.Tickets
+                    .Where(t => t.ProjectId == id)
+                    .OrderByDescending(t => t.CreatedDate)
+                    .Skip(toSkip)
+                    .Take(itemPerPage)
+
+                    .Include(t => t.Priority).Include(t => t.Status).Include(t => t.Type)
+                    .ToListAsync();
+            }
+
 
             return tickets;
         }

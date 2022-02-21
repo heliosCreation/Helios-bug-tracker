@@ -35,6 +35,7 @@ namespace BugTracker.Areas.Tracker.Controllers
         public async Task<IActionResult> ByProject(
             Guid projectId,
             int page = 1,
+            string searchString ="",
             bool isSuccess = false, bool isFailed = false,
             string type = null, string actionReturned = null)
         {
@@ -46,7 +47,7 @@ namespace BugTracker.Areas.Tracker.Controllers
             const int itemPerPage = 3;//7
 
 
-            var data = (await Mediator.Send(new GetProjectTicketsQuery(projectId, page, itemPerPage))).Data;
+            var data = (await Mediator.Send(new GetProjectTicketsQuery(projectId, page, itemPerPage,searchString))).Data;
 
 
             return View("ProjectTickets", data);
