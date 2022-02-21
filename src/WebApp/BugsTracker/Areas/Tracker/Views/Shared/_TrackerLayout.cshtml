@@ -49,10 +49,13 @@
 
         </nav>
 
-
         <!-- Page content -->
 
         <div id="content">
+            @if (ViewBag.isSuccess == true)
+            {
+                <partial name="../Shared/Partial/Common/_successAlertPartial.cshtml" model="new List<string>(){ViewBag.type, ViewBag.actionReturned }" />
+            }
             <div class="d-flex navigation-items-holder">
                 <button type="button" id="sidebar-collapse" class="d-xl-block d-lg-block d-md-none d-none">
                     <span><i class="fas fa-caret-square-left"></i></span>

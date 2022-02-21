@@ -32,15 +32,24 @@ namespace BugTracker.Areas.Tracker.Controllers
             return View();
         }
 
-        public async Task<IActionResult> ByProject(Guid projectId, bool isSuccess = false, bool isFailed = false, string type = null, string actionReturned = null)
+        public async Task<IActionResult> ByProject(
+            Guid projectId,
+            int page = 1,
+            bool isSuccess = false, bool isFailed = false,
+            string type = null, string actionReturned = null)
         {
             ViewBag.isSuccess = isSuccess;
             ViewBag.isFailed = isFailed;
             ViewBag.Type = type;
             ViewBag.actionReturned = actionReturned;
 
-            var response = await Mediator.Send(new GetProjectTicketsQuery(projectId));
-            return View("ProjectTickets", response.Data);
+            const int itemPerPage = 3;//7
+
+
+            var data = (await Mediator.Send(new GetProjectTicketsQuery(projectId, page, itemPerPage))).Data;
+
+
+            return View("ProjectTickets", data);
         }
         public async Task<IActionResult> Create(CreateTicketCommand command)
         {

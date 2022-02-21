@@ -17,23 +17,19 @@
                 <input type="text" class="table-sorter-input ml-1" placeholder="Reseach..." />
             </div>
             <div>
-                <a href="#" data-toggle="modal" id="project-update-btn" class="x-btn purple">Edit Project</a>
+                <a href="#" data-toggle="modal" id="project-update-btn" class="x-btn yellow">Edit Project</a>
 
 
                 <a href="#" data-toggle="modal" class="x-btn blue" id="create-ticket"> New Ticket</a>
             </div>
 
         </div>
-        @if (ViewBag.isSuccess == true)
-        {
-            <partial name="../Shared/Partial/Common/_successAlertPartial.cshtml" model="new List<string>(){ViewBag.type, ViewBag.actionReturned }" />
-        }
+
         <div class="table-responsive w-100">
             <table class="table ticket-list-table">
                 <thead class="ticket-thead">
                     <tr>
                         <th scope="col" class="text-muted">Ticket Title</th>
-                        <th scope="col" class="text-muted">Description</th>
                         <th scope="col" class="text-muted">Author</th>
                         <th scope="col" class="text-muted">Priority</th>
                         <th scope="col" class="text-muted">Type</th>
@@ -46,42 +42,33 @@
 
                     @foreach (var ticket in Model.Tickets)
                     {
-                    <tr>
-                        <td class="d-none">@ticket.Id</td>
-                        <td scope="row" class="text-purple"><a data-toggle="modal" data-target="#showTicketDetails" class="ticket-link">@ticket.Name </a></td>
-                        <td>@ticket.Description</td>
-                        <td>@ticket.Author</td>
-                        <td><span class="pill @(ticket.Priority.ToLower())">@ticket.Priority</span></td>
-                        <td>@ticket.Type</td>
-                        <td class="text-center">@ticket.EstimatedAmountOfHours</td>
-                        <td>@ticket.Status</td>
+                        <tr>
+                            <td class="d-none">@ticket.Id</td>
+                            <td scope="row" class="text-purple"><a data-toggle="modal" data-target="#showTicketDetails" class="ticket-link">@ticket.Name </a></td>
+                            <td>@ticket.Author</td>
+                            <td><span class="pill @(ticket.Priority.ToLower())">@ticket.Priority</span></td>
+                            <td>@ticket.Type</td>
+                            <td class="text-center">@ticket.EstimatedAmountOfHours</td>
+                            <td>@ticket.Status</td>
 
-                        <td class="text-center">
-                            <div class="dropdown">
-                                <a href="#" class="dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <i class="fas fa-ellipsis-v"></i>
-                                </a>
-                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                    <a class="dropdown-item update-btn" href="#" data-toggle="modal" data-target="#crupdateTicketModal">Edit</a>
-                                    <a class="dropdown-item delete-btn" href="#" data-toggle="modal" data-target="#deleteTicketModal">Delete</a>
+                            <td class="text-center">
+                                <div class="dropdown">
+                                    <a href="#" class="dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <i class="fas fa-ellipsis-v"></i>
+                                    </a>
+                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                        <a class="dropdown-item update-btn" href="#" data-toggle="modal" data-target="#crupdateTicketModal">Edit</a>
+                                        <a class="dropdown-item delete-btn" href="#" data-toggle="modal" data-target="#deleteTicketModal">Delete</a>
+                                    </div>
                                 </div>
-                            </div>
-                        </td>
-                    </tr>
+                            </td>
+                        </tr>
 
                     }
                 </tbody>
             </table>
         </div>
-
-        <div class="row d-flex justify-content-start align-items-start w-100">
-            <div class="pagination-holder d-flex p-2">
-                <div class="purple-circle"><i class="fas fa-angle-left"></i></div>
-                <div class="purple-circle filled">1</div>
-                <div class="purple-circle">2</div>
-                <div class="purple-circle"><i class="fas fa-angle-right"></i></div>
-            </div>
-        </div>
+        <partial name="../Shared/Partial/Common/_researchBarPartial.cshtml" model="Model.Pager" />
     </div>
 
 </div>

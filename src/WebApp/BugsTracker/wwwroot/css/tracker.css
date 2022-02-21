@@ -2,6 +2,7 @@
 @import "root.css";
 @import "pills.css";
 @import "button.css";
+@import "keyframes.css";
 
 * {
     margin: 0;
@@ -56,6 +57,21 @@ a {
     font-weight: 400;
 }
 
+.alert{
+    z-index:999;
+}
+
+.alert-success {
+    position: absolute;
+    top: 10px;
+    right: 0;
+    width: 300px;
+    border-radius: 0;
+    border-bottom-left-radius: 20px;
+    border-top-left-radius: 20px;
+    animation: 0.5s slidein;
+    background: #00cb72;
+}
 button:focus {
     box-shadow: none;
     outline: none;
@@ -383,7 +399,7 @@ overflow: auto;
     position:absolute;
     top:5px;
     left:40px;
-    z-index:1001;
+    z-index:200;
     transition:all 0.2s ease-in-out;
 }
 
@@ -578,16 +594,22 @@ tbody tr td a:hover {
     cursor:pointer;
 }
 
-.purple-circle:hover{
-    background-color:rgba(15,0,255,0.05);
-
+.purple-circle:hover {
+    background-color: rgba(15,0,255,0.05);
+    color: #0300ff;
 }
 
 .purple-circle.filled{
     background:#0300ff;
-    color:white;
+    color:white!important;
 }
-
+.purple-circle.angle {
+    background: white;
+    border: 2px solid;
+    border-color:rgba(3,0,255,0.26);
+}
+.purple-circle.angle:hover {
+}
 .card {
     margin: 10px 0;
 }

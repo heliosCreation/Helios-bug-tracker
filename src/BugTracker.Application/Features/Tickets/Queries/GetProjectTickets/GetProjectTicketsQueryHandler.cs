@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using BugTracker.Application.Contracts.Data;
 using BugTracker.Application.Contracts.Identity;
+using BugTracker.Application.Model.Pagination;
 using BugTracker.Application.Responses;
 using BugTracker.Application.ViewModel;
 using MediatR;
@@ -37,10 +38,12 @@ namespace BugTracker.Application.Features.Tickets.Queries.GetProjectTickets
         {
             var response = new ApiResponse<ProjectWithTicketVm>();
 
+            var setCount = (await _ticketRepository.ListAllAsync()).Count();
             var project = await _projectRepository.GetByIdAsync(request.ProjectId);
-            var tickets = (await _ticketRepository.GetTicketsByProject(request.ProjectId)).ToList();
+            var tickets = (await _ticketRepository.GetTicketsByProject(request.ProjectId,request.Page,request.ItemPerPage)).ToList();
+            var pager = new Pager(setCount, request.Page, request.ItemPerPage) {RelatedId = project.Id };
 
-            response.Data = new ProjectWithTicketVm(project.Id, project.Name, _mapper.Map<List<TicketVm>>(tickets.ToList()));
+            response.Data = new ProjectWithTicketVm(project.Id, project.Name, _mapper.Map<List<TicketVm>>(tickets), pager);
 
             for (int i = 0; i < response.Data.Tickets.Count(); i++)
             {

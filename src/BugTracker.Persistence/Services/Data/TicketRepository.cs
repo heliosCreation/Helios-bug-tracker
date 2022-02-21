@@ -50,12 +50,19 @@ namespace BugTracker.Persistence.Services.Data
             return await _dbContext.SaveChangesAsync() > 0;
         }
 
-        public async Task<IEnumerable<Ticket>> GetTicketsByProject(Guid id)
+        public async Task<IEnumerable<Ticket>> GetTicketsByProject(Guid id, int page, int itemPerPage)
         {
-            return await _dbContext.Tickets.Include(t => t.Priority).Include(t => t.Status).Include(t => t.Type)
+            var toSkip = (page - 1) * itemPerPage;
+            var tickets = await _dbContext.Tickets
                         .Where(t => t.ProjectId == id)
-                        .OrderBy(t => t.CreatedDate)
+                        .OrderByDescending(t => t.CreatedDate)
+                        .Skip(toSkip)
+                        .Take(itemPerPage)
+
+                        .Include(t => t.Priority).Include(t => t.Status).Include(t => t.Type)
                         .ToListAsync();
+
+            return tickets;
         }
         public async Task<bool> NameIsUnique(string name)
         {
