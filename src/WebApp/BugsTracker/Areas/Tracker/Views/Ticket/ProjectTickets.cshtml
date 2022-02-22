@@ -41,7 +41,7 @@
                     {
                         <tr>
                             <td class="d-none">@ticket.Id</td>
-                            <td scope="row" class="text-purple"><a data-toggle="modal" data-target="#showTicketDetails" class="ticket-link">@ticket.Name </a></td>
+                            <td scope="row" class="text-purple"><a data-toggle="modal" data-target="" class="ticket-link">@ticket.Name </a></td>
                             <td>@ticket.Author</td>
                             <td><span class="pill @(ticket.Priority.ToLower())">@ticket.Priority</span></td>
                             <td>@ticket.Type</td>
@@ -71,8 +71,6 @@
 </div>
 
 
-<partial name="../Shared/Partial/Ticket/_detailsTicketModalPartial.cshtml" />
-
 
 
 
@@ -98,6 +96,65 @@
                 }, 200);
             });
 
+
+        });
+
+
+        function handleModals() {
+            var projectId = '@Model.Id';
+
+            const createModalUrl = '/Tracker/Ticket/loadCreateModal?projectId=' + projectId;
+            const updateModalUrl = '/Tracker/Ticket/loadUpdateModal?projectId=' + projectId;
+            const deleteModalUrl = '/Tracker/Ticket/loadDeleteModal?projectId=' + projectId;
+            const updateProjectModalUrl = '/Tracker/Project/loadUpdateModal?id=' + projectId + '&fromTicket=' + true;
+            const ticketDetailsUrl = '/Tracker/Ticket/loadDetailsModal?projectId=' + projectId;
+
+            var createBtn = $("#create-ticket");
+            var updateBtns = document.querySelectorAll('.update-btn');
+            var deleteBtns = document.querySelectorAll('.delete-btn');
+            var projectUpdateBtn = $('#project-update-btn');
+            var ticketDetailsBtn = $(".ticket-link");
+
+            $(document).ajaxComplete(function () {
+                $.validator.unobtrusive.parse(document);
+            });
+            AttachModalCreateListener(createBtn, createModalUrl, true,true);
+            AttachTableModalListeners(updateBtns, updateModalUrl,false,true,true);
+            AttachTableModalListeners(deleteBtns, deleteModalUrl, true);
+            AttachTicketDetailsModalListener(ticketDetailsBtn, ticketDetailsUrl);
+            AttachProjectUpdateModalListener(projectUpdateBtn, updateProjectModalUrl, true);
+        }
+
+        function AttachTicketDetailsModalListener(button, url) {
+            $(button).on('click', () => {
+
+                let parentContainer = button.closest("tr")[0];
+                let targetId = parentContainer.querySelector(".d-none").innerText;
+                console.log(targetId)
+
+                $.ajax({
+                    type: "GET",
+                    url: url,
+                    data: { ticketId: targetId } ,
+                    contentType: "application/json; charset=utf-8",
+                    datatype: "json",
+                    success: function (result) {
+                        $("#modal-holder").modal("show")
+                        $("#modal-holder").addClass("right");
+                        $('#modal-holder .modal-content').html(result);
+                        SetTicketDetailsTabListener();
+                        $("#comments-holder").scrollTop($("#comments-holder")[0].scrollHeight);
+                        console.log(result)
+                    },
+                    error: function (data) {
+                        console.log(data)
+                    }
+                });
+            })
+
+        }
+
+        function SetTicketDetailsTabListener() {
             $(".ticket-tabs .nav-item").click(function (e) {
                 $(".ticket-tabs .nav-item .nav-link.active").removeClass("active");
                 e.currentTarget.children[0].classList.add("active");
@@ -113,30 +170,6 @@
                 targetToShow.removeClass("d-none");
             })
 
-        });
-
-
-        function handleModals() {
-            var projectId = '@Model.Id';
-
-            const createModalUrl = '/Tracker/Ticket/loadCreateModal?projectId=' + projectId;
-            const updateModalUrl = '/Tracker/Ticket/loadUpdateModal?projectId=' + projectId;
-            const deleteModalUrl = '/Tracker/Ticket/loadDeleteModal?projectId=' + projectId;
-            const updateProjectModalUrl = '/Tracker/Project/loadUpdateModal?id=' + projectId + '&fromTicket=' + true;
-
-            var createBtn = $("#create-ticket");
-            var updateBtns = document.querySelectorAll('.update-btn');
-            var deleteBtns = document.querySelectorAll('.delete-btn');
-            var projectUpdateBtn = $('#project-update-btn');
-
-            $(document).ajaxComplete(function () {
-                $.validator.unobtrusive.parse(document);
-            });
-            AttachModalCreateListener(createBtn, createModalUrl, true,true);
-            AttachTableModalListeners(updateBtns, updateModalUrl,false,true,true);
-            AttachTableModalListeners(deleteBtns, deleteModalUrl, true);
-            AttachProjectUpdateModalListener(projectUpdateBtn, updateProjectModalUrl, true);
         }
-
     </script>
 }

@@ -25,6 +25,7 @@ namespace BugTracker.Areas.Tracker.Controllers
         private const string CreateModalPath = ModalBasePath + "_create" + ModalType;
         private const string UpdateModalPath = ModalBasePath + "_update" + ModalType;
         private const string DeleteModalPath = ModalBasePath + "_delete" + ModalType;
+        private const string DetailsModalPath = ModalBasePath + "_details" + ModalType;
         private const string ProjectTeamModalPath = "~/Areas/Tracker/Views/Shared/Partial/Project/_projectTeamModalPartial.cshtml";
 
         public IActionResult GetAll()
@@ -49,6 +50,8 @@ namespace BugTracker.Areas.Tracker.Controllers
 
             return View("ProjectTickets", data);
         }
+        
+        
         public async Task<IActionResult> Create(CreateTicketCommand command)
         {
             var response = await Mediator.Send(command);
@@ -118,6 +121,12 @@ namespace BugTracker.Areas.Tracker.Controllers
             var dto = new DeleteTicketDto(id, projectId, name);
             return PartialView(DeleteModalPath, dto);
         }
+        
+        public async Task<IActionResult>LoadDetailsModal(Guid ticketId)
+        {
+            return PartialView(DetailsModalPath);
+        }
+            
         public async Task<IActionResult> LoadProjectTeamModal(Guid projectId)
         {
             var dto = new ProjectTeamManagementDto();

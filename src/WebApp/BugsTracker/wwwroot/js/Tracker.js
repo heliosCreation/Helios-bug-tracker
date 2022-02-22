@@ -32,7 +32,6 @@ function AttachTableModalListeners(buttons, url, getName = false, modalLarge = f
             let parentContainer = btn.closest("tr");
             let targetId = parentContainer.querySelector(".d-none").innerText;
 
-            console.log(targetId);
             if (getName === true) {
                 var name = parentContainer.querySelector(".text-purple a.ticket-link").innerText;
             }
@@ -118,6 +117,7 @@ function setProjectTabListener() {
     }
 
 }
+
 function setTicketTabsListener() {
     $(".crupdate-ticket-tabs .nav-item").click(function (e) {
         $(".crupdate-ticket-tabs .nav-item .nav-link.active").removeClass("active");

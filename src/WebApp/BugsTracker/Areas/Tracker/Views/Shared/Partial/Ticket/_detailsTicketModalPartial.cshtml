@@ -1,79 +1,72 @@
-﻿<div class="modal right fade" id="showTicketDetails" tabindex="-1" role="dialog" aria-labelledby="showTicketDetailsModal" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header d-flex flex-column pl-0 pb-0">
-                <div class="w-100 d-flex align-items-center pl-2 pb-2">
-                    <h5 class="modal-title" id="ticket-details-modal-label">Ticket details</h5>
+﻿<div class="modal-header d-flex flex-column pl-0 pb-0">
+    <div class="w-100 d-flex align-items-center pl-2 pb-2">
+        <h5 class="modal-title" id="ticket-details-modal-label">Ticket details</h5>
 
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <ul class="nav nav-tabs ticket-tabs">
+
+        <li class="nav-item">
+            <a class="nav-link active" href="#">Description</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#">Comments</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#">Team</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#">History</a>
+        </li>
+    </ul>
+</div>
+<div class="modal-body modal-right">
+    <div id="ticket-description" class="w-100 h-100 tab-content p-1">
+        <div class="w-100 h-100 d-flex align-items-center">Hi mark</div>
+    </div>
+
+    <div id="ticket-history" class="w-100 h-100 tab-content d-none">
+        history
+    </div>
+
+    <div class="w-100 h-100 tab-content d-none" id="ticket-comments">
+        <div class="light-gray-blue-theme d-flex align-items-center flex-column-reverse p-1" id="comments-holder">
+            @{
+                for (int i = 0; i < 12; i++)
+                {
+                    <div class="comment bg-white  my-1 px-2 border-radius-10  w-100">
+                        <p class="title">John Doe - <span>12/01/2021 - 4:0@(i) pm</span> <span class="float-right pr-2"><i class="far fa-comments"></i></span></p>
+                        <p>Would need your attention on that.</p>
+                    </div>
+                }
+            }
+        </div>
+        <div class="bg-white p-3 comment-writter-holder">
+            <div class="input-group">
+                <input type="text" class="form-control" placeholder="Type Comment" aria-label="Type Comment" aria-describedby="basic-addon2">
+                <div class="input-group-append">
+                    <button class="btn btn-primary" type="button">Send</button>
                 </div>
-                <ul class="nav nav-tabs ticket-tabs">
-
-                    <li class="nav-item">
-                        <a class="nav-link active" href="#">Description</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Comments</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Team</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">History</a>
-                    </li>
-                </ul>
             </div>
-            <div class="modal-body modal-right">
-                <div id="ticket-description" class="w-100 h-100 tab-content p-1">
-                    <div class="w-100 h-100 d-flex align-items-center">Hi mark</div>
-                </div>
-               
-                <div id="ticket-history" class="w-100 h-100 tab-content d-none">
-                    history
-                </div>
-                
-                <div class="w-100 h-100 tab-content d-none" id="ticket-comments">
-                    <div class="light-gray-blue-theme d-flex align-items-center flex-column-reverse p-1" id="comments-holder">
-                        @{
-                            for (int i = 0; i < 12; i++)
-                            {
-                                <div class="comment bg-white  my-1 px-2 border-radius-10  w-100">
-                                    <p class="title">John Doe - <span>12/01/2021 - 4:0@(i) pm</span> <span class="float-right pr-2"><i class="far fa-comments"></i></span></p>
-                                    <p>Would need your attention on that.</p>
-                                </div>
-                            }
-                        }
-                    </div>
-                    <div class="bg-white p-3 comment-writter-holder">
-                        <div class="input-group">
-                            <input type="text" class="form-control" placeholder="Type Comment" aria-label="Type Comment" aria-describedby="basic-addon2">
-                            <div class="input-group-append">
-                                <button class="btn btn-primary" type="button">Send</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            
-                <div class="w-100 h-100 tab-content d-none" id="ticket-team">
-                    <div class="p-3 w-100">
-                        <div class="ticket-project-manager-holder p-2">
-                            <span class="purple-pill d-inline-block">Frank loyd - Project manager</span>
-                        </div>
-                        <div class="ticket-dev-holder p-2">
-                            @for (int i = 0; i < 12; i++)
-                            {
-                            <span class="green-pill d-inline-block">John Doe - Dev</span>
+        </div>
+    </div>
 
-                            }
-                        </div>
-                        <div class="ticket-submitter-holder p-2">
-                            <span class="yellow-pill d-inline-block">Alan Wu - Submitter</span>
-                        </div>
-                            
-                    </div>
-                </div>
+    <div class="w-100 h-100 tab-content d-none" id="ticket-team">
+        <div class="p-3 w-100">
+            <div class="ticket-project-manager-holder p-2">
+                <span class="purple-pill d-inline-block">Frank loyd - Project manager</span>
+            </div>
+            <div class="ticket-dev-holder p-2">
+                @for (int i = 0; i < 12; i++)
+                {
+                    <span class="green-pill d-inline-block">John Doe - Dev</span>
+
+                }
+            </div>
+            <div class="ticket-submitter-holder p-2">
+                <span class="yellow-pill d-inline-block">Alan Wu - Submitter</span>
             </div>
 
         </div>
