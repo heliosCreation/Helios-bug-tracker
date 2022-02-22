@@ -41,8 +41,8 @@ namespace BugTracker.Application.Features.Tickets.Queries.GetProjectTickets
 
             var setCount = (await _ticketRepository.ListAllAsync()).Count();
             var project = await _projectRepository.GetByIdAsync(request.ProjectId);
-            var tickets = (await _ticketRepository.GetTicketsByProject(request.ProjectId,request.Page,request.ItemPerPage, request.SearchString)).ToList();
-            var pager = new Pager(setCount, request.Page, request.ItemPerPage) {RelatedId = project.Id };
+            var tickets = (await _ticketRepository.GetTicketsByProject(request.ProjectId,request.Page, request.SearchString)).ToList();
+            var pager = new Pager(setCount, request.Page) {RelatedId = project.Id };
 
             response.Data = new ProjectWithTicketVm(project.Id, project.Name, _mapper.Map<List<TicketVm>>(tickets), pager);
 

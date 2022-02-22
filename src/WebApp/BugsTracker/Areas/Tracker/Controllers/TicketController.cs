@@ -44,10 +44,7 @@ namespace BugTracker.Areas.Tracker.Controllers
             ViewBag.Type = type;
             ViewBag.actionReturned = actionReturned;
 
-            const int itemPerPage = 7;//7
-
-
-            var data = (await Mediator.Send(new GetProjectTicketsQuery(projectId, page, itemPerPage,searchString))).Data;
+            var data = (await Mediator.Send(new GetProjectTicketsQuery(projectId, page , searchString))).Data;
 
 
             return View("ProjectTickets", data);

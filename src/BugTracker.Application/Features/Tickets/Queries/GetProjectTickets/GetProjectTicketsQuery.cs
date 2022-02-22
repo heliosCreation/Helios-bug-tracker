@@ -7,17 +7,15 @@ namespace BugTracker.Application.Features.Tickets.Queries.GetProjectTickets
 {
     public class GetProjectTicketsQuery : IRequest<ApiResponse<ProjectWithTicketVm>>
     {
-        public GetProjectTicketsQuery(Guid projectId, int page, int itemPerPage, string searchString)
+        public GetProjectTicketsQuery(Guid projectId, int page, string searchString)
         {
             ProjectId = projectId;
             Page = page;
-            ItemPerPage = itemPerPage;
             SearchString = searchString;
         }
 
         public Guid ProjectId { get; set; }
         public int Page { get; set; }
-        public int ItemPerPage { get; set; }
         public string SearchString { get; set; }
     }
 }

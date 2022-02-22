@@ -50,8 +50,9 @@ namespace BugTracker.Persistence.Services.Data
             return await _dbContext.SaveChangesAsync() > 0;
         }
 
-        public async Task<IEnumerable<Ticket>> GetTicketsByProject(Guid id, int page, int itemPerPage, string searchString)
+        public async Task<IEnumerable<Ticket>> GetTicketsByProject(Guid id, int page, string searchString)
         {
+            var itemPerPage = 7;
             var tickets = new List<Ticket>();
             var toSkip = (page - 1) * itemPerPage;
 

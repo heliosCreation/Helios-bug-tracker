@@ -23,7 +23,7 @@ namespace BugTracker.Application.Model.Pagination
         {
 
         }
-        public Pager(int totalItems, int currentPage, int pageSize) 
+        public Pager(int totalItems, int currentPage, int pageSize = 7) 
         {
             TotalItems = totalItems;
             CurrentPage = currentPage > 0 ? currentPage : 1;
