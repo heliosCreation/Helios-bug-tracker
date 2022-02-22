@@ -31,7 +31,9 @@ namespace BugTracker.Persistence.Services.Data
 
         public async Task UpdateProjectAsync(Project entity, ICollection<string> teamIds)
         {
-            _dbContext.Entry(entity).State = EntityState.Modified;
+            var oldEntity = await _dbContext.Projects.FindAsync(entity.Id);
+            _dbContext.Entry(oldEntity).CurrentValues.SetValues(entity);
+
             var dbProjectMemberIds = await _dbContext.
                                     ProjectTeamMembers.
                                     Where(ptm => ptm.ProjectId == entity.Id).
@@ -43,6 +45,7 @@ namespace BugTracker.Persistence.Services.Data
             {
                 if (!teamIds.Contains(dbProjectMemberId))
                 {
+                    //Remove project members
                     _dbContext.ProjectTeamMembers.Remove(new ProjectTeamMember { ProjectId = entity.Id, UserId = dbProjectMemberId });
 
                     //Remove related ticket team members if they are no longer project members.

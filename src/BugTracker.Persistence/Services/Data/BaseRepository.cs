@@ -24,6 +24,12 @@ namespace BugTracker.Persistence.Services.Data
             await _dbContext.SaveChangesAsync();
             return entity;
         }
+        public virtual async Task UpdateAsync(T entity)
+        {
+            var oldEntity = await _dbContext.Set<T>().FindAsync(entity.Id);
+            _dbContext.Entry(oldEntity).CurrentValues.SetValues(entity);
+            await _dbContext.SaveChangesAsync();
+        }
 
         public virtual async Task DeleteAsync(T entity)
         {
@@ -46,11 +52,5 @@ namespace BugTracker.Persistence.Services.Data
             return await _dbContext.Set<T>().ToListAsync();
         }
 
- 
-        public virtual async Task UpdateAsync(T entity)
-        {
-            _dbContext.Entry(entity).State = EntityState.Modified;
-            await _dbContext.SaveChangesAsync();
-        }
     }
 }
