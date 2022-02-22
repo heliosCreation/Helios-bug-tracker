@@ -1,0 +1,49 @@
+﻿.x-btn {
+    color: white !important;
+    padding: 5px;
+    border-radius: 5px;
+    cursor: pointer;
+    border: none;
+    line-height: normal;
+}
+
+.x-btn.small{
+    font-size:10px;
+}
+.x-btn.blue {
+    background: #3a06fb;
+}
+
+.x-btn.blue:hover {
+    background-color: #2402a4;
+}
+
+.x-btn.yellow {
+    background: #ffc107;
+}
+
+.x-btn.yellow:hover {
+    background-color: #e0a800;
+}
+.x-btn.green {
+    background: #28a745;
+}
+
+.x-btn.green:hover {
+    background: #1e8135;
+}
+
+.x-btn.red {
+    background: #ff0707;
+}
+
+.x-btn.red:hover {
+    background-color: #ca0606;
+}
+
+.x-btn.purple {
+    background: #9407ff;
+}
+.x-btn.purple:hover{
+    background:#6805b4;
+}

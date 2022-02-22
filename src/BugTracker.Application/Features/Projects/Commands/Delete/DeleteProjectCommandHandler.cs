@@ -18,13 +18,13 @@ namespace BugTracker.Application.Features.Projects.Commands.Delete
         public async Task<ApiResponse<object>> Handle(DeleteProjectCommand request, CancellationToken cancellationToken)
         {
             var response = new ApiResponse<object>();
-            var category = await _projectRepository.GetByIdAsync(request.Id);
-            if (category == null)
+            var project = await _projectRepository.GetByIdAsync(request.Id);
+            if (project == null)
             {
                 return response.setNotFoundResponse($"Project with Id {request.Id}could not be Found");
             }
 
-            await _projectRepository.DeleteAsync(category);
+            await _projectRepository.DeleteAsync(project);
             return response;
         }
     }

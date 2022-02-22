@@ -1,10 +1,15 @@
 ﻿using AutoMapper;
 using BugTracker.Application.Dto;
 using BugTracker.Application.Dto.Projects;
+using BugTracker.Application.Dto.TicketConfiguration;
 using BugTracker.Application.Features.Projects;
 using BugTracker.Application.Features.Projects.Commands.Create;
 using BugTracker.Application.Features.Projects.Commands.Update;
 using BugTracker.Application.Features.Projects.Queries;
+using BugTracker.Application.Features.Tickets;
+using BugTracker.Application.Features.Tickets.Commands.Create;
+using BugTracker.Application.Features.Tickets.Commands.Update;
+using BugTracker.Application.Features.Tickets.Queries;
 using BugTracker.Application.ViewModel;
 using BugTracker.Domain.Entities;
 using BugTracker.Domain.Identity;
@@ -27,12 +32,24 @@ namespace BugTracker.Application.Profiles
 
             CreateMap<Project, ProjectVm>()
                 .ForMember(dest => dest.TeamNames, opt => opt.MapFrom(src => src.Name));
-            CreateMap<Project, ProjectWithTicketsVm>();
+            CreateMap<Project, ProjectWithTicketsAndTeamVm>();
             CreateMap<Project, ProjectWithTeamIdsVm>();
             #endregion
 
             #region user
             CreateMap<ApplicationUser, UserViewModel>();
+            CreateMap<TicketsTeamMembers, UserViewModel>()
+                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.UserId));
+            #endregion
+
+            #region ticket
+            CreateMap<CreateTicketCommand, Ticket>();
+            CreateMap<UpdateTicketCommand, Ticket>();
+            CreateMap<Ticket, TicketVm>().ReverseMap();
+            CreateMap<Ticket, TicketWithTeamAndConfigurationVm>();
+            CreateMap<Status, StatusDto>();
+            CreateMap<Priority, PriorityDto>();
+            CreateMap<Type, TypeDto>();
             #endregion
         }
     }

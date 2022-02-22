@@ -1,0 +1,175 @@
+﻿@model BugTracker.Application.ViewModel.ProjectWithTicketVm
+
+<partial name="../Shared/Partial/Common/_modalHolderPartial.cshtml" />
+<div class="py-4 row d-flex justify-content-around h-50">
+
+    <div class="first-row col-11 p-0">
+        <div class="first-row-header row d-flex px-3 py-2 w-100 justify-content-between">
+            <div class="research-input-wrapper d-flex justify-content-center align-items-center">
+                <form asp-action="ByProject" asp-route-projectId="@Model.Id">
+                    <input type="text" name="searchString" class="table-sorter-input ml-1" placeholder="Reseach..." />
+                    <button type="submit" class="x-btn blue mx-1">
+                        <i class="fa fa-search"></i>
+                    </button>
+                </form>
+            </div>
+            <div>
+                <a href="#" data-toggle="modal" id="project-update-btn" class="x-btn yellow">Edit Project</a>
+
+
+                <a href="#" data-toggle="modal" class="x-btn blue" id="create-ticket"> New Ticket</a>
+            </div>
+
+        </div>
+
+        <div class="table-responsive w-100">
+            <table class="table ticket-list-table">
+                <thead class="ticket-thead">
+                    <tr>
+                        <th scope="col" class="text-muted">Ticket Title</th>
+                        <th scope="col" class="text-muted">Author</th>
+                        <th scope="col" class="text-muted">Priority</th>
+                        <th scope="col" class="text-muted">Type</th>
+                        <th scope="col" class="text-muted">Estimated hours</th>
+                        <th scope="col" class="text-muted">Status</th>
+                        <th scope="col" class="text-muted text-center">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    @foreach (var ticket in Model.Tickets)
+                    {
+                        <tr>
+                            <td class="d-none">@ticket.Id</td>
+                            <td scope="row" class="text-purple"><a data-toggle="modal" data-target="" class="ticket-link">@ticket.Name </a></td>
+                            <td>@ticket.Author</td>
+                            <td><span class="pill @(ticket.Priority.ToLower())">@ticket.Priority</span></td>
+                            <td>@ticket.Type</td>
+                            <td class="text-center">@ticket.EstimatedAmountOfHours</td>
+                            <td>@ticket.Status</td>
+
+                            <td class="text-center">
+                                <div class="dropdown">
+                                    <a href="#" class="dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <i class="fas fa-ellipsis-v"></i>
+                                    </a>
+                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                        <a class="dropdown-item update-btn" href="#" data-toggle="modal" data-target="#crupdateTicketModal">Edit</a>
+                                        <a class="dropdown-item delete-btn" href="#" data-toggle="modal" data-target="#deleteTicketModal">Delete</a>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+
+                    }
+                </tbody>
+            </table>
+        </div>
+        <partial name="../Shared/Partial/Common/_researchBarPartial.cshtml" model="Model.Pager" />
+    </div>
+
+</div>
+
+
+
+
+
+
+
+
+
+@section scripts {
+
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+    <script src="~/js/Tracker.js"></script>
+    <script src="~/lib/Chart.js/chart.min.js"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#sectionName").text('@(Model.Name)');
+
+            handleModals();
+
+            $(".ticket-link").click(() => {
+                setTimeout(function () {
+                    $("#comments-holder").scrollTop($("#comments-holder")[0].scrollHeight)
+                }, 200);
+            });
+
+
+        });
+
+
+        function handleModals() {
+            var projectId = '@Model.Id';
+
+            const createModalUrl = '/Tracker/Ticket/loadCreateModal?projectId=' + projectId;
+            const updateModalUrl = '/Tracker/Ticket/loadUpdateModal?projectId=' + projectId;
+            const deleteModalUrl = '/Tracker/Ticket/loadDeleteModal?projectId=' + projectId;
+            const updateProjectModalUrl = '/Tracker/Project/loadUpdateModal?id=' + projectId + '&fromTicket=' + true;
+            const ticketDetailsUrl = '/Tracker/Ticket/loadDetailsModal?projectId=' + projectId;
+
+            var createBtn = $("#create-ticket");
+            var updateBtns = document.querySelectorAll('.update-btn');
+            var deleteBtns = document.querySelectorAll('.delete-btn');
+            var projectUpdateBtn = $('#project-update-btn');
+            var ticketDetailsBtn = $(".ticket-link");
+
+            $(document).ajaxComplete(function () {
+                $.validator.unobtrusive.parse(document);
+            });
+            AttachModalCreateListener(createBtn, createModalUrl, true,true);
+            AttachTableModalListeners(updateBtns, updateModalUrl,false,true,true);
+            AttachTableModalListeners(deleteBtns, deleteModalUrl, true);
+            AttachTicketDetailsModalListener(ticketDetailsBtn, ticketDetailsUrl);
+            AttachProjectUpdateModalListener(projectUpdateBtn, updateProjectModalUrl, true);
+        }
+
+        function AttachTicketDetailsModalListener(button, url) {
+            $(button).on('click', () => {
+
+                let parentContainer = button.closest("tr")[0];
+                let targetId = parentContainer.querySelector(".d-none").innerText;
+                console.log(targetId)
+
+                $.ajax({
+                    type: "GET",
+                    url: url,
+                    data: { ticketId: targetId } ,
+                    contentType: "application/json; charset=utf-8",
+                    datatype: "json",
+                    success: function (result) {
+                        $("#modal-holder").modal("show")
+                        $("#modal-holder").addClass("right");
+                        $('#modal-holder .modal-content').html(result);
+                        SetTicketDetailsTabListener();
+                        $("#comments-holder").scrollTop($("#comments-holder")[0].scrollHeight);
+                        console.log(result)
+                    },
+                    error: function (data) {
+                        console.log(data)
+                    }
+                });
+            })
+
+        }
+
+        function SetTicketDetailsTabListener() {
+            $(".ticket-tabs .nav-item").click(function (e) {
+                $(".ticket-tabs .nav-item .nav-link.active").removeClass("active");
+                e.currentTarget.children[0].classList.add("active");
+                var clickedTextContent = e.currentTarget.children[0].firstChild.data;
+                var targetToShow = $("#ticket-" + clickedTextContent.toLowerCase());
+                var targetsToHide = $(".tab-content");
+                console.log(targetsToHide)
+
+                targetsToHide.each(function () {
+                    $(this).addClass("d-none");
+                })
+
+                targetToShow.removeClass("d-none");
+            })
+
+        }
+    </script>
+}

@@ -1,13 +1,9 @@
 ﻿@import url('https://fonts.googleapis.com/css?family=Nova+Slim&display=swap');
+@import "root.css";
+@import "pills.css";
+@import "button.css";
+@import "keyframes.css";
 
-:root {
-    --text-purple: #5d00ff;
-    --text-green:#28a745;
-    --text-gray: #c8c5ce;
-    --blue: rgb(3,0,255,1);
-    --bg-black-50: #eaeaf4;
-    --bg-scrollbar: #c7c7c7;
-}
 * {
     margin: 0;
     padding: 0;
@@ -61,6 +57,21 @@ a {
     font-weight: 400;
 }
 
+.alert{
+    z-index:999;
+}
+
+.alert-success {
+    position: absolute;
+    top: 10px;
+    right: 0;
+    width: 300px;
+    border-radius: 0;
+    border-bottom-left-radius: 20px;
+    border-top-left-radius: 20px;
+    animation: 0.5s slidein;
+    background: #00cb72;
+}
 button:focus {
     box-shadow: none;
     outline: none;
@@ -76,20 +87,28 @@ ul, ol {
     margin: 0px;
     list-style: none;
 }
-
-
-option.selected {
-    background: #b3f2c18a;
+select option:checked {
+    color: #0abc31fc !important;
+    background: white;
+    position:relative;
+}
+select option:checked::after {
+    content: "\002714";
+    position:absolute;
+    right:0;
 }
 
 a,
 a:hover,
 a:focus {
-    color: white;
+    color: black;
     text-decoration: none;
     transition: all 0.3s;
 }
 
+.nav-tabs{
+    border-bottom:0px!important;
+}
 .col-4_5{
     flex: 0 0 35%;
     max-width:35%;
@@ -113,7 +132,10 @@ a:focus {
     height: 70% !important;
     max-height:70%;
 }
-
+.h-90 {
+    height: 90% !important;
+    max-height: 90%;
+}
 .backgound-overlay {
     background-color: rgb(0 0 0 / 2%);
 }
@@ -139,20 +161,7 @@ a:focus {
 }
 /*text color end*/
 
-.purple-pill {
-    background-color: rgb(114 18 240 / 13%);
-    border-radius: 10px;
-    color: rgb(114 18 240);
-    padding: 7px 10px;
-}
 
-.green-pill {
-    background-color: rgb(31 224 126 / 13%);
-    border-radius: 10px;
-    color: rgb(31 224 126);
-    padding: 7px 10px;
-    margin:2px;
-}
 .separator{
     height:2px;
     background-color:rgb(0 0 0 / 5%);
@@ -186,46 +195,22 @@ overflow: auto;
 .blue-theme{
     background-color:var(--blue);
 }
-
-.blue-btn {
-    color: white!important;
-    background: #3a06fb;
-    padding: 5px;
-    border-radius: 5px;
-    cursor:pointer;
+.light-gray-blue-theme{
+    background:var(--light-gray-blue);
+}
+.light-blue-theme{
+    background:var(--light-blue);
 }
 
-.blue-btn:hover {
-    background-color: #2402a4;
-}
-
-.yellow-btn {
-    color: white !important;
-    background: #ffc107;
-    padding: 5px;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-.yellow-btn:hover {
-    background-color: #e0a800;
-}
 
 .border-radius-0{
     border-radius:0!important;
 }
 
-.green-btn {
-    background: #28a745;
-    color: white !important;
-    padding: 5px;
-    border-radius: 5px;
-    cursor: pointer;
-    border: none;
+.border-radius-10 {
+    border-radius: 10px !important;
 }
-.green-btn:hover {
-    background: #1e8135;
-}
+
 
 .table-sorter-select,
 .table-sorter-input {
@@ -242,6 +227,19 @@ overflow: auto;
     outline: none;
     border-radius: 5px;
 }
+
+.gradient-lightbulb {
+    font-size: 15px;
+    padding-bottom: 5px;
+    background: rgb(255,255,0);
+    background: linear-gradient(180deg, rgba(255,255,0,1) 0%, rgba(215,215,184,1) 70%, rgba(11,11,0,1) 84%, rgba(0,0,0,1) 100%);
+    background-size: 100%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    -moz-background-clip: text;
+    -moz-text-fill-color: transparent;
+}
+
 /* ---------------------------------------------------
     SIDEBAR STYLE start
 ----------------------------------------------------- */
@@ -401,7 +399,7 @@ overflow: auto;
     position:absolute;
     top:5px;
     left:40px;
-    z-index:1001;
+    z-index:200;
     transition:all 0.2s ease-in-out;
 }
 
@@ -553,52 +551,6 @@ padding: 0px;
     font-size:13px;
 }
 
-/******* CUSTOM BTN SECTION   ******/
-.add-member-btn,
-.add-project-btn {
-    color: white;
-    background: #3a06fb;
-    padding: 5px;
-    border-radius: 5px;
-}
-.add-member-btn:hover,
-.add-project-btn:hover{
-    background-color:#2402a4;
-}
-.manage-team-btn {
-    color: white;
-    background: #34d834;
-    padding: 5px;
-    border-radius: 5px;
-    border:1px solid transparent;
-}
-.manage-team-btn:hover {
-    background-color: #299a29;
-}
-.show-team-btn {
-    color: white;
-    background: #ffc107;
-    padding: 5px;
-    border-radius: 5px;
-}
-
-.show-team-btn:hover{
-    background-color:#e0a800;
-}
-
-.red-btn {
-    color: white !important;
-    background: #ff0707;
-    padding: 5px;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-.red-btn:hover{
-    background-color:#ca0606;
-}
-
-/*****CUSTOM BTN ENDS ******/
 .project-thead tr,
 .ticket-thead tr{
     background-color: #21252914;
@@ -615,6 +567,7 @@ td {
 tbody tr td a{
     font-size: 12px;
     color: var(--text-purple);
+    cursor:pointer;
 }
 
 tbody tr td a:hover {
@@ -642,16 +595,22 @@ tbody tr td a:hover {
     cursor:pointer;
 }
 
-.purple-circle:hover{
-    background-color:rgba(15,0,255,0.05);
-
+.purple-circle:hover {
+    background-color: rgba(15,0,255,0.05);
+    color: #0300ff;
 }
 
 .purple-circle.filled{
     background:#0300ff;
-    color:white;
+    color:white!important;
 }
-
+.purple-circle.angle {
+    background: white;
+    border: 2px solid;
+    border-color:rgba(3,0,255,0.26);
+}
+.purple-circle.angle:hover {
+}
 .card {
     margin: 10px 0;
 }
@@ -825,11 +784,13 @@ tbody tr td a:hover {
     color:rgba(0,0,0,0.25);
 }
 
-
-
-.comments-holder{
-    overflow-y:auto;
-    max-height:347px;
+ .nav-item .nav-link.active {
+    background: #cefcff73 !important;
+}
+#comments-holder {
+    overflow-y: auto;
+    height: 410px;
+    max-height: 410px;
 }
 .comment-writter-holder{
     display:flex;
@@ -856,6 +817,11 @@ tbody tr td a:hover {
 /* ---------------------------------------------------
     Custom Modal
 ----------------------------------------------------- */
+.modal-body:not(.modal-right) {
+    max-height: calc(100vh - 200px);
+    overflow-y: auto;
+}
+
 .modal-title{
     text-transform:none!important; 
 }
@@ -900,6 +866,10 @@ tbody tr td a:hover {
     border-top:none;
 }
 
+.modal-dialog-large {
+    min-width: 60vw;
+    margin-left: auto;
+}
 /* ---------------------------------------------------
     MEDIAQUERIES
 ----------------------------------------------------- */
@@ -1005,16 +975,12 @@ tbody tr td a:hover {
         height:50px;
     }
 
-   .navigation-items-holder{
+    .navigation-items-holder{
         left:25px;
     }
 }
 
-.modal-dialog-large {
-    max-height: 90vh;
-    min-width: 80vw;
-    margin-left:auto;
-}
+
 
 
 /* ---------------------------------------------------

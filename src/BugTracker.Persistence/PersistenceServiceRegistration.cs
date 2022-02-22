@@ -12,6 +12,7 @@ namespace BugTracker.Persistence
 
             services.AddScoped<IProjectRepository, ProjectRepository>();
             services.AddScoped<ITicketRepository, TicketRepository>();
+            services.AddScoped<ITicketConfigurationRepository, TicketConfigurationsRepository>();
             services.AddScoped<ICommentRepository, CommentRepository>();
 
             return services;
