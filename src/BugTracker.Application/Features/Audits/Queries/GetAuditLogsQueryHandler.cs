@@ -9,6 +9,7 @@ using MediatR;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -51,20 +52,36 @@ namespace BugTracker.Application.Features.Audits.Queries
                 {
                     if (item.AffectedColumns.Contains("PriorityId"))
                     {
-
-                        var newVal = item.NewValues.Where(nv => nv.Key == "PriorityId").First().Value;
-                        var oldVal = item.OldValues.Where(nv => nv.Key == "PriorityId").First().Value;
-                        var newPriorityName = await _ticketConfigurationRepository.GetPriorityName(Guid.Parse(newVal));
-                        var oldPriorityName = await _ticketConfigurationRepository.GetPriorityName(Guid.Parse(oldVal));
-                        item.NewValues.Remove("PriorityId");
-                        item.OldValues.Remove("PriorityId");
-                        item.NewValues.Add("Priority", newPriorityName);
-                        item.OldValues.Add("Priority", oldPriorityName);
+                        item.NewValues = await ReworkEntityFields(item.NewValues, "PriorityId");
+                        item.OldValues = await ReworkEntityFields(item.OldValues, "PriorityId");
+                    }
+                    if (item.AffectedColumns.Contains("TypeId"))
+                    {
+                        item.NewValues = await ReworkEntityFields(item.NewValues, "TypeId");
+                        item.OldValues = await ReworkEntityFields(item.OldValues, "TypeId");
+                    }
+                    if (item.AffectedColumns.Contains("StatusId"))
+                    {
+                        item.NewValues = await ReworkEntityFields(item.NewValues, "StatusId");
+                        item.OldValues = await ReworkEntityFields(item.OldValues, "StatusId");
                     }
                 }
             }
 
             return auditLogs;
+        }
+
+        private async Task<Dictionary<string, string>> ReworkEntityFields(Dictionary<string,string> prop, string key)
+        {
+            Type type = _ticketConfigurationRepository.GetType();
+            MethodInfo method = type.GetMethod("Get" + key.Replace("Id","")  +"Name");
+
+            var value = Guid.Parse(prop.Where(nv => nv.Key == key).First().Value);
+            Task<string> newName = (Task<string>)method.Invoke(_ticketConfigurationRepository, new object[] {value });
+
+            prop.Remove(key);
+            prop.Add(key.Replace("Id",""), (await newName).ToString());
+            return prop;
         }
     }
 }
