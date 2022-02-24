@@ -9,6 +9,8 @@ function AttachModalCreateListener(createBtnId, url, modalLarge = false, isTicke
             success: function (result) {
                 $(' #modal-holder .modal-content').html(result);
                 $("#modal-holder").modal("show");
+                $("#modal-holder").removeClass("right");
+
                 handleModalSize(modalLarge);
 
                 $.validator.setDefaults({ ignore: [] });
@@ -45,6 +47,8 @@ function AttachTableModalListeners(buttons, url, getName = false, modalLarge = f
                 success: function (result) {
                     $("#modal-holder").modal("show")
                     $('#modal-holder .modal-content').html(result);
+                    $("#modal-holder").removeClass("right");
+
                     handleModalSize(modalLarge);
 
                     $.validator.setDefaults({ ignore: [] });
@@ -73,6 +77,8 @@ function AttachProjectUpdateModalListener(button, url, modalLarge) {
             success: function (result) {
                 $("#modal-holder").modal("show")
                 $('#modal-holder .modal-content').html(result);
+                $("#modal-holder").removeClass("right");
+
                 handleModalSize(modalLarge);
                 setProjectTabListener();
                 setSelectCleaner();
