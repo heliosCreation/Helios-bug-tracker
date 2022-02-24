@@ -54,6 +54,8 @@
                                 }
                                 else
                                 {
+                                    <p>Ticket updated by <span class="font-weight-bold text-purple">@item.User</span></p>
+
                                     @for (int i = 0; i < item.NewValues.Count; i++)
                                     {
                                         var old = item.OldValues.ElementAt(i);

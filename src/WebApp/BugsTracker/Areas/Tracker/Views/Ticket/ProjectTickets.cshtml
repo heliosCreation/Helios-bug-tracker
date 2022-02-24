@@ -136,6 +136,7 @@
                         $("#modal-holder").modal("show")
                         $("#modal-holder").addClass("right");
                         $('#modal-holder .modal-content').html(result);
+                        $(".modal-dialog").removeClass("modal-dialog-large");
                         SetTicketDetailsTabListener();
                         $("#comments-holder").scrollTop($("#comments-holder")[0].scrollHeight);
                     },
