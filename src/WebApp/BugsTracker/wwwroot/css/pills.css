@@ -50,3 +50,19 @@
 }
 /******Priority ends ******/
 
+.history-pill {
+    height:20px;
+    border-radius:2px;
+    color: white;
+    padding: 0 10px;
+    line-height:1.75;
+    text-transform: uppercase;
+    vertical-align:middle;
+}
+
+.history-pill.create {
+    background: #32d296;
+}
+.history-pill.update {
+    background: #f8f20f;
+}

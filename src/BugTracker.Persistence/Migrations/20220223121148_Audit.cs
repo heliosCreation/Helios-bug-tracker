@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace BugTracker.Persistence.Migrations
 {
-    public partial class AuditEntry : Migration
+    public partial class Audit : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -111,8 +111,7 @@ namespace BugTracker.Persistence.Migrations
                 name: "AuditLogs",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     UserId = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Type = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     TableName = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -132,38 +131,38 @@ namespace BugTracker.Persistence.Migrations
                 keyColumn: "Id",
                 keyValue: "04614fbc-b0b7-4344-a2e9-8046742ac7cb",
                 column: "ConcurrencyStamp",
-                value: "166c15f0-5061-4968-afb0-b136cea1deca");
+                value: "2a892ad0-e37b-4548-a8d9-4c29e41afb85");
 
             migrationBuilder.UpdateData(
                 table: "AspNetRoles",
                 keyColumn: "Id",
                 keyValue: "6cdee224-4d18-482a-b084-e54fa1788095",
                 column: "ConcurrencyStamp",
-                value: "4e23437e-e6f4-4da7-aef0-5921260bc805");
+                value: "78c303c1-3867-4257-8b2e-30db9b541626");
 
             migrationBuilder.UpdateData(
                 table: "AspNetRoles",
                 keyColumn: "Id",
                 keyValue: "6e8006e3-e50a-49be-94ea-03ab653713cc",
                 column: "ConcurrencyStamp",
-                value: "8f91eacf-135e-4f09-89b2-9e67c61bc3e7");
+                value: "6c3a15ed-b5a1-42b8-9161-b5c12b311baf");
 
             migrationBuilder.UpdateData(
                 table: "AspNetRoles",
                 keyColumn: "Id",
                 keyValue: "ffd183c1-9d6f-4f65-8e4c-c08d5c6d3e65",
                 column: "ConcurrencyStamp",
-                value: "dd27a5b2-12b1-4085-8cba-503ec601ecbc");
+                value: "1823aea1-b0ed-47a3-9010-d2ac40f3f28e");
 
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "a249925c-2fed-476f-8f35-a01e979cd46a", "a4e0f5c1-dcdb-442b-b5fd-dc470e940e7d", "Demo Submitter", "DEMO SUBMITTER" },
-                    { "8fd0c236-cda9-452b-ac6b-3466e49ab282", "e277695e-5267-40c8-be0b-218d5ac338d5", "Demo Developer", "DEMO DEVELOPER" },
-                    { "9184d944-77f5-4018-9e97-a05abde84550", "c494bc5b-1079-4c59-b754-f78b579b4338", " Demo Project Manager", "DEMO PROJECT MANAGER" },
-                    { "20aef802-2ab5-4f8e-820a-d3cdba0ca848", "37c65f60-c00a-44fd-acf5-560a486341e5", "Demo Admin", "DEMO_ADMIN" }
+                    { "ed43023b-7bcc-44ae-82d6-4914f35ea94d", "3dcfa60f-77cf-4f3d-8bef-515680c55cc7", "Demo Submitter", "DEMO SUBMITTER" },
+                    { "5dc6271e-1b91-421e-b4c8-230e3ca30bbb", "4494c4f0-3479-439d-b012-8b69ef7418f0", "Demo Developer", "DEMO DEVELOPER" },
+                    { "19292550-9163-49fb-a72c-b991b7d432a9", "354ec10c-9c53-49df-8831-2c3b3791d71a", " Demo Project Manager", "DEMO PROJECT MANAGER" },
+                    { "35319cea-39ff-4aed-9a4b-b9064e49a553", "810cd788-4a42-4973-a147-f552b8819e19", "Demo Admin", "DEMO_ADMIN" }
                 });
 
             migrationBuilder.UpdateData(
@@ -171,59 +170,59 @@ namespace BugTracker.Persistence.Migrations
                 keyColumn: "Id",
                 keyValue: "21bbccc8-fc2a-4881-b746-ed9d90fbff9b",
                 columns: new[] { "ConcurrencyStamp", "PasswordHash" },
-                values: new object[] { "ed157be2-f0ff-4dee-aa2c-736ed0237c28", "AQAAAAEAACcQAAAAEFYfsczPwC4lFEHFrz95st5mW3Qbi/TJ20rzAB65OPdlZ7goa1ZIn+BlwV2BmN/d6A==" });
+                values: new object[] { "b9f9b827-5137-40cc-865e-a619cc2de520", "AQAAAAEAACcQAAAAEEyFBJHseLZLtqfTmxw5f981DimDubG4FxgiuMJyvG9oX+bJ8hYzydLq4AMCNCeXpw==" });
 
             migrationBuilder.UpdateData(
                 table: "AspNetUsers",
                 keyColumn: "Id",
                 keyValue: "355daad8-1cb5-4caa-8538-e82508b5248a",
                 columns: new[] { "ConcurrencyStamp", "PasswordHash" },
-                values: new object[] { "3094e8dc-e47b-43ad-862b-2478716369e9", "AQAAAAEAACcQAAAAEDjvLuyW0aFEeJ1SVfj2B7wGDip1rUQXE3WFlMxb9KE5HJ8XGV1Jxcc0MMsO3If5Bw==" });
+                values: new object[] { "d29dd488-5f98-4e1f-ac44-396b20217b1d", "AQAAAAEAACcQAAAAEOZBbAmhWzouNRL8GQEBGvSV6jh8a09XG+Tm0e0uqEEjFUu1yCvkZuOuO0grpvQslA==" });
 
             migrationBuilder.UpdateData(
                 table: "AspNetUsers",
                 keyColumn: "Id",
                 keyValue: "68f84753-8203-45a0-ac1e-b2a06411d49a",
                 columns: new[] { "ConcurrencyStamp", "PasswordHash" },
-                values: new object[] { "d1a45c8d-de41-43db-a392-36529ab44ae9", "AQAAAAEAACcQAAAAEDYtZs41Pjdz2bzHKOWwmlMCS6hT9zwlih9ksA0DiHaqguqtKppF8l8DQYjWCaQ0IQ==" });
+                values: new object[] { "b047f2cb-b490-4449-9301-5a421ac87abe", "AQAAAAEAACcQAAAAEBeale0aaW8OYS/6F9CzsedYgbPxFXAvNYHT/A7bwa3kBKHilshlDf5kVUxuO9ON1g==" });
 
             migrationBuilder.UpdateData(
                 table: "AspNetUsers",
                 keyColumn: "Id",
                 keyValue: "8c66bb8b-1fc7-491b-a4ef-d8de9ecc8e63",
                 columns: new[] { "ConcurrencyStamp", "PasswordHash" },
-                values: new object[] { "bc9e4a7a-721d-4c75-a787-84580fd289c1", "AQAAAAEAACcQAAAAEAwj9ngSpSmp5yrC4t/lZKX3AVxNYZX3IUZ1wiAGvH65AZw6wTx3xg2gd93NNh6y2g==" });
+                values: new object[] { "09762229-9138-4415-bef9-2c69790200ce", "AQAAAAEAACcQAAAAEMLC5a8ULshR55ConkdVmP7Aq6tTkUsuDsSC2A/+qCHWm2Ll8VfZOK1f7/8P2XEjqA==" });
 
             migrationBuilder.UpdateData(
                 table: "AspNetUsers",
                 keyColumn: "Id",
                 keyValue: "b964514f-fc0c-47f2-b16b-dfd7cbf8c167",
                 columns: new[] { "ConcurrencyStamp", "PasswordHash" },
-                values: new object[] { "e976e5a1-53a3-4a6e-8fc1-e706a494780c", "AQAAAAEAACcQAAAAEKYjr7vfGlYwWygELwlg7l+1SlWcMeqYiELx9p/dXvu6BWPu2z1Ol7s4stDChEZtnA==" });
+                values: new object[] { "e693aced-66ae-40fd-967e-12dc1c7d5cda", "AQAAAAEAACcQAAAAEPgBVudrTqRRx7rWnXgMq4T/vyVB97vezywzUl8c1L/pEChAfDlsaYGojhjszEUoWg==" });
 
             migrationBuilder.UpdateData(
                 table: "AspNetUsers",
                 keyColumn: "Id",
                 keyValue: "c31a5e3d-a2ef-4065-a12c-2f9647f24070",
                 columns: new[] { "ConcurrencyStamp", "PasswordHash" },
-                values: new object[] { "4134ad4e-767b-4a0c-ab01-f3a032fcb715", "AQAAAAEAACcQAAAAEI2z6b7RVYLub8SWzKPgaWmCW9SYjMed57caoQgVpfwSf4U7RZYTnN1oiEFy+hIpyQ==" });
+                values: new object[] { "4a6fe52d-dc42-43fc-92d5-217a01139206", "AQAAAAEAACcQAAAAEGoRRrzU/N6fEc+oImZyRzxwFjNt0LmXH3abN6z0DKNA0fS96ewOK7ZIua4hoo3QhA==" });
 
             migrationBuilder.UpdateData(
                 table: "AspNetUsers",
                 keyColumn: "Id",
                 keyValue: "df656ced-7b29-4504-baeb-60d628c56739",
                 columns: new[] { "ConcurrencyStamp", "PasswordHash" },
-                values: new object[] { "f5d9ef11-6715-4dbc-ae16-c37267da62eb", "AQAAAAEAACcQAAAAEEefHMrsmjTwM85Osgg19fISyx+oyZCNjmrGsOb9Vger/sd9/i1PwOQa0U4j7nW+AQ==" });
+                values: new object[] { "363b40a6-0e6a-4d81-8ff2-9810c079133d", "AQAAAAEAACcQAAAAEE4eXtzxmx5BIgeTIT1BK0OvOJ88Ikg+ng23LEahl+Ypr8KhjtDgJLJqQkKWeAsJ/Q==" });
 
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "FirstName", "LastName", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
                 values: new object[,]
                 {
-                    { "29104434-20ee-417b-914c-b50c68d80a03", 0, "95559708-dc28-41c7-bcd6-55dabcc77590", "demoPM@gmail.com", true, null, null, false, null, "DEMOPM@GMAIL.COM", "DEMO PROJECT MANAGER", "AQAAAAEAACcQAAAAENQ1UsJlkGfff3lQ2NvQ2pMCzWVx4K7fwdu949F64hJp9iHkg8x0vIhdAhz3k4Mfog==", null, true, "00000000-0000-0000-0000-000000000000", false, "Demo Project Manager" },
-                    { "d36cf2b0-94e7-4e4b-a6ae-eb63606b7749", 0, "d2d863b9-8044-42b8-a56e-be75e47c2878", "DemoDev@gmail.com", true, null, null, false, null, "DEMODEV@GMAIL.COM", "DEMO DEVELOPER", "AQAAAAEAACcQAAAAEGZFM/IzRfsJV7XrT0t14c9AOwZD4fhvvKD3jhL2IqTJYLx46d/hoeNhweGPABU9zQ==", null, true, "00000000-0000-0000-0000-000000000000", false, "Demo developer" },
-                    { "43c7f684-257c-4553-985c-ee4553af1639", 0, "595a23db-1156-4216-a458-705dfef73682", "DemoAdmin@Admin.com", true, null, null, false, null, "DEMOADMIN@ADMIN.COM", "DEMO ADMIN", "AQAAAAEAACcQAAAAEDKaBJbAVvohVghW1qqtq+MjL2Pi5oCqEPfT2RctC17qmFZiOixToWGEE/Uo6Usi6Q==", "XXXXXXXXXXXXX", true, "00000000-0000-0000-0000-000000000000", false, "Demo Admin" },
-                    { "c8dd58b9-1110-49fc-b408-6ad496cf7c99", 0, "9b90d716-55d1-45b5-bd8c-523c7b968b11", "john@gmail.com", true, null, null, false, null, "JOHN@GMAIL.COM", "DEMO SUBMITTER", "AQAAAAEAACcQAAAAEHp3gRo55V5p2SQiinnuTB3ghMUf0TulJ91fWXW4zStBZ9hdp5GhFCiTFiqHzqyloQ==", null, true, "00000000-0000-0000-0000-000000000000", false, "Demo submitter" }
+                    { "872e392a-8224-4517-8097-98934f728b50", 0, "fdef8f44-6f8e-45c9-8bdc-7c73c411f66c", "demoPM@gmail.com", true, null, null, false, null, "DEMOPM@GMAIL.COM", "DEMO PROJECT MANAGER", "AQAAAAEAACcQAAAAECFO28gYkPRRfLNyVb5ijqBb3bhL9cfXoud7mwhntonP9URwU+/fmz6PFhJ3ZlU51A==", null, true, "00000000-0000-0000-0000-000000000000", false, "Demo Project Manager" },
+                    { "3215f23e-d9a2-4bc7-b61a-8fdda12617a4", 0, "bedc3a31-d30e-459a-84e1-79943edbf281", "DemoDev@gmail.com", true, null, null, false, null, "DEMODEV@GMAIL.COM", "DEMO DEVELOPER", "AQAAAAEAACcQAAAAEDfUN4VvahggNnLlC1+JbdjcLZX337tw/K8dSKwyxaRhRzHRfHO1sikeUZfQJHvoUA==", null, true, "00000000-0000-0000-0000-000000000000", false, "Demo developer" },
+                    { "d51a9dba-f688-4311-9601-fbcdc4d02322", 0, "e32febf7-a770-4828-8843-599c715ac949", "DemoAdmin@Admin.com", true, null, null, false, null, "DEMOADMIN@ADMIN.COM", "DEMO ADMIN", "AQAAAAEAACcQAAAAEHL3feTGxy9lg2NnWz6TcJ30pZWY7isdjs/xjX9UV0HJvPKSfViVbBPzcXMS1Vd04g==", "XXXXXXXXXXXXX", true, "00000000-0000-0000-0000-000000000000", false, "Demo Admin" },
+                    { "81e4802f-6387-4e7d-9c40-27a0de3bf497", 0, "07725bba-49e0-4897-8ce1-5e809700a63a", "john@gmail.com", true, null, null, false, null, "JOHN@GMAIL.COM", "DEMO SUBMITTER", "AQAAAAEAACcQAAAAEKX3gngUY6TQHbSzSBg38eFSfM97PUqEqHLrmf644u3I3pYt09dbtdnkWSNtXypF+g==", null, true, "00000000-0000-0000-0000-000000000000", false, "Demo submitter" }
                 });
 
             migrationBuilder.InsertData(
@@ -231,10 +230,10 @@ namespace BugTracker.Persistence.Migrations
                 columns: new[] { "Id", "Name", "Order" },
                 values: new object[,]
                 {
-                    { new Guid("61554d5a-15ca-484b-b7d6-58b48a3a3b29"), "Immediate", 4 },
-                    { new Guid("bfc2d431-03d5-4c0a-b97c-1c855a0ead73"), "High", 3 },
-                    { new Guid("3e6e45a3-72d3-44b2-aa19-eaf5ea50d282"), "Medium", 2 },
-                    { new Guid("a5937a39-18e6-4d9d-8526-c6ce6b1c8b78"), "Low", 1 }
+                    { new Guid("7e1304d6-9683-406c-b231-f4f488cf57ad"), "Immediate", 4 },
+                    { new Guid("a5e2901f-f013-4d76-9b48-f0d2ed83a325"), "High", 3 },
+                    { new Guid("a617edf6-d9f3-465e-94a7-cba2d7ba1930"), "Medium", 2 },
+                    { new Guid("19138e08-9f5f-4580-b2ea-f47f0f7ab05a"), "Low", 1 }
                 });
 
             migrationBuilder.InsertData(
@@ -242,10 +241,10 @@ namespace BugTracker.Persistence.Migrations
                 columns: new[] { "Id", "Name", "Order" },
                 values: new object[,]
                 {
-                    { new Guid("b705740b-bb65-4f30-b875-d7cf7b9be0f4"), "Resolved", 4 },
-                    { new Guid("92f47632-7a5a-42e4-b659-6499d910d78b"), "In progress", 3 },
-                    { new Guid("efcaf7ab-46d3-4638-919e-caf0093a8fcf"), "Open", 2 },
-                    { new Guid("d922f5cd-2b9e-4238-b594-2ab9b3394ea8"), "New", 1 }
+                    { new Guid("eeb4ef16-df71-4197-9ae7-cc628dafbf9f"), "Resolved", 4 },
+                    { new Guid("84a09be8-47c2-4957-a47d-abb382a45c8f"), "In progress", 3 },
+                    { new Guid("841874c0-60eb-4f98-ba2d-876ef6c8af11"), "Open", 2 },
+                    { new Guid("d5606306-7321-4383-b7e0-b297653a139f"), "New", 1 }
                 });
 
             migrationBuilder.InsertData(
@@ -253,10 +252,10 @@ namespace BugTracker.Persistence.Migrations
                 columns: new[] { "Id", "Name", "Order" },
                 values: new object[,]
                 {
-                    { new Guid("e267348e-95d7-4126-b9c2-4a31acdd7efc"), "Documentation", 4 },
-                    { new Guid("0f3fd453-7e78-4c52-a6b0-e669bdd26a0e"), "Training", 3 },
-                    { new Guid("d8e71a53-5b5c-4678-9b63-391713b1d998"), "Feature request", 2 },
-                    { new Guid("3b12cfa9-014c-4691-aec4-747e2a3ea3a1"), "Bug - Error", 1 }
+                    { new Guid("31c30e19-e66e-4239-ae85-908919ee6b66"), "Documentation", 4 },
+                    { new Guid("181f641d-aeca-4577-b6fa-15da60a8c74a"), "Training", 3 },
+                    { new Guid("3994434c-1b48-4062-b662-8c5ad95d10cf"), "Feature request", 2 },
+                    { new Guid("baee1998-1e46-4ced-b34c-41c2451fe8fe"), "Bug - Error", 1 }
                 });
         }
 
@@ -268,102 +267,102 @@ namespace BugTracker.Persistence.Migrations
             migrationBuilder.DeleteData(
                 table: "AspNetRoles",
                 keyColumn: "Id",
-                keyValue: "20aef802-2ab5-4f8e-820a-d3cdba0ca848");
+                keyValue: "19292550-9163-49fb-a72c-b991b7d432a9");
 
             migrationBuilder.DeleteData(
                 table: "AspNetRoles",
                 keyColumn: "Id",
-                keyValue: "8fd0c236-cda9-452b-ac6b-3466e49ab282");
+                keyValue: "35319cea-39ff-4aed-9a4b-b9064e49a553");
 
             migrationBuilder.DeleteData(
                 table: "AspNetRoles",
                 keyColumn: "Id",
-                keyValue: "9184d944-77f5-4018-9e97-a05abde84550");
+                keyValue: "5dc6271e-1b91-421e-b4c8-230e3ca30bbb");
 
             migrationBuilder.DeleteData(
                 table: "AspNetRoles",
                 keyColumn: "Id",
-                keyValue: "a249925c-2fed-476f-8f35-a01e979cd46a");
+                keyValue: "ed43023b-7bcc-44ae-82d6-4914f35ea94d");
 
             migrationBuilder.DeleteData(
                 table: "AspNetUsers",
                 keyColumn: "Id",
-                keyValue: "29104434-20ee-417b-914c-b50c68d80a03");
+                keyValue: "3215f23e-d9a2-4bc7-b61a-8fdda12617a4");
 
             migrationBuilder.DeleteData(
                 table: "AspNetUsers",
                 keyColumn: "Id",
-                keyValue: "43c7f684-257c-4553-985c-ee4553af1639");
+                keyValue: "81e4802f-6387-4e7d-9c40-27a0de3bf497");
 
             migrationBuilder.DeleteData(
                 table: "AspNetUsers",
                 keyColumn: "Id",
-                keyValue: "c8dd58b9-1110-49fc-b408-6ad496cf7c99");
+                keyValue: "872e392a-8224-4517-8097-98934f728b50");
 
             migrationBuilder.DeleteData(
                 table: "AspNetUsers",
                 keyColumn: "Id",
-                keyValue: "d36cf2b0-94e7-4e4b-a6ae-eb63606b7749");
+                keyValue: "d51a9dba-f688-4311-9601-fbcdc4d02322");
 
             migrationBuilder.DeleteData(
                 table: "Priority",
                 keyColumn: "Id",
-                keyValue: new Guid("3e6e45a3-72d3-44b2-aa19-eaf5ea50d282"));
+                keyValue: new Guid("19138e08-9f5f-4580-b2ea-f47f0f7ab05a"));
 
             migrationBuilder.DeleteData(
                 table: "Priority",
                 keyColumn: "Id",
-                keyValue: new Guid("61554d5a-15ca-484b-b7d6-58b48a3a3b29"));
+                keyValue: new Guid("7e1304d6-9683-406c-b231-f4f488cf57ad"));
 
             migrationBuilder.DeleteData(
                 table: "Priority",
                 keyColumn: "Id",
-                keyValue: new Guid("a5937a39-18e6-4d9d-8526-c6ce6b1c8b78"));
+                keyValue: new Guid("a5e2901f-f013-4d76-9b48-f0d2ed83a325"));
 
             migrationBuilder.DeleteData(
                 table: "Priority",
                 keyColumn: "Id",
-                keyValue: new Guid("bfc2d431-03d5-4c0a-b97c-1c855a0ead73"));
+                keyValue: new Guid("a617edf6-d9f3-465e-94a7-cba2d7ba1930"));
 
             migrationBuilder.DeleteData(
                 table: "Status",
                 keyColumn: "Id",
-                keyValue: new Guid("92f47632-7a5a-42e4-b659-6499d910d78b"));
+                keyValue: new Guid("841874c0-60eb-4f98-ba2d-876ef6c8af11"));
 
             migrationBuilder.DeleteData(
                 table: "Status",
                 keyColumn: "Id",
-                keyValue: new Guid("b705740b-bb65-4f30-b875-d7cf7b9be0f4"));
+                keyValue: new Guid("84a09be8-47c2-4957-a47d-abb382a45c8f"));
 
             migrationBuilder.DeleteData(
                 table: "Status",
                 keyColumn: "Id",
-                keyValue: new Guid("d922f5cd-2b9e-4238-b594-2ab9b3394ea8"));
+                keyValue: new Guid("d5606306-7321-4383-b7e0-b297653a139f"));
 
             migrationBuilder.DeleteData(
                 table: "Status",
                 keyColumn: "Id",
-                keyValue: new Guid("efcaf7ab-46d3-4638-919e-caf0093a8fcf"));
+                keyValue: new Guid("eeb4ef16-df71-4197-9ae7-cc628dafbf9f"));
 
             migrationBuilder.DeleteData(
                 table: "Type",
                 keyColumn: "Id",
-                keyValue: new Guid("0f3fd453-7e78-4c52-a6b0-e669bdd26a0e"));
+                keyValue: new Guid("181f641d-aeca-4577-b6fa-15da60a8c74a"));
 
             migrationBuilder.DeleteData(
                 table: "Type",
                 keyColumn: "Id",
-                keyValue: new Guid("3b12cfa9-014c-4691-aec4-747e2a3ea3a1"));
+                keyValue: new Guid("31c30e19-e66e-4239-ae85-908919ee6b66"));
 
             migrationBuilder.DeleteData(
                 table: "Type",
                 keyColumn: "Id",
-                keyValue: new Guid("d8e71a53-5b5c-4678-9b63-391713b1d998"));
+                keyValue: new Guid("3994434c-1b48-4062-b662-8c5ad95d10cf"));
 
             migrationBuilder.DeleteData(
                 table: "Type",
                 keyColumn: "Id",
-                keyValue: new Guid("e267348e-95d7-4126-b9c2-4a31acdd7efc"));
+                keyValue: new Guid("baee1998-1e46-4ced-b34c-41c2451fe8fe"));
 
             migrationBuilder.UpdateData(
                 table: "AspNetRoles",

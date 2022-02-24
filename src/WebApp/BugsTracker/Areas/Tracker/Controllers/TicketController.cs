@@ -1,5 +1,7 @@
 ﻿using BugTracker.Application.Dto.Projects;
 using BugTracker.Application.Dto.Tickets;
+using BugTracker.Application.Enums;
+using BugTracker.Application.Features.Audits.Queries;
 using BugTracker.Application.Features.ProjectTeam.Queries.GetAllAccessibleMembers;
 using BugTracker.Application.Features.TicketConfigurations.Queries.GetAll;
 using BugTracker.Application.Features.Tickets.Commands.Create;
@@ -124,7 +126,10 @@ namespace BugTracker.Areas.Tracker.Controllers
         
         public async Task<IActionResult>LoadDetailsModal(Guid ticketId)
         {
-            return PartialView(DetailsModalPath);
+            var dto = new TicketDetailsDto();
+            var historyResponse = await Mediator.Send(new GetAuditLogsQuery(ticketId, AuditableType.Ticket));
+            dto.History = historyResponse.DataList;
+            return PartialView(DetailsModalPath, dto);
         }
             
         public async Task<IActionResult> LoadProjectTeamModal(Guid projectId)

@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using BugTracker.Application.Dto;
+using BugTracker.Application.Dto.Audits;
 using BugTracker.Application.Dto.Projects;
 using BugTracker.Application.Dto.TicketConfiguration;
 using BugTracker.Application.Features.Projects;
@@ -10,9 +11,13 @@ using BugTracker.Application.Features.Tickets;
 using BugTracker.Application.Features.Tickets.Commands.Create;
 using BugTracker.Application.Features.Tickets.Commands.Update;
 using BugTracker.Application.Features.Tickets.Queries;
+using BugTracker.Application.Model.Auditing;
 using BugTracker.Application.ViewModel;
+using BugTracker.Domain.Common;
 using BugTracker.Domain.Entities;
 using BugTracker.Domain.Identity;
+using Newtonsoft.Json;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace BugTracker.Application.Profiles
@@ -50,6 +55,14 @@ namespace BugTracker.Application.Profiles
             CreateMap<Status, StatusDto>();
             CreateMap<Priority, PriorityDto>();
             CreateMap<Type, TypeDto>();
+            #endregion
+
+            #region audit
+            CreateMap<Audit, AuditLogDto>()
+                .ForMember(dest => dest.User, opt => opt.MapFrom(src => src.UserId))
+                .ForMember(dest => dest.AffectedColumns, opt => opt.MapFrom(src => JsonConvert.DeserializeObject<List<string>>(src.AffectedColumns)))
+                .ForMember(dest => dest.OldValues, opt => opt.MapFrom(src => JsonConvert.DeserializeObject<Dictionary<string, string>>(src.OldValues)))
+                .ForMember(dest => dest.NewValues, opt => opt.MapFrom(src => JsonConvert.DeserializeObject<Dictionary<string, string>>(src.NewValues)));
             #endregion
         }
     }

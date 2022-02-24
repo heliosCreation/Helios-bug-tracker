@@ -1,4 +1,6 @@
-﻿using BugTracker.Application.Contracts.Data;
+﻿using BugTracker.Application.Contracts.Audits;
+using BugTracker.Application.Contracts.Data;
+using BugTracker.Persistence.Services.Audits;
 using BugTracker.Persistence.Services.Data;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -14,6 +16,7 @@ namespace BugTracker.Persistence
             services.AddScoped<ITicketRepository, TicketRepository>();
             services.AddScoped<ITicketConfigurationRepository, TicketConfigurationsRepository>();
             services.AddScoped<ICommentRepository, CommentRepository>();
+            services.AddScoped<IAuditRepository, AuditRepository>();
 
             return services;
         }

@@ -12,6 +12,10 @@ namespace BugTracker.Application.Model.Auditing
 {
     public class AuditEntry
     {
+        public AuditEntry()
+        {
+
+        }
         public AuditEntry(EntityEntry entry)
         {
             Entry = entry;

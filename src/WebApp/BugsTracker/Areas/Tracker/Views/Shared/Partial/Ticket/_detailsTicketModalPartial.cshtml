@@ -1,4 +1,6 @@
-﻿<div class="modal-header d-flex flex-column pl-0 pb-0">
+﻿@model BugTracker.Application.Dto.Tickets.TicketDetailsDto;
+
+<div class="modal-header d-flex flex-column pl-0 pb-0">
     <div class="w-100 d-flex align-items-center pl-2 pb-2">
         <h5 class="modal-title" id="ticket-details-modal-label">Ticket details</h5>
 
@@ -23,12 +25,58 @@
     </ul>
 </div>
 <div class="modal-body modal-right">
+
     <div id="ticket-description" class="w-100 h-100 tab-content p-1">
         <div class="w-100 h-100 d-flex align-items-center">Hi mark</div>
     </div>
 
-    <div id="ticket-history" class="w-100 h-100 tab-content d-none">
-        history
+    <div id="ticket-history" class="w-100 h-100 p-2 tab-content d-none">
+        <div id="accordion" class="d-flex align-items-center flex-column-reverse">
+            <div class="w-100" id="history-holder">
+                @foreach (var item in Model.History)
+                {
+                    <div class="card p-3">
+                        <div class="card-header d-flex justify-content-between align-items-center p-0" id="headingOne">
+                            <h5 class="mb-0">
+                                <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapse@(item.Id)" aria-expanded="false" aria-controls="collapse@(item.Id)">
+                                    @item.DateTime
+                                </button>
+                            </h5>
+
+                            <span class="history-pill @(item.Type.ToLower())">@(item.Type + "d")</span>
+                        </div>
+
+                        <div id="collapse@(item.Id)" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
+                            <div class="card-body">
+                                @if (item.Type == "Create")
+                                {
+                                    <p>Item created by <span class="font-weight-bold text-purple">@item.User</span></p>
+                                }
+                                else
+                                {
+                                    @for (int i = 0; i < item.NewValues.Count; i++)
+                                    {
+                                        var old = item.OldValues.ElementAt(i);
+                                        var current = item.NewValues.ElementAt(i);
+
+                                        var itemKey = old.Key;
+
+                                        <p>
+                                            <span class="font-weight-bold">@itemKey:</span> <br />
+                                            <span class="text-success">New Value:</span> @(string.IsNullOrEmpty((string)current.Value) ? "Empty" : current.Value)  <br />
+                                            <span class="text-warning">Old value</span>: @(string.IsNullOrEmpty((string)old.Value) ? "Empty" : old.Value)
+                                        </p>
+
+                                    }
+
+                                }
+                            </div>
+                        </div>
+                    </div>
+
+                }
+            </div>
+        </div>
     </div>
 
     <div class="w-100 h-100 tab-content d-none" id="ticket-comments">

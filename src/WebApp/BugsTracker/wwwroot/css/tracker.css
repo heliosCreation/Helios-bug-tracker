@@ -681,76 +681,11 @@ tbody tr td a:hover {
     position: relative;
 }
 
-.streamline .sl-primary {
-    border-left-color: #188ae2;
-}
-
-.streamline .sl-item {
-    position: relative;
-    padding-bottom: 12px;
-    border-left: 1px solid #ccc;
-}
-
 .pie-chart {
     max-height: 100px;
 }
 
-.streamline .sl-item:before {
-    content: '';
-    position: absolute;
-    left: -6px;
-    top: 0;
-    background-color: #ccc;
-    width: 12px;
-    height: 12px;
-    border-radius: 100%;
-}
 
-.streamline .sl-primary:before, .streamline .sl-primary:last-child:after {
-    background-color: #188ae2;
-}
-
-
-.streamline .sl-danger:before, .streamline .sl-danger:last-child:after {
-    background-color: #ff5b5b;
-}
-
-.streamline .sl-success {
-    border-left-color: #10c469;
-}
-
-    .streamline .sl-success:before, .streamline .sl-success:last-child:after {
-        background-color: #10c469;
-    }
-
-.streamline .sl-warning {
-    border-left-color: #f9c851;
-}
-
-    .streamline .sl-warning:before, .streamline .sl-warning:last-child:after {
-        background-color: #f9c851;
-    }
-
-
-
-.streamline .sl-danger {
-    border-left-color: #ff5b5b;
-}
-
-.streamline .sl-item .sl-content {
-    margin-left: 24px;
-}
-
-.streamline .sl-item .text-muted {
-    color: inherit;
-    opacity: .6;
-    font-size: 12px;
-}
-
-.streamline .sl-item p {
-    font-size: 14px;
-    color: #333;
-}
 
 
 /*=======================================================
@@ -787,6 +722,10 @@ tbody tr td a:hover {
  .nav-item .nav-link.active {
     background: #cefcff73 !important;
 }
+
+
+
+
 #comments-holder {
     overflow-y: auto;
     height: 410px;
@@ -801,6 +740,56 @@ tbody tr td a:hover {
     border-bottom-left-radius:10px;
     border-top-left-radius:10px;
     border:none;
+}
+
+
+
+
+#accordion{
+    position:relative;
+    height:100%;
+
+}
+
+#accordion .card {
+    width: 95%;
+    margin-left: 5%;
+}
+#history-holder{
+    position:relative;
+}
+
+#history-holder::before {
+    background: #8eb7f491;
+    content: "";
+    height: 105%;
+    left: 10px;
+    position: absolute;
+    top: 5px;
+    width: 2px;
+}
+
+
+
+#history-holder .card::before {
+    background: #8eb7f491;
+    content: "";
+    height: 4px;
+    left: -20px;
+    position: absolute;
+    top: 31px;
+    width: 20px;
+}
+
+#history-holder .card::after {
+    background: #66f4ad;
+    content: "";
+    height: 10px;
+    left: -24px;
+    position: absolute;
+    top: 28px;
+    width: 10px;
+    border-radius: 50%;
 }
 /*=============================================
   Details design end
