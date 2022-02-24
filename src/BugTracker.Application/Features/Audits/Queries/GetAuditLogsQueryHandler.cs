@@ -51,6 +51,7 @@ namespace BugTracker.Application.Features.Audits.Queries
                 {
                     if (item.AffectedColumns.Contains("PriorityId"))
                     {
+
                         var newVal = item.NewValues.Where(nv => nv.Key == "PriorityId").First().Value;
                         var oldVal = item.OldValues.Where(nv => nv.Key == "PriorityId").First().Value;
                         var newPriorityName = await _ticketConfigurationRepository.GetPriorityName(Guid.Parse(newVal));

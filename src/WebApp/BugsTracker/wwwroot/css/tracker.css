@@ -774,22 +774,30 @@ tbody tr td a:hover {
 #history-holder .card::before {
     background: #8eb7f491;
     content: "";
-    height: 4px;
+    height: 2px;
     left: -20px;
     position: absolute;
-    top: 31px;
+    top: 37px;
     width: 20px;
 }
 
 #history-holder .card::after {
-    background: #66f4ad;
-    content: "";
-    height: 10px;
-    left: -24px;
+    background: #bcddf4;
+    font-family: "Font Awesome 5 Free";
+    font-weight:700;
+    content: "\f1da";
+    height: 20px;
+    width: 20px;
+    left: -29px;
     position: absolute;
     top: 28px;
-    width: 10px;
     border-radius: 50%;
+    font-size: 12px;
+    color:#1200ff;
+    line-height: 10px;
+    display: table-cell;
+    padding: 3px;
+    border:2px solid #3982da;
 }
 /*=============================================
   Details design end
