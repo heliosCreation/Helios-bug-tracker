@@ -759,15 +759,15 @@ tbody tr td a:hover {
     position:relative;
 }
 
-#history-holder::before {
-    background: #8eb7f491;
-    content: "";
-    height: 105%;
-    left: 10px;
-    position: absolute;
-    top: 5px;
-    width: 2px;
-}
+    #history-holder::before {
+        background: #8ef4e291;
+        content: "";
+        height: 105%;
+        left: 10px;
+        position: absolute;
+        top: 5px;
+        width: 2px;
+    }
 
 
 

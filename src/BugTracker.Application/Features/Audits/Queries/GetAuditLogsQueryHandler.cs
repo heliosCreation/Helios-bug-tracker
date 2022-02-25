@@ -39,11 +39,11 @@ namespace BugTracker.Application.Features.Audits.Queries
             var audits = await _auditRepository.GetAudits(request.Id, request.Type);
 
             var mapped = _mapper.Map<List<AuditLogDto>>(audits);
-            response.DataList = await AssignAudiLogtIdToTextAsync(mapped);
+            response.DataList = await AssignAuditLogtIdToTextAsync(mapped);
             return response;
         }
 
-        private async Task<List<AuditLogDto>> AssignAudiLogtIdToTextAsync(List<AuditLogDto> auditLogs)
+        private async Task<List<AuditLogDto>> AssignAuditLogtIdToTextAsync(List<AuditLogDto> auditLogs)
         {
             foreach (var item in auditLogs.ToList())
             {
@@ -51,34 +51,14 @@ namespace BugTracker.Application.Features.Audits.Queries
 
                 if (item.Type == AuditType.Update.ToString())
                 {
-                    if (item.AffectedColumns.Contains("PriorityId"))
-                    {
-                        item.NewValues = await ReworkEntityFields(item.NewValues, "PriorityId");
-                        item.OldValues = await ReworkEntityFields(item.OldValues, "PriorityId");
-                    }
-                    if (item.AffectedColumns.Contains("TypeId"))
-                    {
-                        item.NewValues = await ReworkEntityFields(item.NewValues, "TypeId");
-                        item.OldValues = await ReworkEntityFields(item.OldValues, "TypeId");
-                    }
-                    if (item.AffectedColumns.Contains("StatusId"))
-                    {
-                        item.NewValues = await ReworkEntityFields(item.NewValues, "StatusId");
-                        item.OldValues = await ReworkEntityFields(item.OldValues, "StatusId");
-                    }
+                    await ManageUpdate(item);
                 }
-                if (item.Type == AuditType.Create.ToString() && item.TableName == "TicketsTeamMembers")
+                if (item.TableName == "TicketsTeamMembers")
                 {
-                    var targetParent = auditLogs
-                        .Where(
-                            al => al.DateTime.ToString() == item.DateTime.ToString()
-                            && al.TableName == "Ticket"
-                        )
-                        .FirstOrDefault();
-                    targetParent.NewValues.Add("User added:",item.NewValues["UserId"]);
-                    auditLogs.Remove(item);
+
+                    await ManageTeam( item, auditLogs);
                 }
-            
+
             }
 
             return auditLogs;
@@ -95,6 +75,74 @@ namespace BugTracker.Application.Features.Audits.Queries
             prop.Remove(key);
             prop.Add(key.Replace("Id",""), (await newName).ToString());
             return prop;
+        }
+    
+        private async Task ManageUpdate(AuditLogDto item)
+        {
+            if (item.AffectedColumns.Contains("PriorityId"))
+            {
+                item.NewValues = await ReworkEntityFields(item.NewValues, "PriorityId");
+                item.OldValues = await ReworkEntityFields(item.OldValues, "PriorityId");
+            }
+            if (item.AffectedColumns.Contains("TypeId"))
+            {
+                item.NewValues = await ReworkEntityFields(item.NewValues, "TypeId");
+                item.OldValues = await ReworkEntityFields(item.OldValues, "TypeId");
+            }
+            if (item.AffectedColumns.Contains("StatusId"))
+            {
+                item.NewValues = await ReworkEntityFields(item.NewValues, "StatusId");
+                item.OldValues = await ReworkEntityFields(item.OldValues, "StatusId");
+            }
+
+
+        }
+    
+        private async Task ManageTeam(AuditLogDto item, List<AuditLogDto> auditLogs)
+        {
+            string action = item.Type == AuditType.Delete.ToString() ? "User deleted" : "User added";
+            string userId = item.Type == AuditType.Delete.ToString() ? item.OldValues["UserId"] : item.NewValues["UserId"];
+            var userName = await _identityService.GetUserNameById(userId);
+            var userRole = await _identityService.GetUserRolesById(userId);
+
+
+            var targetParent = auditLogs
+                .Where(
+                    al => al.DateTime.ToString() == item.DateTime.ToString()
+                    && al.TableName == "Ticket"
+                )
+                .FirstOrDefault();
+
+            if (targetParent != null)
+            {
+                //If the key already exit, just concat a new value to the actual
+                if (targetParent.NewValues.ContainsKey(action))
+                {
+                    targetParent.NewValues[action] = targetParent.NewValues[action] + ";" + userName + " - " + userRole.ToList()[0];
+                }
+                //Otherwise add an entry
+                else
+                {
+                    targetParent.NewValues.Add(action, userName + " - " + userRole.ToList()[0]);
+                }
+
+            }
+            else
+            {
+
+                //If no parent currently exists, create a new one that will hold  
+                auditLogs.Add(new AuditLogDto
+                {
+                    Id = Guid.NewGuid(),
+                    DateTime = item.DateTime,
+                    User = item.User,
+                    TableName = "Ticket",
+                    NewValues = new Dictionary<string, string>() { { action, userName + " - " + userRole.ToList()[0] } },
+                    Type = AuditType.Update.ToString()
+                });
+
+            }
+            auditLogs.Remove(item);
         }
     }
 }

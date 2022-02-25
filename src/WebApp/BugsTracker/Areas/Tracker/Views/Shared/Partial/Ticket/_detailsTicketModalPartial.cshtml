@@ -31,7 +31,7 @@
     </div>
 
     <div id="ticket-history" class="w-100 h-100 p-2 tab-content d-none">
-        <div id="accordion" class="d-flex align-items-center flex-column-reverse">
+        <div id="accordion" class="d-flex  align-items-center flex-column-reverse">
             <div class="w-100" id="history-holder">
                 @foreach (var item in Model.History)
                 {
@@ -64,7 +64,10 @@
                                         {
                                             var old = item.OldValues.ElementAt(i);
                                             var itemKey = old.Key;
-
+                                            if (itemKey == "EstimatedAmountOfHours")
+                                            {
+                                                itemKey = "Estimated amount of hours";
+                                            }
 
                                             <p>
                                                 <span class="font-weight-bold">@itemKey:</span> <br />
@@ -75,8 +78,14 @@
                                         else
                                         {
                                             <p>
-                                                <span class="font-weight-bold">New User: </span> <br />
-                                                @(string.IsNullOrEmpty((string)current.Value) ? "Empty" : current.Value) 
+                                                <span class="font-weight-bold">@current.Key </span> <br />
+                                                @{ 
+                                                    var userList = current.Value.Split(";");
+                                                    foreach (var user in userList)
+                                                    {
+                                                        @user <br/>
+                                                    }
+                                                }
                                             </p>
                                         }
 
