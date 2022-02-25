@@ -20,14 +20,20 @@ namespace BugTracker.Persistence.Services.Audits
         }
         public async Task<IEnumerable<Audit>> GetAudits(Guid entityId, AuditableType type)
         {
-            var audits = await _context.AuditLogs
-                        .FromSqlRaw(
-                            @"SELECT * FROM AuditLogs
+            List<Audit> audits = new List<Audit>();
+            if (type == AuditableType.Ticket)
+            {
+                var query = @"SELECT * FROM AuditLogs
                             WHERE JSON_VALUE(PrimaryKey, '$.Id') = {0}
-                            AND TableName = {1}"
-                            , entityId, type.ToString())
-                        .OrderByDescending(a => a.DateTime)
-                        .ToListAsync();
+                            AND TableName = {1}
+                            Or JSON_VALUE(PrimaryKey, '$.TicketId') = {0}";
+                                
+                audits = await _context.AuditLogs
+                            .FromSqlRaw(query, entityId, type.ToString())
+                            .OrderByDescending(a => a.DateTime)
+                            .ToListAsync();
+            }
+
 
             return audits;
         }

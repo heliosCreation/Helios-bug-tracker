@@ -45,9 +45,10 @@ namespace BugTracker.Application.Features.Audits.Queries
 
         private async Task<List<AuditLogDto>> AssignAudiLogtIdToTextAsync(List<AuditLogDto> auditLogs)
         {
-            foreach (var item in auditLogs)
+            foreach (var item in auditLogs.ToList())
             {
                 item.User = await _identityService.GetUserNameById(item.User);
+
                 if (item.Type == AuditType.Update.ToString())
                 {
                     if (item.AffectedColumns.Contains("PriorityId"))
@@ -66,6 +67,18 @@ namespace BugTracker.Application.Features.Audits.Queries
                         item.OldValues = await ReworkEntityFields(item.OldValues, "StatusId");
                     }
                 }
+                if (item.Type == AuditType.Create.ToString() && item.TableName == "TicketsTeamMembers")
+                {
+                    var targetParent = auditLogs
+                        .Where(
+                            al => al.DateTime.ToString() == item.DateTime.ToString()
+                            && al.TableName == "Ticket"
+                        )
+                        .FirstOrDefault();
+                    targetParent.NewValues.Add("User added:",item.NewValues["UserId"]);
+                    auditLogs.Remove(item);
+                }
+            
             }
 
             return auditLogs;
