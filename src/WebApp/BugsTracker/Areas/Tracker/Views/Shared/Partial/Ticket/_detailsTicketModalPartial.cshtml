@@ -35,26 +35,26 @@
             <div class="w-100 d-flex  align-items-center flex-column-reverse overflow-auto" id="history-holder">
                 @foreach (var item in Model.History)
                 {
-                    <div class="card p-3">
-                        <div class="card-header d-flex justify-content-between align-items-center p-0" id="headingOne">
-                            <h5 class="mb-0">
-                                <button class="btn btn-link btn-block text-left text-purple" type="button" data-toggle="collapse" data-target="#collapse@(item.Id)" aria-expanded="false" aria-controls="collapse@(item.Id)">
-                                    @item.DateTime
-                                </button>
-                            </h5>
+                <div class="card p-3">
+                    <div class="card-header d-flex justify-content-between align-items-center p-0" id="headingOne">
+                        <h5 class="mb-0">
+                            <button class="btn btn-link btn-block text-left text-purple" type="button" data-toggle="collapse" data-target="#collapse@(item.Id)" aria-expanded="false" aria-controls="collapse@(item.Id)">
+                                @item.DateTime
+                            </button>
+                        </h5>
 
-                            <span class="history-pill @(item.Type.ToLower())">@(item.Type + "d")</span>
-                        </div>
+                        <span class="history-pill @(item.Type.ToLower())">@(item.Type + "d")</span>
+                    </div>
 
-                        <div id="collapse@(item.Id)" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
-                            <div class="card-body">
-                                @if (item.Type == "Create")
+                    <div id="collapse@(item.Id)" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
+                        <div class="card-body">
+                            @if (item.Type == "Create")
                                 {
-                                    <p>Ticket created by <span class="font-weight-bold text-purple">@item.User</span></p>
+                            <p>Ticket created by <span class="font-weight-bold text-purple">@item.User</span></p>
                                 }
                                 else
                                 {
-                                    <p>Ticket updated by <span class="font-weight-bold text-purple">@item.User</span></p>
+                            <p>Ticket updated by <span class="font-weight-bold text-purple">@item.User</span></p>
 
                                     for (int i = 0; i < item.NewValues.Count; i++)
                                     {
@@ -70,32 +70,32 @@
                                                 itemKey = "Estimated amount of hours";
                                             }
 
-                                            <p>
-                                                <span class="font-weight-bold">@itemKey:</span> <br />
-                                                <span class="text-success">New Value:</span> @(string.IsNullOrEmpty((string)current.Value) ? "Empty" : current.Value)  <br />
-                                                <span class="text-warning">Old value</span>: @(string.IsNullOrEmpty((string)old.Value) ? "Empty" : old.Value)
-                                            </p>
+                            <p>
+                                <span class="font-weight-bold">@itemKey:</span> <br />
+                                <span class="text-success">New Value:</span> @(string.IsNullOrEmpty((string)current.Value) ? "Empty" : current.Value)  <br />
+                                <span class="text-warning">Old value</span>: @(string.IsNullOrEmpty((string)old.Value) ? "Empty" : old.Value)
+                            </p>
                                         }
                                         else
                                         {
-                                            <p>
-                                                <span class="font-weight-bold">@current.Key </span> <br />
-                                                @{
+                            <p>
+                                <span class="font-weight-bold">@current.Key </span> <br />
+                                @{
                                                     var userList = current.Value.Split(";").OrderBy(u => u.Split("-")[1]);
                                                     foreach (var user in userList)
                                                     {
-                                                        @user <br />
+                                    @user  <br />
                                                     }
-                                                }
-                                            </p>
+                                }
+                            </p>
                                         }
 
                                     }
 
                                 }
-                            </div>
                         </div>
                     </div>
+                </div>
 
                 }
             </div>
@@ -107,10 +107,10 @@
             @{
                 for (int i = 0; i < 12; i++)
                 {
-                    <div class="comment bg-white  my-1 px-2 border-radius-10  w-100">
-                        <p class="title">John Doe - <span>12/01/2021 - 4:0@(i) pm</span> <span class="float-right pr-2"><i class="far fa-comments"></i></span></p>
-                        <p>Would need your attention on that.</p>
-                    </div>
+                <div class="comment bg-white  my-1 px-2 border-radius-10  w-100">
+                    <p class="title">John Doe - <span>12/01/2021 - 4:0@(i) pm</span> <span class="float-right pr-2"><i class="far fa-comments"></i></span></p>
+                    <p>Would need your attention on that.</p>
+                </div>
                 }
             }
         </div>
@@ -132,7 +132,7 @@
             <div class="ticket-dev-holder p-2">
                 @for (int i = 0; i < 12; i++)
                 {
-                    <span class="green-pill d-inline-block">John Doe - Dev</span>
+                <span class="green-pill d-inline-block">John Doe - Dev</span>
 
                 }
             </div>

@@ -123,15 +123,15 @@ namespace BugTracker.Areas.Tracker.Controllers
             var dto = new DeleteTicketDto(id, projectId, name);
             return PartialView(DeleteModalPath, dto);
         }
-        
-        public async Task<IActionResult>LoadDetailsModal(Guid ticketId)
+
+        public async Task<IActionResult> LoadDetailsModal(Guid ticketId)
         {
             var dto = new TicketDetailsDto();
             var historyResponse = await Mediator.Send(new GetAuditLogsQuery(ticketId, AuditableType.Ticket));
             dto.History = historyResponse.DataList;
             return PartialView(DetailsModalPath, dto);
         }
-            
+
         public async Task<IActionResult> LoadProjectTeamModal(Guid projectId)
         {
             var dto = new ProjectTeamManagementDto();
