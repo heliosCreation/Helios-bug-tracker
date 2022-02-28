@@ -6,9 +6,9 @@ namespace BugTracker.Domain.Entities
 {
     public class Comment : AuditableEntity
     {
-        [ForeignKey("ProjectId")]
-        public Project Project { get; set; }
-        public Guid ProjectId { get; set; }
+        [ForeignKey("TicketId")]
+        public Ticket Ticket { get; set; }
+        public Guid TicketId { get; set; }
         public string Message { get; set; }
     }
 }
