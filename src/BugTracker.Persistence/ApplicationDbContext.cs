@@ -118,6 +118,5 @@ namespace BugTracker.Persistence
             }
         }
 
-
     }
 }
