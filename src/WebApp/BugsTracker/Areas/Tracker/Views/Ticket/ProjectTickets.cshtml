@@ -46,7 +46,7 @@
                             <td><span class="pill @(ticket.Priority.ToLower())">@ticket.Priority</span></td>
                             <td>@ticket.Type</td>
                             <td class="text-center">@ticket.EstimatedAmountOfHours</td>
-                            <td>@ticket.Status</td>
+                            <td class="@(ticket.Status.ToLower() == "resolved"? "text-green font-weight-bold":"")">@ticket.Status</td>
 
                             <td class="text-center">
                                 <div class="dropdown">

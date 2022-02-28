@@ -24,15 +24,15 @@
         </li>
     </ul>
 </div>
-<div class="modal-body modal-right">
+<div class="modal-body modal-right overflow-auto">
 
     <div id="ticket-description" class="w-100 h-100 tab-content p-1">
         <div class="w-100 h-100 d-flex align-items-center">Hi mark</div>
     </div>
 
     <div id="ticket-history" class="w-100 h-100 p-2 tab-content d-none">
-        <div id="accordion" class="d-flex  align-items-center flex-column-reverse">
-            <div class="w-100" id="history-holder">
+        <div id="accordion" class="@(Model.History.Count < 6 ? "d-flex flex-column-reverse" : "")'">
+            <div class="w-100 d-flex  align-items-center flex-column-reverse overflow-auto" id="history-holder">
                 @foreach (var item in Model.History)
                 {
                     <div class="card p-3">
@@ -54,6 +54,7 @@
                                 }
                                 else
                                 {
+                                    <p>Ticket updated by <span class="font-weight-bold text-purple">@item.User</span></p>
 
                                     for (int i = 0; i < item.NewValues.Count; i++)
                                     {
@@ -79,11 +80,11 @@
                                         {
                                             <p>
                                                 <span class="font-weight-bold">@current.Key </span> <br />
-                                                @{ 
-                                                    var userList = current.Value.Split(";");
+                                                @{
+                                                    var userList = current.Value.Split(";").OrderBy(u => u.Split("-")[1]);
                                                     foreach (var user in userList)
                                                     {
-                                                        @user <br/>
+                                                        @user <br />
                                                     }
                                                 }
                                             </p>

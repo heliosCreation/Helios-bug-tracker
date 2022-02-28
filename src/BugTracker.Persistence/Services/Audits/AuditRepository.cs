@@ -30,7 +30,7 @@ namespace BugTracker.Persistence.Services.Audits
                                 
                 audits = await _context.AuditLogs
                             .FromSqlRaw(query, entityId, type.ToString())
-                            .OrderByDescending(a => a.DateTime)
+                            .OrderBy(a => a.DateTime)
                             .ToListAsync();
             }
 

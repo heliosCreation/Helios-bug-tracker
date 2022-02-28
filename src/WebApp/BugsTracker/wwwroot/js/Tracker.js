@@ -152,7 +152,6 @@ function setTeamSelectListHandler() {
         e.preventDefault();
         $this.prop('selected', !$this.prop('selected'));
         $(this).toggleClass("selected");
-        console.log($(this))
     }); 
 
     //remove prop and classes on btn click

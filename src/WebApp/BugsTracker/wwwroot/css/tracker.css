@@ -757,17 +757,19 @@ tbody tr td a:hover {
 }
 #history-holder{
     position:relative;
+    height:max-content;
+    margin-top:auto;
 }
 
-    #history-holder::before {
-        background: #8ef4e291;
-        content: "";
-        height: 105%;
-        left: 10px;
-        position: absolute;
-        top: 5px;
-        width: 2px;
-    }
+#history-holder::before {
+    background: #8ef4e291;
+    content: "";
+    height: 105%;
+    left: 10px;
+    position: absolute;
+    top: 5px;
+    width: 2px;
+}
 
 
 
