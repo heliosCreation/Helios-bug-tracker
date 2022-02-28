@@ -87,15 +87,15 @@ ul, ol {
     margin: 0px;
     list-style: none;
 }
-select option:checked {
+select option.selected {
     color: #0abc31fc !important;
     background: white;
     position:relative;
 }
-select option:checked::after {
+select option.selected::after {
     content: "\002714";
-    position:absolute;
-    right:0;
+    position: absolute;
+    right: 0;
 }
 
 a,

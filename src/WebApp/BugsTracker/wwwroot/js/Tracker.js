@@ -54,8 +54,6 @@ function AttachTableModalListeners(buttons, url, getName = false, modalLarge = f
                     $.validator.setDefaults({ ignore: [] });
 
                     if (ticketUpdate) {
-                        setTicketTabsListener();
-                        setSelectCleaner();
                         addTicketHandler();
                     }
                 },
@@ -81,7 +79,6 @@ function AttachProjectUpdateModalListener(button, url, modalLarge) {
 
                 handleModalSize(modalLarge);
                 setProjectTabListener();
-                setSelectCleaner();
                 $.validator.setDefaults({ ignore: [] });
             },
             error: function (data) {
@@ -141,14 +138,33 @@ function setTicketTabsListener() {
 
 }
 
-function setSelectCleaner() {
+function setTeamSelectListHandler() {
+    //assign css on load
+    var selectedOptions = $("#ticket-team option:selected");
+    selectedOptions.each(function (elem) {
+        $(this).addClass("selected");
+        $(this).attr('selected', 'selected');
+    })
+
+    $('select[multiple] option').on('mousedown', function (e) {
+        var $this = $(this);
+
+        e.preventDefault();
+        $this.prop('selected', !$this.prop('selected'));
+        $(this).toggleClass("selected");
+        console.log($(this))
+    }); 
+
+    //remove prop and classes on btn click
     $(".select-cleaner").click(function (e) {
         var closestSelectId = e.target.closest("div").parentElement.nextElementSibling.id;
         var targets = $("#" + closestSelectId + " option");
 
-        for (var i = 0; i < targets.length; i++) {
-            targets[i].removeAttribute("selected");
-        }
+        targets.each(function (elem) {
+            $(this).removeAttr('selected');
+            $(this).removeClass("selected");
+        })
+
     });
 
 }
@@ -201,7 +217,7 @@ function handleModalSize(modalLarge) {
 
 function addTicketHandler() {
     setTicketTabsListener();
-    setSelectCleaner();
+    setTeamSelectListHandler();
     $(".ticket-save-btn").click(function () { if (!$("form").valid()) { revealTicketFormErrors(); } });
 
 }

@@ -49,7 +49,7 @@
                     <select asp-for="Command.PriorityId" class="form-control" id="recipient-name">
                         @foreach (var priority in Model.TicketConfigurations.Priorities)
                         {
-                            <option value="@priority.Id">@priority.Name</option>
+                            <option  value="@priority.Id">@priority.Name</option>
                         }
                     </select>
                     <span asp-validation-for="Command.PriorityId" class="text-danger"></span>
