@@ -41,7 +41,8 @@ namespace BugTracker.Persistence.Services.Data
 
         public async Task<bool> UpdateTicketAsync(Ticket entity, ICollection<string> teamIds)
         {
-            _dbContext.Entry(entity).State = EntityState.Modified;
+            var oldEntity = await _dbContext.Tickets.FindAsync(entity.Id);
+            _dbContext.Entry(oldEntity).CurrentValues.SetValues(entity);
 
             var dbTicketMemberIds = await GetTicketTeamIds(entity);
             RemoveFromTicketTeam(entity, dbTicketMemberIds, teamIds);

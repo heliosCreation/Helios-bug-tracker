@@ -46,7 +46,7 @@
                             <td><span class="pill @(ticket.Priority.ToLower())">@ticket.Priority</span></td>
                             <td>@ticket.Type</td>
                             <td class="text-center">@ticket.EstimatedAmountOfHours</td>
-                            <td>@ticket.Status</td>
+                            <td class="@(ticket.Status.ToLower() == "resolved"? "text-green font-weight-bold":"")">@ticket.Status</td>
 
                             <td class="text-center">
                                 <div class="dropdown">
@@ -90,13 +90,6 @@
 
             handleModals();
 
-            $(".ticket-link").click(() => {
-                setTimeout(function () {
-                    $("#comments-holder").scrollTop($("#comments-holder")[0].scrollHeight)
-                }, 200);
-            });
-
-
         });
 
 
@@ -126,12 +119,13 @@
         }
 
         function AttachTicketDetailsModalListener(button, url) {
-            $(button).on('click', () => {
+            $(button).on('click', function (event) {
 
-                let parentContainer = button.closest("tr")[0];
-                let targetId = parentContainer.querySelector(".d-none").innerText;
-                console.log(targetId)
+                event.stopPropagation();
+                event.stopImmediatePropagation();
 
+                let targetId = $(this).closest("td").prev()[0].innerText;
+;
                 $.ajax({
                     type: "GET",
                     url: url,
@@ -142,9 +136,9 @@
                         $("#modal-holder").modal("show")
                         $("#modal-holder").addClass("right");
                         $('#modal-holder .modal-content').html(result);
+                        $(".modal-dialog").removeClass("modal-dialog-large");
                         SetTicketDetailsTabListener();
                         $("#comments-holder").scrollTop($("#comments-holder")[0].scrollHeight);
-                        console.log(result)
                     },
                     error: function (data) {
                         console.log(data)
@@ -161,7 +155,6 @@
                 var clickedTextContent = e.currentTarget.children[0].firstChild.data;
                 var targetToShow = $("#ticket-" + clickedTextContent.toLowerCase());
                 var targetsToHide = $(".tab-content");
-                console.log(targetsToHide)
 
                 targetsToHide.each(function () {
                     $(this).addClass("d-none");
