@@ -138,7 +138,7 @@ namespace BugTracker.Areas.Tracker.Controllers
 
             dto.TicketId = ticketId;
             dto.History = historyResponse.DataList;
-            dto.Comments = commentsResponse.DataList;
+            dto.Comments = commentsResponse;
 
             return PartialView(DetailsModalPath, dto);
         }
@@ -170,7 +170,7 @@ namespace BugTracker.Areas.Tracker.Controllers
                 response.ErrorMessages = createdCommentResponse.ErrorMessages;
             }
 
-            return PartialView(CommentModalPath, response.DataList);
+            return PartialView(CommentModalPath, response);
 
         }
     }

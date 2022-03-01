@@ -134,10 +134,11 @@
                     contentType:'application/x-www-form-urlencoded; charset=UTF-8',
                     datatype: "json",
                     success: function (result) {
-                        $("#comments-holder").html(result);
+                        $("#ticket-comments").html(result);
+                        AttachCommentListener()
                     },
                     error: function (data) {
-                        console.log(data)
+                        alert("There was an error trying to send your comment. If the problem persist reach out to your administrator.")
                     }
                 });
 

@@ -6,6 +6,7 @@ namespace BugTracker.Application.Dto.Comments
     {
         public string Message { get; set; }
         public string User { get; set; }
+        public Guid TicketId { get; set; }
         public DateTime CreatedDate { get; set; }
     }
 }

@@ -103,22 +103,8 @@
     </div>
     <div class="w-100 h-100 tab-content d-none" id="ticket-comments">
 
-        <div class="light-gray-blue-theme d-flex align-items-center flex-column-reverse p-1" id="comments-holder">
-            <partial name="../Ticket/_commentTicketModalPartial.cshtml" model="Model.Comments" />
-        </div>
+        <partial name="../Ticket/_commentTicketModalPartial.cshtml" model="Model.Comments" />
 
-        <div class="bg-white p-3 comment-writter-holder">
-            <form class="w-100" id="comment-form">
-                <div class="input-group">
-                    <input type="hidden" name="TicketId" value="@Model.TicketId"/>
-                    <input name="Message" class="form-control" placeholder="Type Comment" aria-label="Type Comment" aria-describedby="basic-addon2">
-                    <div class="input-group-append">
-                        <input id="commentSubmitter"  class="btn btn-primary" type="submit" />
-                    </div>
-                </div>
-
-            </form>
-        </div>
     </div>
 
     <div class="w-100 h-100 tab-content d-none" id="ticket-team">
@@ -141,7 +127,3 @@
     </div>
 </div>
 
-@*<input type="text" class="form-control" placeholder="Type Comment" aria-label="Type Comment" aria-describedby="basic-addon2">
-    <div class="input-group-append">
-        <button class="btn btn-primary" type="button">Send</button>
-    </div>*@
