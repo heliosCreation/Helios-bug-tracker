@@ -20,8 +20,7 @@
 	</ItemGroup>
 	
 	<ItemGroup>
-	  <Folder Include="Features\Comments\Commands\" />
-	  <Folder Include="Features\Comments\Queries\" />
+	  <Folder Include="Features\Comments\Commands\Delete\" />
 	  <Folder Include="Features\ProjectTeam\Commands\" />
 	</ItemGroup>
 </Project>

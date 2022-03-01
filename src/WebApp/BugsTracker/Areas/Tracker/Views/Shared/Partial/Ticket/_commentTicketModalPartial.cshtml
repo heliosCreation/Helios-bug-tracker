@@ -1,0 +1,39 @@
+﻿@model BugTracker.Application.Responses.ApiResponse<BugTracker.Application.Dto.Comments.CommentDto>
+
+
+<div class="light-gray-blue-theme d-flex align-items-center flex-column-reverse p-1" id="comments-holder">
+    @{
+        foreach (var comment in Model.DataList)
+        {
+            <div class="comment bg-white  my-1 px-2 border-radius-10  w-100">
+                <p class="title">@comment.User - <span>@comment.CreatedDate</span> <span class="float-right pr-2"><i class="far fa-comments"></i></span></p>
+                <p>@comment.Message</p>
+            </div>
+        }
+    }
+</div>
+
+<div class="bg-white p-3 comment-writter-holder">
+    <form class="w-100" id="comment-form">
+        <div class="input-group">
+            <input type="hidden" name="TicketId" value="@Model.DataList[0].TicketId" />
+            <input name="Message" class="form-control" placeholder="Type Comment" aria-label="Type Comment" aria-describedby="basic-addon2">
+            <div class="input-group-append">
+                <input id="commentSubmitter" class="btn btn-primary" type="submit" />
+            </div>
+        </div>
+        <div class="input-group">
+            <div class="text-danger" id="comment-error">
+                @{
+                    if (!Model.Succeeded)
+                    {
+                        foreach (var error in Model.ErrorMessages)
+                        {
+                            @error
+                        }
+                    }
+            }
+            </div>
+        </div>
+    </form>
+</div>

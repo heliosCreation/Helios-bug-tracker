@@ -1,7 +1,10 @@
-﻿using BugTracker.Application.Dto.Projects;
+﻿using BugTracker.Application.Dto.Comments;
+using BugTracker.Application.Dto.Projects;
 using BugTracker.Application.Dto.Tickets;
 using BugTracker.Application.Enums;
 using BugTracker.Application.Features.Audits.Queries;
+using BugTracker.Application.Features.Comments.Commands.Create;
+using BugTracker.Application.Features.Comments.Queries.GetAll;
 using BugTracker.Application.Features.ProjectTeam.Queries.GetAllAccessibleMembers;
 using BugTracker.Application.Features.TicketConfigurations.Queries.GetAll;
 using BugTracker.Application.Features.Tickets.Commands.Create;
@@ -10,6 +13,7 @@ using BugTracker.Application.Features.Tickets.Commands.Update;
 using BugTracker.Application.Features.Tickets.Queries.GetProjectTickets;
 using BugTracker.Application.Features.Tickets.Queries.GetTicket;
 using BugTracker.Application.Features.TicketTeam.Query;
+using BugTracker.Application.Responses;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Linq;
@@ -28,6 +32,7 @@ namespace BugTracker.Areas.Tracker.Controllers
         private const string UpdateModalPath = ModalBasePath + "_update" + ModalType;
         private const string DeleteModalPath = ModalBasePath + "_delete" + ModalType;
         private const string DetailsModalPath = ModalBasePath + "_details" + ModalType;
+        private const string CommentModalPath = ModalBasePath + "_comment" + ModalType;
         private const string ProjectTeamModalPath = "~/Areas/Tracker/Views/Shared/Partial/Project/_projectTeamModalPartial.cshtml";
 
         public IActionResult GetAll()
@@ -123,15 +128,21 @@ namespace BugTracker.Areas.Tracker.Controllers
             var dto = new DeleteTicketDto(id, projectId, name);
             return PartialView(DeleteModalPath, dto);
         }
-        
-        public async Task<IActionResult>LoadDetailsModal(Guid ticketId)
+
+        public async Task<IActionResult> LoadDetailsModal(Guid ticketId)
         {
             var dto = new TicketDetailsDto();
+
             var historyResponse = await Mediator.Send(new GetAuditLogsQuery(ticketId, AuditableType.Ticket));
+            var commentsResponse = await Mediator.Send(new GetAllCommentsQuery(ticketId));
+
+            dto.TicketId = ticketId;
             dto.History = historyResponse.DataList;
+            dto.Comments = commentsResponse;
+
             return PartialView(DetailsModalPath, dto);
         }
-            
+
         public async Task<IActionResult> LoadProjectTeamModal(Guid projectId)
         {
             var dto = new ProjectTeamManagementDto();
@@ -141,6 +152,26 @@ namespace BugTracker.Areas.Tracker.Controllers
             dto.Team = teamResponse.DataList;
 
             return PartialView(ProjectTeamModalPath);
+        }
+    
+        [HttpPost]
+        public async Task<PartialViewResult> SendComment(CreateCommentDto request)
+        {
+            var response = new ApiResponse<CommentDto>();
+
+            var createdCommentResponse = await Mediator.Send(new CreateCommentCommand(request.Message, request.TicketId));
+            var commentResponse = await Mediator.Send(new GetAllCommentsQuery(request.TicketId));
+
+            response.DataList = commentResponse.DataList;
+
+            if (!createdCommentResponse.Succeeded)
+            {
+                response.Succeeded = false;
+                response.ErrorMessages = createdCommentResponse.ErrorMessages;
+            }
+
+            return PartialView(CommentModalPath, response);
+
         }
     }
 }
