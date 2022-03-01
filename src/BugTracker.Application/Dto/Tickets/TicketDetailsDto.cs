@@ -2,6 +2,7 @@
 using BugTracker.Application.Dto.Comments;
 using BugTracker.Application.Features.Comments.Commands.Create;
 using BugTracker.Application.Responses;
+using BugTracker.Application.ViewModel;
 using System;
 using System.Collections.Generic;
 
@@ -12,6 +13,7 @@ namespace BugTracker.Application.Dto.Tickets
         public Guid TicketId { get; set; }
         public List<AuditLogDto> History { get; set; }
         public ApiResponse<CommentDto> Comments { get; set; }
+        public List<UserViewModel> Team { get; set; }
         public CreateCommentCommand CommentCommand { get; set; }
     }
 }

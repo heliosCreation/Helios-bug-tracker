@@ -109,19 +109,27 @@
 
     <div class="w-100 h-100 tab-content d-none" id="ticket-team">
         <div class="p-3 w-100">
-            <div class="ticket-project-manager-holder p-2">
-                <span class="purple-pill d-inline-block">Frank loyd - Project manager</span>
-            </div>
-            <div class="ticket-dev-holder p-2">
-                @for (int i = 0; i < 12; i++)
+            <div>
+                @foreach (var user in Model.Team.Where(u => u.Role.ToLower() == "project manager"))
                 {
-                    <span class="green-pill d-inline-block">John Doe - Dev</span>
-
+                    <span class="pill @(user.Role.ToLower().Replace(" ", ""))">@user.Username - @user.Role</span>
                 }
             </div>
-            <div class="ticket-submitter-holder p-2">
-                <span class="yellow-pill d-inline-block">Alan Wu - Submitter</span>
+            <br/>
+            <div>
+                @foreach (var user in Model.Team.Where(u => u.Role.ToLower() == "developer"))
+                {
+                    <span class="pill @(user.Role.ToLower())">@user.Username - @user.Role</span>
+                }
             </div>
+            <br/>
+            <div>
+                @foreach (var user in Model.Team.Where(u => u.Role.ToLower() == "submitter"))
+                {
+                    <span class="pill @(user.Role.ToLower())">@user.Username - @user.Role</span>
+                }
+            </div>
+
 
         </div>
     </div>
