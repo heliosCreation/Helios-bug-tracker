@@ -40,7 +40,8 @@
                     @foreach (var ticket in Model.Tickets)
                     {
                         <tr>
-                            <td class="d-none">@ticket.Id</td>
+                            <td class="d-none ticket-id-holder">@ticket.Id</td>
+                            <td class="d-none ticket-description-data" data-description="@ticket.Description"></td>
                             <td scope="row" class="text-purple"><a data-toggle="modal" data-target="" class="ticket-link">@ticket.Name </a></td>
                             <td>@ticket.Author</td>
                             <td><span class="pill @(ticket.Priority.ToLower())">@ticket.Priority</span></td>
@@ -151,7 +152,8 @@
                 event.stopPropagation();
                 event.stopImmediatePropagation();
 
-                let targetId = $(this).closest("td").prev()[0].innerText;
+                let targetId = $(this).closest("tr").find(".ticket-id-holder")[0].innerText;
+                let description = $(this).closest("tr").find(".ticket-description-data").attr("data-description");
 
                 $.ajax({
                     type: "GET",
@@ -164,6 +166,7 @@
                         $("#modal-holder").addClass("right");
                         $('#modal-holder .modal-content').html(result);
                         $(".modal-dialog").removeClass("modal-dialog-large");
+                        $("#ticket-description div").html(description);
                         SetTicketDetailsTabListener();
                         AttachCommentListener();
                     },
@@ -192,8 +195,8 @@
 
         }
 
-        function sendComment() {
-
+        function AddTicketDescription() {
+            
         }
     </script>
 }
