@@ -118,6 +118,32 @@
             AttachProjectUpdateModalListener(projectUpdateBtn, updateProjectModalUrl, true);
         }
 
+        function AttachCommentListener() {
+            $("#comments-holder").scrollTop($("#comments-holder")[0].scrollHeight);
+
+
+            $("#commentSubmitter").on('click', function (e) {
+                e.preventDefault();
+
+                var data = $("#comment-form").serialize();
+                $.ajax({
+                    type: "POST",
+                    url: '/Tracker/Ticket/SendComment',
+                    processData: false,
+                    data: data,
+                    contentType:'application/x-www-form-urlencoded; charset=UTF-8',
+                    datatype: "json",
+                    success: function (result) {
+                        $("#comments-holder").html(result);
+                    },
+                    error: function (data) {
+                        console.log(data)
+                    }
+                });
+
+            });
+        }
+
         function AttachTicketDetailsModalListener(button, url) {
             $(button).on('click', function (event) {
 
@@ -125,7 +151,7 @@
                 event.stopImmediatePropagation();
 
                 let targetId = $(this).closest("td").prev()[0].innerText;
-;
+
                 $.ajax({
                     type: "GET",
                     url: url,
@@ -138,7 +164,7 @@
                         $('#modal-holder .modal-content').html(result);
                         $(".modal-dialog").removeClass("modal-dialog-large");
                         SetTicketDetailsTabListener();
-                        $("#comments-holder").scrollTop($("#comments-holder")[0].scrollHeight);
+                        AttachCommentListener();
                     },
                     error: function (data) {
                         console.log(data)
@@ -162,6 +188,10 @@
 
                 targetToShow.removeClass("d-none");
             })
+
+        }
+
+        function sendComment() {
 
         }
     </script>

@@ -17,13 +17,13 @@ namespace BugTracker.Application.Features.Comments.Queries.GetAll
     {
         private readonly IMapper _mapper;
         private readonly ICommentRepository _commentRepository;
-        private readonly IIdentityService _identityRepository;
+        private readonly IIdentityService _identityService;
 
-        public GetAllCommentsQueryHandler(IMapper mapper, ICommentRepository commentRepository, IIdentityService identityRepository)
+        public GetAllCommentsQueryHandler(IMapper mapper, ICommentRepository commentRepository, IIdentityService identityService)
         {
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
             _commentRepository = commentRepository ?? throw new ArgumentNullException(nameof(commentRepository));
-            _identityRepository = identityRepository ?? throw new ArgumentNullException(nameof(identityRepository));
+            _identityService = identityService ?? throw new ArgumentNullException(nameof(identityService));
         }
 
         public async Task<ApiResponse<CommentDto>> Handle(GetAllCommentsQuery request, CancellationToken cancellationToken)
@@ -33,6 +33,10 @@ namespace BugTracker.Application.Features.Comments.Queries.GetAll
             var dbResult = await _commentRepository.GetByTicket(request.TicketId);
             var comments = _mapper.Map<List<CommentDto>>(dbResult);
 
+            foreach (var comment in comments)
+            {
+                comment.User = await _identityService.GetUserNameById(comment.User);
+            }
             response.DataList = comments;
             return response;
         }

@@ -7,6 +7,10 @@ namespace BugTracker.Application.Features.Comments.Commands.Create
 {
     public class CreateCommentCommand : IRequest<ApiResponse<CommentDto>>
     {
+        public CreateCommentCommand()
+        {
+
+        }
         public CreateCommentCommand(string message, Guid ticketId)
         {
             Message = message;

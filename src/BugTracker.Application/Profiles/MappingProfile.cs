@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
 using BugTracker.Application.Dto;
 using BugTracker.Application.Dto.Audits;
+using BugTracker.Application.Dto.Comments;
 using BugTracker.Application.Dto.Projects;
 using BugTracker.Application.Dto.TicketConfiguration;
+using BugTracker.Application.Features.Comments.Commands.Create;
 using BugTracker.Application.Features.Projects;
 using BugTracker.Application.Features.Projects.Commands.Create;
 using BugTracker.Application.Features.Projects.Commands.Update;
@@ -45,6 +47,12 @@ namespace BugTracker.Application.Profiles
             CreateMap<ApplicationUser, UserViewModel>();
             CreateMap<TicketsTeamMembers, UserViewModel>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.UserId));
+            #endregion
+
+            #region comment
+            CreateMap<Comment, CommentDto>()
+                .ForMember(dest => dest.User, opt => opt.MapFrom(src => src.CreatedBy.ToString()));
+            CreateMap<CreateCommentCommand, Comment>();
             #endregion
 
             #region ticket

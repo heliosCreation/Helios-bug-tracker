@@ -1,0 +1,12 @@
+﻿@model List<BugTracker.Application.Dto.Comments.CommentDto>
+@{
+    foreach (var comment in Model)
+    {
+        <div class="comment bg-white  my-1 px-2 border-radius-10  w-100">
+            <p class="title">@comment.User - <span>@comment.CreatedDate</span> <span class="float-right pr-2"><i class="far fa-comments"></i></span></p>
+            <p>@comment.Message</p>
+        </div>
+    }
+}
+
+

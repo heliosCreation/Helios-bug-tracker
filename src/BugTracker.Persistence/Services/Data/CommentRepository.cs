@@ -18,7 +18,7 @@ namespace BugTracker.Persistence.Services.Data
         {
             return await _dbContext.Comments.
                          Where(c => c.TicketId == ticketId)
-                         .OrderBy(c => c.CreatedDate)
+                         .OrderByDescending(c => c.CreatedDate)
                          .ToListAsync();
         }
     }
