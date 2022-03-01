@@ -32,21 +32,24 @@
     color:rgb(242 0 0);
 }
 
-.pill.purple {
+.pill.purple,
+.pill.projectmanager{
     background-color: rgb(114 18 240 / 13%);
     color: rgb(114 18 240);
 }
 
 .pill.medium,
+.pill.submitter,
 .pill.green {
     background-color: rgb(31 224 126 / 13%);
     color:rgb(31 224 126);
 }
 
 .pill.high,
+.pill.developer,
 .pill.yellow {
     background-color: rgb(224 213 31 / 13%);
-    color:rgb(224 213 31);
+    color: rgb(224 213 31);
 }
 /******Priority ends ******/
 

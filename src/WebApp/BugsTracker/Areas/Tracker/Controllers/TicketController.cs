@@ -13,6 +13,7 @@ using BugTracker.Application.Features.Tickets.Commands.Update;
 using BugTracker.Application.Features.Tickets.Queries.GetProjectTickets;
 using BugTracker.Application.Features.Tickets.Queries.GetTicket;
 using BugTracker.Application.Features.TicketTeam.Query;
+using BugTracker.Application.Features.TicketTeam.Query.GetCurrentTeam;
 using BugTracker.Application.Responses;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -135,10 +136,12 @@ namespace BugTracker.Areas.Tracker.Controllers
 
             var historyResponse = await Mediator.Send(new GetAuditLogsQuery(ticketId, AuditableType.Ticket));
             var commentsResponse = await Mediator.Send(new GetAllCommentsQuery(ticketId));
+            var teamResponse = await Mediator.Send(new GetCurrentTeamQuery(ticketId));
 
             dto.TicketId = ticketId;
             dto.History = historyResponse.DataList;
             dto.Comments = commentsResponse;
+            dto.Team = teamResponse.DataList;
 
             return PartialView(DetailsModalPath, dto);
         }

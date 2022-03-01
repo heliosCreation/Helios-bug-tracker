@@ -75,13 +75,11 @@ namespace BugTracker.Persistence.Services.Identity
         public async Task<IdentityResult> AddUserToRole(ApplicationUser user, string role)
         {
             return await _userManager.AddToRoleAsync(user, role);
-
         }
         public async Task<IdentityResult> RemoveUserFromRole(ApplicationUser user, string role)
         {
             return await _userManager.RemoveFromRoleAsync(user, role);
         }
-
         public async Task<ICollection<string>> GetUserRolesById(string id)
         {
             return await _userManager.GetRolesAsync(new ApplicationUser { Id = id });
@@ -135,6 +133,21 @@ namespace BugTracker.Persistence.Services.Identity
 
             return ticketTeam;
         }
+
+        public async Task<ICollection<ApplicationUser>>GetCurrentTicketTeam(Guid ticketId)
+        {
+            var teamIds = await _context.TicketsTeamMembers
+                        .Where(ttm => ttm.TicketId == ticketId)
+                        .Select(x => x.UserId)
+                        .ToListAsync();
+
+            var ticketTeam = await _context.Users.
+                            Where(u => teamIds.Contains(u.Id))
+                            .ToListAsync();
+
+            return ticketTeam;
+        }
+
         public async Task<string> GeneratePasswordForgottenMailToken(string email)
         {
             var user = await _userManager.FindByEmailAsync(email);
