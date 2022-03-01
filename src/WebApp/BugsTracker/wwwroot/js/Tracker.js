@@ -79,6 +79,8 @@ function AttachProjectUpdateModalListener(button, url, modalLarge) {
 
                 handleModalSize(modalLarge);
                 setProjectTabListener();
+                setTeamSelectListHandler();
+
                 $.validator.setDefaults({ ignore: [] });
             },
             error: function (data) {
@@ -140,7 +142,8 @@ function setTicketTabsListener() {
 
 function setTeamSelectListHandler() {
     //assign css on load
-    var selectedOptions = $("#ticket-team option:selected");
+    var selectedOptions = $("#ticket-team option:selected, #project-team option:selected");
+    console.log(selectedOptions)
     selectedOptions.each(function (elem) {
         $(this).addClass("selected");
         $(this).attr('selected', 'selected');
