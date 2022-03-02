@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using System;
 
 namespace BugTracker.Identity.Configurations
 {
@@ -37,31 +36,31 @@ namespace BugTracker.Identity.Configurations
                 Name = "Submitter",
                 NormalizedName = "SUBMITTER"
             });
-            
+
             builder.HasData(new IdentityRole
             {
-                Id = Guid.NewGuid().ToString(),
+                Id = "5eb35880-6e69-451c-bedc-bd863f6b80f6",
                 Name = "Demo Admin",
                 NormalizedName = "DEMO_ADMIN"
             });
 
             builder.HasData(new IdentityRole
             {
-                Id = Guid.NewGuid().ToString(),
+                Id = "776a748a-cd98-42e8-afdb-ae578902a099",
                 Name = " Demo Project Manager",
                 NormalizedName = "DEMO PROJECT MANAGER"
             });
 
             builder.HasData(new IdentityRole
             {
-                Id = Guid.NewGuid().ToString(),
+                Id = "bc03a370-240d-48a6-a37b-efe518b3f065",
                 Name = "Demo Developer",
                 NormalizedName = "DEMO DEVELOPER"
             });
 
             builder.HasData(new IdentityRole
             {
-                Id = Guid.NewGuid().ToString(),
+                Id = "96095b44-8c4a-4786-93d3-ee82b5b29481",
                 Name = "Demo Submitter",
                 NormalizedName = "DEMO SUBMITTER"
             });
