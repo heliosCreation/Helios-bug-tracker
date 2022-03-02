@@ -18,7 +18,12 @@ function AttachModalCreateListener(createBtnId, url, modalLarge = false, isTicke
                 if (isTicket) {
                     setTicketTabsListener();
                     addTicketHandler();
-                    $('[data-toggle="popover"]').popover()                }
+                    $('[data-toggle="popover"]').popover()
+                }
+                else {
+                    setProjectTabListener();
+                    setTeamSelectListHandler();
+                }
             },
             error: function (data) {
                 alert("Error loading dynamic data");
@@ -56,6 +61,10 @@ function AttachTableModalListeners(buttons, url, getName = false, modalLarge = f
                     if (ticketUpdate) {
                         addTicketHandler();
                     }
+                    else {
+                        setProjectTabListener();
+                        setTeamSelectListHandler();
+                    }
                 },
                 error: function (data) {
                     console.log(data)
@@ -79,6 +88,8 @@ function AttachProjectUpdateModalListener(button, url, modalLarge) {
 
                 handleModalSize(modalLarge);
                 setProjectTabListener();
+                setTeamSelectListHandler();
+
                 $.validator.setDefaults({ ignore: [] });
             },
             error: function (data) {
@@ -112,8 +123,6 @@ function setProjectTabListener() {
 
                 $(tabs[tick].replace("-tab", "")).removeClass("d-none");
                 $(tabs[tick - 1].replace("-tab", "")).addClass("d-none");
-                console.log(tick)
-
             });
         }
 
@@ -140,16 +149,16 @@ function setTicketTabsListener() {
 
 function setTeamSelectListHandler() {
     //assign css on load
-    var selectedOptions = $("#ticket-team option:selected");
+    var selectedOptions = $("#ticket-team option:selected, #project-team option:selected");
     selectedOptions.each(function (elem) {
         $(this).addClass("selected");
         $(this).attr('selected', 'selected');
     })
 
     $('select[multiple] option').on('mousedown', function (e) {
-        var $this = $(this);
-
         e.preventDefault();
+
+        var $this = $(this);
         $this.prop('selected', !$this.prop('selected'));
         $(this).toggleClass("selected");
     }); 
@@ -160,7 +169,7 @@ function setTeamSelectListHandler() {
         var targets = $("#" + closestSelectId + " option");
 
         targets.each(function (elem) {
-            $(this).removeAttr('selected');
+            $(this).prop('selected', false);
             $(this).removeClass("selected");
         })
 
