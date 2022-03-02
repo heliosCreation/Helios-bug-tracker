@@ -88,6 +88,14 @@ namespace BugTracker.Persistence.Services.Identity
         {
             return await _context.Users.Where(u => u.Id == id).Select(u => u.UserName).FirstOrDefaultAsync();
         }
+        
+        public async Task<IEnumerable<ApplicationUser>> GetAllManageableUsers()
+        {
+            var admins = await _userManager.GetUsersInRoleAsync("Admin");
+            var allUsers = await _context.Users.ToListAsync();
+
+            return allUsers.Except(admins).ToList();
+        }
 
         public async Task<ICollection<ApplicationUser>> GetAllAccessibleUsersPerRole(string uid)
         {
@@ -120,7 +128,6 @@ namespace BugTracker.Persistence.Services.Identity
 
             return accessibleTeam;
         }
-
         public async Task<ICollection<ApplicationUser>> GetAccessibleTicketTeam(string uid, Guid projectId)
         {
             var accessibleUsers = (await GetAllAccessibleUsersPerRole(uid)).ToList();
@@ -133,7 +140,6 @@ namespace BugTracker.Persistence.Services.Identity
 
             return ticketTeam;
         }
-
         public async Task<ICollection<ApplicationUser>>GetCurrentTicketTeam(Guid ticketId)
         {
             var teamIds = await _context.TicketsTeamMembers
@@ -147,7 +153,6 @@ namespace BugTracker.Persistence.Services.Identity
 
             return ticketTeam;
         }
-
         public async Task<string> GeneratePasswordForgottenMailToken(string email)
         {
             var user = await _userManager.FindByEmailAsync(email);

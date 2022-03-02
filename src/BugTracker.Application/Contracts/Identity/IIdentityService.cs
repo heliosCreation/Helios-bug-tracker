@@ -18,6 +18,7 @@ namespace BugTracker.Application.Contracts.Identity
         Task<string> GenerateRegistrationEncodedToken(string id);
         Task<ICollection<ApplicationUser>> GetAccessibleTicketTeam(string uid, Guid projectId);
         Task<ICollection<ApplicationUser>> GetAllAccessibleUsersPerRole(string uid);
+        Task<IEnumerable<ApplicationUser>> GetAllManageableUsers();
         Task<ICollection<ApplicationUser>> GetCurrentTicketTeam(Guid ticketId);
         Task<string> GetUserNameById(string id);
         Task<ApplicationUser> GetUserOrNullAsync(string email);

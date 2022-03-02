@@ -1,13 +1,18 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using BugTracker.Application.Features.UserManagement.GetAllUsers;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
-namespace BugTracker.Areas.Identity.Controllers
+namespace BugTracker.Areas.Tracker.Controllers
 {
     [Area("Tracker")]
-    public class UserController : Controller
+    [Authorize(Roles ="Admin")]
+    public class UserController : BaseController
     {
-        public IActionResult ManageUser()
+        public async Task<IActionResult> ManageUser()
         {
-            return View();
+            var response = await Mediator.Send(new GetAllUsersQuery());
+            return View(response.DataList);
         }
     }
 }
