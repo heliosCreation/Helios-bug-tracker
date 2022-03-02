@@ -241,12 +241,15 @@
             const createModalUrl = '/Tracker/Project/loadCreateModal';
             const updateModalUrl = '/Tracker/Project/loadUpdateModal';
             const deleteModalUrl = '/Tracker/Project/loadDeleteModal';
+
             var createBtn = $("#create-project");
             var updateBtns = document.querySelectorAll('.update-btn');
             var deleteBtns = document.querySelectorAll('.delete-btn');
+
             $(document).ajaxComplete(function () {
                 $.validator.unobtrusive.parse(document);
             });
+
             AttachModalCreateListener(createBtn, createModalUrl);
             AttachTableModalListeners(updateBtns, updateModalUrl);
             AttachTableModalListeners(deleteBtns, deleteModalUrl);

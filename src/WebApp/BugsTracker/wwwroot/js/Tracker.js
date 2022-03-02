@@ -18,7 +18,8 @@ function AttachModalCreateListener(createBtnId, url, modalLarge = false, isTicke
                 if (isTicket) {
                     setTicketTabsListener();
                     addTicketHandler();
-                    $('[data-toggle="popover"]').popover()                }
+                    $('[data-toggle="popover"]').popover()
+                }
             },
             error: function (data) {
                 alert("Error loading dynamic data");
@@ -55,6 +56,10 @@ function AttachTableModalListeners(buttons, url, getName = false, modalLarge = f
 
                     if (ticketUpdate) {
                         addTicketHandler();
+                    }
+                    else {
+                        setProjectTabListener();
+                        setTeamSelectListHandler();
                     }
                 },
                 error: function (data) {
