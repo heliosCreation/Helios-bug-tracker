@@ -26,7 +26,8 @@ namespace BugTracker.Application.Features.UserManagement.GetAllUsers
         {
             var response = new ApiResponse<UserViewModel>();
 
-            var users = _mapper.Map<List<UserViewModel>>(await _identityService.GetAllManageableUsers());
+            var users = _mapper.Map<List<UserViewModel>>(await _identityService.GetAllManageableUsers(request.Page,request.SearchString));
+            var userCount = users.Count();
 
             foreach (var user in users)
             {

@@ -15,9 +15,13 @@
                 entries out of <span class="text-purple"> 47 </span>
             </p>
 
-            <div class="research-input-wrapper">
-                <input type="text" class="research-input" placeholder="Reseach..." />
-                <i class="fas fa-search"></i>
+            <div class="research-input-wrapper d-flex justify-content-center align-items-center">
+                <form asp-action="ManageUser">
+                    <input type="text" name="searchString" class="table-sorter-input ml-1" placeholder="Reseach..." />
+                    <button type="submit" class="x-btn blue mx-1">
+                        <i class="fa fa-search"></i>
+                    </button>
+                </form>
             </div>
 
             <a class="blue-btn" data-toggle="modal" data-target="#manageUserRoleModal">Assign user(s) role</a>

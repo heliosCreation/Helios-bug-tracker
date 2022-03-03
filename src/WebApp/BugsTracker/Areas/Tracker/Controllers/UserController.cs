@@ -9,9 +9,9 @@ namespace BugTracker.Areas.Tracker.Controllers
     [Authorize(Roles ="Admin")]
     public class UserController : BaseController
     {
-        public async Task<IActionResult> ManageUser()
+        public async Task<IActionResult> ManageUser(int page = 1, string searchString = null)
         {
-            var response = await Mediator.Send(new GetAllUsersQuery());
+            var response = await Mediator.Send(new GetAllUsersQuery(page,searchString));
             return View(response.DataList);
         }
     }

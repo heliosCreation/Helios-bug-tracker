@@ -89,12 +89,45 @@ namespace BugTracker.Persistence.Services.Identity
             return await _context.Users.Where(u => u.Id == id).Select(u => u.UserName).FirstOrDefaultAsync();
         }
         
-        public async Task<IEnumerable<ApplicationUser>> GetAllManageableUsers()
+        public async Task<IEnumerable<ApplicationUser>> GetAllManageableUsers(int page, string searchString)
         {
-            var admins = await _userManager.GetUsersInRoleAsync("Admin");
-            var allUsers = await _context.Users.ToListAsync();
+            var itemPerPage = 7;
+            var toSkip = (page - 1) * itemPerPage;
 
-            return allUsers.Except(admins).ToList();
+            var admins = await _userManager.GetUsersInRoleAsync("Admin");
+            var users = new List<ApplicationUser>();
+
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                //First check on the basic fields of the user set.
+                users = await _context.Users
+                    .Where(u => u.UserName.Contains(searchString)
+                    || u.Email.Contains(searchString))
+                    .ToListAsync();
+
+                //If there is no result
+                //Get the roles containing the searchstring
+                var rolesId = await _context.Roles
+                    .Where(r => r.Name.ToLower().Contains(searchString))
+                    .Select(r => r.Id)
+                    .ToListAsync();
+
+                //Does any entry exist?
+                if (rolesId.Count() > 0)
+                {
+                    //Get the corresponding user id from user role table, match them to their user and add them to the list.
+                    var userIds = await _context.UserRoles.Where(ur => rolesId.Contains(ur.RoleId)).Select(u => u.UserId).ToListAsync();
+                    users.AddRange(await _context.Users.Where(u => userIds.Contains(u.Id)).ToListAsync());
+                }
+            }
+            else
+            {
+                users = await _context.Users
+                    .Skip(toSkip)
+                    .Take(itemPerPage)
+                    .ToListAsync();
+            }
+            return users.Except(admins).ToList();
         }
 
         public async Task<ICollection<ApplicationUser>> GetAllAccessibleUsersPerRole(string uid)
