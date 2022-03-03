@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using BugTracker.Application.Contracts.Identity;
+using BugTracker.Application.Model.Pagination;
 using BugTracker.Application.Responses;
 using BugTracker.Application.ViewModel;
 using MediatR;
@@ -11,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace BugTracker.Application.Features.UserManagement.GetAllUsers
 {
-    public class GetAllUsersQueryHandler : IRequestHandler<GetAllUsersQuery, ApiResponse<UserViewModel>>
+    public class GetAllUsersQueryHandler : IRequestHandler<GetAllUsersQuery, ApiResponse<UserManagementViewModel>>
     {
         private readonly IIdentityService _identityService;
         private readonly IMapper _mapper;
@@ -22,12 +23,13 @@ namespace BugTracker.Application.Features.UserManagement.GetAllUsers
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
-        public async Task<ApiResponse<UserViewModel>> Handle(GetAllUsersQuery request, CancellationToken cancellationToken)
+        public async Task<ApiResponse<UserManagementViewModel>> Handle(GetAllUsersQuery request, CancellationToken cancellationToken)
         {
-            var response = new ApiResponse<UserViewModel>();
+            var response = new ApiResponse<UserManagementViewModel>();
+            response.Data = new UserManagementViewModel();
 
             var users = _mapper.Map<List<UserViewModel>>(await _identityService.GetAllManageableUsers(request.Page,request.SearchString));
-            var userCount = users.Count();
+            var userCount = await _identityService.CountManageableUsers();
 
             foreach (var user in users)
             {
@@ -35,10 +37,11 @@ namespace BugTracker.Application.Features.UserManagement.GetAllUsers
                 if (roles.Any())
                 {
                     user.Role = roles.ToList()[0];
-                    response.DataList.Add(user);
+                    response.Data.Users.Add(user);
                 }
             }
-            response.DataList = response.DataList.OrderBy(tm => tm.Role).ToList();
+            response.Data.Users = response.Data.Users.OrderBy(tm => tm.Role).ToList();
+            response.Data.Pager = new Pager(userCount, request.Page);
 
 
             return response;

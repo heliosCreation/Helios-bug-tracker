@@ -4,7 +4,7 @@ using MediatR;
 
 namespace BugTracker.Application.Features.UserManagement.GetAllUsers
 {
-    public class GetAllUsersQuery : IRequest<ApiResponse<UserViewModel>>
+    public class GetAllUsersQuery : IRequest<ApiResponse<UserManagementViewModel>>
     {
         public GetAllUsersQuery(int page, string searchString)
         {

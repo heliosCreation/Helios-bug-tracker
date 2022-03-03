@@ -130,6 +130,12 @@ namespace BugTracker.Persistence.Services.Identity
             return users.Except(admins).ToList();
         }
 
+        public async Task<int> CountManageableUsers()
+        {
+            var admins = await _userManager.GetUsersInRoleAsync("Admin");
+            return (await _context.Users.ToListAsync()).Except(admins).Count();
+            
+        }
         public async Task<ICollection<ApplicationUser>> GetAllAccessibleUsersPerRole(string uid)
         {
             //Get current user role
