@@ -166,6 +166,7 @@ namespace BugTracker.Areas.Tracker.Controllers
             var commentResponse = await Mediator.Send(new GetAllCommentsQuery(request.TicketId));
 
             response.DataList = commentResponse.DataList;
+            response.Data = commentResponse.Data;
 
             if (!createdCommentResponse.Succeeded)
             {
