@@ -1,0 +1,174 @@
+﻿@model BugTracker.Application.ViewModel.UserManagementViewModel
+
+<partial name="../Shared/Partial/Common/_modalHolderPartial.cshtml" />
+
+<div class="py-4 row d-flex justify-content-around h-50">
+
+    <div class="first-row col-11 p-0">
+        <div class="first-row-header row d-flex px-3 py-2 w-100 justify-content-between align-items-center">
+
+            <div class="research-input-wrapper d-flex justify-content-center align-items-center">
+                <form asp-action="GetAll">
+                    <input type="text" name="searchString" class="table-sorter-input ml-1" placeholder="Reseach..." />
+                    <button type="submit" class="x-btn blue mx-1">
+                        <i class="fa fa-search"></i>
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <div class="table-responsive w-100">
+            <table class="table ticket-list-table">
+                <thead class="ticket-thead">
+                    <tr>
+                        <th scope="col" class="text-muted">Name</th>
+                        <th scope="col" class="text-muted">Email</th>
+                        <th scope="col" class="text-muted">Role</th>
+                        <th scope="col" class="text-muted text-center">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var user in Model.Users)
+                    {
+                        <tr>
+                            <td class="d-none user-id-holder">@user.Id</td>
+                            <td scope="row" class="text-purple"><a data-toggle="modal" data-target="#showTicketDetails" class="ticket-link">@user.Username</a></td>
+                            <td>@user.Email</td>
+                            <td>@user.Role</td>
+                            <td class="text-center">
+                                <div class="dropdown">
+                                    <a href="#" class="dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <i class="fas fa-ellipsis-v"></i>
+                                    </a>
+                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                        <a class="dropdown-item role-management-btn" href="#" data-toggle="modal">Manage Role</a>
+                                        <a class="dropdown-item" href="#" data-toggle="modal" data-target="#LockUserModal">Lock <i class="fa fa-lock" aria-hidden="true"></i></a>
+                                        <a class="dropdown-item" href="#" data-toggle="modal" data-target="#deleteUserModal">Delete</a>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        <div class="row d-flex justify-content-sm-between align-items-center w-100">
+            <div class="pagination-holder d-flex p-2">
+                @if (Model.Pager.CurrentPage > 1)
+                {
+                    <a class="purple-circle angle" asp-action="GetAll" asp-route-page="1">
+                        <i class="fas fa-angle-double-left"></i>
+                    </a>
+                    <a class="purple-circle angle" asp-action="GetAll" asp-route-page="@(Model.Pager.CurrentPage - 1)">
+                        <i class="fas fa-angle-left"></i>
+                    </a>
+                }
+                @for (int i = Model.Pager.StartPage; i <= Model.Pager.EndPage; i++)
+                {
+                    if (Model.Pager.CurrentPage == i)
+                    {
+                        <a class="purple-circle  @(i == Model.Pager.CurrentPage ? "filled" : "")">@i</a>
+                    }
+                    else
+                    {
+                        <a class="purple-circle" asp-action="GetAll" asp-route-page="@i">@i</a>
+                    }
+                }
+
+                @if (Model.Pager.CurrentPage < Model.Pager.EndPage)
+                {
+                    <a class="purple-circle angle" asp-action="GetAll" asp-route-page="@(Model.Pager.CurrentPage + 1)">
+                        <i class="fas fa-angle-right"></i>
+                    </a>
+                    <a class="purple-circle angle" asp-action="GetAll" asp-route-page="@(Model.Pager.TotalPages)">
+                        <i class="fas fa-angle-double-right"></i>
+                    </a>
+                }
+            </div>
+
+            <div class="p-2">
+                <p>
+                    Showing @Model.Pager.StartRecord to @Model.Pager.EndRecord of @Model.Pager.TotalItems Rows.
+                </p>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+
+<div class="modal fade" id="deleteUserModal" tabindex="-1" role="dialog" aria-labelledby="deleteUserModal" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title text-center" id="exampleModalLongTitle">Delete user <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form>
+                <div class="modal-body text-center">
+                    <p>Are you sure you want to delete the user <span class="text-purple font-weight-bold">John Doe</span> ?</p>
+                    <p>The deletion of this information is irreversible, and will delete every accesses for this user.</p>
+                    <p>Type <span class="text-green">Synchronize</span> to authorize the operation:</p>
+                    <input type="text" />
+                </div>
+                <div class="modal-footer text-center">
+                    <button type="button" class="green-btn">Delete User</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+
+@section scripts {
+    <script src="~/lib/Chart.js/chart.min.js"></script>
+    <script src="~/js/Tracker.js"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            $("#sectionName").text("User Management");
+            $("#sidebar ul li.active").removeClass("active");
+            $("#user-management-link").addClass("active");
+
+            const manageRoleUrl = '/Tracker/User/LoadManageRoleModal';
+
+
+            attachRoleManagementModal(manageRoleUrl);
+
+        });
+
+        function attachRoleManagementModal(url) {
+            $(".role-management-btn").on('click', function (event) {
+
+                //Get only the first instance of clicked class
+                event.stopPropagation();
+                event.stopImmediatePropagation();
+
+                let userId = $(this).closest("tr").find(".user-id-holder")[0].innerText;
+                console.log(userId)
+                $.ajax({
+                    type: "GET",
+                    url: url,
+                    data: { uid: userId },
+                    contentType: "application/json; charset=utf-8",
+                    datatype: "json",
+                    success: function (result) {
+                        $("#modal-holder").modal("show")
+                        $(".modal-dialog").addClass("modal-dialog-large");
+                        $('#modal-holder .modal-content').html(result);
+                        setSelectListHandler();
+                    },
+                    error: function (data) {
+                        console.log(data)
+                    }
+                });
+            });
+        }
+    </script>
+}

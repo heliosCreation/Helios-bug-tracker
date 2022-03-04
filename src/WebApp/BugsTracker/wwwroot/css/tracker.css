@@ -801,6 +801,10 @@ tbody tr td a:hover {
     padding: 3px;
     border:2px solid #3982da;
 }
+
+#role-mgmt-select{
+    min-height:200px;
+}
 /*=============================================
   Details design end
   =========================================*/

@@ -72,6 +72,11 @@ namespace BugTracker.Persistence.Services.Identity
         {
             await _signInManager.SignOutAsync();
         }
+        
+        public async Task<IEnumerable<IdentityRole<string>>> ListAllRoles()
+        {
+            return await _roleManager.Roles.ToListAsync();
+        }
         public async Task<IdentityResult> AddUserToRole(ApplicationUser user, string role)
         {
             return await _userManager.AddToRoleAsync(user, role);
@@ -80,13 +85,59 @@ namespace BugTracker.Persistence.Services.Identity
         {
             return await _userManager.RemoveFromRoleAsync(user, role);
         }
-        public async Task<ICollection<string>> GetUserRolesById(string id)
+        
+        public async Task<bool> UpdateUserRoles(string uid, List<string> rolesIds)
         {
-            return await _userManager.GetRolesAsync(new ApplicationUser { Id = id });
+            //Get the list of associated role id of the user
+            var userRoles = (await GetUserRolesById(uid)).Select(ur => ur.Id).ToList();
+            if (rolesIds != null)
+            {
+                foreach (var roleId in rolesIds)
+                {
+                    if (!userRoles.Contains(roleId))
+                    {
+                        await _context.UserRoles.AddAsync(new IdentityUserRole<string>
+                        {
+                            RoleId = roleId,
+                            UserId = uid
+                        });
+                    }
+                }
+
+                foreach (var userRoleId in userRoles)
+                {
+                    if (!rolesIds.Contains(userRoleId))
+                    {
+                        _context.UserRoles.Remove(new IdentityUserRole<string>
+                        {
+                            RoleId = userRoleId,
+                            UserId = uid
+                        });
+                    }
+                }
+            }
+            else
+            {
+                 _context.UserRoles.RemoveRange(_context.UserRoles.Where(u => u.UserId == uid));
+            }
+
+            return await _context.SaveChangesAsync() > 0;
+        }
+        public async Task<ICollection<IdentityRole<string>>> GetUserRolesById(string id)
+        {
+            var response = new List<IdentityRole<string>>();
+            var userRoles =  await _userManager.GetRolesAsync(new ApplicationUser { Id = id });
+            foreach (var role in userRoles)
+            {
+                var roleId = await _context.Roles.Where(r => r.Name == role).Select(r => r.Id).FirstOrDefaultAsync();
+                response.Add(new IdentityRole<string> { Id = roleId, Name = role });
+            }
+            return response; 
         }
         public async Task<string> GetUserNameById(string id)
         {
             return await _context.Users.Where(u => u.Id == id).Select(u => u.UserName).FirstOrDefaultAsync();
+
         }
         
         public async Task<IEnumerable<ApplicationUser>> GetAllManageableUsers(int page, string searchString)

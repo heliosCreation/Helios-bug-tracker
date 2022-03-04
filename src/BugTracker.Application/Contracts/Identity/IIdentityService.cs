@@ -23,11 +23,13 @@ namespace BugTracker.Application.Contracts.Identity
         Task<ICollection<ApplicationUser>> GetCurrentTicketTeam(Guid ticketId);
         Task<string> GetUserNameById(string id);
         Task<ApplicationUser> GetUserOrNullAsync(string email);
-        Task<ICollection<string>> GetUserRolesById(string id);
+        Task<ICollection<IdentityRole<string>>> GetUserRolesById(string id);
+        Task<IEnumerable<IdentityRole<string>>> ListAllRoles();
         Task<IdentityResult> Register(RegistrationModel model);
         Task<IdentityResult> RemoveUserFromRole(ApplicationUser user, string role);
         Task<IdentityResult> ResetPassword(ResetPasswordModel model);
         Task SignOutAsync();
+        Task<bool> UpdateUserRoles(string uid, List<string> rolesIds);
         Task<bool> UserEmailExist(string email);
         Task<bool> UserIdExists(string id);
         Task<bool> UsernameExist(string name);

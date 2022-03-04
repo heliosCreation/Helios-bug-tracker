@@ -36,9 +36,10 @@ namespace BugTracker.Application.Features.UserManagement.GetAllUsers
                 var roles = await _identityService.GetUserRolesById(user.Id.ToString());
                 if (roles.Any())
                 {
-                    user.Role = roles.ToList()[0];
-                    response.Data.Users.Add(user);
+                    user.Role = roles.Select(r => r.Name).ToList()[0];
                 }
+                response.Data.Users.Add(user);
+
             }
             response.Data.Users = response.Data.Users.OrderBy(tm => tm.Role).ToList();
             response.Data.Pager = new Pager(userCount, request.Page);
