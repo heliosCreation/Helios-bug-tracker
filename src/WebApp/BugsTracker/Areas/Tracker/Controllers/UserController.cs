@@ -18,6 +18,7 @@ namespace BugTracker.Areas.Tracker.Controllers
         private const string ModalType = "UserManagementModalPartial.cshtml";
 
         private const string ManageRolesModalPath = ModalBasePath + "_manageRole" + ModalType;
+        private const string LockUserModalPath = ModalBasePath + "_lock" + ModalType;
 
         public async Task<IActionResult> GetAll(int page = 1, string searchString = null)
         {
@@ -49,5 +50,9 @@ namespace BugTracker.Areas.Tracker.Controllers
             return RedirectToAction("GetAll");
         }
 
+        public IActionResult LoadLockUserModal(string uid)
+        {
+            return PartialView(LockUserModalPath, uid);
+        }
     }
 }

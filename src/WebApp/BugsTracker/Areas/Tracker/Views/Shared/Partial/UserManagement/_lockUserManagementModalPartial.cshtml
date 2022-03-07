@@ -1,0 +1,22 @@
+﻿@model string
+
+<div class="modal-header">
+    <h5 class="modal-title text-center" id="exampleModalLongTitle">Lock user <i class="fa fa-exclamation-triangle text-danger" aria-hidden="true"></i> </h5>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+<form asp-controller="User" asp-action="Lock">
+    <input type="hidden" name="userId" value="@Model"/>
+    <div class="modal-body text-center">
+        <p>Are you sure you want to lock the user <span class="text-purple font-weight-bold" id="lock-user-name"></span> ?</p>
+        <p>The user will loose the ability to connect to the application until you unlock him/her.</p>
+        <p>Type <span class="text-green">Synchronize</span> to authorize the operation:</p>
+        <input type="text" id="synchronize-validation" />
+    </div>
+    <div class="modal-footer text-center">
+        <input type="submit" class="x-btn green" id="lock-btn" value="Lock User"/>
+    </div>
+</form>
+
+

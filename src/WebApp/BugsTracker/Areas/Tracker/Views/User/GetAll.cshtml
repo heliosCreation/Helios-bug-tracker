@@ -32,7 +32,7 @@
                     {
                         <tr>
                             <td class="d-none user-id-holder">@user.Id</td>
-                            <td scope="row" class="text-purple"><a data-toggle="modal" data-target="#showTicketDetails" class="ticket-link">@user.Username</a></td>
+                            <td scope="row" class="text-purple user-name">@user.Username</td>
                             <td>@user.Email</td>
                             <td>@user.Role</td>
                             <td class="text-center">
@@ -42,7 +42,7 @@
                                     </a>
                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                         <a class="dropdown-item role-management-btn" href="#" data-toggle="modal">Manage Role</a>
-                                        <a class="dropdown-item" href="#" data-toggle="modal" data-target="#LockUserModal">Lock <i class="fa fa-lock" aria-hidden="true"></i></a>
+                                        <a class="dropdown-item lock-management-btn" href="#" data-toggle="modal" data-target="#LockUserModal">Lock <i class="fa fa-lock" aria-hidden="true"></i></a>
                                         <a class="dropdown-item" href="#" data-toggle="modal" data-target="#deleteUserModal">Delete</a>
                                     </div>
                                 </div>
@@ -137,21 +137,24 @@
             $("#user-management-link").addClass("active");
 
             const manageRoleUrl = '/Tracker/User/LoadManageRoleModal';
+            const manageLockUrl = '/Tracker/User/LoadLockUserModal';
 
-
-            attachRoleManagementModal(manageRoleUrl);
+            attachManagementModal(".role-management-btn", manageRoleUrl);
+            attachManagementModal(".lock-management-btn", manageLockUrl);
 
         });
 
-        function attachRoleManagementModal(url) {
-            $(".role-management-btn").on('click', function (event) {
+
+        function attachManagementModal(classBtn ,url) {
+            $(classBtn).on('click', function (event) {
 
                 //Get only the first instance of clicked class
                 event.stopPropagation();
                 event.stopImmediatePropagation();
 
                 let userId = $(this).closest("tr").find(".user-id-holder")[0].innerText;
-                console.log(userId)
+                let userName = $(this).closest("tr").find(".user-name")[0].innerText;
+
                 $.ajax({
                     type: "GET",
                     url: url,
@@ -162,7 +165,19 @@
                         $("#modal-holder").modal("show")
                         $(".modal-dialog").addClass("modal-dialog-large");
                         $('#modal-holder .modal-content').html(result);
-                        setSelectListHandler();
+                        if (classBtn.includes("role")) {
+                            setSelectListHandler();
+                        }
+                        else {
+                            $("#lock-user-name").html(userName);
+                            $("#lock-btn").prop("disabled", true);
+
+                            $("#synchronize-validation").on("keyup", function () {
+                                if ($("#synchronize-validation").val() == 'Synchronize') {
+                                    $("#lock-btn").prop("disabled", false);
+                                }
+                            });
+                        }
                     },
                     error: function (data) {
                         console.log(data)
