@@ -8,7 +8,6 @@ namespace BugTracker.Domain.Identity
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }
-
         public ICollection<Ticket> Tickets { get; set; }
         public ICollection<ProjectTeamMember> ProjectTeamMembers { get; set; }
         public ICollection<TicketsTeamMembers> TicketsTeamMembers { get; set; }

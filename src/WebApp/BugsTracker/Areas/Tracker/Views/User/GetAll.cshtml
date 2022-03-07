@@ -15,6 +15,12 @@
                     </button>
                 </form>
             </div>
+
+            <div class="ml-auto">
+                <form asp-controller="user" asp-route-showLocked="@true">
+                    <input type="submit" class="x-btn yellow" value="Locked user(s)"/>
+                </form>
+            </div>
         </div>
 
         <div class="table-responsive w-100">
@@ -42,7 +48,14 @@
                                     </a>
                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                         <a class="dropdown-item role-management-btn" href="#" data-toggle="modal">Manage Role</a>
-                                        <a class="dropdown-item lock-management-btn" href="#" data-toggle="modal" data-target="#LockUserModal">Lock <i class="fa fa-lock" aria-hidden="true"></i></a>
+                                        @if (user.LockoutEnabled)
+                                        {
+                                            <a class="dropdown-item unlock-management-btn" href="#" data-toggle="modal" data-target="#UnLockUserModal">Unlock <i class="fa fa-unlock" aria-hidden="true"></i></a>
+                                        }
+                                        else
+                                        {
+                                            <a class="dropdown-item lock-management-btn" href="#" data-toggle="modal" data-target="#LockUserModal">Lock <i class="fa fa-lock" aria-hidden="true"></i></a>
+                                        }
                                         <a class="dropdown-item" href="#" data-toggle="modal" data-target="#deleteUserModal">Delete</a>
                                     </div>
                                 </div>
@@ -138,9 +151,11 @@
 
             const manageRoleUrl = '/Tracker/User/LoadManageRoleModal';
             const manageLockUrl = '/Tracker/User/LoadLockUserModal';
+            const manageUnlockUrl = '/Tracker/User/LoadUnlockUserModal';
 
             attachManagementModal(".role-management-btn", manageRoleUrl);
             attachManagementModal(".lock-management-btn", manageLockUrl);
+            attachManagementModal(".unlock-management-btn", manageUnlockUrl);
 
         });
 

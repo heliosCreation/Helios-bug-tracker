@@ -1,4 +1,6 @@
 ﻿using BugTracker.Application.Dto.UserManagement;
+using BugTracker.Application.Features.UserManagement.Commands.LockUser;
+using BugTracker.Application.Features.UserManagement.Commands.UnlockUser;
 using BugTracker.Application.Features.UserManagement.Commands.UpdateUserRole;
 using BugTracker.Application.Features.UserManagement.GetAllRoles;
 using BugTracker.Application.Features.UserManagement.GetAllUsers;
@@ -6,6 +8,7 @@ using BugTracker.Application.Features.UserManagement.GetUserWithRoles;
 using BugTracker.Application.ViewModel;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace BugTracker.Areas.Tracker.Controllers
@@ -19,10 +22,18 @@ namespace BugTracker.Areas.Tracker.Controllers
 
         private const string ManageRolesModalPath = ModalBasePath + "_manageRole" + ModalType;
         private const string LockUserModalPath = ModalBasePath + "_lock" + ModalType;
+        private const string UnlockUserModalPath = ModalBasePath + "_unlock" + ModalType;
 
-        public async Task<IActionResult> GetAll(int page = 1, string searchString = null)
+        public async Task<IActionResult> GetAll(int page = 1, string searchString = null, bool showLocked = false,
+            bool isSuccess = false, bool isFailed = false, List<string> errors = null, string type = null, string actionReturned = null)
         {
-            var response = await Mediator.Send(new GetAllUsersQuery(page,searchString));
+            ViewBag.isSuccess = isSuccess;
+            ViewBag.isFailed = isFailed;
+            ViewBag.errors = errors;
+            ViewBag.type = type;
+            ViewBag.actionReturned = actionReturned;
+
+            var response = await Mediator.Send(new GetAllUsersQuery(page, searchString, showLocked));
             return View(response.Data);
         }
 
@@ -53,6 +64,33 @@ namespace BugTracker.Areas.Tracker.Controllers
         public IActionResult LoadLockUserModal(string uid)
         {
             return PartialView(LockUserModalPath, uid);
+        }
+
+        public async Task<IActionResult>Lock(string uid)
+        {
+            var lockResponse = await Mediator.Send(new LockUserCommand(uid));
+            if (!lockResponse.Succeeded)
+            {
+                return RedirectToAction("GetAll", new {isFailed = true, errors = lockResponse.ErrorMessages });
+            }
+
+            return RedirectToAction("GetAll", new { isSuccess = true, type = "user", actionReturned = "locked"});
+        }
+
+        public IActionResult LoadUnlockUserModal(string uid)
+        {
+            return PartialView(UnlockUserModalPath, uid);
+        }
+
+        public async Task<IActionResult> UnLock(string uid)
+        {
+            var lockResponse = await Mediator.Send(new UnlockUserCommand(uid));
+            if (!lockResponse.Succeeded)
+            {
+                return RedirectToAction("GetAll", new {isFailed = true, errors = lockResponse.ErrorMessages, type = "user", actionReturned = "unlocked" });
+            }
+
+            return RedirectToAction("GetAll", new { isSuccess = true, type = "user", actionReturned = "unlocked" });
         }
     }
 }

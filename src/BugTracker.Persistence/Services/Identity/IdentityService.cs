@@ -73,6 +73,23 @@ namespace BugTracker.Persistence.Services.Identity
             await _signInManager.SignOutAsync();
         }
         
+        public async Task<bool> LockOutUser(string uid)
+        {
+            var user = await _userManager.FindByIdAsync(uid);
+            var lockResult = await _userManager.SetLockoutEnabledAsync(user, true);
+            var lockDateResult = await _userManager.SetLockoutEndDateAsync(user, DateTime.MaxValue);
+
+            return lockResult.Succeeded && lockDateResult.Succeeded;
+        }
+
+        public async Task<bool> UnlockUser(string uid)
+        {
+            var user = await _userManager.FindByIdAsync(uid);
+            var unlockDateResult = await _userManager.SetLockoutEndDateAsync(user, DateTime.Now);
+            var unlockResult = await _userManager.SetLockoutEnabledAsync(user, false);
+
+            return unlockResult.Succeeded && unlockDateResult.Succeeded;
+        }
         public async Task<IEnumerable<IdentityRole<string>>> ListAllRoles()
         {
             return await _roleManager.Roles.ToListAsync();
@@ -140,7 +157,7 @@ namespace BugTracker.Persistence.Services.Identity
 
         }
         
-        public async Task<IEnumerable<ApplicationUser>> GetAllManageableUsers(int page, string searchString)
+        public async Task<IEnumerable<ApplicationUser>> GetAllManageableUsers(int page, string searchString, bool showLocked)
         {
             var itemPerPage = 7;
             var toSkip = (page - 1) * itemPerPage;
@@ -170,6 +187,12 @@ namespace BugTracker.Persistence.Services.Identity
                     var userIds = await _context.UserRoles.Where(ur => rolesId.Contains(ur.RoleId)).Select(u => u.UserId).ToListAsync();
                     users.AddRange(await _context.Users.Where(u => userIds.Contains(u.Id)).ToListAsync());
                 }
+            }
+            else if (showLocked)
+            {
+                users = await _context.Users
+                        .Where(u => u.LockoutEnabled == true)
+                        .ToListAsync();
             }
             else
             {

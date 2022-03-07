@@ -44,6 +44,12 @@
                         <i class="fas fa-user-tag"></i><span>User management</span>
                     </a>
                 </li>
+
+                <li id="logout-holder" class="my-5">
+                    <a asp-controller="Account" asp-action="logout" asp-area="Identity" class="x-btn red" id="logout-link">
+                        Logout
+                    </a>
+                </li>
             </ul>
 
 
@@ -52,10 +58,8 @@
         <!-- Page content -->
 
         <div id="content">
-            @if (ViewBag.isSuccess == true)
-            {
-                <partial name="../Shared/Partial/Common/_successAlertPartial.cshtml" model="new List<string>(){ViewBag.type, ViewBag.actionReturned }" />
-            }
+            <partial name="../Shared/Partial/Common/_resultAlertPartial.cshtml"/>
+
             <div class="d-flex navigation-items-holder">
                 <button type="button" id="sidebar-collapse" class="d-xl-block d-lg-block d-md-none d-none">
                     <span><i class="fas fa-caret-square-left"></i></span>

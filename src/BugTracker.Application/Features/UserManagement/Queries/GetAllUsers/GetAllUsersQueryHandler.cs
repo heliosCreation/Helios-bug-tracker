@@ -28,9 +28,32 @@ namespace BugTracker.Application.Features.UserManagement.GetAllUsers
             var response = new ApiResponse<UserManagementViewModel>();
             response.Data = new UserManagementViewModel();
 
-            var users = _mapper.Map<List<UserViewModel>>(await _identityService.GetAllManageableUsers(request.Page,request.SearchString));
-            var userCount = await _identityService.CountManageableUsers();
+            var users = _mapper.Map<List<UserViewModel>>(await _identityService.GetAllManageableUsers(request.Page,request.SearchString, request.ShowLocked));
+            var userCount = await GetUserCount(request, users);
+            await AssignUserRole(users, response);
+            response.Data.Pager = new Pager(userCount, request.Page);
 
+            return response;
+        }
+
+        private async Task<int> GetUserCount(GetAllUsersQuery request, List<UserViewModel> users)
+        {
+            var userCount = 0;
+
+            if (request.SearchString != null || request.ShowLocked)
+            {
+                userCount = users.Count();
+            }
+            else
+            {
+                userCount = await _identityService.CountManageableUsers();
+            }
+
+            return userCount;
+        }
+   
+        private async Task AssignUserRole(List<UserViewModel> users, ApiResponse<UserManagementViewModel> response)
+        {
             foreach (var user in users)
             {
                 var roles = await _identityService.GetUserRolesById(user.Id.ToString());
@@ -42,10 +65,6 @@ namespace BugTracker.Application.Features.UserManagement.GetAllUsers
 
             }
             response.Data.Users = response.Data.Users.OrderBy(tm => tm.Role).ToList();
-            response.Data.Pager = new Pager(userCount, request.Page);
-
-
-            return response;
         }
     }
 }
