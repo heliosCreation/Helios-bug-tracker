@@ -8,8 +8,10 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using System.Security.Claims;
+using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -84,20 +86,33 @@ namespace BugTracker.Persistence
                 foreach (var property in entry.Properties)
                 {
                     string propertyName = property.Metadata.Name;
+                    var current = property.CurrentValue;
+
                     if (property.Metadata.IsPrimaryKey())
                     {
-                        auditEntry.KeyValues[propertyName] = property.CurrentValue;
-                        //continue;
+                        auditEntry.KeyValues[propertyName] = current;
+                    }
+                    if (propertyName == "UserId")
+                    {
+                        var rolesId = await this.UserRoles.Where(ur => ur.UserId == (string)property.CurrentValue).Select(ur => ur.RoleId).ToListAsync();
+                        var roles = await this.Roles.Where(r => rolesId.Any(roleId => r.Id == roleId)).Select(r => r.Name).ToListAsync();
+
+                        current = JsonSerializer.Serialize(new
+                        {
+                            Id = property.CurrentValue,
+                            Name = await this.Users.Where(u => u.Id == (string)property.CurrentValue).Select(u => u.UserName).FirstOrDefaultAsync(),
+                            Roles = roles
+                        });
                     }
                     switch (entry.State)
                     {
                         case EntityState.Added:
                             auditEntry.AuditType = Application.Enums.AuditType.Create;
-                            auditEntry.NewValues[propertyName] = property.CurrentValue;
+                            auditEntry.NewValues[propertyName] = current;
                             break;
                         case EntityState.Deleted:
                             auditEntry.AuditType = Application.Enums.AuditType.Delete;
-                            auditEntry.OldValues[propertyName] = property.OriginalValue;
+                            auditEntry.OldValues[propertyName] = current;
                             break;
                         case EntityState.Modified:
                             if (property.IsModified)
@@ -105,7 +120,7 @@ namespace BugTracker.Persistence
                                 auditEntry.ChangedColumns.Add(propertyName);
                                 auditEntry.AuditType = Application.Enums.AuditType.Update;
                                 auditEntry.OldValues[propertyName] = property.OriginalValue;
-                                auditEntry.NewValues[propertyName] = property.CurrentValue;
+                                auditEntry.NewValues[propertyName] = current;
                             }
                             break;
                     }

@@ -1,4 +1,5 @@
 ﻿using BugTracker.Application.Dto.UserManagement;
+using BugTracker.Application.Features.UserManagement.Commands.DeleteUser;
 using BugTracker.Application.Features.UserManagement.Commands.LockUser;
 using BugTracker.Application.Features.UserManagement.Commands.UnlockUser;
 using BugTracker.Application.Features.UserManagement.Commands.UpdateUserRole;
@@ -23,6 +24,7 @@ namespace BugTracker.Areas.Tracker.Controllers
         private const string ManageRolesModalPath = ModalBasePath + "_manageRole" + ModalType;
         private const string LockUserModalPath = ModalBasePath + "_lock" + ModalType;
         private const string UnlockUserModalPath = ModalBasePath + "_unlock" + ModalType;
+        private const string DeleteUserModalPath = ModalBasePath + "_delete" + ModalType;
 
         public async Task<IActionResult> GetAll(int page = 1, string searchString = null, bool showLocked = false,
             bool isSuccess = false, bool isFailed = false, List<string> errors = null, string type = null, string actionReturned = null)
@@ -91,6 +93,22 @@ namespace BugTracker.Areas.Tracker.Controllers
             }
 
             return RedirectToAction("GetAll", new { isSuccess = true, type = "user", actionReturned = "unlocked" });
+        }
+    
+        public IActionResult LoadDeleteUserModal(string uid)
+        {
+            return PartialView(DeleteUserModalPath, uid);
+        }
+
+        public async Task<IActionResult> Delete(string uid)
+        {
+            var deleteResponse = await Mediator.Send(new DeleteUserCommand(uid));
+            if (!deleteResponse.Succeeded)
+            {
+                return RedirectToAction("GetAll", new { isFailed = true, errors = deleteResponse.ErrorMessages, type = "user", actionReturned = "deleted" });
+            }
+
+            return RedirectToAction("GetAll", new { isSuccess = true, type = "user", actionReturned = "deleted" });
         }
     }
 }

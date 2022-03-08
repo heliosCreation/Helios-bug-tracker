@@ -81,7 +81,6 @@ namespace BugTracker.Persistence.Services.Identity
 
             return lockResult.Succeeded && lockDateResult.Succeeded;
         }
-
         public async Task<bool> UnlockUser(string uid)
         {
             var user = await _userManager.FindByIdAsync(uid);
@@ -89,6 +88,12 @@ namespace BugTracker.Persistence.Services.Identity
             var unlockResult = await _userManager.SetLockoutEnabledAsync(user, false);
 
             return unlockResult.Succeeded && unlockDateResult.Succeeded;
+        }
+        
+        public async Task<IdentityResult> DeleteUserAsync(string uid)
+        {
+            var user = await _userManager.FindByIdAsync(uid);
+            return await _userManager.DeleteAsync(user);
         }
         public async Task<IEnumerable<IdentityRole<string>>> ListAllRoles()
         {

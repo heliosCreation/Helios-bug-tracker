@@ -15,6 +15,7 @@ namespace BugTracker.Application.Contracts.Identity
         Task<SignInResult> AuthenticateAsync(AuthenticationModel request);
         Task<IdentityResult> ConfirmEmail(string email, string token);
         Task<int> CountManageableUsers();
+        Task<IdentityResult> DeleteUserAsync(string uid);
         Task<string> GeneratePasswordForgottenMailToken(string email);
         Task<string> GenerateRegistrationEncodedToken(string id);
         Task<ICollection<ApplicationUser>> GetAccessibleTicketTeam(string uid, Guid projectId);

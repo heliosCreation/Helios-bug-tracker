@@ -56,7 +56,7 @@
                                         {
                                             <a class="dropdown-item lock-management-btn" href="#" data-toggle="modal" data-target="#LockUserModal">Lock <i class="fa fa-lock" aria-hidden="true"></i></a>
                                         }
-                                        <a class="dropdown-item" href="#" data-toggle="modal" data-target="#deleteUserModal">Delete</a>
+                                        <a class="dropdown-item delete-management-btn" href="#" data-toggle="modal" data-target="#deleteUserModal">Delete</a>
                                     </div>
                                 </div>
                             </td>
@@ -152,10 +152,12 @@
             const manageRoleUrl = '/Tracker/User/LoadManageRoleModal';
             const manageLockUrl = '/Tracker/User/LoadLockUserModal';
             const manageUnlockUrl = '/Tracker/User/LoadUnlockUserModal';
+            const manageDeleteUrl = '/Tracker/User/LoadDeleteUserModal';
 
             attachManagementModal(".role-management-btn", manageRoleUrl);
             attachManagementModal(".lock-management-btn", manageLockUrl);
             attachManagementModal(".unlock-management-btn", manageUnlockUrl);
+            attachManagementModal(".delete-management-btn", manageDeleteUrl);
 
         });
 

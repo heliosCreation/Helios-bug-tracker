@@ -6,6 +6,7 @@ using BugTracker.Application.Dto.Audits;
 using BugTracker.Application.Enums;
 using BugTracker.Application.Responses;
 using MediatR;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -55,7 +56,6 @@ namespace BugTracker.Application.Features.Audits.Queries
                 }
                 if (item.TableName == "TicketsTeamMembers")
                 {
-
                     await ManageTeam( item, auditLogs);
                 }
 
@@ -101,9 +101,11 @@ namespace BugTracker.Application.Features.Audits.Queries
         private async Task ManageTeam(AuditLogDto item, List<AuditLogDto> auditLogs)
         {
             string action = item.Type == AuditType.Delete.ToString() ? "User deleted" : "User added";
-            string userId = item.Type == AuditType.Delete.ToString() ? item.OldValues["UserId"] : item.NewValues["UserId"];
-            var userName = await _identityService.GetUserNameById(userId);
-            var userRole = await _identityService.GetUserRolesById(userId);
+            var target = item.Type == AuditType.Delete.ToString() ? item.OldValues : item.NewValues;
+
+            JObject jo = JObject.Parse(target["UserId"]);
+            var userName = jo.GetValue("Name");
+            var userRoles = jo.GetValue("Roles");
 
 
             var targetParent = auditLogs
@@ -115,15 +117,15 @@ namespace BugTracker.Application.Features.Audits.Queries
 
             if (targetParent != null)
             {
-                //If the key already exit, just concat a new value to the actual
+                //If the key already exist, just concat a new value to the actual
                 if (targetParent.NewValues.ContainsKey(action))
                 {
-                    targetParent.NewValues[action] = targetParent.NewValues[action] + ";" + userName + " - " + userRole.ToList()[0];
+                    targetParent.NewValues[action] = targetParent.NewValues[action] + ";" + userName + " - " + userRoles;
                 }
                 //Otherwise add an entry
                 else
                 {
-                    targetParent.NewValues.Add(action, userName + " - " + userRole.ToList()[0]);
+                    targetParent.NewValues.Add(action, userName + " - " + userRoles);
                 }
 
             }
@@ -135,9 +137,9 @@ namespace BugTracker.Application.Features.Audits.Queries
                 {
                     Id = Guid.NewGuid(),
                     DateTime = item.DateTime,
-                    User = item.User,
+                    User = userName.ToString(),
                     TableName = "Ticket",
-                    NewValues = new Dictionary<string, string>() { { action, userName + " - " + userRole.ToList()[0] } },
+                    NewValues = new Dictionary<string, string>() { { action, userName + " - " + userRoles } },
                     Type = AuditType.Update.ToString()
                 });
 
