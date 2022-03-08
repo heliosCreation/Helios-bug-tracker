@@ -5,7 +5,6 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace BugTracker.Persistence.Services.Audits
@@ -27,7 +26,7 @@ namespace BugTracker.Persistence.Services.Audits
                             WHERE JSON_VALUE(PrimaryKey, '$.Id') = {0}
                             AND TableName = {1}
                             Or JSON_VALUE(PrimaryKey, '$.TicketId') = {0}";
-                                
+
                 audits = await _context.AuditLogs
                             .FromSqlRaw(query, entityId, type.ToString())
                             .OrderBy(a => a.DateTime)
