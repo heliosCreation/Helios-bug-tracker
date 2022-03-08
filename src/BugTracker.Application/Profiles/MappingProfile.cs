@@ -4,6 +4,7 @@ using BugTracker.Application.Dto.Audits;
 using BugTracker.Application.Dto.Comments;
 using BugTracker.Application.Dto.Projects;
 using BugTracker.Application.Dto.TicketConfiguration;
+using BugTracker.Application.Dto.UserManagement;
 using BugTracker.Application.Features.Comments.Commands.Create;
 using BugTracker.Application.Features.Projects;
 using BugTracker.Application.Features.Projects.Commands.Create;
@@ -18,6 +19,7 @@ using BugTracker.Application.ViewModel;
 using BugTracker.Domain.Common;
 using BugTracker.Domain.Entities;
 using BugTracker.Domain.Identity;
+using Microsoft.AspNetCore.Identity;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Linq;
@@ -71,6 +73,10 @@ namespace BugTracker.Application.Profiles
                 .ForMember(dest => dest.AffectedColumns, opt => opt.MapFrom(src => JsonConvert.DeserializeObject<List<string>>(src.AffectedColumns)))
                 .ForMember(dest => dest.OldValues, opt => opt.MapFrom(src => JsonConvert.DeserializeObject<Dictionary<string, string>>(src.OldValues)))
                 .ForMember(dest => dest.NewValues, opt => opt.MapFrom(src => JsonConvert.DeserializeObject<Dictionary<string, string>>(src.NewValues)));
+            #endregion
+
+            #region roles
+            CreateMap<IdentityRole, RoleDto>();
             #endregion
         }
     }

@@ -66,7 +66,7 @@
                 </tbody>
             </table>
         </div>
-        <partial name="../Shared/Partial/Common/_researchBarPartial.cshtml" model="Model.Pager" />
+        <partial name="../Shared/Partial/Common/_pagerBarPartial.cshtml" model="Model.Pager" />
     </div>
 
 </div>
@@ -139,7 +139,8 @@
                         AttachCommentListener()
                     },
                     error: function (data) {
-                        alert("There was an error trying to send your comment. If the problem persist reach out to your administrator.")
+                        console.log(data);
+                    //    alert("There was an error trying to send your comment. If the problem persist reach out to your administrator.")
                     }
                 });
 
@@ -149,6 +150,7 @@
         function AttachTicketDetailsModalListener(button, url) {
             $(button).on('click', function (event) {
 
+                //Get only the first instance of clicked class
                 event.stopPropagation();
                 event.stopImmediatePropagation();
 

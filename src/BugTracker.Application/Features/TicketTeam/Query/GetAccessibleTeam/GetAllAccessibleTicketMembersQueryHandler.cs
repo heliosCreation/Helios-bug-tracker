@@ -34,7 +34,7 @@ namespace BugTracker.Application.Features.TicketTeam.Query
                 var roles = await _identityService.GetUserRolesById(user.Id.ToString());
                 if (roles.Any())
                 {
-                    user.Role = roles.ToList()[0];
+                    user.Role = roles.Select(r => r.Name).ToList()[0];
                     response.DataList.Add(user);
                 }
             }

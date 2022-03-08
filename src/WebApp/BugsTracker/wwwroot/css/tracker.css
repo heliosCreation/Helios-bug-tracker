@@ -335,7 +335,7 @@ overflow: auto;
     background-color: rgba(23 172 246 / 20%);
 }
 
-#sidebar ul li:not(.active) a:hover {
+#sidebar ul li:not(.active):not(#logout-holder) a:hover {
     color: #333;
     background-color: rgba(23 172 246 / 10%);
 }
@@ -368,25 +368,27 @@ overflow: auto;
 
 
 
+#logout-holder {
+    width: 50%;
+    margin: auto;
+    padding: 0px;
+    text-align:center;
+}
 
-
+#logout-link {
+    line-height: 5px !important;
+    color:white!important;
+}
 /* ---------------------------------------------------
    sidebar end
 ----------------------------------------------------- */
-
-
-
-
 /*=======================================================
    main-content navbar-design start
    ===============================================*/
-
-
-
 #content {
     position: relative;
     background-color: #fefefe;
-    font-size:13px!important;
+    font-size: 13px !important;
 }
 
 .top-navbar {
@@ -800,6 +802,10 @@ tbody tr td a:hover {
     display: table-cell;
     padding: 3px;
     border:2px solid #3982da;
+}
+
+#role-mgmt-select{
+    min-height:200px;
 }
 /*=============================================
   Details design end

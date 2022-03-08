@@ -38,6 +38,7 @@ namespace BugTracker.Application.Features.Comments.Queries.GetAll
                 comment.User = await _identityService.GetUserNameById(comment.User);
             }
             response.DataList = comments;
+            response.Data = new CommentDto { TicketId = request.TicketId };
             return response;
         }
     }

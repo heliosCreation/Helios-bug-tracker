@@ -72,6 +72,33 @@ namespace BugTracker.Persistence.Services.Identity
         {
             await _signInManager.SignOutAsync();
         }
+        
+        public async Task<bool> LockOutUser(string uid)
+        {
+            var user = await _userManager.FindByIdAsync(uid);
+            var lockResult = await _userManager.SetLockoutEnabledAsync(user, true);
+            var lockDateResult = await _userManager.SetLockoutEndDateAsync(user, DateTime.MaxValue);
+
+            return lockResult.Succeeded && lockDateResult.Succeeded;
+        }
+        public async Task<bool> UnlockUser(string uid)
+        {
+            var user = await _userManager.FindByIdAsync(uid);
+            var unlockDateResult = await _userManager.SetLockoutEndDateAsync(user, DateTime.Now);
+            var unlockResult = await _userManager.SetLockoutEnabledAsync(user, false);
+
+            return unlockResult.Succeeded && unlockDateResult.Succeeded;
+        }
+        
+        public async Task<IdentityResult> DeleteUserAsync(string uid)
+        {
+            var user = await _userManager.FindByIdAsync(uid);
+            return await _userManager.DeleteAsync(user);
+        }
+        public async Task<IEnumerable<IdentityRole<string>>> ListAllRoles()
+        {
+            return await _roleManager.Roles.ToListAsync();
+        }
         public async Task<IdentityResult> AddUserToRole(ApplicationUser user, string role)
         {
             return await _userManager.AddToRoleAsync(user, role);
@@ -80,15 +107,114 @@ namespace BugTracker.Persistence.Services.Identity
         {
             return await _userManager.RemoveFromRoleAsync(user, role);
         }
-        public async Task<ICollection<string>> GetUserRolesById(string id)
+        
+        public async Task<bool> UpdateUserRoles(string uid, List<string> rolesIds)
         {
-            return await _userManager.GetRolesAsync(new ApplicationUser { Id = id });
+            //Get the list of associated role id of the user
+            var userRoles = (await GetUserRolesById(uid)).Select(ur => ur.Id).ToList();
+            if (rolesIds != null)
+            {
+                foreach (var roleId in rolesIds)
+                {
+                    if (!userRoles.Contains(roleId))
+                    {
+                        await _context.UserRoles.AddAsync(new IdentityUserRole<string>
+                        {
+                            RoleId = roleId,
+                            UserId = uid
+                        });
+                    }
+                }
+
+                foreach (var userRoleId in userRoles)
+                {
+                    if (!rolesIds.Contains(userRoleId))
+                    {
+                        _context.UserRoles.Remove(new IdentityUserRole<string>
+                        {
+                            RoleId = userRoleId,
+                            UserId = uid
+                        });
+                    }
+                }
+            }
+            else
+            {
+                 _context.UserRoles.RemoveRange(_context.UserRoles.Where(u => u.UserId == uid));
+            }
+
+            return await _context.SaveChangesAsync() > 0;
+        }
+        public async Task<ICollection<IdentityRole<string>>> GetUserRolesById(string id)
+        {
+            var response = new List<IdentityRole<string>>();
+            var userRoles =  await _userManager.GetRolesAsync(new ApplicationUser { Id = id });
+            foreach (var role in userRoles)
+            {
+                var roleId = await _context.Roles.Where(r => r.Name == role).Select(r => r.Id).FirstOrDefaultAsync();
+                response.Add(new IdentityRole<string> { Id = roleId, Name = role });
+            }
+            return response; 
         }
         public async Task<string> GetUserNameById(string id)
         {
             return await _context.Users.Where(u => u.Id == id).Select(u => u.UserName).FirstOrDefaultAsync();
+
+        }
+        
+        public async Task<IEnumerable<ApplicationUser>> GetAllManageableUsers(int page, string searchString, bool showLocked)
+        {
+            var itemPerPage = 7;
+            var toSkip = (page - 1) * itemPerPage;
+
+            var admins = await _userManager.GetUsersInRoleAsync("Admin");
+            var users = new List<ApplicationUser>();
+
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                //First check on the basic fields of the user set.
+                users = await _context.Users
+                    .Where(u => u.UserName.Contains(searchString)
+                    || u.Email.Contains(searchString))
+                    .ToListAsync();
+
+                //If there is no result
+                //Get the roles containing the searchstring
+                var rolesId = await _context.Roles
+                    .Where(r => r.Name.ToLower().Contains(searchString))
+                    .Select(r => r.Id)
+                    .ToListAsync();
+
+                //Does any entry exist?
+                if (rolesId.Count() > 0)
+                {
+                    //Get the corresponding user id from user role table, match them to their user and add them to the list.
+                    var userIds = await _context.UserRoles.Where(ur => rolesId.Contains(ur.RoleId)).Select(u => u.UserId).ToListAsync();
+                    users.AddRange(await _context.Users.Where(u => userIds.Contains(u.Id)).ToListAsync());
+                }
+            }
+            else if (showLocked)
+            {
+                users = await _context.Users
+                        .Where(u => u.LockoutEnabled == true)
+                        .ToListAsync();
+            }
+            else
+            {
+                users = await _context.Users
+                    .Skip(toSkip)
+                    .Take(itemPerPage)
+                    .ToListAsync();
+            }
+            return users.Except(admins).ToList();
         }
 
+        public async Task<int> CountManageableUsers()
+        {
+            var admins = await _userManager.GetUsersInRoleAsync("Admin");
+            return (await _context.Users.ToListAsync()).Except(admins).Count();
+            
+        }
         public async Task<ICollection<ApplicationUser>> GetAllAccessibleUsersPerRole(string uid)
         {
             //Get current user role
@@ -120,7 +246,6 @@ namespace BugTracker.Persistence.Services.Identity
 
             return accessibleTeam;
         }
-
         public async Task<ICollection<ApplicationUser>> GetAccessibleTicketTeam(string uid, Guid projectId)
         {
             var accessibleUsers = (await GetAllAccessibleUsersPerRole(uid)).ToList();
@@ -133,7 +258,6 @@ namespace BugTracker.Persistence.Services.Identity
 
             return ticketTeam;
         }
-
         public async Task<ICollection<ApplicationUser>>GetCurrentTicketTeam(Guid ticketId)
         {
             var teamIds = await _context.TicketsTeamMembers
@@ -147,7 +271,6 @@ namespace BugTracker.Persistence.Services.Identity
 
             return ticketTeam;
         }
-
         public async Task<string> GeneratePasswordForgottenMailToken(string email)
         {
             var user = await _userManager.FindByEmailAsync(email);

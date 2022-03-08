@@ -81,6 +81,10 @@ namespace BugTracker.Areas.Identity.Controllers
                 {
                     ModelState.AddModelError("", "Please confirm your account via the Email we sent to you.");
                 }
+                if (result.IsLockedOut)
+                {
+                    ModelState.AddModelError("", "You have been locked out. Contact your administrator for further notice.");
+                }
             }
             else
             {
@@ -92,7 +96,7 @@ namespace BugTracker.Areas.Identity.Controllers
         public async Task<IActionResult> Logout()
         {
             await _identityService.SignOutAsync();
-            return RedirectToAction("index", "home", new { area = "" });
+            return RedirectToAction("Login");
         }
 
         public async Task<IActionResult> ConfirmEmail(string uid, string token, string email)

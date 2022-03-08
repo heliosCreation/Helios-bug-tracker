@@ -1,0 +1,36 @@
+﻿@model BugTracker.Application.ViewModel.ManageUserRoleViewModel
+
+<div class="modal-header d-flex justify-content-center align-items-center">
+    <h5 class="modal-title" id="ticket-details-modal-label">Manage roles</h5>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+
+<form asp-controller="User" asp-action="ManageUserRoles" class="py-5">
+    <div class="modal-body">
+        <p>User: <span class="text-purple">@Model.UserWithRoles.UserName</span></p>
+        <input type="hidden" asp-for="UserWithRoles.UserId" />
+        <div class="form-group">
+            <label class="font-weight-bold">Add or remove roles linked to this user.</label>
+            <select asp-for="UserWithRoles.SelectedRoles" class="form-control h-100" id="role-mgmt-select" multiple>
+                @foreach (var role in Model.AvailableRoles)
+                {
+                    if (Model.UserWithRoles.RolesDto.Select(r => r.Id).ToList().Contains(role.Id))
+                    {
+                        <option value="@role.Id" selected="selected">@role.Name</option>
+                    }
+                    else
+                    {
+                        <option value="@role.Id">@role.Name</option>
+                    }
+                }
+            </select>
+        </div>
+    </div>
+  
+    <div class="modal-footer">
+        <input type="submit" class="x-btn green px-4" value="Update" />
+    </div>
+</form>
+

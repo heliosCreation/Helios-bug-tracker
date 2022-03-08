@@ -22,7 +22,7 @@ function AttachModalCreateListener(createBtnId, url, modalLarge = false, isTicke
                 }
                 else {
                     setProjectTabListener();
-                    setTeamSelectListHandler();
+                    setSelectListHandler();
                 }
             },
             error: function (data) {
@@ -63,7 +63,7 @@ function AttachTableModalListeners(buttons, url, getName = false, modalLarge = f
                     }
                     else {
                         setProjectTabListener();
-                        setTeamSelectListHandler();
+                        setSelectListHandler();
                     }
                 },
                 error: function (data) {
@@ -88,7 +88,7 @@ function AttachProjectUpdateModalListener(button, url, modalLarge) {
 
                 handleModalSize(modalLarge);
                 setProjectTabListener();
-                setTeamSelectListHandler();
+                setSelectListHandler();
 
                 $.validator.setDefaults({ ignore: [] });
             },
@@ -147,9 +147,9 @@ function setTicketTabsListener() {
 
 }
 
-function setTeamSelectListHandler() {
+function setSelectListHandler() {
     //assign css on load
-    var selectedOptions = $("#ticket-team option:selected, #project-team option:selected");
+    var selectedOptions = $("#ticket-team option:selected, #project-team option:selected, #role-mgmt-select option:selected");
     selectedOptions.each(function (elem) {
         $(this).addClass("selected");
         $(this).attr('selected', 'selected');
@@ -225,7 +225,7 @@ function handleModalSize(modalLarge) {
 
 function addTicketHandler() {
     setTicketTabsListener();
-    setTeamSelectListHandler();
+    setSelectListHandler();
     $(".ticket-save-btn").click(function () { if (!$("form").valid()) { revealTicketFormErrors(); } });
 
 }

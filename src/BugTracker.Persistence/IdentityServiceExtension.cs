@@ -31,6 +31,7 @@ namespace BugTracker.Persistence
                 opt.Password.RequireUppercase = true;
                 opt.Password.RequireNonAlphanumeric = false;
                 opt.SignIn.RequireConfirmedEmail = true;
+                opt.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+/ ";
 
             });
             services.AddScoped<IIdentityService, IdentityService>();
