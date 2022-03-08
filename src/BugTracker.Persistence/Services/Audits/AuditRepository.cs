@@ -37,5 +37,10 @@ namespace BugTracker.Persistence.Services.Audits
 
             return audits;
         }
+
+        public async Task<IEnumerable<Audit>> ListAll()
+        {
+            return await _context.AuditLogs.OrderBy(a => a.DateTime).ToListAsync();
+        }
     }
 }

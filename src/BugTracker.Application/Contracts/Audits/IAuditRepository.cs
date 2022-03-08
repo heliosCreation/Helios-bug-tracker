@@ -9,5 +9,6 @@ namespace BugTracker.Application.Contracts.Audits
     public interface IAuditRepository
     {
         Task<IEnumerable<Audit>> GetAudits(Guid entityId, AuditableType type);
+        Task<IEnumerable<Audit>> ListAll();
     }
 }

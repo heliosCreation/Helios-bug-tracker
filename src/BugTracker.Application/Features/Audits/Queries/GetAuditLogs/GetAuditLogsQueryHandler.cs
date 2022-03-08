@@ -56,7 +56,7 @@ namespace BugTracker.Application.Features.Audits.Queries
                 }
                 if (item.TableName == "TicketsTeamMembers")
                 {
-                    await ManageTeam( item, auditLogs);
+                    ManageTeam( item, auditLogs);
                 }
 
             }
@@ -98,7 +98,7 @@ namespace BugTracker.Application.Features.Audits.Queries
 
         }
     
-        private async Task ManageTeam(AuditLogDto item, List<AuditLogDto> auditLogs)
+        private void ManageTeam(AuditLogDto item, List<AuditLogDto> auditLogs)
         {
             string action = item.Type == AuditType.Delete.ToString() ? "User deleted" : "User added";
             var target = item.Type == AuditType.Delete.ToString() ? item.OldValues : item.NewValues;
