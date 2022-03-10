@@ -161,7 +161,6 @@ namespace BugTracker.Persistence.Services.Identity
         public async Task<string> GetUserNameById(string id)
         {
             return await _context.Users.Where(u => u.Id == id).Select(u => u.UserName).FirstOrDefaultAsync();
-
         }
         
         public async Task<IEnumerable<ApplicationUser>> GetAllManageableUsers(int page, string searchString, bool showLocked)

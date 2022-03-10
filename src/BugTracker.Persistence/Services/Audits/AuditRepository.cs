@@ -39,8 +39,25 @@ namespace BugTracker.Persistence.Services.Audits
 
         public async Task<IEnumerable<Audit>> ListAll(int page, string searchstring)
         {
-            var itemPerPage = 7;
+            var itemPerPage = 6;
             var toSkip = (page - 1) * itemPerPage;
+            var logs = new List<Audit>();
+
+            if (!string.IsNullOrEmpty(searchstring))
+            {
+                return await _context.AuditLogs
+                            .Where(al => al.DateTime.ToString().Contains(searchstring)
+                            || al.TableName.Contains(searchstring)
+                            || al.UserId == _context.Users
+                                                   .Where(u => u.UserName.Contains(searchstring))
+                                                   .Select(u => u.Id)
+                                                   .FirstOrDefault()
+                            || al.OldValues.Contains(searchstring)
+                            || al.NewValues.Contains(searchstring)
+                            || al.Type.Contains(searchstring))
+                            .ToListAsync();
+            }
+
             return await _context.AuditLogs
                         .Skip(toSkip)
                         .Take(itemPerPage)
