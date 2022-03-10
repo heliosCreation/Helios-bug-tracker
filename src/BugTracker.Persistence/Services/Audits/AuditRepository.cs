@@ -55,13 +55,16 @@ namespace BugTracker.Persistence.Services.Audits
                             || al.OldValues.Contains(searchstring)
                             || al.NewValues.Contains(searchstring)
                             || al.Type.Contains(searchstring))
+                        .OrderByDescending(al => al.DateTime)
                             .ToListAsync();
             }
 
             return await _context.AuditLogs
+                        .OrderByDescending(a => a.DateTime)
+                        .ThenBy(a => a.DateTime.Hour)
+                        .ThenBy(a => a.DateTime.Minute)
                         .Skip(toSkip)
                         .Take(itemPerPage)
-                        .OrderBy(a => a.DateTime)
                         .ToListAsync();
         }
 
