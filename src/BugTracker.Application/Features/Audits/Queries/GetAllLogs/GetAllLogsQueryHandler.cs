@@ -2,6 +2,7 @@
 using BugTracker.Application.Contracts.Audits;
 using BugTracker.Application.Contracts.Identity;
 using BugTracker.Application.Dto.Audits;
+using BugTracker.Application.Model.Pagination;
 using BugTracker.Application.Responses;
 using BugTracker.Application.ViewModel;
 using MediatR;
@@ -29,10 +30,29 @@ namespace BugTracker.Application.Features.Audits.Queries.GetAllLogs
             var response = new ApiResponse<LogViewModel>();
             response.Data = new LogViewModel();
 
-            var dbResult = await _auditRepository.ListAll();
+            var dbResult = await _auditRepository.ListAll(request.Page, request.Searchstring);
             response.Data.Logs = _mapper.Map<List<AuditLogDto>>(dbResult);
+            var logsCount = await GetLogCount(request.Searchstring, response.Data.Logs);
+            response.Data.Pager = new Pager(logsCount, request.Page);
 
             return response;
+        }
+
+
+        private async Task<int> GetLogCount(string searchString, List<AuditLogDto> logs)
+        {
+            var count = 0;
+
+            if (searchString != null)
+            {
+                count = logs.Count;
+            }
+            else
+            {
+                count = await _auditRepository.CountAll();
+            }
+
+            return count;
         }
     }
 }
