@@ -39,7 +39,7 @@ namespace BugTracker.Persistence.Services.Audits
 
         public async Task<IEnumerable<Audit>> ListAll(int page, string searchstring)
         {
-            var itemPerPage = 6;
+            var itemPerPage = 7;
             var toSkip = (page - 1) * itemPerPage;
             return await _context.AuditLogs
                         .Skip(toSkip)
