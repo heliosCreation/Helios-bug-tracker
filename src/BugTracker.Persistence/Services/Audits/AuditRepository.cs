@@ -45,9 +45,20 @@ namespace BugTracker.Persistence.Services.Audits
 
             if (!string.IsNullOrEmpty(searchstring))
             {
+                if (DateTime.TryParse(searchstring, out DateTime dateTime))
+                {
+                    if (dateTime.TimeOfDay == TimeSpan.Zero)
+                    {
+                        return await _context.AuditLogs.Where(al => al.DateTime.Date == dateTime.Date).ToListAsync();
+                    }
+                    else
+                    {
+                        return await _context.AuditLogs.Where(al => al.DateTime.Date == dateTime.Date && al.DateTime.Hour == dateTime.Hour).ToListAsync();
+                    }
+                }
+
                 return await _context.AuditLogs
-                            .Where(al => al.DateTime.ToString().Contains(searchstring)
-                            || al.TableName.Contains(searchstring)
+                            .Where(al => al.TableName.Contains(searchstring)
                             || al.UserId == _context.Users
                                                    .Where(u => u.UserName.Contains(searchstring))
                                                    .Select(u => u.Id)
