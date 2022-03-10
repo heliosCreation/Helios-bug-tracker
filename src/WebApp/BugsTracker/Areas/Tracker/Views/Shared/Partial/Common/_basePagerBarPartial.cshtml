@@ -1,0 +1,42 @@
+﻿@model BugTracker.Application.Model.Pagination.Pager
+
+<div class="row d-flex justify-content-sm-between align-items-center w-100">
+    <div class="pagination-holder d-flex p-2">
+        @if (Model.CurrentPage > 1)
+        {
+            <a class="purple-circle angle" asp-action="GetAll" asp-route-page="1">
+                <i class="fas fa-angle-double-left"></i>
+            </a>
+            <a class="purple-circle angle" asp-action="GetAll" asp-route-page="@(Model.CurrentPage - 1)">
+                <i class="fas fa-angle-left"></i>
+            </a>
+        }
+        @for (int i = Model.StartPage; i <= Model.EndPage; i++)
+        {
+            if (Model.CurrentPage == i)
+            {
+                <a class="purple-circle  @(i == Model.CurrentPage ? "filled" : "")">@i</a>
+            }
+            else
+            {
+                <a class="purple-circle" asp-action="GetAll"  asp-route-page="@i">@i</a>
+            }
+        }
+
+        @if (Model.CurrentPage < Model.EndPage)
+        {
+            <a class="purple-circle angle" asp-action="GetAll" asp-route-page="@(Model.CurrentPage + 1)">
+                <i class="fas fa-angle-right"></i>
+            </a>
+            <a class="purple-circle angle" asp-action="GetAll"  asp-route-page="@(Model.TotalPages)">
+                <i class="fas fa-angle-double-right"></i>
+            </a>
+        }
+    </div>
+
+    <div class="p-2">
+        <p>
+            Showing @Model.StartRecord to @Model.EndRecord of @Model.TotalItems Rows.
+        </p>
+    </div>
+</div>

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using BugTracker.Application.Features.Audits.Queries.GetAllLogs;
+using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
 namespace BugTracker.Areas.Tracker.Controllers
@@ -7,7 +8,8 @@ namespace BugTracker.Areas.Tracker.Controllers
     {
         public async Task<IActionResult> GetAll()
         {
-            return View();
+            var response = await Mediator.Send(new GetAllLogsQuery());
+            return View(response.Data);
         }
     }
 }

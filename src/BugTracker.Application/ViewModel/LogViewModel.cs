@@ -1,10 +1,10 @@
-﻿using BugTracker.Application.Dto.Logs;
+﻿using BugTracker.Application.Dto.Audits;
 using System.Collections.Generic;
 
 namespace BugTracker.Application.ViewModel
 {
     public class LogViewModel
     {
-        public List<LogDto> Logs { get; set; } = new List<LogDto>();
+        public List<AuditLogDto> Logs { get; set; } = new List<AuditLogDto>();
     }
 }

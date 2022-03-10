@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BugTracker.Persistence.LogHelper
 {
-    public static class LogHelper
+    public class LogHelper
     {
         public LogHelper()
         {
