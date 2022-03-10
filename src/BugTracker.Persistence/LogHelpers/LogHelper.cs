@@ -31,7 +31,7 @@ namespace BugTracker.Persistence.LogHelpers
                 await _dbContext.AuditLogs.AddAsync(auditLog);
             }
         }
-        public async Task MapEntries(List<AuditEntry> auditEntries, string userId)
+        private async Task MapEntries(List<AuditEntry> auditEntries, string userId)
         {
             foreach (var entry in _dbContext.ChangeTracker.Entries())
             {
@@ -46,7 +46,7 @@ namespace BugTracker.Persistence.LogHelpers
             }
 
         }
-        public async Task MapPropertiesToEntryValue(EntityEntry entry, AuditEntry auditEntry)
+        private async Task MapPropertiesToEntryValue(EntityEntry entry, AuditEntry auditEntry)
         {
             foreach (var property in entry.Properties)
             {
@@ -61,14 +61,14 @@ namespace BugTracker.Persistence.LogHelpers
             }
 
         }
-        public void MapPKToAuditEntryValue(PropertyEntry property, AuditEntry auditEntry, object current)
+        private void MapPKToAuditEntryValue(PropertyEntry property, AuditEntry auditEntry, object current)
         {
             if (property.Metadata.IsPrimaryKey())
             {
                 auditEntry.KeyValues[property.Metadata.Name] = current;
             }
         }
-        public async Task<object> MapUserIdToLogValues(PropertyEntry property)
+        private async Task<object> MapUserIdToLogValues(PropertyEntry property)
         {
             var rolesId = await _dbContext.UserRoles.Where(ur => ur.UserId == (string)property.CurrentValue).Select(ur => ur.RoleId).ToListAsync();
             var roles = await _dbContext.Roles.Where(r => rolesId.Any(roleId => r.Id == roleId)).Select(r => r.Name).ToListAsync();
@@ -80,7 +80,7 @@ namespace BugTracker.Persistence.LogHelpers
                 Roles = roles
             });
         }
-        public void AssignValuesBasedOnEntryState(AuditEntry auditEntry, object current, PropertyEntry property, EntityEntry entry)
+        private void AssignValuesBasedOnEntryState(AuditEntry auditEntry, object current, PropertyEntry property, EntityEntry entry)
         {
             switch (entry.State)
             {
