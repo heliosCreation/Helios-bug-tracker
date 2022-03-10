@@ -76,18 +76,20 @@ namespace BugTracker.Persistence.Services.Identity
         public async Task<bool> LockOutUser(string uid)
         {
             var user = await _userManager.FindByIdAsync(uid);
-            var lockResult = await _userManager.SetLockoutEnabledAsync(user, true);
-            var lockDateResult = await _userManager.SetLockoutEndDateAsync(user, DateTime.MaxValue);
+            user.LockoutEnabled = true;
+            user.LockoutEnd = DateTime.MaxValue;
+            _context.Entry(user).CurrentValues.SetValues(user);
 
-            return lockResult.Succeeded && lockDateResult.Succeeded;
+            return await _context.SaveChangesAsync() > 0;
         }
         public async Task<bool> UnlockUser(string uid)
         {
             var user = await _userManager.FindByIdAsync(uid);
-            var unlockDateResult = await _userManager.SetLockoutEndDateAsync(user, DateTime.Now);
-            var unlockResult = await _userManager.SetLockoutEnabledAsync(user, false);
+            user.LockoutEnabled = false;
+            user.LockoutEnd = DateTime.Now;
+            _context.Entry(user).CurrentValues.SetValues(user);
 
-            return unlockResult.Succeeded && unlockDateResult.Succeeded;
+            return await _context.SaveChangesAsync() > 0;
         }
         
         public async Task<IdentityResult> DeleteUserAsync(string uid)
