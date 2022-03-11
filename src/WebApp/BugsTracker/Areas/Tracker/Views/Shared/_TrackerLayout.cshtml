@@ -45,18 +45,23 @@
                     </a>
                 </li>
 
-                <li id="user-management-link">
-                    <a asp-controller="User" asp-action="GetAll">
-                        <i class="fas fa-user-tag"></i><span>User management</span>
-                    </a>
-                </li>
+                @{
+                    if (User.IsInRole("Admin") || User.IsInRole("Project Manager"))
+                    {
+                        <li id="user-management-link">
+                            <a asp-controller="User" asp-action="GetAll">
+                                <i class="fas fa-user-tag"></i><span>User management</span>
+                            </a>
+                        </li>
 
-                <li id="logs-management-link">
-                    <a asp-controller="Log" asp-action="GetAll">
-                        <i class="fa fa-history" aria-hidden="true"></i>
-                        <span>System logs</span>
-                    </a>
-                </li>
+                        <li id="logs-management-link">
+                            <a asp-controller="Log" asp-action="GetAll">
+                                <i class="fa fa-history" aria-hidden="true"></i>
+                                <span>System logs</span>
+                            </a>
+                        </li>
+                    }
+                }
 
                 <li id="logout-holder" class="my-5">
                     <a asp-controller="Account" asp-action="logout" asp-area="Identity" class="x-btn red" id="logout-link">
