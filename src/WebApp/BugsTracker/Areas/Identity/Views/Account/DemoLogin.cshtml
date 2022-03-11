@@ -1,0 +1,58 @@
+﻿@model AuthenticationModel
+@{
+    ViewData["Title"] = "Log in";
+}
+
+
+<div class="wrapper h-75">
+    <div>
+        <div class="logo"><i class="fas fa-bug"></i> </div>
+        <div class="text-center mt-4 name">Login </div>
+        @if (!ViewData.ModelState.IsValid)
+        {
+            <div asp-validation-summary="All" class="text-danger text-center  validation-summary-errors">
+                <i class="fas fa-exclamation-triangle"></i>
+            </div>
+        }
+    </div>
+
+    <div class="h-50 d-flex flex-column">
+        <div class="d-flex h-50">
+            <div class="w-50 d-flex justify-content-center align-items-center">
+                <div class="demo-choice-holder" id="admin-holder">
+                    <i class="fas fa-user"></i>
+                    <span>Demo Admin</span>
+
+                </div>
+            </div>
+            <div class="w-50 d-flex justify-content-center align-items-center">
+                <div class="demo-choice-holder" id="pj-holder">
+                    <i class="fas fa-user"></i>
+                    <span>Demo Project Manager</span>
+                </div>
+            </div>
+        </div>
+        <div class="d-flex h-50">
+            <div class="w-50 d-flex justify-content-center align-items-center">
+                <div class="demo-choice-holder" id="dev-holder">
+                    <i class="fas fa-user"></i>
+                    <span>Demo Dev</span>
+                </div>
+            </div>
+            <div class="w-50 d-flex justify-content-center align-items-center">
+                <div class="demo-choice-holder" id="submitter-holder">
+                    <i class="fas fa-user"></i>
+                    <span>Demo Submitter</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="mt-5">
+        <div class="text-center fs-6"> <a asp-action="Login"><i class="fas fa-arrow-left"></i> Go back</a></div>
+    </div>
+</div>
+
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

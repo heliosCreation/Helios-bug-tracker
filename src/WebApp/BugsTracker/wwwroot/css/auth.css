@@ -38,17 +38,17 @@ input:-webkit-autofill:active {
     margin: auto;
 }
 
-    .logo i {
-        width: 100%;
-        height: 80px;
-        object-fit: cover;
-        border-radius: 50%;
-        box-shadow: 0px 0px 3px #5f5f5f, 0px 0px 0px 5px #ecf0f3, 8px 8px 15px #a7aaa7, -8px -8px 15px #fff;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        font-size: 40px;
-    }
+.logo i {
+    width: 100%;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 50%;
+    box-shadow: 0px 0px 3px #5f5f5f, 0px 0px 0px 5px #ecf0f3, 8px 8px 15px #a7aaa7, -8px -8px 15px #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 40px;
+}
 
 .wrapper .name {
     font-weight: 600;
@@ -108,7 +108,44 @@ p {
     color: #039BE5
 }
 
+.demo-choice-holder {
+    border-radius: 50%;
+    padding: 10px;
+    height: 100px;
+    width: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    cursor: pointer;
+    background: white;
+    border: 2px solid #cce4f4;
+    transition:all 0.2s ease-in-out;
+}
+.demo-choice-holder:hover {
+    transform: scale(1.08);
+    background: #59f49338;
+}
 
+.demo-choice-holder span{
+    font-size:10px;
+    text-align:center;
+}
+.demo-choice-holder i{
+    font-size:20px;
+}
+#admin-holder i {
+    color: #7a65da;
+}
+#pj-holder i {
+    color: #65b8da;
+}
+#dev-holder i {
+    color: #00fb9f;
+}
+#submitter-holder i{
+    color: #fba300;
+}
 .wrapper .email-container {
     min-height: 300px;
     display: flex;

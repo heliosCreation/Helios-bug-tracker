@@ -55,6 +55,11 @@ namespace BugTracker.Areas.Identity.Controllers
             return RedirectToAction("ConfirmEmail", new { email = model.Email });
 
         }
+        
+        public IActionResult DemoLogin()
+        {
+            return View();
+        }
         public IActionResult Login()
         {
             return View();
