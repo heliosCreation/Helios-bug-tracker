@@ -1,4 +1,10 @@
-﻿<!DOCTYPE html>
+﻿@using System.Security.Claims
+
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor _httpContextAccessor
+@{ 
+    var userRoles = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.Role).Value;
+}
+<!DOCTYPE html>
 
 <html>
 <head>
@@ -17,8 +23,8 @@
                 <i class="fab fa-hornbill"></i>
                 <h3>Bug Tracker</h3>
                 <div class="mt-2">
-                    <p>- Welcome Quentin -</p>
-                    <p>Current role: <span>Admin</span></p>
+                    <p>- Welcome @Context.User.Identity.Name -</p>
+                    <p class="text-center">Current role: <span>@userRoles</span></p>
                 </div>
             </div>
 
@@ -65,7 +71,7 @@
         <!-- Page content -->
 
         <div id="content">
-            <partial name="../Shared/Partial/Common/_resultAlertPartial.cshtml"/>
+            <partial name="../Shared/Partial/Common/_resultAlertPartial.cshtml" />
 
             <div class="d-flex navigation-items-holder">
                 <button type="button" id="sidebar-collapse" class="d-xl-block d-lg-block d-md-none d-none">
@@ -128,7 +134,7 @@
                 $('#sidebar,.body-overlay').toggleClass('show-nav');
             });
 
-            
+
         });
 
     </script>
