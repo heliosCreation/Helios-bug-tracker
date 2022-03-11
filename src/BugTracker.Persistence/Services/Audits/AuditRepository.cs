@@ -49,24 +49,35 @@ namespace BugTracker.Persistence.Services.Audits
                 {
                     if (dateTime.TimeOfDay == TimeSpan.Zero)
                     {
-                        return await _context.AuditLogs.Where(al => al.DateTime.Date == dateTime.Date).ToListAsync();
+                        return await _context.AuditLogs
+                            .Where(al => al.DateTime.Date == dateTime.Date)
+                            .Skip(toSkip)
+                            .Take(itemPerPage)
+                            .ToListAsync();
                     }
                     else
                     {
-                        return await _context.AuditLogs.Where(al => al.DateTime.Date == dateTime.Date && al.DateTime.Hour == dateTime.Hour).ToListAsync();
+                        return await _context.AuditLogs
+                            .Where(al => al.DateTime.Date == dateTime.Date && al.DateTime.Hour == dateTime.Hour)
+                            .Skip(toSkip)
+                            .Take(itemPerPage)
+                            .ToListAsync();
                     }
                 }
 
                 return await _context.AuditLogs
-                            .Where(al => al.TableName.Contains(searchstring)
-                            || al.UserId == _context.Users
-                                                   .Where(u => u.UserName.Contains(searchstring))
-                                                   .Select(u => u.Id)
-                                                   .FirstOrDefault()
-                            || al.OldValues.Contains(searchstring)
-                            || al.NewValues.Contains(searchstring)
-                            || al.Type.Contains(searchstring))
-                        .OrderByDescending(al => al.DateTime)
+                            .Where(
+                                    al => al.TableName.Contains(searchstring)
+                                    || al.UserId == _context.Users
+                                                           .Where(u => u.UserName.Contains(searchstring))
+                                                           .Select(u => u.Id)
+                                                           .FirstOrDefault()
+                                    || al.OldValues.Contains(searchstring)
+                                    || al.NewValues.Contains(searchstring)
+                                    || al.Type.Contains(searchstring))
+                            .Skip(toSkip)
+                            .Take(itemPerPage)
+                            .OrderByDescending(al => al.DateTime)
                             .ToListAsync();
             }
 
@@ -79,9 +90,50 @@ namespace BugTracker.Persistence.Services.Audits
                         .ToListAsync();
         }
 
-        public async Task<int> CountAll()
+        public async Task<int> CountAll(string searchString)
         {
-            return (await _context.AuditLogs.ToListAsync()).Count;
+            int count = 0;
+            if (string.IsNullOrWhiteSpace(searchString))
+            {
+                return (await _context.AuditLogs.ToListAsync()).Count;
+            }
+            else
+            {
+                if (!string.IsNullOrEmpty(searchString))
+                {
+                    if (DateTime.TryParse(searchString, out DateTime dateTime))
+                    {
+                        if (dateTime.TimeOfDay == TimeSpan.Zero)
+                        {
+                            return (await _context.AuditLogs
+                                .Where(al => al.DateTime.Date == dateTime.Date)
+                                .ToListAsync())
+                                .Count;
+                        }
+                        else
+                        {
+                            return (await _context.AuditLogs
+                                .Where(al => al.DateTime.Date == dateTime.Date && al.DateTime.Hour == dateTime.Hour)
+                                .ToListAsync())
+                                .Count;
+                        }
+                    }
+
+                    return (await _context.AuditLogs
+                                .Where(
+                                        al => al.TableName.Contains(searchString)
+                                        || al.UserId == _context.Users
+                                                               .Where(u => u.UserName.Contains(searchString))
+                                                               .Select(u => u.Id)
+                                                               .FirstOrDefault()
+                                        || al.OldValues.Contains(searchString)
+                                        || al.NewValues.Contains(searchString)
+                                        || al.Type.Contains(searchString))
+                                .ToListAsync())
+                                .Count;
+                }
+                return count;
+            }
         }
     }
 }

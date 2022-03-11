@@ -3,14 +3,10 @@ using BugTracker.Application.Contracts.Audits;
 using BugTracker.Application.Contracts.Data;
 using BugTracker.Application.Contracts.Identity;
 using BugTracker.Application.Dto.Audits;
-using BugTracker.Application.Enums;
 using BugTracker.Application.Responses;
 using MediatR;
-using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 

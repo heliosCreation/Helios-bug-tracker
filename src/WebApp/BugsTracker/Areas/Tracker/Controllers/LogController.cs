@@ -9,6 +9,7 @@ namespace BugTracker.Areas.Tracker.Controllers
         public async Task<IActionResult> GetAll(int page = 1, string searchstring = null)
         {
             var response = await Mediator.Send(new GetAllLogsQuery(page, searchstring));
+            response.Data.Pager.SearchText = searchstring;
             return View(response.Data);
         }
     }

@@ -8,7 +8,7 @@ namespace BugTracker.Application.Contracts.Audits
 {
     public interface IAuditRepository
     {
-        Task<int> CountAll();
+        Task<int> CountAll(string searchString);
         Task<IEnumerable<Audit>> GetAudits(Guid entityId, AuditableType type);
         Task<IEnumerable<Audit>> ListAll(int page, string searchstring);
     }

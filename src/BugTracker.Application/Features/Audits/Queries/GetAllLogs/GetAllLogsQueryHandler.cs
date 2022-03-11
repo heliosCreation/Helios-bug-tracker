@@ -48,19 +48,8 @@ namespace BugTracker.Application.Features.Audits.Queries.GetAllLogs
 
 
         private async Task<int> GetLogCount(string searchString, List<AuditLogDto> logs)
-        {
-            var count = 0;
-
-            if (searchString != null)
-            {
-                count = logs.Count;
-            }
-            else
-            {
-                count = await _auditRepository.CountAll();
-            }
-
-            return count;
+        {            
+            return await _auditRepository.CountAll(searchString);
         }
 
         private async Task<List<AuditLogDto>> AssignNameToUserId(List<AuditLogDto> logs)
