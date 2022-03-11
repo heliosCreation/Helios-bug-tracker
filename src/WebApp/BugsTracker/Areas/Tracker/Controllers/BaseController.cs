@@ -6,6 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 namespace BugTracker.Areas.Tracker.Controllers
 {
     [Authorize]
+    [Area("Tracker")]
     public class BaseController : Controller
     {
         private readonly IMediator _mediator;
