@@ -1,5 +1,6 @@
 ﻿@model BugTracker.Application.Responses.ApiResponse<BugTracker.Application.Dto.Comments.CommentDto>
-
+@using Microsoft.AspNetCore.Authorization
+@inject IAuthorizationService AuthorizationService
 
 <div class="light-gray-blue-theme d-flex align-items-center flex-column-reverse p-1" id="comments-holder">
     @{
@@ -14,26 +15,39 @@
 </div>
 
 <div class="bg-white p-3 comment-writter-holder">
-    <form class="w-100" id="comment-form">
-        <div class="input-group">
-            <input type="hidden" name="TicketId" value="@Model.Data.TicketId" />
-            <input name="Message" class="form-control" placeholder="Type Comment" aria-label="Type Comment" aria-describedby="basic-addon2">
-            <div class="input-group-append">
-                <input id="commentSubmitter" class="btn btn-primary" type="submit" />
+    @if ((await AuthorizationService.AuthorizeAsync(User, "NoDemo")).Succeeded)
+    {
+        <form class="w-100" id="comment-form">
+            <div class="input-group">
+                <input type="hidden" name="TicketId" value="@Model.Data.TicketId" />
+                <input name="Message" class="form-control" placeholder="Type Comment" aria-label="Type Comment" aria-describedby="basic-addon2">
+                <div class="input-group-append">
+                    <input id="commentSubmitter" class="btn btn-primary" type="submit" />
+                </div>
             </div>
-        </div>
-        <div class="input-group">
-            <div class="text-danger" id="comment-error">
-                @{
-                    if (!Model.Succeeded)
-                    {
-                        foreach (var error in Model.ErrorMessages)
+            <div class="input-group">
+                <div class="text-danger" id="comment-error">
+                    @{
+                        if (!Model.Succeeded)
                         {
-                            @error
+                            foreach (var error in Model.ErrorMessages)
+                            {
+                                @error
+                            }
                         }
                     }
-            }
+                </div>
             </div>
-        </div>
-    </form>
+        </form>
+    }
+    else
+    {
+            <div class="input-group">
+                <input type="hidden" name="TicketId" value="@Model.Data.TicketId" />
+                <input name="Message" class="form-control" placeholder="Type Comment" aria-label="Type Comment" aria-describedby="basic-addon2">
+                <div class="input-group-append">
+                    <button class="btn btn-primary" type="button">Send Comment</button>
+                </div>
+            </div>
+    }
 </div>

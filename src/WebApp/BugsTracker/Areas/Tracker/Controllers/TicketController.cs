@@ -95,6 +95,7 @@ namespace BugTracker.Areas.Tracker.Controllers
         }
 
         [HttpGet]
+        [Authorize(Policy = "NoDemo")]
         public async Task<IActionResult> LoadCreateModal(Guid projectId)
         {
             var dto = new CreateTicketDto(projectId);

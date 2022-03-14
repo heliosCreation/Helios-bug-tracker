@@ -1,16 +1,13 @@
 ﻿using BugTracker.Application.Contracts.Identity;
-using BugTracker.Application.Policies.NoDemoUser;
 using BugTracker.Domain.Identity;
 using BugTracker.Persistence.Services.Identity;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
-using System.Threading.Tasks;
+using System.Linq;
+using System.Security.Claims;
 
 namespace BugTracker.Persistence
 {
@@ -49,8 +46,19 @@ namespace BugTracker.Persistence
 
             services.AddAuthorization(options =>
             {
+
                 options.AddPolicy("NoDemo", policy =>
-                    policy.Requirements.Add(new NoDemoUserRequirement()));
+                {
+                    policy.RequireAuthenticatedUser();
+
+                    policy.RequireAssertion(ctx =>
+                    {
+                        return ctx.User.Claims
+                           .Where(c => c.Type == ClaimTypes.Role)
+                           .Where(c => c.Value.Contains("Demo")).Select(c => c.Value)
+                           .ToList().Count == 0;
+                    });
+                });
             });
 
         }
