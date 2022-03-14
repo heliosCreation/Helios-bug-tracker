@@ -22,8 +22,6 @@ using System.Threading.Tasks;
 
 namespace BugTracker.Areas.Tracker.Controllers
 {
-    [Area("Tracker")]
-
     public class TicketController : BaseController
     {
         private const string ModalBasePath = "~/Areas/Tracker/Views/Shared/Partial/Ticket/";

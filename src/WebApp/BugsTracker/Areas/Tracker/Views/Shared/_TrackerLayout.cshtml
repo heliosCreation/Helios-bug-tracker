@@ -1,4 +1,10 @@
-﻿<!DOCTYPE html>
+﻿@using System.Security.Claims
+
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor _httpContextAccessor
+@{ 
+    var userRoles = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.Role).Value;
+}
+<!DOCTYPE html>
 
 <html>
 <head>
@@ -13,16 +19,17 @@
         <div class="body-overlay"></div>
         <!--------Sidebar-------->
         <nav class="sidebar" id="sidebar">
+            
             <div class="sidebar-header">
                 <i class="fab fa-hornbill"></i>
                 <h3>Bug Tracker</h3>
                 <div class="mt-2">
-                    <p>- Welcome Quentin -</p>
-                    <p>Current role: <span>Admin</span></p>
+                    <p>- Welcome @Context.User.Identity.Name -</p>
+                    <p class="text-center">Current role: <span>@userRoles</span></p>
                 </div>
             </div>
 
-            <ul class="list-unstyled components">
+            <ul class="list-unstyled  d-flex flex-column">
                 <li class="active">
                     <a asp-controller="Home" asp-action="Dashboard" class="dashboard">
                         <i class="fas fa-chart-bar"></i><span>Dashboard</span>
@@ -39,20 +46,25 @@
                     </a>
                 </li>
 
-                <li id="user-management-link">
-                    <a asp-controller="User" asp-action="GetAll">
-                        <i class="fas fa-user-tag"></i><span>User management</span>
-                    </a>
-                </li>
+                @{
+                    if (User.IsInRole("Admin") || User.IsInRole("Demo Admin"))
+                    {
+                        <li id="user-management-link">
+                            <a asp-controller="User" asp-action="GetAll">
+                                <i class="fas fa-user-tag"></i><span>User management</span>
+                            </a>
+                        </li>
 
-                <li id="logs-management-link">
-                    <a asp-controller="Log" asp-action="GetAll">
-                        <i class="fa fa-history" aria-hidden="true"></i>
-                        <span>System logs</span>
-                    </a>
-                </li>
+                        <li id="logs-management-link">
+                            <a asp-controller="Log" asp-action="GetAll">
+                                <i class="fa fa-history" aria-hidden="true"></i>
+                                <span>System logs</span>
+                            </a>
+                        </li>
+                    }
+                }
 
-                <li id="logout-holder" class="my-5">
+                <li id="logout-holder" class="align-bottom">
                     <a asp-controller="Account" asp-action="logout" asp-area="Identity" class="x-btn red" id="logout-link">
                         Logout
                     </a>
@@ -65,7 +77,7 @@
         <!-- Page content -->
 
         <div id="content">
-            <partial name="../Shared/Partial/Common/_resultAlertPartial.cshtml"/>
+            <partial name="../Shared/Partial/Common/_resultAlertPartial.cshtml" />
 
             <div class="d-flex navigation-items-holder">
                 <button type="button" id="sidebar-collapse" class="d-xl-block d-lg-block d-md-none d-none">
@@ -128,7 +140,7 @@
                 $('#sidebar,.body-overlay').toggleClass('show-nav');
             });
 
-            
+
         });
 
     </script>

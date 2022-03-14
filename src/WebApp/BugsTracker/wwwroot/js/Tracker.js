@@ -25,8 +25,12 @@ function AttachModalCreateListener(createBtnId, url, modalLarge = false, isTicke
                     setSelectListHandler();
                 }
             },
+            statusCode: {
+                403: function () {
+                    alert('You do not have the right to access this feature.')
+                }
+            },
             error: function (data) {
-                alert("Error loading dynamic data");
                 console.log(data)
             }
         });
@@ -64,6 +68,11 @@ function AttachTableModalListeners(buttons, url, getName = false, modalLarge = f
                     else {
                         setProjectTabListener();
                         setSelectListHandler();
+                    }
+                },
+                statusCode: {
+                    403: function () {
+                        alert('You do not have the right to access this feature.')
                     }
                 },
                 error: function (data) {

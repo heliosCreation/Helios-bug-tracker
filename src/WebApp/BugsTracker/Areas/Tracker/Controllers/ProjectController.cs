@@ -5,13 +5,14 @@ using BugTracker.Application.Features.Projects.Commands.Update;
 using BugTracker.Application.Features.Projects.Queries.Get;
 using BugTracker.Application.Features.Projects.Queries.GetWithTeam;
 using BugTracker.Application.Features.ProjectTeam.Queries.GetAllAccessibleMembers;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
 
 namespace BugTracker.Areas.Tracker.Controllers
 {
-    [Area("Tracker")]
+    [Authorize( Roles = "Admin, Project Manager")]
     public class ProjectController : BaseController
     {
         private const string ModalBasePath = "~/Areas/Tracker/Views/Shared/Partial/Project/";
@@ -43,6 +44,7 @@ namespace BugTracker.Areas.Tracker.Controllers
                     RedirectToAction("ByProject", "Ticket", new { projectId = command.Id, isSuccess = true, type = "project", actionReturned = "updated" }) :
                     RedirectToAction("Dashboard", "Home", new { isSuccess = true, type = "project", actionReturned = "updated" }));
         }
+        
         public async Task<IActionResult> Delete(DeleteProjectCommand command)
         {
             var response = await Mediator.Send(command);
@@ -53,6 +55,7 @@ namespace BugTracker.Areas.Tracker.Controllers
             }
             return RedirectToAction("Dashboard", "Home", new { isSuccess = true, type = "project", actionReturned = "deleted" });
         }
+        
         public async Task<IActionResult> LoadCreateModal()
         {
             var dto = new CreateProjectDto();

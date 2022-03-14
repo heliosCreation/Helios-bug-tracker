@@ -1,5 +1,6 @@
 ﻿using BugTracker.Application.Contracts.Identity;
 using BugTracker.Application.Contracts.Infrastructure.Mail;
+using BugTracker.Application.Enums;
 using BugTracker.Application.Model.Identity.Authentication;
 using BugTracker.Application.Model.Identity.ConfirmationAndReset;
 using BugTracker.Application.Model.Identity.Registration;
@@ -55,10 +56,42 @@ namespace BugTracker.Areas.Identity.Controllers
             return RedirectToAction("ConfirmEmail", new { email = model.Email });
 
         }
+        
+        public IActionResult DemoLogin()
+        {
+            return View();
+        }
+        [HttpPost]
+        public async Task<IActionResult> DemoLogin(DemoAuthenticationModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+            var dictionnary = DemoUserMailDictionnary.Mails;
+            var mail = dictionnary[model.Type];
+            var password = "Pwd12345!";
+
+            var result = await _identityService.AuthenticateAsync(new AuthenticationModel() { Email = mail, Password = password});
+
+            if (result.Succeeded)
+            {
+                ModelState.Clear();
+                return RedirectToAction("Dashboard", "Home", new { area = "Tracker" });
+            }
+
+            if (result.IsLockedOut)
+            {
+                ModelState.AddModelError("", "You have been locked out. Contact your administrator for further notice.");
+            }
+            return View("Login");
+        }
+
         public IActionResult Login()
         {
             return View();
         }
+        
 
         [HttpPost]
         public async Task<IActionResult> Login(AuthenticationModel model)
