@@ -8,19 +8,36 @@
         </button>
     </div>
 
+    @if (User.IsInRole("Admin") || User.IsInRole("Project Manager"))
+    {
+        <form method="POST" asp-controller="Project" asp-action="Delete" asp-route-id="@(Model.Id)">
+            <input type="hidden" asp-for="Id" />
+            <div class="modal-body text-center">
+                <p>Are you sure you want to delete the project <span class="text-purple font-weight-bold">@Model.Name</span> ?</p>
+                <p>The deletion of this information is irreversible, and will delete all related information(s).</p>
+                <p>Type <span class="text-green">Synchronize</span> to authorize the operation:</p>
+                <input type="text" />
+            </div>
 
-    <form method="POST" asp-controller="Project" asp-action="Delete" asp-route-id="@(Model.Id)">
-        <input type="hidden" asp-for="Id" />
-        <div class="modal-body text-center">
-            <p>Are you sure you want to delete the project <span class="text-purple font-weight-bold">@Model.Name</span> ?</p>
-            <p>The deletion of this information is irreversible, and will delete all related information(s).</p>
-            <p>Type <span class="text-green">Synchronize</span> to authorize the operation:</p>
-            <input type="text" />
-        </div>
+            <div class="modal-footer">
+                <input type="submit" class="x-btn green" value=" Delete project" />
+            </div>
+        </form>
 
-        <div class="modal-footer">
-            <input type="submit" class="x-btn green" value=" Delete project" />
-        </div>
-    </form>
+    }
+
+    @if (User.IsInRole("Demo Admin") || User.IsInRole("Demo Project Manager"))
+    {
+            <div class="modal-body text-center">
+                <p>Are you sure you want to delete the project <span class="text-purple font-weight-bold">@Model.Name</span> ?</p>
+                <p>The deletion of this information is irreversible, and will delete all related information(s).</p>
+                <p>Type <span class="text-green">Synchronize</span> to authorize the operation:</p>
+                <input type="text" />
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="x-btn green">Delete project</button>
+            </div>
+    }
 
 </div>

@@ -1,8 +1,8 @@
 ﻿@using System.Security.Claims
-
 @inject Microsoft.AspNetCore.Http.IHttpContextAccessor _httpContextAccessor
 @{ 
     var userRoles = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.Role).Value;
+    var roles = _httpContextAccessor.HttpContext.User.Claims.Where(c => c.Type == ClaimTypes.Role).Select(c => c.Value).ToList();
 }
 <!DOCTYPE html>
 
@@ -24,8 +24,10 @@
                 <i class="fab fa-hornbill"></i>
                 <h3>Bug Tracker</h3>
                 <div class="mt-2">
-                    <p>- Welcome @Context.User.Identity.Name -</p>
+                    <p class="text-center">- Welcome @Context.User.Identity.Name -</p>
                     <p class="text-center">Current role: <span>@userRoles</span></p>
+
+
                 </div>
             </div>
 

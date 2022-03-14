@@ -12,7 +12,6 @@ using System.Threading.Tasks;
 
 namespace BugTracker.Areas.Tracker.Controllers
 {
-    [Authorize( Roles = "Admin, Project Manager")]
     public class ProjectController : BaseController
     {
         private const string ModalBasePath = "~/Areas/Tracker/Views/Shared/Partial/Project/";
@@ -21,7 +20,9 @@ namespace BugTracker.Areas.Tracker.Controllers
         private const string UpdateModalPath = ModalBasePath + "_update" + ModalType;
         private const string DeleteModalPath = ModalBasePath + "_delete" + ModalType;
 
+
         [HttpPost]
+        [Authorize(Roles = "Admin, Project Manager")]
         public async Task<IActionResult> Create([Bind(Prefix = "Command")] CreateProjectCommand command)
         {
             var response = await Mediator.Send(command);
@@ -32,6 +33,8 @@ namespace BugTracker.Areas.Tracker.Controllers
             return RedirectToAction("Dashboard", "Home", new { isSuccess = true, type = "project", actionReturned = "created" });
         }
 
+        [HttpPut]
+        [Authorize(Roles = "Admin, Project Manager")]
         public async Task<IActionResult> Update([Bind(Prefix = "Command")] UpdateProjectCommand command, bool fromTicket = false)
         {
             var response = await Mediator.Send(command);
@@ -44,7 +47,9 @@ namespace BugTracker.Areas.Tracker.Controllers
                     RedirectToAction("ByProject", "Ticket", new { projectId = command.Id, isSuccess = true, type = "project", actionReturned = "updated" }) :
                     RedirectToAction("Dashboard", "Home", new { isSuccess = true, type = "project", actionReturned = "updated" }));
         }
-        
+
+        [HttpDelete]
+        [Authorize(Roles = "Admin, Project Manager")]
         public async Task<IActionResult> Delete(DeleteProjectCommand command)
         {
             var response = await Mediator.Send(command);
@@ -55,7 +60,9 @@ namespace BugTracker.Areas.Tracker.Controllers
             }
             return RedirectToAction("Dashboard", "Home", new { isSuccess = true, type = "project", actionReturned = "deleted" });
         }
-        
+
+        [HttpGet]
+        [Authorize(Roles = "Admin, Project Manager, Demo Admin, Demo Project Manager")]
         public async Task<IActionResult> LoadCreateModal()
         {
             var dto = new CreateProjectDto();
@@ -65,6 +72,8 @@ namespace BugTracker.Areas.Tracker.Controllers
             return PartialView(CreateModalPath, dto);
         }
 
+        [HttpGet]
+        [Authorize(Roles = "Admin, Project Manager, Demo Admin, Demo Project Manager")]
         public async Task<IActionResult> LoadUpdateModal(Guid id, bool fromTicket = false)
         {
             ViewBag.fromTicket = fromTicket;
@@ -81,6 +90,8 @@ namespace BugTracker.Areas.Tracker.Controllers
             return PartialView(UpdateModalPath, dto);
         }
 
+        [HttpGet]
+        [Authorize(Roles = "Admin, Project Manager, Demo Admin, Demo Project Manager")]
         public async Task<IActionResult> LoadDeleteModal(Guid id)
         {
             var response = await Mediator.Send(new GetProjectQuery(id));
