@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 
 namespace BugTracker.Areas.Tracker.Controllers
 {
-    [Area("Tracker")]
     public class HomeController : BaseController
     {
         public async Task<IActionResult> DashBoard(bool isSuccess = false, string type = null, string actionReturned = null)

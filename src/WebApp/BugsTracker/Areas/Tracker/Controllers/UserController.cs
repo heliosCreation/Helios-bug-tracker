@@ -14,8 +14,7 @@ using System.Threading.Tasks;
 
 namespace BugTracker.Areas.Tracker.Controllers
 {
-    [Area("Tracker")]
-    [Authorize(Roles ="Admin")]
+    [Authorize(Roles ="Admin, Demo Admin")]
     public class UserController : BaseController
     {
         private const string ModalBasePath = "~/Areas/Tracker/Views/Shared/Partial/UserManagement/";
@@ -52,6 +51,7 @@ namespace BugTracker.Areas.Tracker.Controllers
             return PartialView(ManageRolesModalPath, vm);
         }
 
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> ManageUserRoles(UserWithRoleDto userWithRoles)
         {
             var response = await Mediator.Send(new UpdateUserRolesCommand(userWithRoles.UserId, userWithRoles.SelectedRoles));
@@ -68,6 +68,7 @@ namespace BugTracker.Areas.Tracker.Controllers
             return PartialView(LockUserModalPath, uid);
         }
 
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult>Lock(string uid)
         {
             var lockResponse = await Mediator.Send(new LockUserCommand(uid));
@@ -84,6 +85,7 @@ namespace BugTracker.Areas.Tracker.Controllers
             return PartialView(UnlockUserModalPath, uid);
         }
 
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> UnLock(string uid)
         {
             var lockResponse = await Mediator.Send(new UnlockUserCommand(uid));
@@ -100,6 +102,7 @@ namespace BugTracker.Areas.Tracker.Controllers
             return PartialView(DeleteUserModalPath, uid);
         }
 
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(string uid)
         {
             var deleteResponse = await Mediator.Send(new DeleteUserCommand(uid));

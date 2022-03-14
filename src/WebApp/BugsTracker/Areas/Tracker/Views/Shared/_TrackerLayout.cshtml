@@ -47,7 +47,7 @@
                 </li>
 
                 @{
-                    if (User.IsInRole("Admin") || User.IsInRole("Project Manager"))
+                    if (User.IsInRole("Admin") || User.IsInRole("Demo Admin"))
                     {
                         <li id="user-management-link">
                             <a asp-controller="User" asp-action="GetAll">
