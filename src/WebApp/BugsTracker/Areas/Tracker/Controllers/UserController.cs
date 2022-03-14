@@ -25,6 +25,7 @@ namespace BugTracker.Areas.Tracker.Controllers
         private const string UnlockUserModalPath = ModalBasePath + "_unlock" + ModalType;
         private const string DeleteUserModalPath = ModalBasePath + "_delete" + ModalType;
 
+        [HttpGet]
         public async Task<IActionResult> GetAll(int page = 1, string searchString = null, bool showLocked = false,
             bool isSuccess = false, bool isFailed = false, List<string> errors = null, string type = null, string actionReturned = null)
         {
@@ -38,6 +39,7 @@ namespace BugTracker.Areas.Tracker.Controllers
             return View(response.Data);
         }
 
+        [HttpGet]
         public async Task<IActionResult> LoadManageRoleModal(string uid)
         {
             var vm = new ManageUserRoleViewModel();
@@ -52,6 +54,7 @@ namespace BugTracker.Areas.Tracker.Controllers
         }
 
         [Authorize(Roles = "Admin")]
+        [HttpPut]
         public async Task<IActionResult> ManageUserRoles(UserWithRoleDto userWithRoles)
         {
             var response = await Mediator.Send(new UpdateUserRolesCommand(userWithRoles.UserId, userWithRoles.SelectedRoles));
@@ -62,13 +65,15 @@ namespace BugTracker.Areas.Tracker.Controllers
 
             return RedirectToAction("GetAll");
         }
-
+        
+        [HttpGet]
         public IActionResult LoadLockUserModal(string uid)
         {
             return PartialView(LockUserModalPath, uid);
         }
 
         [Authorize(Roles = "Admin")]
+        [HttpPut]
         public async Task<IActionResult>Lock(string uid)
         {
             var lockResponse = await Mediator.Send(new LockUserCommand(uid));
@@ -79,13 +84,15 @@ namespace BugTracker.Areas.Tracker.Controllers
 
             return RedirectToAction("GetAll", new { isSuccess = true, type = "user", actionReturned = "locked"});
         }
-
+        
+        [HttpGet]
         public IActionResult LoadUnlockUserModal(string uid)
         {
             return PartialView(UnlockUserModalPath, uid);
         }
 
         [Authorize(Roles = "Admin")]
+        [HttpPut]
         public async Task<IActionResult> UnLock(string uid)
         {
             var lockResponse = await Mediator.Send(new UnlockUserCommand(uid));
@@ -96,13 +103,15 @@ namespace BugTracker.Areas.Tracker.Controllers
 
             return RedirectToAction("GetAll", new { isSuccess = true, type = "user", actionReturned = "unlocked" });
         }
-    
+        
+        [HttpGet]
         public IActionResult LoadDeleteUserModal(string uid)
         {
             return PartialView(DeleteUserModalPath, uid);
         }
 
         [Authorize(Roles = "Admin")]
+        [HttpDelete]
         public async Task<IActionResult> Delete(string uid)
         {
             var deleteResponse = await Mediator.Send(new DeleteUserCommand(uid));

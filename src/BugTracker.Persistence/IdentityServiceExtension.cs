@@ -1,11 +1,15 @@
 ﻿using BugTracker.Application.Contracts.Identity;
 using BugTracker.Domain.Identity;
 using BugTracker.Persistence.Services.Identity;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
+using System.Threading.Tasks;
 
 namespace BugTracker.Persistence
 {
@@ -32,7 +36,6 @@ namespace BugTracker.Persistence
                 opt.Password.RequireNonAlphanumeric = false;
                 opt.SignIn.RequireConfirmedEmail = true;
                 opt.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+/ ";
-
             });
             services.AddScoped<IIdentityService, IdentityService>();
 
