@@ -15,6 +15,7 @@ using BugTracker.Application.Features.Tickets.Queries.GetTicket;
 using BugTracker.Application.Features.TicketTeam.Query;
 using BugTracker.Application.Features.TicketTeam.Query.GetCurrentTeam;
 using BugTracker.Application.Responses;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Linq;
@@ -57,7 +58,8 @@ namespace BugTracker.Areas.Tracker.Controllers
             return View("ProjectTickets", data);
         }
         
-        
+        [HttpPost]
+        [Authorize(Policy ="NoDemo")]
         public async Task<IActionResult> Create(CreateTicketCommand command)
         {
             var response = await Mediator.Send(command);
@@ -67,15 +69,9 @@ namespace BugTracker.Areas.Tracker.Controllers
             }
             return RedirectToAction("ByProject", new { projectId = command.ProjectId, isFailed = true });
         }
-        public async Task<IActionResult> Delete(DeleteTicketCommand command, Guid projectId)
-        {
-            var response = await Mediator.Send(command);
-            if (response.Succeeded)
-            {
-                return RedirectToAction("ByProject", new { projectId = projectId, isSuccess = true, type = "ticket", actionReturned = "deleted" });
-            }
-            return RedirectToAction("ByProject", new { isFailed = true });
-        }
+        
+        [HttpPut]
+        [Authorize(Policy = "NoDemo")]
         public async Task<IActionResult> Update(UpdateTicketCommand command, Guid projectId)
         {
             var response = await Mediator.Send(command);
@@ -86,7 +82,19 @@ namespace BugTracker.Areas.Tracker.Controllers
             return RedirectToAction("ByProject", new { projectId = projectId, isFailed = true });
         }
         
-        
+        [HttpDelete]
+        [Authorize(Policy = "NoDemo")]
+        public async Task<IActionResult> Delete(DeleteTicketCommand command, Guid projectId)
+        {
+            var response = await Mediator.Send(command);
+            if (response.Succeeded)
+            {
+                return RedirectToAction("ByProject", new { projectId = projectId, isSuccess = true, type = "ticket", actionReturned = "deleted" });
+            }
+            return RedirectToAction("ByProject", new { isFailed = true });
+        }
+
+        [HttpGet]
         public async Task<IActionResult> LoadCreateModal(Guid projectId)
         {
             var dto = new CreateTicketDto(projectId);
@@ -98,6 +106,8 @@ namespace BugTracker.Areas.Tracker.Controllers
 
             return PartialView(CreateModalPath, dto);
         }
+        
+        [HttpGet]
         public async Task<IActionResult> LoadUpdateModal(Guid id, Guid projectId)
         {
             var dto = new UpdateTicketDto(id);
@@ -122,12 +132,15 @@ namespace BugTracker.Areas.Tracker.Controllers
 
             return PartialView(UpdateModalPath, dto);
         }
+        
+        [HttpGet]
         public IActionResult LoadDeleteModal(Guid id, Guid projectId, string name)
         {
             var dto = new DeleteTicketDto(id, projectId, name);
             return PartialView(DeleteModalPath, dto);
         }
 
+        [HttpGet]
         public async Task<IActionResult> LoadDetailsModal(Guid ticketId)
         {
             var dto = new TicketDetailsDto();
@@ -144,6 +157,7 @@ namespace BugTracker.Areas.Tracker.Controllers
             return PartialView(DetailsModalPath, dto);
         }
 
+        [HttpGet]
         public async Task<IActionResult> LoadProjectTeamModal(Guid projectId)
         {
             var dto = new ProjectTeamManagementDto();
@@ -156,6 +170,7 @@ namespace BugTracker.Areas.Tracker.Controllers
         }
     
         [HttpPost]
+        [Authorize(Policy = "NoDemo")]
         public async Task<PartialViewResult> SendComment(CreateCommentDto request)
         {
             var response = new ApiResponse<CommentDto>();

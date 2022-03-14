@@ -1,4 +1,5 @@
 ﻿using BugTracker.Application.Contracts.Identity;
+using BugTracker.Application.Policies.NoDemoUser;
 using BugTracker.Domain.Identity;
 using BugTracker.Persistence.Services.Identity;
 using Microsoft.AspNetCore.Authentication;
@@ -44,6 +45,12 @@ namespace BugTracker.Persistence
                 options.LoginPath = $"/Identity/Account/Login";
                 options.LogoutPath = $"/Identity/Account/Logout";
                 options.AccessDeniedPath = $"/Identity/Account/Login";
+            });
+
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("NoDemo", policy =>
+                    policy.Requirements.Add(new NoDemoUserRequirement()));
             });
 
         }

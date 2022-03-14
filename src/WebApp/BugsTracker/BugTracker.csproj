@@ -30,7 +30,6 @@
 
 
 	<ItemGroup>
-	  <Folder Include="Attributes\" />
 	  <Folder Include="wwwroot\MockBlob\Img\" />
 	</ItemGroup>
 </Project>
