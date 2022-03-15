@@ -33,7 +33,7 @@ namespace BugTracker.Areas.Tracker.Controllers
             return RedirectToAction("Dashboard", "Home", new { isSuccess = true, type = "project", actionReturned = "created" });
         }
 
-        [HttpPut]
+        [HttpPost]
         [Authorize(Roles = "Admin, Project Manager")]
         public async Task<IActionResult> Update([Bind(Prefix = "Command")] UpdateProjectCommand command, bool fromTicket = false)
         {
@@ -48,7 +48,7 @@ namespace BugTracker.Areas.Tracker.Controllers
                     RedirectToAction("Dashboard", "Home", new { isSuccess = true, type = "project", actionReturned = "updated" }));
         }
 
-        [HttpDelete]
+        [HttpPost]
         [Authorize(Roles = "Admin, Project Manager")]
         public async Task<IActionResult> Delete(DeleteProjectCommand command)
         {

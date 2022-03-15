@@ -15,6 +15,7 @@ using BugTracker.Application.Features.Tickets.Queries.GetTicket;
 using BugTracker.Application.Features.TicketTeam.Query;
 using BugTracker.Application.Features.TicketTeam.Query.GetCurrentTeam;
 using BugTracker.Application.Responses;
+using BugTracker.Filters.Validation;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -23,6 +24,7 @@ using System.Threading.Tasks;
 
 namespace BugTracker.Areas.Tracker.Controllers
 {
+    [ValidationFilter]
     public class TicketController : BaseController
     {
         private const string ModalBasePath = "~/Areas/Tracker/Views/Shared/Partial/Ticket/";
@@ -52,10 +54,10 @@ namespace BugTracker.Areas.Tracker.Controllers
             ViewBag.Type = type;
             ViewBag.actionReturned = actionReturned;
 
-            var data = (await Mediator.Send(new GetProjectTicketsQuery(projectId, page , searchString))).Data;
+            var response = await Mediator.Send(new GetProjectTicketsQuery(projectId, page, searchString));
+            var data = response.Data;
 
-
-            return View("ProjectTickets", data);
+            return View("ProjectTickets", response);
         }
         
         [HttpPost]
@@ -69,8 +71,8 @@ namespace BugTracker.Areas.Tracker.Controllers
             }
             return RedirectToAction("ByProject", new { projectId = command.ProjectId, isFailed = true });
         }
-        
-        [HttpPut]
+
+        [HttpPost]
         [Authorize(Policy = "NoDemo")]
         public async Task<IActionResult> Update(UpdateTicketCommand command, Guid projectId)
         {
@@ -81,8 +83,8 @@ namespace BugTracker.Areas.Tracker.Controllers
             }
             return RedirectToAction("ByProject", new { projectId = projectId, isFailed = true });
         }
-        
-        [HttpDelete]
+
+        [HttpPost]
         [Authorize(Policy = "NoDemo")]
         public async Task<IActionResult> Delete(DeleteTicketCommand command, Guid projectId)
         {
