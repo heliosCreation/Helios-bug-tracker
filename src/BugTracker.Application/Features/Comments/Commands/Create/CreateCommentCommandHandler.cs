@@ -1,9 +1,11 @@
 ﻿using AutoMapper;
 using BugTracker.Application.Contracts.Data;
+using BugTracker.Application.Contracts.Identity;
 using BugTracker.Application.Dto.Comments;
 using BugTracker.Application.Responses;
 using BugTracker.Domain.Entities;
 using MediatR;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -13,22 +15,45 @@ namespace BugTracker.Application.Features.Comments.Commands.Create
     {
         private readonly IMapper _mapper;
         private readonly ICommentRepository _commentRepository;
+        private readonly ITicketRepository _ticketRepository;
+        private readonly ILoggedInUserService _loggedInUserService;
 
-        public CreateCommentCommandHandler(IMapper mapper, ICommentRepository commentRepository)
+        public CreateCommentCommandHandler(IMapper mapper,
+            ICommentRepository commentRepository,
+            ITicketRepository ticketRepository,
+            ILoggedInUserService loggedInUserService)
         {
-            _mapper = mapper ?? throw new System.ArgumentNullException(nameof(mapper));
-            _commentRepository = commentRepository ?? throw new System.ArgumentNullException(nameof(commentRepository));
+            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
+            _commentRepository = commentRepository ?? throw new ArgumentNullException(nameof(commentRepository));
+            _ticketRepository = ticketRepository ?? throw new ArgumentNullException(nameof(ticketRepository));
+            _loggedInUserService = loggedInUserService ?? throw new ArgumentNullException(nameof(loggedInUserService));
         }
 
         public async Task<ApiResponse<CommentDto>> Handle(CreateCommentCommand request, CancellationToken cancellationToken)
         {
             var response = new ApiResponse<CommentDto>();
-
+            if (!await IsAllowedToAccessTickets(response, request.TicketId))
+            {
+                return response;
+            }
             var comment = _mapper.Map<Comment>(request);
             var createdComment = await _commentRepository.AddAsync(comment);
             response.Data = _mapper.Map<CommentDto>(createdComment);
             
             return response;
+        }
+
+        private async Task<bool> IsAllowedToAccessTickets(ApiResponse<CommentDto> response, Guid ticketId)
+        {
+            var belongsToTeam = await _ticketRepository.UserBelongsToTicketTeam(_loggedInUserService.UserId, ticketId);
+            var isAdmin = _loggedInUserService.Roles.Contains("Admin");
+            if (!belongsToTeam && !isAdmin)
+            {
+                response.SetUnhautorizedResponse();
+                return false;
+            }
+
+            return true;
         }
     }
 }

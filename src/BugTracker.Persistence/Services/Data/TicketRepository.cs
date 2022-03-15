@@ -104,7 +104,10 @@ namespace BugTracker.Persistence.Services.Data
             }
             return await _dbContext.Tickets.SingleOrDefaultAsync(p => p.Name == name) == null;
         }
-
+        public async Task<bool> UserBelongsToTicketTeam(string uid, Guid ticketId)
+        {
+            return await _dbContext.TicketsTeamMembers.AnyAsync(ttm => ttm.TicketId == ticketId && ttm.UserId == uid);
+        }
         private async Task<List<string>> GetTicketTeamIds(Ticket entity)
         {
             return await _dbContext.
@@ -122,7 +125,6 @@ namespace BugTracker.Persistence.Services.Data
                 }
             }
         }
-
         private async Task AddToTicketTeam(Ticket entity, List<string> dbTicketTeamMembers, ICollection<string> requestTeamMembers)
         {
             foreach (var id in requestTeamMembers)
@@ -133,5 +135,6 @@ namespace BugTracker.Persistence.Services.Data
                 }
             }
         }
+    
     }
 }

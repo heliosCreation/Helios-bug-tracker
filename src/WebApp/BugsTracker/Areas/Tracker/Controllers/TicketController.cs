@@ -24,7 +24,6 @@ using System.Threading.Tasks;
 
 namespace BugTracker.Areas.Tracker.Controllers
 {
-    [ValidationFilter]
     public class TicketController : BaseController
     {
         private const string ModalBasePath = "~/Areas/Tracker/Views/Shared/Partial/Ticket/";
@@ -42,6 +41,8 @@ namespace BugTracker.Areas.Tracker.Controllers
             return View();
         }
 
+
+        [ValidationFilter]
         public async Task<IActionResult> ByProject(
             Guid projectId,
             int page = 1,
@@ -55,8 +56,6 @@ namespace BugTracker.Areas.Tracker.Controllers
             ViewBag.actionReturned = actionReturned;
 
             var response = await Mediator.Send(new GetProjectTicketsQuery(projectId, page, searchString));
-            var data = response.Data;
-
             return View("ProjectTickets", response);
         }
         
