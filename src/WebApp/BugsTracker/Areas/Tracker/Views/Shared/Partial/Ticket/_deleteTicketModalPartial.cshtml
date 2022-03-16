@@ -8,14 +8,27 @@
             <span aria-hidden="true">&times;</span>
         </button>
     </div>
-    <form asp-controller="Ticket" asp-action="Delete" asp-route-id="@Model.Id" asp-route-projectId="@Model.ProjectId">
+    @if (User.IsInRole("Admin") || User.IsInRole("Project Manager"))
+    {
+        <form asp-controller="Ticket" asp-action="Delete" asp-route-id="@Model.Id" asp-route-projectId="@Model.ProjectId">
+            <div class="modal-body">
+                <p>Are you sure you want to delete the ticket <span class="text-purple"> @Model.Name </span>?</p>
+                <p>The deletion of this information is irreversible, and will delete all related data.</p>
+            </div>
+            <div class="modal-footer">
+                <input type="submit" class="x-btn green" value="Delete ticket" />
+            </div>
+        </form>
+    }
+    else
+    {
         <div class="modal-body">
             <p>Are you sure you want to delete the ticket <span class="text-purple"> @Model.Name </span>?</p>
             <p>The deletion of this information is irreversible, and will delete all related data.</p>
         </div>
         <div class="modal-footer">
-            <input type="submit" class="x-btn green" value="Delete ticket" />
+            <button type="button" class="x-btn green">Delete ticket</button>
         </div>
-    </form>
+    }
 
 </div>

@@ -12,5 +12,6 @@ namespace BugTracker.Application.Contracts.Data
         Task<Ticket> GetTicketWithTeamAndConfiguration(Guid id);
         Task<bool> NameIsUnique(string name, bool isAnUpdate, Guid id = new Guid());
         Task<bool> UpdateTicketAsync(Ticket entity, ICollection<string> teamIds);
+        Task<bool> UserBelongsToTicketTeam(string uid, Guid ticketId);
     }
 }

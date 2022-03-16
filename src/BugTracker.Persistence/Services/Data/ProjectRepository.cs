@@ -28,7 +28,6 @@ namespace BugTracker.Persistence.Services.Data
             await _dbContext.SaveChangesAsync();
             return entity;
         }
-
         public async Task UpdateProjectAsync(Project entity, ICollection<string> teamIds)
         {
             var oldEntity = await _dbContext.Projects.FindAsync(entity.Id);
@@ -70,10 +69,20 @@ namespace BugTracker.Persistence.Services.Data
 
             await _dbContext.SaveChangesAsync();
         }
-        public async Task<ICollection<ProjectWithTeamDto>> ListAllWithTeam()
+        public async Task<ICollection<ProjectWithTeamDto>> ListAllWithTeam(string uid)
         {
             var response = new List<ProjectWithTeamDto>();
-            var projects = await _dbContext.Projects.OrderBy(p => p.CreatedDate).ToListAsync();
+            var projects = new List<Project>();
+
+            if (uid == null)
+            {
+                projects = await _dbContext.Projects.OrderBy(p => p.CreatedDate).ToListAsync();
+            }
+            else
+            {
+                var pids = await _dbContext.ProjectTeamMembers.Where(ptm => ptm.UserId == uid).Select(ptm => ptm.ProjectId).ToListAsync();
+                projects = await _dbContext.Projects.Where(p => pids.Contains(p.Id)).OrderBy(p => p.CreatedDate).ToListAsync();
+            }
 
             foreach (var project in projects)
             {
@@ -91,7 +100,10 @@ namespace BugTracker.Persistence.Services.Data
 
             return response;
         }
-
+        public async Task<bool> UserBelongsToProjectTeam(string uid, Guid projectId)
+        {
+            return await _dbContext.ProjectTeamMembers.AnyAsync(ptm => ptm.UserId == uid && ptm.ProjectId == projectId);
+        }
         public async Task<ICollection<string>> GetProjectTeamIds(Guid id)
         {
             return await _dbContext.ProjectTeamMembers.Where(ptm => ptm.ProjectId == id).Select(ptm => ptm.UserId).ToListAsync();

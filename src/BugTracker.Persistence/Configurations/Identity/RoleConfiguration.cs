@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using BugTracker.Application.Enums;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -12,7 +13,7 @@ namespace BugTracker.Identity.Configurations
             builder.HasData(new IdentityRole
             {
                 Id = "ffd183c1-9d6f-4f65-8e4c-c08d5c6d3e65",
-                Name = "Admin",
+                Name = Roles.Admin.ToString(),
                 NormalizedName = "ADMIN"
             });
 
@@ -47,7 +48,7 @@ namespace BugTracker.Identity.Configurations
             builder.HasData(new IdentityRole
             {
                 Id = "776a748a-cd98-42e8-afdb-ae578902a099",
-                Name = " Demo Project Manager",
+                Name = "Demo Project Manager",
                 NormalizedName = "DEMO PROJECT MANAGER"
             });
 

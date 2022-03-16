@@ -1,4 +1,5 @@
 ﻿@model DashboardViewModel
+@using System.Security.Claims
 
 <partial name="../Shared/Partial/Common/_modalHolderPartial.cshtml" />
 
@@ -11,6 +12,7 @@
             {
                 <div class="project-add-holder"><a href="#" id="create-project" data-toggle="modal" data-target="#crupdateProjectModal" class="x-btn blue"> New Project</a></div>
             }
+
         </div>
         <div class="row w-100">
             <div class="table-responsive project-table">
@@ -20,39 +22,44 @@
                             <th scope="col" class="text-muted">Project</th>
                             <th scope="col" class="text-muted">Description</th>
                             <th scope="col" class="text-muted">Contributor</th>
-                            <th scope="col" class="text-muted text-center">Action</th>
+                            @if (User.IsInRole("Admin") || User.IsInRole("Project Manager") || User.IsInRole("Demo Admin") || User.IsInRole("Demo Project Manager"))
+                            {
+                                <th scope="col" class="text-muted text-center">Action</th>
+                            }
                         </tr>
                     </thead>
                     <tbody>
                         @foreach (var project in Model.Projects)
                         {
-                            <tr>
-                                <td class="d-none">@project.Id</td>
+                        <tr>
+                            <td class="d-none">@project.Id</td>
 
-                                <td><a 
-                                       asp-controller="Ticket"
-                                       asp-action="ByProject"
-                                       asp-route-projectId="@project.Id"
-                                       asp-route-projectName="@project.Name">
-                                        @project.Name
-                                    </a>
-                                </td>
-                                <td>@project.Description</td>
-                                <td>
-                                    <ul>
-                                        @if (project.TeamNames != null && project.TeamNames.Any())
+                            <td>
+                                <a asp-controller="Ticket"
+                                   asp-action="ByProject"
+                                   asp-route-projectId="@project.Id"
+                                   asp-route-projectName="@project.Name">
+                                    @project.Name
+                                </a>
+                            </td>
+                            <td>@project.Description</td>
+                            <td>
+                                <ul>
+                                    @if (project.TeamNames != null && project.TeamNames.Any())
+                                    {
+                                        @foreach (var teamMember in project.TeamNames)
                                         {
-                                            @foreach (var teamMember in project.TeamNames)
-                                            {
-                                                <li>@teamMember</li>
-                                            }
+                                            <li>@teamMember</li>
                                         }
-                                        else
-                                        {
-                                            <li class="text-muted">None</li>
-                                        }
-                                    </ul>
-                                </td>
+                                    }
+                                    else
+                                    {
+                                        <li class="text-muted">None</li>
+                                    }
+                                </ul>
+                            </td>
+                            @if (User.IsInRole("Admin") || User.IsInRole("Project Manager") || User.IsInRole("Demo Admin") || User.IsInRole("Demo Project Manager"))
+                            {
                                 <td class="text-center">
                                     <div class="dropdown">
                                         <a href="#" class="dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -64,7 +71,9 @@
                                         </div>
                                     </div>
                                 </td>
-                            </tr>
+                            }
+
+                        </tr>
 
                         }
                     </tbody>

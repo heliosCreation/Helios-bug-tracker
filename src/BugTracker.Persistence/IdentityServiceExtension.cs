@@ -6,6 +6,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
+using System.Linq;
+using System.Security.Claims;
 
 namespace BugTracker.Persistence
 {
@@ -32,7 +34,6 @@ namespace BugTracker.Persistence
                 opt.Password.RequireNonAlphanumeric = false;
                 opt.SignIn.RequireConfirmedEmail = true;
                 opt.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+/ ";
-
             });
             services.AddScoped<IIdentityService, IdentityService>();
 
@@ -42,6 +43,24 @@ namespace BugTracker.Persistence
                 options.LogoutPath = $"/Identity/Account/Logout";
                 options.AccessDeniedPath = $"/Identity/Account/Login";
             });
+
+            services.AddAuthorization(options =>
+            {
+
+                options.AddPolicy("NoDemo", policy =>
+                {
+                    policy.RequireAuthenticatedUser();
+
+                    policy.RequireAssertion(ctx =>
+                    {
+                        return ctx.User.Claims
+                           .Where(c => c.Type == ClaimTypes.Role)
+                           .Where(c => c.Value.Contains("Demo")).Select(c => c.Value)
+                           .ToList().Count == 0;
+                    });
+                });
+            });
+
 
         }
 

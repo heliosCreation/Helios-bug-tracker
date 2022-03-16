@@ -11,5 +11,6 @@ namespace BugTracker.Areas.Tracker.Controllers
     {
         private readonly IMediator _mediator;
         protected IMediator Mediator => _mediator ?? HttpContext.RequestServices.GetService<IMediator>();
+
     }
 }

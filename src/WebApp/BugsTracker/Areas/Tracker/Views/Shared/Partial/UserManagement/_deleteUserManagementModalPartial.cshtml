@@ -7,8 +7,23 @@
     </button>
 </div>
 
-<form asp-controller="User" asp-action="Delete">
-    <input type="hidden" name="uid" value="@Model"/>
+@if (User.IsInRole("Admin"))
+{
+    <form asp-controller="User" asp-action="Delete">
+        <input type="hidden" name="uid" value="@Model" />
+        <div class="modal-body text-center">
+            <p>You are about to delete the user <span class="text-purple font-weight-bold" id="lock-user-name"></span>.</p>
+            <p>Deleting the user will result in the loss of <u>every related data and access.</u></p>
+            <p>Type <span class="text-green">Synchronize</span> to authorize the operation:</p>
+            <input type="text" id="synchronize-validation" />
+        </div>
+        <div class="modal-footer text-center">
+            <input type="submit" class="x-btn green" id="lock-btn" value="Delete User" />
+        </div>
+    </form>
+}
+@if (User.IsInRole("Demo Admin"))
+{
     <div class="modal-body text-center">
         <p>You are about to delete the user <span class="text-purple font-weight-bold" id="lock-user-name"></span>.</p>
         <p>Deleting the user will result in the loss of <u>every related data and access.</u></p>
@@ -16,8 +31,9 @@
         <input type="text" id="synchronize-validation" />
     </div>
     <div class="modal-footer text-center">
-        <input type="submit" class="x-btn green" id="lock-btn" value="Delete User"/>
+        <button type="button" class="x-btn green" id="lock-btn">Delete user</button>
     </div>
-</form>
+}
+
 
 

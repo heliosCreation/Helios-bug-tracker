@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace BugTracker.Areas.Tracker.Controllers
 {
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin, Demo Admin")]
     public class LogController : BaseController
     {
         public async Task<IActionResult> GetAll(int page = 1, string searchstring = null)

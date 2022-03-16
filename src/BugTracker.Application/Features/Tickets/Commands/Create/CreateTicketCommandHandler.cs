@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using BugTracker.Application.Contracts.Data;
+using BugTracker.Application.Contracts.Identity;
 using BugTracker.Application.Responses;
 using BugTracker.Domain.Entities;
 using MediatR;
@@ -13,17 +14,28 @@ namespace BugTracker.Application.Features.Tickets.Commands.Create
     public class CreateTicketCommandHandler : IRequestHandler<CreateTicketCommand, ApiResponse<IdResponse>>
     {
         private readonly ITicketRepository _ticketRepository;
+        private readonly IProjectRepository _projectRepository;
+        private readonly ILoggedInUserService _loggedInUserService;
         private readonly IMapper _mapper;
 
-        public CreateTicketCommandHandler(ITicketRepository ticketRepository, IMapper mapper)
+        public CreateTicketCommandHandler(ITicketRepository ticketRepository,
+            IProjectRepository projectRepository,
+            ILoggedInUserService loggedInUserService,
+            IMapper mapper)
         {
             _ticketRepository = ticketRepository ?? throw new ArgumentNullException(nameof(ticketRepository));
+            _projectRepository = projectRepository ?? throw new ArgumentNullException(nameof(projectRepository));
+            _loggedInUserService = loggedInUserService;
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
         public async Task<ApiResponse<IdResponse>> Handle(CreateTicketCommand request, CancellationToken cancellationToken)
         {
             var response = new ApiResponse<IdResponse>();
+            if (! await IsAllowedToAccessTickets(response, request.ProjectId))
+            {
+                return response;
+            }
 
             var ticket = _mapper.Map<Ticket>(request);
             var teamIds = request.Team.Select(t => t.ToString()).ToList();
@@ -31,6 +43,19 @@ namespace BugTracker.Application.Features.Tickets.Commands.Create
             var createdProject = await _ticketRepository.AddTicketAsync(ticket, teamIds);
             response.Data = new IdResponse(createdProject.Id);
             return response;
+        }
+
+        private async Task<bool> IsAllowedToAccessTickets(ApiResponse<IdResponse> response, Guid projectId)
+        {
+            var belongsToTeam = await _projectRepository.UserBelongsToProjectTeam(_loggedInUserService.UserId, projectId);
+            var isAdmin = _loggedInUserService.Roles.Contains("Admin");
+            if (!belongsToTeam && !isAdmin)
+            {
+                response.SetUnhautorizedResponse();
+                return false;
+            }
+
+            return true;
         }
     }
 }

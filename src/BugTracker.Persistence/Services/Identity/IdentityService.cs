@@ -227,22 +227,19 @@ namespace BugTracker.Persistence.Services.Identity
                 return accessibleTeam;
             }
 
-            if (currentUserRole[0] == "Admin")
+            if (currentUserRole[0].Contains("Admin"))
             {
                 var admins = await _userManager.GetUsersInRoleAsync("Admin");
 
                 accessibleTeam = await _context.Users.ToListAsync();
                 accessibleTeam = accessibleTeam.Except(admins).ToList();
             }
-            else if (currentUserRole[0] == "Project Manager")
+            else if (currentUserRole[0].Contains("Project Manager"))
             {
-                var devs = await _userManager.GetUsersInRoleAsync("Developer");
-                var submitter = await _userManager.GetUsersInRoleAsync("Submitter");
-
-                foreach (var user in devs.Concat(submitter).ToList())
-                {
-                    accessibleTeam.Add(user);
-                }
+                accessibleTeam = await _context.Users.ToListAsync();
+                var admins = await _userManager.GetUsersInRoleAsync("Admin");
+                var pm = await _userManager.GetUsersInRoleAsync("Project Manager");
+                accessibleTeam = accessibleTeam.Except(admins.Concat(pm)).ToList();
             }
 
             return accessibleTeam;

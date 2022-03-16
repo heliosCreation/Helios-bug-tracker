@@ -1,12 +1,14 @@
-﻿@model BugTracker.Application.ViewModel.ProjectWithTicketVm
-
+﻿@model ApiResponse<BugTracker.Application.ViewModel.ProjectWithTicketVm>
+@{ 
+    var data = Model.Data;
+}
 <partial name="../Shared/Partial/Common/_modalHolderPartial.cshtml" />
 <div class="py-4 row d-flex justify-content-around h-50">
 
     <div class="first-row col-11 p-0">
         <div class="first-row-header row d-flex px-3 py-2 w-100 justify-content-between">
             <div class="research-input-wrapper d-flex justify-content-center align-items-center">
-                <form asp-action="ByProject" asp-route-projectId="@Model.Id">
+                <form asp-action="ByProject" asp-route-projectId="@data.Id">
                     <input type="text" name="searchString" class="table-sorter-input ml-1" placeholder="Reseach..." />
                     <button type="submit" class="x-btn blue mx-1">
                         <i class="fa fa-search"></i>
@@ -14,7 +16,10 @@
                 </form>
             </div>
             <div>
-                <a href="#" data-toggle="modal" id="project-update-btn" class="x-btn yellow">Edit Project</a>
+                @if (User.IsInRole("Admin") || User.IsInRole("Project Manager") || User.IsInRole("Demo Admin") || User.IsInRole("Demo Project Manager"))
+                 {
+                    <a href="#" data-toggle="modal" id="project-update-btn" class="x-btn yellow">Edit Project</a>
+                 }
 
 
                 <a href="#" data-toggle="modal" class="x-btn blue" id="create-ticket"> New Ticket</a>
@@ -37,7 +42,7 @@
                 </thead>
                 <tbody>
 
-                    @foreach (var ticket in Model.Tickets)
+                    @foreach (var ticket in data.Tickets)
                     {
                         <tr>
                             <td class="d-none ticket-id-holder">@ticket.Id</td>
@@ -56,7 +61,10 @@
                                     </a>
                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                         <a class="dropdown-item update-btn" href="#" data-toggle="modal" data-target="#crupdateTicketModal">Edit</a>
-                                        <a class="dropdown-item delete-btn" href="#" data-toggle="modal" data-target="#deleteTicketModal">Delete</a>
+                                        @if (User.IsInRole("Admin") || User.IsInRole("Project Manager") || User.IsInRole("Demo Admin") || User.IsInRole("Demo Project Manager"))
+                                        {
+                                            <a class="dropdown-item delete-btn" href="#" data-toggle="modal" data-target="#deleteTicketModal">Delete</a>
+                                        }
                                     </div>
                                 </div>
                             </td>
@@ -66,7 +74,7 @@
                 </tbody>
             </table>
         </div>
-        <partial name="../Shared/Partial/Common/_pagerBarPartial.cshtml" model="Model.Pager" />
+        <partial name="../Shared/Partial/Common/_pagerBarPartial.cshtml" model="data.Pager" />
     </div>
 
 </div>
@@ -87,7 +95,7 @@
 
     <script type="text/javascript">
         $(document).ready(function () {
-            $("#sectionName").text('@(Model.Name)');
+            $("#sectionName").text('@(data.Name)');
 
             handleModals();
 
@@ -95,7 +103,7 @@
 
 
         function handleModals() {
-            var projectId = '@Model.Id';
+            var projectId = '@data.Id';
 
             const createModalUrl = '/Tracker/Ticket/loadCreateModal?projectId=' + projectId;
             const updateModalUrl = '/Tracker/Ticket/loadUpdateModal?projectId=' + projectId;
