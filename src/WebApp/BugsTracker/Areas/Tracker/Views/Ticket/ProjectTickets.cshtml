@@ -16,7 +16,10 @@
                 </form>
             </div>
             <div>
-                <a href="#" data-toggle="modal" id="project-update-btn" class="x-btn yellow">Edit Project</a>
+                @if (User.IsInRole("Admin") || User.IsInRole("Project Manager") || User.IsInRole("Demo Admin") || User.IsInRole("Demo Project Manager"))
+                 {
+                    <a href="#" data-toggle="modal" id="project-update-btn" class="x-btn yellow">Edit Project</a>
+                 }
 
 
                 <a href="#" data-toggle="modal" class="x-btn blue" id="create-ticket"> New Ticket</a>
@@ -58,7 +61,10 @@
                                     </a>
                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                         <a class="dropdown-item update-btn" href="#" data-toggle="modal" data-target="#crupdateTicketModal">Edit</a>
-                                        <a class="dropdown-item delete-btn" href="#" data-toggle="modal" data-target="#deleteTicketModal">Delete</a>
+                                        @if (User.IsInRole("Admin") || User.IsInRole("Project Manager") || User.IsInRole("Demo Admin") || User.IsInRole("Demo Project Manager"))
+                                        {
+                                            <a class="dropdown-item delete-btn" href="#" data-toggle="modal" data-target="#deleteTicketModal">Delete</a>
+                                        }
                                     </div>
                                 </div>
                             </td>
