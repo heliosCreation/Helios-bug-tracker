@@ -24,33 +24,53 @@ namespace BugTracker.Persistence.Services.Data
                     .Where(t => t.Id == id)
                     .FirstOrDefaultAsync();
         }
-        public async Task<Ticket> AddTicketAsync(Ticket entity, ICollection<string> teamIds)
+        
+        public async Task<IEnumerable<Ticket>> GetTicketsByUser(string uid, int page, string searchString)
         {
+            var itemPerPage = 7;
+            var tickets = new List<Ticket>();
+            var toSkip = (page - 1) * itemPerPage;
 
-            await _dbContext.Tickets.AddAsync(entity);
-            await _dbContext.SaveChangesAsync();
 
-            foreach (var id in teamIds)
+            var userTicketsId = await _dbContext.TicketsTeamMembers.Where(ttm => ttm.UserId == uid).Select(ttm => ttm.TicketId).ToListAsync();
+            if (!string.IsNullOrEmpty(searchString))
             {
-                await _dbContext.TicketsTeamMembers.AddAsync(new TicketsTeamMembers { TicketId = entity.Id, UserId = id });
+                searchString = searchString.ToLower();
+                var userId = _dbContext.Users
+                .Where(u => !u.UserName.ToLower().Contains("demo admin"))
+                .Where(u => u.UserName.ToLower().Contains(searchString))
+                .Select(u => u.Id)
+                .FirstOrDefault();
+
+                tickets = await _dbContext.Tickets
+                        .Include(t => t.Priority).Include(t => t.Status).Include(t => t.Type)
+                        .Where(t => userTicketsId.Contains(t.Id))
+                        .Where(t => t.Name.ToLower().Contains(searchString)
+                       || t.Priority.Name.ToLower().Contains(searchString)
+                       || t.Status.Name.ToLower().Contains(searchString)
+                       || t.Type.Name.ToLower().Contains(searchString)
+                       || t.CreatedBy.ToString() == userId)
+                        .ToListAsync();
+            }
+            else
+            {
+                tickets = await _dbContext.Tickets
+                        .Where(t => userTicketsId.Contains(t.Id))
+                        .OrderByDescending(t => t.CreatedDate)
+                        .Skip(toSkip)
+                        .Take(itemPerPage)
+
+                        .Include(t => t.Priority).Include(t => t.Status).Include(t => t.Type)
+                        .ToListAsync();
             }
 
-            await _dbContext.SaveChangesAsync();
-            return entity;
-        }
 
-        public async Task<bool> UpdateTicketAsync(Ticket entity, ICollection<string> teamIds)
+            return tickets;
+        }
+        public async Task<int> CountUserAssignedTickets(string uid)
         {
-            var oldEntity = await _dbContext.Tickets.FindAsync(entity.Id);
-            _dbContext.Entry(oldEntity).CurrentValues.SetValues(entity);
-
-            var dbTicketMemberIds = await GetTicketTeamIds(entity);
-            RemoveFromTicketTeam(entity, dbTicketMemberIds, teamIds);
-            await AddToTicketTeam(entity, dbTicketMemberIds, teamIds);
-
-            return await _dbContext.SaveChangesAsync() > 0;
+            return (await _dbContext.TicketsTeamMembers.Where(ttm => ttm.UserId == uid).ToListAsync()).Count();
         }
-
         public async Task<IEnumerable<Ticket>> GetTicketsByProject(Guid id, int page, string searchString)
         {
             var itemPerPage = 7;
@@ -95,7 +115,31 @@ namespace BugTracker.Persistence.Services.Data
         {
             return await _dbContext.Tickets.AsNoTracking().AnyAsync(t => t.Name == name) == false;
         }
+        public async Task<Ticket> AddTicketAsync(Ticket entity, ICollection<string> teamIds)
+        {
 
+            await _dbContext.Tickets.AddAsync(entity);
+            await _dbContext.SaveChangesAsync();
+
+            foreach (var id in teamIds)
+            {
+                await _dbContext.TicketsTeamMembers.AddAsync(new TicketsTeamMembers { TicketId = entity.Id, UserId = id });
+            }
+
+            await _dbContext.SaveChangesAsync();
+            return entity;
+        }
+        public async Task<bool> UpdateTicketAsync(Ticket entity, ICollection<string> teamIds)
+        {
+            var oldEntity = await _dbContext.Tickets.FindAsync(entity.Id);
+            _dbContext.Entry(oldEntity).CurrentValues.SetValues(entity);
+
+            var dbTicketMemberIds = await GetTicketTeamIds(entity);
+            RemoveFromTicketTeam(entity, dbTicketMemberIds, teamIds);
+            await AddToTicketTeam(entity, dbTicketMemberIds, teamIds);
+
+            return await _dbContext.SaveChangesAsync() > 0;
+        }
         public async Task<bool> NameIsUnique(string name, bool isAnUpdate, Guid id)
         {
             if (isAnUpdate)
@@ -108,6 +152,9 @@ namespace BugTracker.Persistence.Services.Data
         {
             return await _dbContext.TicketsTeamMembers.AnyAsync(ttm => ttm.TicketId == ticketId && ttm.UserId == uid);
         }
+        
+        
+        
         private async Task<List<string>> GetTicketTeamIds(Ticket entity)
         {
             return await _dbContext.

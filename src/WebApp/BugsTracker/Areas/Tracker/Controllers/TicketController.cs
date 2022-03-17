@@ -12,6 +12,7 @@ using BugTracker.Application.Features.Tickets.Commands.Delete;
 using BugTracker.Application.Features.Tickets.Commands.Update;
 using BugTracker.Application.Features.Tickets.Queries.GetProjectTickets;
 using BugTracker.Application.Features.Tickets.Queries.GetTicket;
+using BugTracker.Application.Features.Tickets.Queries.GetTicketsByUser;
 using BugTracker.Application.Features.TicketTeam.Query;
 using BugTracker.Application.Features.TicketTeam.Query.GetCurrentTeam;
 using BugTracker.Application.Responses;
@@ -36,9 +37,12 @@ namespace BugTracker.Areas.Tracker.Controllers
         private const string CommentModalPath = ModalBasePath + "_comment" + ModalType;
         private const string ProjectTeamModalPath = "~/Areas/Tracker/Views/Shared/Partial/Project/_projectTeamModalPartial.cshtml";
 
-        public IActionResult GetAll()
+        public async Task<IActionResult> ByUser(
+            int page = 1,
+            string searchString = "")
         {
-            return View();
+            var response = await Mediator.Send(new GetTicketByUserQuery(page, searchString));
+            return View(response.Data);
         }
 
 

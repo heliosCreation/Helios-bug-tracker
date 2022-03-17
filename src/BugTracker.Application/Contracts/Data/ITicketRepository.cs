@@ -8,7 +8,9 @@ namespace BugTracker.Application.Contracts.Data
     public interface ITicketRepository : IAsyncRepository<Ticket>
     {
         Task<Ticket> AddTicketAsync(Ticket entity, ICollection<string> teamIds);
+        Task<int> CountUserAssignedTickets(string uid);
         Task<IEnumerable<Ticket>> GetTicketsByProject(Guid id, int page, string searchString ="");
+        Task<IEnumerable<Ticket>> GetTicketsByUser(string uid, int page, string searchString);
         Task<Ticket> GetTicketWithTeamAndConfiguration(Guid id);
         Task<bool> NameIsUnique(string name, bool isAnUpdate, Guid id = new Guid());
         Task<bool> UpdateTicketAsync(Ticket entity, ICollection<string> teamIds);

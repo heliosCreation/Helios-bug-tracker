@@ -20,7 +20,6 @@ namespace BugTracker.Application.Features.Tickets.Queries.GetProjectTickets
         private readonly ITicketRepository _ticketRepository;
         private readonly IProjectRepository _projectRepository;
         private readonly IIdentityService _identityService;
-        private readonly ITicketConfigurationRepository _ticketConfigurationRepository;
         private readonly ILoggedInUserService _loggedInUserService;
 
         public GetProjectTicketsQueryHandler(
@@ -28,14 +27,12 @@ namespace BugTracker.Application.Features.Tickets.Queries.GetProjectTickets
             ITicketRepository ticketRepository,
             IProjectRepository projectRepository,
             IIdentityService identityService,
-            ITicketConfigurationRepository ticketConfigurationRepository,
             ILoggedInUserService loggedInUserService)
         {
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
             _ticketRepository = ticketRepository ?? throw new ArgumentNullException(nameof(ticketRepository));
             _projectRepository = projectRepository ?? throw new ArgumentNullException(nameof(projectRepository));
             _identityService = identityService ?? throw new ArgumentNullException(nameof(identityService));
-            _ticketConfigurationRepository = ticketConfigurationRepository ?? throw new ArgumentNullException(nameof(ticketConfigurationRepository));
             _loggedInUserService = loggedInUserService ?? throw new ArgumentNullException(nameof(loggedInUserService));
         }
 
