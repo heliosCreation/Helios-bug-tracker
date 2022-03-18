@@ -37,11 +37,14 @@ namespace BugTracker.Areas.Tracker.Controllers
         private const string CommentModalPath = ModalBasePath + "_comment" + ModalType;
         private const string ProjectTeamModalPath = "~/Areas/Tracker/Views/Shared/Partial/Project/_projectTeamModalPartial.cshtml";
 
+
         public async Task<IActionResult> ByUser(
             int page = 1,
-            string searchString = "")
+            string searchString = "",
+            bool showOnlyCreated = true, bool showAll = false)
         {
-            var response = await Mediator.Send(new GetTicketByUserQuery(page, searchString));
+            ViewData["showOnlyCreated"] = showOnlyCreated;
+            var response = await Mediator.Send(new GetTicketByUserQuery(page, searchString, showOnlyCreated, showAll));
             return View(response.Data);
         }
 

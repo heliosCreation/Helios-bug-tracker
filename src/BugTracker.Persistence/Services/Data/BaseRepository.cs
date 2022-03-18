@@ -52,5 +52,15 @@ namespace BugTracker.Persistence.Services.Data
             return await _dbContext.Set<T>().ToListAsync();
         }
 
+        public virtual async Task<IEnumerable<T>> ListAllAsync(int page, string searchString)
+        {
+            var toSkip = (page - 1) * 7;
+
+            return await _dbContext.Set<T>()
+                                    .OrderByDescending(t => t.CreatedDate)
+                                    .Skip(toSkip)
+                                    .Take(7)
+                                    .ToListAsync();
+        }
     }
 }

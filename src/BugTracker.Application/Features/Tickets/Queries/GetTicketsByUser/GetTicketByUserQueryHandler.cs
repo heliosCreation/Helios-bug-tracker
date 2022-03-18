@@ -38,8 +38,9 @@ namespace BugTracker.Application.Features.Tickets.Queries.GetTicketsByUser
         public async Task<ApiResponse<UserTicketsVm>> Handle(GetTicketByUserQuery request, CancellationToken cancellationToken)
         {
             var response = new ApiResponse<UserTicketsVm>();
-            var setCount = await _ticketRepository.CountUserAssignedTickets(_loggedInUserService.UserId);
-            var dbResult = await _ticketRepository.GetTicketsByUser(_loggedInUserService.UserId, request.Page, request.Search);
+
+            var setCount = await GetSetCount(request);
+            var dbResult = await GetAppropriateTicketSet(request);
             var mappedResult = _mapper.Map<List<TicketVm>>(dbResult);
             var pager = new Pager(setCount, request.Page){};
 
@@ -58,6 +59,41 @@ namespace BugTracker.Application.Features.Tickets.Queries.GetTicketsByUser
                 target.Status = tickets[i].Status.Name;
                 target.Type = tickets[i].Type.Name;
             }
+        }      
+        private async Task<int> GetSetCount(GetTicketByUserQuery request)
+        {
+            var setCount = 0;
+            if (request.ShowOnlyCreated)
+            {
+               return await _ticketRepository.GetUserCreatedTicketAmount(_loggedInUserService.UserId);
+            }
+            else if (_loggedInUserService.Roles.Contains("Admin"))
+            {
+                return (await _ticketRepository.ListAllAsync()).Count();
+            }
+            else
+            {
+                setCount = await _ticketRepository.CountUserAssignedTickets(_loggedInUserService.UserId);
+            }
+
+            return setCount;
+        }
+        
+        private async Task<IEnumerable<Ticket>> GetAppropriateTicketSet(GetTicketByUserQuery request)
+        {
+            if (request.ShowOnlyCreated)
+            {
+                return await _ticketRepository.GetTicketsByUser(_loggedInUserService.UserId, request.Page, request.Search, request.ShowOnlyCreated);
+            }
+
+            if (_loggedInUserService.Roles.Contains("Admin"))
+            {
+
+                return await _ticketRepository.ListAllAsync(request.Page, request.Search);
+            }
+
+            return await _ticketRepository.GetTicketsByUser(_loggedInUserService.UserId, request.Page, request.Search, request.ShowOnlyCreated);
+
         }
     }
 }
