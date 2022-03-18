@@ -1,0 +1,97 @@
+﻿@model BugTracker.Application.ViewModel.UserTicketsVm;
+
+<div class="py-4 row d-flex justify-content-around h-50">
+
+    <div class="first-row col-11 p-0">
+        <div class="first-row-header row d-flex px-3 py-2 w-100 justify-content-between">
+            <div class="research-input-wrapper d-flex justify-content-center align-items-center">
+                <form asp-action="ByUser">
+                    <input type="text" name="searchString" class="table-sorter-input ml-1" placeholder="Reseach..." />
+                    <button type="submit" class="x-btn blue mx-1">
+                        <i class="fa fa-search"></i>
+                    </button>
+                </form>
+            </div>
+            <div class="px-2 d-flex">
+
+                @if (User.IsInRole("Admin"))
+                {
+                    @if ((bool)ViewData["showOnlyCreated"] == true)
+                    {
+                        <form asp-controller="Ticket" asp-route-showOnlyCreated="@false" asp-route-showAll="@true">
+                            <input type="submit" class="x-btn purple" value="Show all tickets" />
+                        </form>
+                    }
+                    else
+                    {
+                        <form asp-controller="Ticket" asp-route-showOnlyCreated="@false">
+                            <input type="submit" class="x-btn purple" value="Show assigned tickets" />
+                        </form>
+                    }
+                }
+
+            </div>
+        </div>
+
+        <div class="table-responsive w-100">
+            <table class="table ticket-list-table">
+                <thead class="ticket-thead">
+                    <tr>
+                        <th scope="col" class="text-muted">Ticket Title</th>
+                        <th scope="col" class="text-muted">Author</th>
+                        <th scope="col" class="text-muted">Priority</th>
+                        <th scope="col" class="text-muted">Type</th>
+                        <th scope="col" class="text-muted">Estimated hours</th>
+                        <th scope="col" class="text-muted">Status</th>
+                        <th scope="col" class="text-muted text-center">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    @foreach (var ticket in Model.Tickets)
+                    {
+                        <tr>
+                            <td class="d-none ticket-id-holder">@ticket.Id</td>
+                            <td class="d-none ticket-description-data" data-description="@ticket.Description"></td>
+                            <td scope="row" class="text-purple"><a data-toggle="modal" data-target="" class="ticket-link">@ticket.Name </a></td>
+                            <td>@ticket.Author</td>
+                            <td><span class="pill @(ticket.Priority.ToLower())">@ticket.Priority</span></td>
+                            <td>@ticket.Type</td>
+                            <td class="text-center">@ticket.EstimatedAmountOfHours</td>
+                            <td class="@(ticket.Status.ToLower() == "resolved"? "text-green font-weight-bold":"")">@ticket.Status</td>
+
+                            <td class="text-center">
+                                <div class="dropdown">
+                                    <a href="#" class="dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <i class="fas fa-ellipsis-v"></i>
+                                    </a>
+                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                        <a class="dropdown-item update-btn" href="#" data-toggle="modal" data-target="#crupdateTicketModal">Edit</a>
+                                        @if (User.IsInRole("Admin") || User.IsInRole("Project Manager") || User.IsInRole("Demo Admin") || User.IsInRole("Demo Project Manager"))
+                                        {
+                                            <a class="dropdown-item delete-btn" href="#" data-toggle="modal" data-target="#deleteTicketModal">Delete</a>
+                                        }
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+
+                    }
+                </tbody>
+            </table>
+        </div>
+        <partial name="../Shared/Partial/Common/_pagerBarPartial.cshtml" model="Model.Pager" />
+    </div>
+
+</div>
+@section scripts {
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#sectionName").text("@((bool)ViewData["showOnlyCreated"] == true && User.IsInRole("Admin") ? "Your Tickets" : "Assigned Tickets")");
+            $("#sidebar ul li.active").removeClass("active");
+            $("#tickets-management-link").addClass("active");
+
+        });
+    </script>
+}

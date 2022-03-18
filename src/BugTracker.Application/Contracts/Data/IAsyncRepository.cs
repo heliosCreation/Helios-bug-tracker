@@ -10,6 +10,7 @@ namespace BugTracker.Application.Contracts.Data
         Task<T> GetOnly();
         Task<IEnumerable<T>> ListAllAsync();
 
+        Task<IEnumerable<T>> ListAllAsync(int page, string searchString);
         Task<T> AddAsync(T entity);
 
         Task UpdateAsync(T entity);

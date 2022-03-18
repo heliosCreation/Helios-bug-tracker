@@ -24,6 +24,125 @@ namespace BugTracker.Persistence.Services.Data
                     .Where(t => t.Id == id)
                     .FirstOrDefaultAsync();
         }
+
+
+        public async Task<IEnumerable<Ticket>> GetTicketsByUser(string uid, int page, string searchString, bool showOnlyCreated)
+        {
+            var itemPerPage = 7;
+            var tickets = new List<Ticket>();
+            var toSkip = (page - 1) * itemPerPage;
+
+            if (showOnlyCreated)
+            {
+                return await _dbContext.Tickets
+                    .Where(t => t.CreatedBy == Guid.Parse(uid))
+                    .OrderByDescending(t => t.CreatedDate)
+                    .Skip(toSkip)
+                    .Take(itemPerPage)
+                    .Include(t => t.Priority).Include(t => t.Status).Include(t => t.Type)
+                    .ToListAsync();
+            }
+            var userTicketsId = await _dbContext.TicketsTeamMembers.Where(ttm => ttm.UserId == uid).Select(ttm => ttm.TicketId).ToListAsync();
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                searchString = searchString.ToLower();
+                var userId = _dbContext.Users
+                .Where(u => !u.UserName.ToLower().Contains("demo admin"))
+                .Where(u => u.UserName.ToLower().Contains(searchString))
+                .Select(u => u.Id)
+                .FirstOrDefault();
+
+                tickets = await _dbContext.Tickets
+                        .Include(t => t.Priority).Include(t => t.Status).Include(t => t.Type)
+                        .Where(t => userTicketsId.Contains(t.Id))
+                        .Where(t => t.Name.ToLower().Contains(searchString)
+                       || t.Priority.Name.ToLower().Contains(searchString)
+                       || t.Status.Name.ToLower().Contains(searchString)
+                       || t.Type.Name.ToLower().Contains(searchString)
+                       || t.CreatedBy.ToString() == userId)
+                        .ToListAsync();
+            }
+            else
+            {
+                tickets = await _dbContext.Tickets
+                        .Where(t => userTicketsId.Contains(t.Id))
+                        .OrderByDescending(t => t.CreatedDate)
+                        .Skip(toSkip)
+                        .Take(itemPerPage)
+
+                        .Include(t => t.Priority).Include(t => t.Status).Include(t => t.Type)
+                        .ToListAsync();
+            }
+
+
+            return tickets;
+        }
+
+        public async Task<IEnumerable<Ticket>> GetProjectManagerTickets(string uid, int page, string searchString)
+        {
+            var skip = (page - 1) * 7;
+            var itemPerPage = 7;
+
+            var projectIds = await _dbContext.ProjectTeamMembers.Where(ptm => ptm.UserId == uid).Select(ptm => ptm.ProjectId).ToListAsync();
+            if (string.IsNullOrEmpty(searchString))
+            {
+                return await GetTicketPaginatedList(skip, itemPerPage, Guid.Empty, projectIds);
+            }
+            return await LookoutTicketBySearchString(searchString, Guid.Empty, projectIds);
+        }
+
+        public async Task<int> GetProjectManagerTicketCount(string uid)
+        {
+            var projectIds = await _dbContext.ProjectTeamMembers.Where(ptm => ptm.UserId == uid).Select(ptm => ptm.ProjectId).ToListAsync();
+            return (await _dbContext.Tickets.Where(t => projectIds.Contains(t.Id)).ToListAsync()).Count;
+
+        }
+        public override async Task<IEnumerable<Ticket>> ListAllAsync(int page, string searchString)
+        {
+            var itemPerPage = 7;
+            var toSkip = (page - 1) * itemPerPage;
+            var result = new List<Ticket>();
+
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                result = await LookoutTicketBySearchString(searchString, Guid.Empty, new List<Guid>());
+            }
+            else
+            {
+               result = await GetTicketPaginatedList(toSkip, itemPerPage, Guid.Empty, new List<Guid>());
+            }
+            return result;
+        }
+        public async Task<int> GetUserCreatedTicketAmount(string uid)
+        {
+            return (await _dbContext.Tickets.Where(t => t.CreatedBy == Guid.Parse(uid)).ToListAsync()).Count;
+        }
+        public async Task<int> CountUserAssignedTickets(string uid)
+        {
+            return (await _dbContext.TicketsTeamMembers.Where(ttm => ttm.UserId == uid).ToListAsync()).Count();
+        }
+        public async Task<IEnumerable<Ticket>> GetTicketsByProject(Guid id, int page, string searchString)
+        {
+            var itemPerPage = 7;
+            var tickets = new List<Ticket>();
+            var toSkip = (page - 1) * itemPerPage;
+
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                tickets = await LookoutTicketBySearchString(searchString, id, new List<Guid>());
+            }
+            else
+            {
+                tickets = await GetTicketPaginatedList(toSkip, itemPerPage, id, new List<Guid>());
+            }
+
+
+            return tickets;
+        }
+        public async Task<bool> NameIsUnique(string name)
+        {
+            return await _dbContext.Tickets.AsNoTracking().AnyAsync(t => t.Name == name) == false;
+        }
         public async Task<Ticket> AddTicketAsync(Ticket entity, ICollection<string> teamIds)
         {
 
@@ -38,7 +157,6 @@ namespace BugTracker.Persistence.Services.Data
             await _dbContext.SaveChangesAsync();
             return entity;
         }
-
         public async Task<bool> UpdateTicketAsync(Ticket entity, ICollection<string> teamIds)
         {
             var oldEntity = await _dbContext.Tickets.FindAsync(entity.Id);
@@ -50,52 +168,6 @@ namespace BugTracker.Persistence.Services.Data
 
             return await _dbContext.SaveChangesAsync() > 0;
         }
-
-        public async Task<IEnumerable<Ticket>> GetTicketsByProject(Guid id, int page, string searchString)
-        {
-            var itemPerPage = 7;
-            var tickets = new List<Ticket>();
-            var toSkip = (page - 1) * itemPerPage;
-
-            if (!string.IsNullOrEmpty(searchString))
-            {
-                searchString = searchString.ToLower();
-                var userId = _dbContext.Users
-                    .Where(u => !u.UserName.ToLower().Contains("demo admin"))
-                    .Where(u => u.UserName.ToLower().Contains(searchString))
-                    .Select(u => u.Id)
-                    .FirstOrDefault();
-
-                tickets = await _dbContext.Tickets
-                        .Include(t => t.Priority).Include(t => t.Status).Include(t => t.Type)
-                        .Where(t => t.ProjectId == id)
-                        .Where(t => t.Name.ToLower().Contains(searchString)
-                       || t.Priority.Name.ToLower().Contains(searchString) 
-                       || t.Status.Name.ToLower().Contains(searchString) 
-                       || t.Type.Name.ToLower().Contains(searchString)
-                       || t.CreatedBy.ToString() == userId)
-                        .ToListAsync();
-            }
-            else
-            {
-                tickets = await _dbContext.Tickets
-                    .Where(t => t.ProjectId == id)
-                    .OrderByDescending(t => t.CreatedDate)
-                    .Skip(toSkip)
-                    .Take(itemPerPage)
-
-                    .Include(t => t.Priority).Include(t => t.Status).Include(t => t.Type)
-                    .ToListAsync();
-            }
-
-
-            return tickets;
-        }
-        public async Task<bool> NameIsUnique(string name)
-        {
-            return await _dbContext.Tickets.AsNoTracking().AnyAsync(t => t.Name == name) == false;
-        }
-
         public async Task<bool> NameIsUnique(string name, bool isAnUpdate, Guid id)
         {
             if (isAnUpdate)
@@ -108,6 +180,9 @@ namespace BugTracker.Persistence.Services.Data
         {
             return await _dbContext.TicketsTeamMembers.AnyAsync(ttm => ttm.TicketId == ticketId && ttm.UserId == uid);
         }
+
+
+
         private async Task<List<string>> GetTicketTeamIds(Ticket entity)
         {
             return await _dbContext.
@@ -135,6 +210,86 @@ namespace BugTracker.Persistence.Services.Data
                 }
             }
         }
-    
+        private async Task<List<Ticket>> LookoutTicketBySearchString(string searchString, Guid id, List<Guid> projectIds)
+        {
+            searchString = searchString.ToLower();
+            var userId = _dbContext.Users
+                .Where(u => !u.UserName.ToLower().Contains("demo admin"))
+                .Where(u => u.UserName.ToLower().Contains(searchString))
+                .Select(u => u.Id)
+                .FirstOrDefault();
+
+            if (id != Guid.Empty)
+            {
+                return  await _dbContext.Tickets
+                                .Include(t => t.Priority).Include(t => t.Status).Include(t => t.Type)
+                                .Where(t => t.ProjectId == id)
+                                .Where(t => t.Name.ToLower().Contains(searchString)
+                               || t.Priority.Name.ToLower().Contains(searchString)
+                               || t.Status.Name.ToLower().Contains(searchString)
+                               || t.Type.Name.ToLower().Contains(searchString)
+                               || t.CreatedBy.ToString() == userId)
+                                .ToListAsync();
+            }
+            if (projectIds.Count > 0)
+            {
+                return await _dbContext.Tickets
+                .Include(t => t.Priority).Include(t => t.Status).Include(t => t.Type)
+                .Where(t => projectIds.Contains(t.ProjectId))
+                .Where(t => t.Name.ToLower().Contains(searchString)
+               || t.Priority.Name.ToLower().Contains(searchString)
+               || t.Status.Name.ToLower().Contains(searchString)
+               || t.Type.Name.ToLower().Contains(searchString)
+               || t.CreatedBy.ToString() == userId)
+                .ToListAsync();
+            }
+            else
+            {
+                return  await _dbContext.Tickets
+                                .Include(t => t.Priority).Include(t => t.Status).Include(t => t.Type)
+                                .Where(t => t.Name.ToLower().Contains(searchString)
+                               || t.Priority.Name.ToLower().Contains(searchString)
+                               || t.Status.Name.ToLower().Contains(searchString)
+                               || t.Type.Name.ToLower().Contains(searchString)
+                               || t.CreatedBy.ToString() == userId)
+                                .ToListAsync();
+
+            }
+
+        }
+        
+        private async Task<List<Ticket>> GetTicketPaginatedList(int skip, int itemPerPage, Guid projectId, List<Guid> projectIds)
+        {
+            if (projectId != Guid.Empty)
+            {
+                return await _dbContext.Tickets
+                                .Where(t => t.ProjectId == projectId)
+                                .OrderByDescending(t => t.CreatedDate)
+                                .Skip(skip)
+                                .Take(itemPerPage)
+                                .Include(t => t.Priority).Include(t => t.Status).Include(t => t.Type)
+                                .ToListAsync();
+            }
+            if (projectIds.Count > 0)
+            {
+                return await _dbContext.Tickets.
+                        Where(t => projectIds.Contains(t.Id))
+                        .OrderByDescending(t => t.CreatedDate)
+                        .Skip(skip)
+                        .Take(itemPerPage)
+                        .Include(t => t.Priority).Include(t => t.Status).Include(t => t.Type)
+                        .ToListAsync();
+            }
+            else
+            {
+                return await _dbContext.Tickets
+                                .OrderByDescending(t => t.CreatedDate)
+                                .Skip(skip)
+                                .Take(itemPerPage)
+                                .Include(t => t.Priority).Include(t => t.Status).Include(t => t.Type)
+                                .ToListAsync();
+            }
+
+        }
     }
 }
