@@ -71,6 +71,10 @@ namespace BugTracker.Application.Features.Tickets.Queries.GetTicketsByUser
             {
                 return (await _ticketRepository.ListAllAsync()).Count();
             }
+            else if(_loggedInUserService.Roles.Contains("Project Manager"))
+            {
+                return await _ticketRepository.GetProjectManagerTicketCount(_loggedInUserService.UserId);
+            }
             else
             {
                 setCount = await _ticketRepository.CountUserAssignedTickets(_loggedInUserService.UserId);
@@ -91,7 +95,10 @@ namespace BugTracker.Application.Features.Tickets.Queries.GetTicketsByUser
 
                 return await _ticketRepository.ListAllAsync(request.Page, request.Search);
             }
-
+            if (_loggedInUserService.Roles.Contains("Project Manager"))
+            {
+                return await _ticketRepository.GetProjectManagerTickets(_loggedInUserService.UserId, request.Page, request.Search);
+            }
             return await _ticketRepository.GetTicketsByUser(_loggedInUserService.UserId, request.Page, request.Search, request.ShowOnlyCreated);
 
         }

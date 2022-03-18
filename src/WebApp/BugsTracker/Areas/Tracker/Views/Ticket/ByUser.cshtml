@@ -14,9 +14,9 @@
             </div>
             <div class="px-2 d-flex">
 
-                @if ((bool)ViewData["showOnlyCreated"] == true)
+                @if (User.IsInRole("Admin"))
                 {
-                    if (User.IsInRole("Admin"))
+                    @if ((bool)ViewData["showOnlyCreated"] == true)
                     {
                         <form asp-controller="Ticket" asp-route-showOnlyCreated="@false" asp-route-showAll="@true">
                             <input type="submit" class="x-btn purple" value="Show all tickets" />
@@ -29,12 +29,7 @@
                         </form>
                     }
                 }
-                else
-                {
-                    <form asp-controller="Ticket" asp-route-showOnlyCreated="@true">
-                        <input type="submit" class="x-btn green" value="Show my tickets" />
-                    </form>
-                }
+
             </div>
         </div>
 
@@ -93,7 +88,7 @@
 
     <script type="text/javascript">
         $(document).ready(function () {
-            $("#sectionName").text("@((bool)ViewData["showOnlyCreated"] == true ? "Your Tickets" : "Assigned Tickets")");
+            $("#sectionName").text("@((bool)ViewData["showOnlyCreated"] == true && User.IsInRole("Admin") ? "Your Tickets" : "Assigned Tickets")");
             $("#sidebar ul li.active").removeClass("active");
             $("#tickets-management-link").addClass("active");
 
