@@ -58,8 +58,9 @@ namespace BugTracker.Application.Features.Tickets.Queries.GetProjectTickets
         private async Task<bool> IsAllowedToAccessTickets(ApiResponse<ProjectWithTicketVm> response, Guid projectId)
         {
             var belongsToTeam = await _projectRepository.UserBelongsToProjectTeam(_loggedInUserService.UserId, projectId);
-            var isAdmin = _loggedInUserService.Roles.Contains("Admin");
-            if (!belongsToTeam && !isAdmin)
+            bool containsAdmin = _loggedInUserService.Roles.Any(str => str.Contains("Admin"));
+
+            if (!belongsToTeam && !containsAdmin)
             {
                 response.SetUnhautorizedResponse();
                 return false;

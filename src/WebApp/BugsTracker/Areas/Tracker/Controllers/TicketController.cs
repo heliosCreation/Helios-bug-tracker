@@ -67,7 +67,7 @@ namespace BugTracker.Areas.Tracker.Controllers
         }
         
         [HttpPost]
-        [Authorize(Policy ="NoDemo")]
+        [Authorize(Policy = "PriviledgedUser")]
         public async Task<IActionResult> Create(CreateTicketCommand command)
         {
             var response = await Mediator.Send(command);
@@ -79,7 +79,7 @@ namespace BugTracker.Areas.Tracker.Controllers
         }
 
         [HttpPost]
-        [Authorize(Policy = "NoDemo")]
+        [Authorize(Policy = "PriviledgedUser")]
         public async Task<IActionResult> Update(UpdateTicketCommand command, Guid projectId)
         {
             var response = await Mediator.Send(command);
@@ -91,7 +91,7 @@ namespace BugTracker.Areas.Tracker.Controllers
         }
 
         [HttpPost]
-        [Authorize(Policy = "NoDemo")]
+        [Authorize(Policy = "PriviledgedUser")]
         public async Task<IActionResult> Delete(DeleteTicketCommand command, Guid projectId)
         {
             var response = await Mediator.Send(command);
@@ -103,7 +103,7 @@ namespace BugTracker.Areas.Tracker.Controllers
         }
 
         [HttpGet]
-        [Authorize(Policy = "NoDemo")]
+        [Authorize(Policy = "NotDev")]
         public async Task<IActionResult> LoadCreateModal(Guid projectId)
         {
             var dto = new CreateTicketDto(projectId);
@@ -143,6 +143,7 @@ namespace BugTracker.Areas.Tracker.Controllers
         }
         
         [HttpGet]
+        [Authorize(Policy = "NotDev")]
         public IActionResult LoadDeleteModal(Guid id, Guid projectId, string name)
         {
             var dto = new DeleteTicketDto(id, projectId, name);
@@ -167,6 +168,7 @@ namespace BugTracker.Areas.Tracker.Controllers
         }
 
         [HttpGet]
+        [Authorize(Policy = "PriviledgedUser")]
         public async Task<IActionResult> LoadProjectTeamModal(Guid projectId)
         {
             var dto = new ProjectTeamManagementDto();
