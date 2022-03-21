@@ -96,6 +96,18 @@ namespace BugTracker.Persistence
                            .ToList().Count == 0;
                     });
                 });
+
+                options.AddPolicy("CanCreateTicket", policy =>
+                {
+                    policy.RequireAuthenticatedUser();
+                    policy.RequireAssertion(ctx =>
+                    {
+                        return ctx.User.Claims
+                           .Where(c => c.Type == ClaimTypes.Role)
+                           .Where(c => c.Value.ToLower().Contains("dev") || c.Value.ToLower().Contains("manager"))
+                           .ToList().Count == 0;
+                    });
+                });
             });
 
 

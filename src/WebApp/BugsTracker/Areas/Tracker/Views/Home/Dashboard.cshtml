@@ -1,5 +1,4 @@
 ﻿@model DashboardViewModel
-@using System.Security.Claims
 
 <partial name="../Shared/Partial/Common/_modalHolderPartial.cshtml" />
 
@@ -21,7 +20,6 @@
                         <tr>
                             <th scope="col" class="text-muted">Project</th>
                             <th scope="col" class="text-muted">Description</th>
-                            <th scope="col" class="text-muted">Contributor</th>
                             @if (User.IsInRole("Admin") || User.IsInRole("Demo Admin"))
                             {
                                 <th scope="col" class="text-muted text-center">Action</th>
@@ -43,21 +41,6 @@
                                 </a>
                             </td>
                             <td>@project.Description</td>
-                            <td>
-                                <ul>
-                                    @if (project.TeamNames != null && project.TeamNames.Any())
-                                    {
-                                        @foreach (var teamMember in project.TeamNames)
-                                        {
-                                            <li>@teamMember</li>
-                                        }
-                                    }
-                                    else
-                                    {
-                                        <li class="text-muted">None</li>
-                                    }
-                                </ul>
-                            </td>
                             @if (User.IsInRole("Admin") || User.IsInRole("Demo Admin"))
                             {
                                 <td class="text-center">

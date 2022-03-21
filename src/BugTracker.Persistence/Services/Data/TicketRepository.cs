@@ -164,9 +164,13 @@ namespace BugTracker.Persistence.Services.Data
             var oldEntity = await _dbContext.Tickets.FindAsync(entity.Id);
             _dbContext.Entry(oldEntity).CurrentValues.SetValues(entity);
 
-            var dbTicketMemberIds = await GetTicketTeamIds(entity);
-            RemoveFromTicketTeam(entity, dbTicketMemberIds, teamIds);
-            await AddToTicketTeam(entity, dbTicketMemberIds, teamIds);
+            if (teamIds.Count > 0)
+            {
+                var dbTicketMemberIds = await GetTicketTeamIds(entity);
+                RemoveFromTicketTeam(entity, dbTicketMemberIds, teamIds);
+                await AddToTicketTeam(entity, dbTicketMemberIds, teamIds);
+            }
+
 
             return await _dbContext.SaveChangesAsync() > 0;
         }
@@ -180,7 +184,8 @@ namespace BugTracker.Persistence.Services.Data
         }
         public async Task<bool> UserBelongsToTicketTeam(string uid, Guid ticketId)
         {
-            return await _dbContext.TicketsTeamMembers.AnyAsync(ttm => ttm.TicketId == ticketId && ttm.UserId == uid);
+            var x =  await _dbContext.TicketsTeamMembers.AnyAsync(ttm => ttm.TicketId == ticketId && ttm.UserId == uid);
+            return x;
         }
 
 

@@ -258,13 +258,18 @@ namespace BugTracker.Persistence.Services.Identity
         }
         public async Task<ICollection<ApplicationUser>>GetCurrentTicketTeam(Guid ticketId)
         {
-            var teamIds = await _context.TicketsTeamMembers
+            var team = await _context.TicketsTeamMembers
                         .Where(ttm => ttm.TicketId == ticketId)
                         .Select(x => x.UserId)
                         .ToListAsync();
+            var projectId = await _context.Tickets.Where(t => t.Id == ticketId).Select(t => t.ProjectId).FirstOrDefaultAsync();
+            var pmRoleIds = await _context.Roles.Where(r => r.Name == "Project Manager").Select(r => r.Id).FirstOrDefaultAsync();
+            var pmsIds = await _context.UserRoles.Where(ur => pmRoleIds.Contains(ur.RoleId)).Select(ur => ur.UserId).ToListAsync();
+            var pmId = await _context.ProjectTeamMembers.Where(ptm => ptm.ProjectId == projectId && pmsIds.Contains(ptm.UserId)).Select(ptm => ptm.UserId).FirstOrDefaultAsync();
+            team.Add(pmId);
 
             var ticketTeam = await _context.Users.
-                            Where(u => teamIds.Contains(u.Id))
+                            Where(u => team.Contains(u.Id))
                             .ToListAsync();
 
             return ticketTeam;

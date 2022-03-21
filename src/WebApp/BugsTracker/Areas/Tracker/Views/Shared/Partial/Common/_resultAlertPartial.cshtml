@@ -12,7 +12,7 @@
 else if (ViewBag.isFailed == true)
 {
     <div class="alert alert-danger alert-dismissible fade show m-0 " role="alert">
-        <strong>Success - </strong> <br /> Your @ViewBag.type was not @ViewBag.actionReturned.
+        <strong>Error - </strong> <br /> Your @ViewBag.type was not @ViewBag.actionReturned.
         <ul>
             @foreach (var error in ViewBag.errors)
             {

@@ -100,6 +100,12 @@ namespace BugTracker.Persistence.Services.Data
 
             return response;
         }
+        
+        public async Task<Guid> GetProjectIdByTicketId(Guid ticketId)
+        {
+            return await _dbContext.Tickets.Where(t => t.Id == ticketId).Select(t => t.ProjectId).FirstOrDefaultAsync();
+        }
+        
         public async Task<bool> UserBelongsToProjectTeam(string uid, Guid projectId)
         {
             return await _dbContext.ProjectTeamMembers.AnyAsync(ptm => ptm.UserId == uid && ptm.ProjectId == projectId);

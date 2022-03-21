@@ -13,19 +13,18 @@
                 </form>
             </div>
             <div class="px-2 d-flex">
-
                 @if (User.IsInRole("Admin") || User.IsInRole("Demo Admin"))
                 {
                     @if ((bool)ViewData["showOnlyCreated"] == false)
                     {
 
-                        <form asp-controller="Ticket" asp-route-showOnlyCreated="@false" asp-route-showAll="@true">
-                            <input type="submit" class="x-btn purple" value="Show all tickets" />
+                        <form asp-controller="Ticket" asp-route-showOnlyCreated="@true" asp-route-showAll="@false">
+                            <input type="submit" class="x-btn blue" value="Show my tickets" />
                         </form>
                     }
                     else
                     {
-                        <form asp-controller="Ticket" asp-route-showOnlyCreated="@false" asp-route-showAll="@false">
+                        <form asp-controller="Ticket" asp-route-showOnlyCreated="@false" asp-route-showAll="@true">
                             <input type="submit" class="x-btn purple" value="Show all tickets" />
                         </form>
                     }

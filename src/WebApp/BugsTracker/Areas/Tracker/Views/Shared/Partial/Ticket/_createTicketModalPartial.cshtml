@@ -120,39 +120,15 @@
 
                         <div class="p-2">
                             <div class="d-flex justify-content-between align-items-center">
-                                <label class="col-form-label">Assigned submitter</label>
-                                @if (Model.Team.Where(tm => tm.Role.ToLower() == "submitter").Count() <= 0)
+                                <label asp-for="Command.Team" class="col-form-label">Assigned demo developers</label>
+                                @if (Model.Team.Where(tm => tm.Role.ToLower().Contains("demo dev")).Count() <= 0)
                                 {
                                     <button type="button" class="pill-rounded border-0"
                                             data-toggle="popover"
                                             data-trigger="hover"
                                             data-html="true"
                                             data-placement="right" title="Tips <i class='fas fa-lightbulb gradient-lightbulb'></i>"
-                                            data-content="Assign submitter(s) to the project to access it here.">
-                                        ?
-                                    </button>
-                                }
-                            </div>
-
-                            <select asp-for="Command.Team" class="form-control" id="sub-team-select" multiple>
-                                @foreach (var sub in Model.Team.Where(tm => tm.Role.ToLower() == "submitter"))
-                                {
-                                    <option value="@sub.Id">@sub.Username - @sub.Role </option>
-                                }
-                            </select>
-                            <span asp-validation-for="Command.Team" class="text-danger"></span>
-                        </div>
-                        <div class="p-2">
-                            <div class="d-flex justify-content-between align-items-center">
-                                <label asp-for="Command.Team" class="col-form-label">Assigned Demo User</label>
-                                @if (Model.Team.Where(tm => tm.Role.ToLower().Contains("demo")).Count() <= 0)
-                                {
-                                    <button type="button" class="pill-rounded border-0"
-                                            data-toggle="popover"
-                                            data-trigger="hover"
-                                            data-html="true"
-                                            data-placement="right" title="Tips <i class='fas fa-lightbulb gradient-lightbulb'></i>"
-                                            data-content="Assign demo user(s) to the project to access it here.">
+                                            data-content="Assign developer(s) to the project to access it here.">
                                         ?
                                     </button>
                                 }
@@ -161,7 +137,7 @@
                             <select asp-for="Command.Team" class="form-control" id="pm-team-select" multiple>
                                 @{
 
-                                    foreach (var demo in Model.Team.Where(tm => tm.Role.ToLower().Contains("demo dev") || tm.Role.ToLower().Contains("demo sub")))
+                                    foreach (var demo in Model.Team.Where(tm => tm.Role.ToLower().Contains("demo dev")))
                                     {
                                         <option value="@demo.Id">@demo.Username - @demo.Role </option>
                                     }
@@ -278,39 +254,15 @@ else
 
                     <div class="p-2">
                         <div class="d-flex justify-content-between align-items-center">
-                            <label class="col-form-label">Assigned submitter</label>
-                            @if (Model.Team.Where(tm => tm.Role.ToLower() == "submitter").Count() <= 0)
+                            <label asp-for="Command.Team" class="col-form-label">Assigned Demo developers</label>
+                            @if (!Model.Team.Any(tm => tm.Role.ToLower().Contains("demo dev")))
                             {
                                 <button type="button" class="pill-rounded border-0"
                                         data-toggle="popover"
                                         data-trigger="hover"
                                         data-html="true"
                                         data-placement="right" title="Tips <i class='fas fa-lightbulb gradient-lightbulb'></i>"
-                                        data-content="Assign submitter(s) to the project to access it here.">
-                                    ?
-                                </button>
-                            }
-                        </div>
-
-                        <select asp-for="Command.Team" class="form-control" id="sub-team-select" multiple>
-                            @foreach (var sub in Model.Team.Where(tm => tm.Role.ToLower() == "submitter"))
-                            {
-                                <option value="@sub.Id">@sub.Username - @sub.Role </option>
-                            }
-                        </select>
-                        <span asp-validation-for="Command.Team" class="text-danger"></span>
-                    </div>
-                    <div class="p-2">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <label asp-for="Command.Team" class="col-form-label">Assigned Demo user</label>
-                            @if (!Model.Team.Any(tm => tm.Role.ToLower().Contains("demo dev") || tm.Role.ToLower().Contains("demo sub")))
-                            {
-                                <button type="button" class="pill-rounded border-0"
-                                        data-toggle="popover"
-                                        data-trigger="hover"
-                                        data-html="true"
-                                        data-placement="right" title="Tips <i class='fas fa-lightbulb gradient-lightbulb'></i>"
-                                        data-content="Assign demo user(s) to the project to access it here.">
+                                        data-content="Assign demo developers(s) to the project to access it here.">
                                     ?
                                 </button>
                             }
@@ -319,7 +271,7 @@ else
                         <select asp-for="Command.Team" class="form-control" id="pm-team-select" multiple>
                             @{
 
-                                foreach (var demo in Model.Team.Where(tm => tm.Role.ToLower().Contains("demo dev") || tm.Role.ToLower().Contains("demo sub")))
+                                foreach (var demo in Model.Team.Where(tm => tm.Role.ToLower().Contains("demo dev")))
                                 {
                                     <option value="@demo.Id">@demo.Username - @demo.Role </option>
                                 }

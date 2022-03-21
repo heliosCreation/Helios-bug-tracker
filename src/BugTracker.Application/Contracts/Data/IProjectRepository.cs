@@ -14,5 +14,6 @@ namespace BugTracker.Application.Contracts.Data
         Task<ICollection<string>> GetProjectTeamIds(Guid id);
         Task UpdateProjectAsync(Project entity, ICollection<string> teamIds);
         Task<bool> UserBelongsToProjectTeam(string uid, Guid projectId);
+        Task<Guid> GetProjectIdByTicketId(Guid ticketId);
     }
 }

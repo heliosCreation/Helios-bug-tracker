@@ -24,7 +24,7 @@
                     <a href="#" data-toggle="modal" id="project-update-btn" class="x-btn yellow">Edit Project</a>
                 }
 
-                @if ((await AuthorizationService.AuthorizeAsync(User, "NotDev")).Succeeded)
+                @if ((await AuthorizationService.AuthorizeAsync(User, "CanCreateTicket")).Succeeded)
                 {
                     <a href="#" data-toggle="modal" class="x-btn blue" id="create-ticket"> New Ticket</a>
                 }

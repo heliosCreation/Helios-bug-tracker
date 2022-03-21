@@ -20,6 +20,7 @@ using BugTracker.Filters.Validation;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -52,22 +53,24 @@ namespace BugTracker.Areas.Tracker.Controllers
         [ValidationFilter]
         public async Task<IActionResult> ByProject(
             Guid projectId,
+            List<string> errors,
             int page = 1,
             string searchString ="",
             bool isSuccess = false, bool isFailed = false,
-            string type = null, string actionReturned = null)
+            string type = "ticket", string actionReturned = null)
         {
             ViewBag.isSuccess = isSuccess;
             ViewBag.isFailed = isFailed;
             ViewBag.Type = type;
             ViewBag.actionReturned = actionReturned;
+            ViewBag.errors = errors;
 
             var response = await Mediator.Send(new GetProjectTicketsQuery(projectId, page, searchString));
             return View("ProjectTickets", response);
         }
         
         [HttpPost]
-        [Authorize(Policy = "PriviledgedUser")]
+        [Authorize(Roles ="Admin, Submitter")]
         public async Task<IActionResult> Create(CreateTicketCommand command)
         {
             var response = await Mediator.Send(command);
@@ -79,7 +82,7 @@ namespace BugTracker.Areas.Tracker.Controllers
         }
 
         [HttpPost]
-        [Authorize(Policy = "PriviledgedUser")]
+        [Authorize(Policy ="NoDemo")]
         public async Task<IActionResult> Update(UpdateTicketCommand command, Guid projectId)
         {
             var response = await Mediator.Send(command);
@@ -87,7 +90,7 @@ namespace BugTracker.Areas.Tracker.Controllers
             {
                 return RedirectToAction("ByProject", new { projectId = projectId, isSuccess = true, type = "ticket", actionReturned = "updated" });
             }
-            return RedirectToAction("ByProject", new { projectId = projectId, isFailed = true });
+            return RedirectToAction("ByProject", new { projectId = projectId, isFailed = true, actionReturned = "updated", errors = response.ErrorMessages});
         }
 
         [HttpPost]

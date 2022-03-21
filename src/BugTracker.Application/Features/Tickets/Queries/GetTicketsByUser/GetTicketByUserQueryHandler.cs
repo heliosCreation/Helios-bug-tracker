@@ -65,7 +65,7 @@ namespace BugTracker.Application.Features.Tickets.Queries.GetTicketsByUser
         private async Task<int> GetSetCount(GetTicketByUserQuery request)
         {
             var setCount = 0;
-            if (request.ShowOnlyCreated)
+            if (request.ShowOnlyCreated || _loggedInUserService.Roles.Any(str => str.Contains("Sub")))
             {
                return await _ticketRepository.GetUserCreatedTicketAmount(_loggedInUserService.UserId);
             }
@@ -87,7 +87,7 @@ namespace BugTracker.Application.Features.Tickets.Queries.GetTicketsByUser
         
         private async Task<IEnumerable<Ticket>> GetAppropriateTicketSet(GetTicketByUserQuery request)
         {
-            if (request.ShowOnlyCreated)
+            if (request.ShowOnlyCreated || _loggedInUserService.Roles.Any(str => str.Contains("Sub")))
             {
                 return await _ticketRepository.GetTicketsByUser(_loggedInUserService.UserId, request.Page, request.Search, request.ShowOnlyCreated);
             }
