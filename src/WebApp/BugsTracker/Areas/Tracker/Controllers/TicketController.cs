@@ -41,7 +41,7 @@ namespace BugTracker.Areas.Tracker.Controllers
         public async Task<IActionResult> ByUser(
             int page = 1,
             string searchString = "",
-            bool showOnlyCreated = true, bool showAll = false)
+            bool showOnlyCreated = false, bool showAll = true)
         {
             ViewData["showOnlyCreated"] = showOnlyCreated;
             var response = await Mediator.Send(new GetTicketByUserQuery(page, searchString, showOnlyCreated, showAll));

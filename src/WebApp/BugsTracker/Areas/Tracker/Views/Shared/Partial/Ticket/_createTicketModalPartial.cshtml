@@ -145,7 +145,7 @@
                         <div class="p-2">
                             <div class="d-flex justify-content-between align-items-center">
                                 <label asp-for="Command.Team" class="col-form-label">Assigned Demo User</label>
-                                @if (Model.Team.Where(tm => tm.Role.ToLower().Contains("Demo")).Count() <= 0)
+                                @if (Model.Team.Where(tm => tm.Role.ToLower().Contains("demo")).Count() <= 0)
                                 {
                                     <button type="button" class="pill-rounded border-0"
                                             data-toggle="popover"

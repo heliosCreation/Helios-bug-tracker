@@ -35,6 +35,8 @@ namespace BugTracker.Application.Features.Tickets.Queries.GetTicketsByUser
             _identityService = identityService ?? throw new ArgumentNullException(nameof(identityService));
             _mapper = mapper;
         }
+
+
         public async Task<ApiResponse<UserTicketsVm>> Handle(GetTicketByUserQuery request, CancellationToken cancellationToken)
         {
             var response = new ApiResponse<UserTicketsVm>();
@@ -67,11 +69,11 @@ namespace BugTracker.Application.Features.Tickets.Queries.GetTicketsByUser
             {
                return await _ticketRepository.GetUserCreatedTicketAmount(_loggedInUserService.UserId);
             }
-            else if (_loggedInUserService.Roles.Contains("Admin"))
+            else if (_loggedInUserService.Roles.Any(str => str.Contains("Admin")))
             {
                 return (await _ticketRepository.ListAllAsync()).Count();
             }
-            else if(_loggedInUserService.Roles.Contains("Project Manager"))
+            else if(_loggedInUserService.Roles.Any(str => str.Contains("Project Manager")))
             {
                 return await _ticketRepository.GetProjectManagerTicketCount(_loggedInUserService.UserId);
             }
@@ -90,15 +92,16 @@ namespace BugTracker.Application.Features.Tickets.Queries.GetTicketsByUser
                 return await _ticketRepository.GetTicketsByUser(_loggedInUserService.UserId, request.Page, request.Search, request.ShowOnlyCreated);
             }
 
-            if (_loggedInUserService.Roles.Contains("Admin"))
+            else if (_loggedInUserService.Roles.Any(str => str.Contains("Admin")))
             {
-
                 return await _ticketRepository.ListAllAsync(request.Page, request.Search);
             }
-            if (_loggedInUserService.Roles.Contains("Project Manager"))
+
+            else if (_loggedInUserService.Roles.Any(str => str.Contains("Project Manager")))
             {
                 return await _ticketRepository.GetProjectManagerTickets(_loggedInUserService.UserId, request.Page, request.Search);
             }
+
             return await _ticketRepository.GetTicketsByUser(_loggedInUserService.UserId, request.Page, request.Search, request.ShowOnlyCreated);
 
         }

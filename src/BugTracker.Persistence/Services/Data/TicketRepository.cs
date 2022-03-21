@@ -94,7 +94,9 @@ namespace BugTracker.Persistence.Services.Data
         public async Task<int> GetProjectManagerTicketCount(string uid)
         {
             var projectIds = await _dbContext.ProjectTeamMembers.Where(ptm => ptm.UserId == uid).Select(ptm => ptm.ProjectId).ToListAsync();
-            return (await _dbContext.Tickets.Where(t => projectIds.Contains(t.Id)).ToListAsync()).Count;
+            var tickets = await _dbContext.Tickets.Where(t => projectIds.Contains(t.ProjectId)).ToListAsync();
+
+            return tickets.Count();
 
         }
         public override async Task<IEnumerable<Ticket>> ListAllAsync(int page, string searchString)
@@ -273,7 +275,7 @@ namespace BugTracker.Persistence.Services.Data
             if (projectIds.Count > 0)
             {
                 return await _dbContext.Tickets.
-                        Where(t => projectIds.Contains(t.Id))
+                        Where(t => projectIds.Contains(t.ProjectId))
                         .OrderByDescending(t => t.CreatedDate)
                         .Skip(skip)
                         .Take(itemPerPage)
