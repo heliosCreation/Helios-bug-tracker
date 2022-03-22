@@ -40,14 +40,14 @@ namespace BugTracker.Application.Features.Audits.Queries.GetAllLogs
 
             var dbResult = await _auditRepository.ListAll(request.Page, request.Searchstring);
             response.Data.Logs = await AssignNameToUserId( _mapper.Map<List<AuditLogDto>>(dbResult));
-            var logsCount = await GetLogCount(request.Searchstring, response.Data.Logs);
+            var logsCount = await GetLogCount(request.Searchstring);
             response.Data.Pager = new Pager(logsCount, request.Page);
 
             return response;
         }
 
 
-        private async Task<int> GetLogCount(string searchString, List<AuditLogDto> logs)
+        private async Task<int> GetLogCount(string searchString)
         {            
             return await _auditRepository.CountAll(searchString);
         }

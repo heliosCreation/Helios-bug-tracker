@@ -52,12 +52,13 @@ namespace BugTracker.Application.Features.Comments.Commands.Create
         {
             var isAdmin = _loggedInUserService.Roles.Contains("Admin");
             var isProjectManager = _loggedInUserService.Roles.Any(str => str == "Project Manager");
+            var isSubmitter = _loggedInUserService.Roles.Any(str => str == "Submitter");
 
             if (isAdmin)
             {
                 return true;
             }
-            else if (isProjectManager)
+            else if (isProjectManager || isSubmitter)
             {
                 var projectId = await _projectRepository.GetProjectIdByTicketId(ticketId);
                 return await _projectRepository.UserBelongsToProjectTeam(_loggedInUserService.UserId, projectId);

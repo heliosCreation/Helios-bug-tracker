@@ -33,7 +33,7 @@
     </div>
 
     <div id="ticket-history" class="w-100 h-100 p-2 tab-content d-none">
-        <div id="accordion" class="@(Model.History.Count < 6 ? "d-flex flex-column-reverse" : "")'">
+        <div id="accordion" class="@(Model.History.Count > 6 ? "d-flex flex-column-reverse" : "")">
             <div class="w-100 d-flex  align-items-center flex-column-reverse overflow-auto" id="history-holder">
                 @foreach (var item in Model.History)
                 {

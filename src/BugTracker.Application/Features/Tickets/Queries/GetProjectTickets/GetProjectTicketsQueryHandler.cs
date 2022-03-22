@@ -44,9 +44,9 @@ namespace BugTracker.Application.Features.Tickets.Queries.GetProjectTickets
                 return response;
             }
 
-            var setCount = (await _ticketRepository.ListAllAsync()).Count();
             var project = await _projectRepository.GetByIdAsync(request.ProjectId);
-            var tickets = (await _ticketRepository.GetTicketsByProject(request.ProjectId,request.Page, request.SearchString)).ToList();
+            var setCount = await CountTicketsForUser(project.Id, request.SearchString);
+            var tickets = await GetTicketsForUser(request, project.Id);
             var pager = new Pager(setCount, request.Page) {RelatedId = project.Id };
 
             response.Data = new ProjectWithTicketVm(project.Id, project.Name, _mapper.Map<List<TicketVm>>(tickets), pager);
@@ -78,6 +78,29 @@ namespace BugTracker.Application.Features.Tickets.Queries.GetProjectTickets
                 target.Priority = tickets[i].Priority.Name;
                 target.Status = tickets[i].Status.Name;
                 target.Type = tickets[i].Type.Name;
+            }
+        }
+        
+        private async Task<List<Ticket>>GetTicketsForUser(GetProjectTicketsQuery request, Guid projectId)
+        {
+            if (_loggedInUserService.Roles.Any(str => str.Contains("Dev")))
+            {
+                return (await _ticketRepository.GetDevTicketByProject(_loggedInUserService.UserId, projectId, request.Page, request.SearchString)).ToList();
+            }
+            else
+            {
+                return (await _ticketRepository.GetTicketsByProject(request.ProjectId, request.Page, request.SearchString)).ToList();
+            }
+        }
+        private async Task<int> CountTicketsForUser(Guid projectId, string searchString)
+        {
+            if (_loggedInUserService.Roles.Any(str => str.Contains("Dev")))
+            {
+                return await _ticketRepository.GetDevTicketAmountByProject(_loggedInUserService.UserId, projectId, searchString);
+            }
+            else
+            {
+                return await _ticketRepository.CountProjectTicket(searchString, projectId);
             }
         }
     }
