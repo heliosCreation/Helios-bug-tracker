@@ -35,10 +35,9 @@
                 <div class="form-group d-flex">
                     <div class="w-50 pr-2">
                         <label asp-for="Command.Name" class="col-form-label">Name:</label>
-                        <input asp-for="Command.Name" class="form-control" id="recipient-name">
+                        <input asp-for="Command.Name" class="form-control" id="recipient-name" disabled="@(User.IsInRole("Developer") ? true : false)">
                         <span asp-validation-for="Command.Name" class="text-danger"></span>
                     </div>
-
                     <div class="w-50 pl-2">
                         <label asp-for="Command.EstimatedAmountOfHours" class="col-form-label">Estimated hours</label>
                         <input asp-for="Command.EstimatedAmountOfHours" class="form-control" id="estimated-hours">
@@ -47,7 +46,7 @@
                 </div>
                 <div class="form-group">
                     <label asp-for="Command.Description" class="col-form-label">Description:</label>
-                    <textarea asp-for="Command.Description" class="form-control" id="message-text" rows="3"></textarea>
+                    <textarea asp-for="Command.Description" class="form-control" id="message-text" rows="3" disabled="@(User.IsInRole("Developer") ? true : false)"></textarea>
                     <span asp-validation-for="Command.Description" class="text-danger"></span>
                 </div>
 

@@ -172,7 +172,9 @@ namespace BugTracker.Persistence.Services.Data
             }
 
 
-            return await _dbContext.SaveChangesAsync() > 0;
+            var result =  await _dbContext.SaveChangesAsync();
+
+            return result > 0;
         }
         public async Task<bool> NameIsUnique(string name, bool isAnUpdate, Guid id)
         {
