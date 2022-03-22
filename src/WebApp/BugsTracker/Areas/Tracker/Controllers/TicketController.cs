@@ -66,7 +66,7 @@ namespace BugTracker.Areas.Tracker.Controllers
             ViewBag.errors = errors;
 
             var response = await Mediator.Send(new GetProjectTicketsQuery(projectId, page, searchString));
-            response.Data.Pager.SearchText = searchString;
+            response.Data.Pager.SearchText = searchString != null ? searchString : "";
             return View("ProjectTickets", response);
         }
         
