@@ -27,38 +27,45 @@ namespace BugTracker.Persistence.Services.Data
 
         public async Task<IEnumerable<Ticket>> GetTicketsByUser(string uid, int page, string searchString, bool showOnlyCreated)
         {
-            var itemPerPage = 7;
+            var itemPerPage = 6;
             var tickets = new List<Ticket>();
             var toSkip = (page - 1) * itemPerPage;
 
             if (showOnlyCreated)
             {
                 return await _dbContext.Tickets
+                     .Include(t => t.Priority).Include(t => t.Status).Include(t => t.Type).Include(t => t.Project)
                     .Where(t => t.CreatedBy == Guid.Parse(uid))
                     .OrderByDescending(t => t.CreatedDate)
                     .Skip(toSkip)
                     .Take(itemPerPage)
-                    .Include(t => t.Priority).Include(t => t.Status).Include(t => t.Type)
                     .ToListAsync();
             }
             var userTicketsId = await _dbContext.TicketsTeamMembers.Where(ttm => ttm.UserId == uid).Select(ttm => ttm.TicketId).ToListAsync();
             if (!string.IsNullOrEmpty(searchString))
             {
                 searchString = searchString.ToLower();
-                var userId = _dbContext.Users
+
+                var userId = await _dbContext.Users
                 .Where(u => !u.UserName.ToLower().Contains("demo admin"))
                 .Where(u => u.UserName.ToLower().Contains(searchString))
                 .Select(u => u.Id)
-                .FirstOrDefault();
+                .FirstOrDefaultAsync();
+
+                var projectName = await _dbContext.Projects.Where(p => p.Name.ToLower().Contains(searchString)).Select(p => p.Name).FirstOrDefaultAsync();
 
                 tickets = await _dbContext.Tickets
-                        .Include(t => t.Priority).Include(t => t.Status).Include(t => t.Type)
+                    .Include(t => t.Priority).Include(t => t.Status).Include(t => t.Type).Include(t => t.Project)
                         .Where(t => userTicketsId.Contains(t.Id))
                         .Where(t => t.Name.ToLower().Contains(searchString)
                        || t.Priority.Name.ToLower().Contains(searchString)
                        || t.Status.Name.ToLower().Contains(searchString)
                        || t.Type.Name.ToLower().Contains(searchString)
-                       || t.CreatedBy.ToString() == userId)
+                       || t.CreatedBy.ToString() == userId
+                       || t.Project.Name == projectName)
+                        .OrderByDescending(t => t.CreatedDate)
+                        .Skip(toSkip)
+                        .Take(itemPerPage)
                         .ToListAsync();
             }
             else
@@ -69,7 +76,7 @@ namespace BugTracker.Persistence.Services.Data
                         .Skip(toSkip)
                         .Take(itemPerPage)
 
-                        .Include(t => t.Priority).Include(t => t.Status).Include(t => t.Type)
+                        .Include(t => t.Priority).Include(t => t.Status).Include(t => t.Type).Include(t => t.Project)
                         .ToListAsync();
             }
 
@@ -90,8 +97,34 @@ namespace BugTracker.Persistence.Services.Data
             return await LookoutTicketBySearchString(searchString, Guid.Empty, projectIds, skip, itemPerPage);
         }
 
-        public async Task<int> CountUserAssignedTickets(string uid)
+        public async Task<int> CountUserAssignedTickets(string uid, string searchString)
         {
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                searchString = searchString.ToLower();
+                var searchUserId = await _dbContext.Users
+                    .Where(u => !u.UserName.ToLower().Contains("demo admin"))
+                    .Where(u => u.UserName.ToLower().Contains(searchString))
+                    .Select(u => u.Id)
+                    .FirstOrDefaultAsync();
+
+                var searchProjectName = await _dbContext.Projects
+                    .Where(p => p.Name.ToLower().Contains(searchString))
+                    .Select(p => p.Name)
+                    .FirstOrDefaultAsync();
+
+                var count =  (await _dbContext.Tickets
+                .Include(t => t.Priority).Include(t => t.Status).Include(t => t.Type).Include(t => t.Project)
+                .Where(t => t.Name.ToLower().Contains(searchString)
+               || t.Priority.Name.ToLower().Contains(searchString)
+               || t.Status.Name.ToLower().Contains(searchString)
+               || t.Type.Name.ToLower().Contains(searchString)
+               || t.CreatedBy.ToString() == searchUserId
+               || t.Project.Name == searchProjectName)
+                .ToListAsync()).Count;
+
+                return count;
+            }
             return (await _dbContext.TicketsTeamMembers.Where(ttm => ttm.UserId == uid).ToListAsync()).Count();
         }
 
@@ -202,7 +235,7 @@ namespace BugTracker.Persistence.Services.Data
                     .FirstOrDefault();
 
                 return await _dbContext.Tickets
-                .Include(t => t.Priority).Include(t => t.Status).Include(t => t.Type)
+                .Include(t => t.Priority).Include(t => t.Status).Include(t => t.Type).Include(t => t.Project)
                 .Where(t => userTicketsId.Intersect(projectTicketsId).Contains(t.Id))
                 .Where(t => t.Name.ToLower().Contains(searchString)
                || t.Priority.Name.ToLower().Contains(searchString)
@@ -217,7 +250,7 @@ namespace BugTracker.Persistence.Services.Data
             else
             {
                 return await _dbContext.Tickets
-                        .Include(t => t.Priority).Include(t => t.Status).Include(t => t.Type)
+                        .Include(t => t.Priority).Include(t => t.Status).Include(t => t.Type).Include(t => t.Project)
                         .Where(t => userTicketsId.Intersect(projectTicketsId).Contains(t.Id))
                         .OrderByDescending(t => t.CreatedDate)
                         .Skip(toSkip)
@@ -335,7 +368,7 @@ namespace BugTracker.Persistence.Services.Data
             if (id != Guid.Empty)
             {
                 return  await _dbContext.Tickets
-                                .Include(t => t.Priority).Include(t => t.Status).Include(t => t.Type)
+                                .Include(t => t.Priority).Include(t => t.Status).Include(t => t.Type).Include(t => t.Project)
                                 .Where(t => t.ProjectId == id)
                                 .Where(t => t.Name.ToLower().Contains(searchString)
                                || t.Priority.Name.ToLower().Contains(searchString)
@@ -349,7 +382,7 @@ namespace BugTracker.Persistence.Services.Data
             if (projectIds.Count > 0)
             {
                 return await _dbContext.Tickets
-                .Include(t => t.Priority).Include(t => t.Status).Include(t => t.Type)
+                .Include(t => t.Priority).Include(t => t.Status).Include(t => t.Type).Include(t => t.Project)
                 .Where(t => projectIds.Contains(t.ProjectId))
                 .Where(t => t.Name.ToLower().Contains(searchString)
                || t.Priority.Name.ToLower().Contains(searchString)
@@ -363,7 +396,7 @@ namespace BugTracker.Persistence.Services.Data
             else
             {
                 return  await _dbContext.Tickets
-                                .Include(t => t.Priority).Include(t => t.Status).Include(t => t.Type)
+                                .Include(t => t.Priority).Include(t => t.Status).Include(t => t.Type).Include(t => t.Project)
                                 .Where(t => t.Name.ToLower().Contains(searchString)
                                || t.Priority.Name.ToLower().Contains(searchString)
                                || t.Status.Name.ToLower().Contains(searchString)
@@ -382,7 +415,7 @@ namespace BugTracker.Persistence.Services.Data
             if (projectId != Guid.Empty)
             {
                 return await _dbContext.Tickets
-                                .Include(t => t.Priority).Include(t => t.Status).Include(t => t.Type)
+                                .Include(t => t.Priority).Include(t => t.Status).Include(t => t.Type).Include(t => t.Project)
                                 .Where(t => t.ProjectId == projectId)
                                 .OrderByDescending(t => t.CreatedDate)
                                 .Skip(skip)
@@ -391,17 +424,18 @@ namespace BugTracker.Persistence.Services.Data
             }
             if (projectIds.Count > 0)
             {
-                return await _dbContext.Tickets.
-                        Where(t => projectIds.Contains(t.ProjectId))
+                return await _dbContext.Tickets
+                        .Include(t => t.Priority).Include(t => t.Status).Include(t => t.Type).Include(t => t.Project)
+                        .Where(t => projectIds.Contains(t.ProjectId))
                         .OrderByDescending(t => t.CreatedDate)
                         .Skip(skip)
                         .Take(itemPerPage)
-                        .Include(t => t.Priority).Include(t => t.Status).Include(t => t.Type)
                         .ToListAsync();
             }
             else
             {
                 return await _dbContext.Tickets
+                                .Include(t => t.Priority).Include(t => t.Status).Include(t => t.Type).Include(t => t.Project)
                                 .OrderByDescending(t => t.CreatedDate)
                                 .Skip(skip)
                                 .Take(itemPerPage)

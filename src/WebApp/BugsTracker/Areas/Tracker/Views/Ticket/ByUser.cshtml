@@ -6,7 +6,8 @@
         <div class="first-row-header row d-flex px-3 py-2 w-100 justify-content-between">
             <div class="research-input-wrapper d-flex justify-content-center align-items-center">
                 <form asp-action="ByUser">
-                    <input type="text" name="searchString" class="table-sorter-input ml-1" placeholder="Reseach..." />
+                    <input type="text" name="searchString" class="table-sorter-input ml-1" placeholder="Reseach..."
+                           value="@(string.IsNullOrEmpty(Model.Pager.SearchText) ? "" : Model.Pager.SearchText)"/>
                     <button type="submit" class="x-btn blue mx-1">
                         <i class="fa fa-search"></i>
                     </button>
@@ -38,6 +39,7 @@
                 <thead class="ticket-thead">
                     <tr>
                         <th scope="col" class="text-muted">Ticket Title</th>
+                        <th scope="col" class="text-muted">Project</th>
                         <th scope="col" class="text-muted">Author</th>
                         <th scope="col" class="text-muted">Priority</th>
                         <th scope="col" class="text-muted">Type</th>
@@ -53,7 +55,8 @@
                         <tr>
                             <td class="d-none ticket-id-holder">@ticket.Id</td>
                             <td class="d-none ticket-description-data" data-description="@ticket.Description"></td>
-                            <td scope="row" class="text-purple"><a data-toggle="modal" data-target="" class="ticket-link">@ticket.Name </a></td>
+                            <td scope="row" class="text-purple"><a class="ticket-link">@ticket.Name </a></td>
+                            <td scope="row" class="text-purple"><a class="ticket-link">@ticket.Project </a></td>
                             <td>@ticket.Author</td>
                             <td><span class="pill @(ticket.Priority.ToLower())">@ticket.Priority</span></td>
                             <td>@ticket.Type</td>
@@ -80,8 +83,47 @@
                 </tbody>
             </table>
         </div>
-        <partial name="../Shared/Partial/Common/_pagerBarPartial.cshtml" model="Model.Pager" />
-    </div>
+
+        <div class="row d-flex justify-content-sm-between align-items-center w-100">
+            <div class="pagination-holder d-flex p-2">
+                @if (Model.Pager.CurrentPage > 1)
+                {
+                    <a class="purple-circle angle" asp-action="ByUser"  asp-route-page="1" asp-route-searchstring="@Model.Pager.SearchText">
+                        <i class="fas fa-angle-double-left"></i>
+                    </a>
+                    <a class="purple-circle angle" asp-action="ByUser" asp-route-page="@(Model.Pager.CurrentPage - 1)" asp-route-searchstring="@Model.Pager.SearchText">
+                        <i class="fas fa-angle-left"></i>
+                    </a>
+                }
+                @for (int i = Model.Pager.StartPage; i <= Model.Pager.EndPage; i++)
+                {
+                    if (Model.Pager.CurrentPage == i)
+                    {
+                        <a class="purple-circle  @(i == Model.Pager.CurrentPage ? "filled" : "")">@i</a>
+                    }
+                    else
+                    {
+                        <a class="purple-circle" asp-action="ByUser" asp-route-page="@i" asp-route-searchstring="@Model.Pager.SearchText">@i</a>
+                    }
+                }
+
+                @if (Model.Pager.CurrentPage < Model.Pager.EndPage)
+                {
+                    <a class="purple-circle angle" asp-action="ByUser"  asp-route-page="@(Model.Pager.CurrentPage + 1)" asp-route-searchstring="@Model.Pager.SearchText">
+                        <i class="fas fa-angle-right"></i>
+                    </a>
+                    <a class="purple-circle angle" asp-action="ByUser"  asp-route-page="@(Model.Pager.TotalPages)" asp-route-searchstring="@Model.Pager.SearchText">
+                        <i class="fas fa-angle-double-right"></i>
+                    </a>
+                }
+            </div>
+
+            <div class="p-2">
+                <p>
+                    Showing @Model.Pager.StartRecord to @Model.Pager.EndRecord of @Model.Pager.TotalItems Rows.
+                </p>
+            </div>
+        </div>    </div>
 
 </div>
 @section scripts {

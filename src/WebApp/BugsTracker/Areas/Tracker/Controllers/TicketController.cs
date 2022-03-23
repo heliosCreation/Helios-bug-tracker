@@ -46,6 +46,8 @@ namespace BugTracker.Areas.Tracker.Controllers
         {
             ViewData["showOnlyCreated"] = showOnlyCreated;
             var response = await Mediator.Send(new GetTicketByUserQuery(page, searchString, showOnlyCreated, showAll));
+            response.Data.Pager.SearchText = searchString != null ? searchString : "";
+
             return View(response.Data);
         }
 

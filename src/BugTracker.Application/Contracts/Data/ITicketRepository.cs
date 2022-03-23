@@ -9,7 +9,7 @@ namespace BugTracker.Application.Contracts.Data
     {
         Task<Ticket> AddTicketAsync(Ticket entity, ICollection<string> teamIds);
         Task<int> CountProjectTicket(string searchString, Guid projectId);
-        Task<int> CountUserAssignedTickets(string uid);
+        Task<int> CountUserAssignedTickets(string uid, string searchString);
         Task<int> GetDevTicketAmountByProject(string uid, Guid projectId, string searchString);
         Task<IEnumerable<Ticket>> GetDevTicketByProject(string uid, Guid projectId, int page, string searchString);
         Task<int> GetProjectManagerTicketCount(string uid);

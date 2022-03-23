@@ -60,6 +60,7 @@ namespace BugTracker.Application.Features.Tickets.Queries.GetTicketsByUser
                 target.Priority = tickets[i].Priority.Name;
                 target.Status = tickets[i].Status.Name;
                 target.Type = tickets[i].Type.Name;
+                target.Project = tickets[i].Project.Name;
             }
         }      
         private async Task<int> GetSetCount(GetTicketByUserQuery request)
@@ -79,7 +80,7 @@ namespace BugTracker.Application.Features.Tickets.Queries.GetTicketsByUser
             }
             else
             {
-                setCount = await _ticketRepository.CountUserAssignedTickets(_loggedInUserService.UserId);
+                setCount = await _ticketRepository.CountUserAssignedTickets(_loggedInUserService.UserId, request.Search);
             }
 
             return setCount;
@@ -105,5 +106,6 @@ namespace BugTracker.Application.Features.Tickets.Queries.GetTicketsByUser
             return await _ticketRepository.GetTicketsByUser(_loggedInUserService.UserId, request.Page, request.Search, request.ShowOnlyCreated);
 
         }
+  
     }
 }
