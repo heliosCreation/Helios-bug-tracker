@@ -45,17 +45,24 @@ namespace BugTracker.Application.Features.Tickets.Commands.Create
             return response;
         }
 
-        private async Task<bool> IsAllowedToAccessTickets(ApiResponse<IdResponse> response, Guid projectId)
+        private async Task<bool> IsAllowedToAccessTickets(ApiResponse<IdResponse> response, Guid ticketId)
         {
-            var belongsToTeam = await _projectRepository.UserBelongsToProjectTeam(_loggedInUserService.UserId, projectId);
             var isAdmin = _loggedInUserService.Roles.Contains("Admin");
-            if (!belongsToTeam && !isAdmin)
+            var isProjectManager = _loggedInUserService.Roles.Any(str => str == "Project Manager");
+            var isSubmitter = _loggedInUserService.Roles.Any(str => str == "Submitter");
+
+            if (isAdmin)
             {
-                response.SetUnhautorizedResponse();
-                return false;
+                return true;
+            }
+            else if (isProjectManager || isSubmitter)
+            {
+                var projectId = await _projectRepository.GetProjectIdByTicketId(ticketId);
+                return await _projectRepository.UserBelongsToProjectTeam(_loggedInUserService.UserId, projectId);
             }
 
-            return true;
+
+            return await _ticketRepository.UserBelongsToTicketTeam(_loggedInUserService.UserId, ticketId);
         }
     }
 }

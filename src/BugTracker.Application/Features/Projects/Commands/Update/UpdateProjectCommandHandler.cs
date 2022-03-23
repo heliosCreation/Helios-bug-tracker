@@ -1,12 +1,10 @@
 ﻿using AutoMapper;
 using BugTracker.Application.Contracts.Data;
+using BugTracker.Application.Contracts.Identity;
 using BugTracker.Application.Responses;
 using BugTracker.Domain.Entities;
 using MediatR;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -16,11 +14,13 @@ namespace BugTracker.Application.Features.Projects.Commands.Update
     {
         private readonly IProjectRepository _projectRepository;
         private readonly IMapper _mapper;
+        private readonly ILoggedInUserService _loggedInuserService;
 
-        public UpdateProjectCommandHandler(IProjectRepository projectRepository, IMapper mapper)
+        public UpdateProjectCommandHandler(IProjectRepository projectRepository, IMapper mapper, ILoggedInUserService loggedInuserService)
         {
             _projectRepository = projectRepository ?? throw new System.ArgumentNullException(nameof(projectRepository));
             _mapper = mapper ?? throw new System.ArgumentNullException(nameof(mapper));
+            _loggedInuserService = loggedInuserService ?? throw new System.ArgumentNullException(nameof(loggedInuserService));
         }
         public async Task<ApiResponse<object>> Handle(UpdateProjectCommand request, CancellationToken cancellationToken)
         {
@@ -31,7 +31,9 @@ namespace BugTracker.Application.Features.Projects.Commands.Update
                 return response.setNotFoundResponse($"Project with id {request.Id} was not found");
             }
             _mapper.Map(request, project, typeof(UpdateProjectCommand), typeof(Project));
-            await _projectRepository.UpdateProjectAsync(project, request.Team);
+
+            bool isAdmin = _loggedInuserService.Roles.Any(str => str.Contains("Admin"));
+            await _projectRepository.UpdateProjectAsync(project, request.Team, isAdmin );
 
             return response;
         }
