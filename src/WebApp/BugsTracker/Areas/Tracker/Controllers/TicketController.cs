@@ -79,7 +79,7 @@ namespace BugTracker.Areas.Tracker.Controllers
             {
                 return RedirectToAction("ByProject", new { projectId = command.ProjectId, isSuccess = true, type = "ticket", actionReturned = "created" });
             }
-            return RedirectToAction("ByProject", new { projectId = command.ProjectId, isFailed = true });
+            return RedirectToAction("ByProject", new { projectId = command.ProjectId, isFailed = true, type = "ticket", actionReturned = "created" });
         }
 
         [HttpPost]

@@ -120,7 +120,6 @@ namespace BugTracker.Persistence.Services.Data
                     .Where(t => t.ProjectId == projectId)
                     .ToListAsync()).Count;
         }
-
         public async Task<int> GetDevTicketAmountByProject(string uid, Guid projectId, string searchString)
         {
             var projectTicketsId = await _dbContext.Tickets.Where(t => t.ProjectId == projectId).Select(t => t.Id).ToListAsync();
@@ -159,6 +158,11 @@ namespace BugTracker.Persistence.Services.Data
             return tickets.Count();
 
         }
+        public async Task<int> GetUserCreatedTicketAmount(string uid)
+        {
+            return (await _dbContext.Tickets.Where(t => t.CreatedBy == Guid.Parse(uid)).ToListAsync()).Count;
+        }
+
         public override async Task<IEnumerable<Ticket>> ListAllAsync(int page, string searchString)
         {
             var itemPerPage = 6;
@@ -171,15 +175,10 @@ namespace BugTracker.Persistence.Services.Data
             }
             else
             {
-               result = await GetTicketPaginatedList(toSkip, itemPerPage, Guid.Empty, new List<Guid>());
+                result = await GetTicketPaginatedList(toSkip, itemPerPage, Guid.Empty, new List<Guid>());
             }
             return result;
         }
-        public async Task<int> GetUserCreatedTicketAmount(string uid)
-        {
-            return (await _dbContext.Tickets.Where(t => t.CreatedBy == Guid.Parse(uid)).ToListAsync()).Count;
-        }
-
 
         public async Task<IEnumerable<Ticket>> GetDevTicketByProject(string uid, Guid projectId, int page, string searchString)
         {
