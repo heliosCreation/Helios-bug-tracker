@@ -1,6 +1,10 @@
 ﻿@model ApiResponse<BugTracker.Application.ViewModel.ProjectWithTicketVm>
-@{ 
+@using Microsoft.AspNetCore.Authorization
+@inject IAuthorizationService AuthorizationService
+
+@{
     var data = Model.Data;
+
 }
 <partial name="../Shared/Partial/Common/_modalHolderPartial.cshtml" />
 <div class="py-4 row d-flex justify-content-around h-50">
@@ -9,20 +13,23 @@
         <div class="first-row-header row d-flex px-3 py-2 w-100 justify-content-between">
             <div class="research-input-wrapper d-flex justify-content-center align-items-center">
                 <form asp-action="ByProject" asp-route-projectId="@data.Id">
-                    <input type="text" name="searchString" class="table-sorter-input ml-1" placeholder="Reseach..." />
+                    <input type="text" name="searchString" class="table-sorter-input ml-1" placeholder="Reseach..."
+                           value="@(Model.Data.Pager.SearchText != null? Model.Data.Pager.SearchText : "")"/>
                     <button type="submit" class="x-btn blue mx-1">
                         <i class="fa fa-search"></i>
                     </button>
                 </form>
             </div>
             <div>
-                @if (User.IsInRole("Admin") || User.IsInRole("Project Manager") || User.IsInRole("Demo Admin") || User.IsInRole("Demo Project Manager"))
-                 {
+                @if ((await AuthorizationService.AuthorizeAsync(User, "PriviledgedUserAndDemoPriviledged")).Succeeded)
+                {
                     <a href="#" data-toggle="modal" id="project-update-btn" class="x-btn yellow">Edit Project</a>
-                 }
+                }
 
-
-                <a href="#" data-toggle="modal" class="x-btn blue" id="create-ticket"> New Ticket</a>
+                @if ((await AuthorizationService.AuthorizeAsync(User, "CanCreateTicket")).Succeeded)
+                {
+                    <a href="#" data-toggle="modal" class="x-btn blue" id="create-ticket"> New Ticket</a>
+                }
             </div>
 
         </div>
@@ -61,7 +68,7 @@
                                     </a>
                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                         <a class="dropdown-item update-btn" href="#" data-toggle="modal" data-target="#crupdateTicketModal">Edit</a>
-                                        @if (User.IsInRole("Admin") || User.IsInRole("Project Manager") || User.IsInRole("Demo Admin") || User.IsInRole("Demo Project Manager"))
+                                        @if ((await AuthorizationService.AuthorizeAsync(User, "PriviledgedUserAndDemoPriviledged")).Succeeded)
                                         {
                                             <a class="dropdown-item delete-btn" href="#" data-toggle="modal" data-target="#deleteTicketModal">Delete</a>
                                         }
@@ -96,6 +103,7 @@
     <script type="text/javascript">
         $(document).ready(function () {
             $("#sectionName").text('@(data.Name)');
+            $("#sidebar ul li.active").removeClass("active");
 
             handleModals();
 

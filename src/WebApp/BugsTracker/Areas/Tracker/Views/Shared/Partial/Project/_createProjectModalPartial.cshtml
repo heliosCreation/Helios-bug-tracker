@@ -62,7 +62,7 @@
                         <div class="p-2">
                             <div class="d-flex">
 
-                                <label class="col-form-label">Assigned Dev</label>
+                                <label class="col-form-label">Assigned Developers</label>
 
                                 <div class="ml-auto d-flex justify-content-center align-items-center flex-wrap-reverse">
                                     <input type="button" class="x-btn purple small select-cleaner" value="Clear" />
@@ -106,7 +106,7 @@
 
                             </div>
                             <select asp-for="Command.Team" class="form-control" id="dev-team-select" multiple>
-                                @foreach (var demo in Model.Team.Where(tm => tm.Role.ToLower().Contains("demo")))
+                                @foreach (var demo in Model.Team.Where(tm => tm.Role.ToLower().Contains("demo") && !tm.Role.ToLower().Contains("admin") ))
                                 {
                                     <option value="@demo.Id">@demo.Username - @demo.Role </option>
                                 }
@@ -168,7 +168,7 @@
                         <div class="p-2">
                             <div class="d-flex">
 
-                                <label class="col-form-label">Assigned Dev</label>
+                                <label class="col-form-label">Assigned Developers</label>
 
                                 <div class="ml-auto d-flex justify-content-center align-items-center flex-wrap-reverse">
                                     <input type="button" class="x-btn purple small select-cleaner" value="Clear" />
@@ -211,7 +211,7 @@
 
                             </div>
                             <select asp-for="Command.Team" class="form-control" id="dev-team-select" multiple>
-                                @foreach (var demo in Model.Team.Where(tm => tm.Role.ToLower().Contains("demo")))
+                                @foreach (var demo in Model.Team.Where(tm => tm.Role.ToLower().Contains("demo") && !tm.Role.ToLower().Contains("admin")))
                                 {
                                     <option value="@demo.Id">@demo.Username - @demo.Role </option>
                                 }

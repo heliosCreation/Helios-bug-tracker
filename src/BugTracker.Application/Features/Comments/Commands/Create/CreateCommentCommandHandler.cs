@@ -6,6 +6,7 @@ using BugTracker.Application.Responses;
 using BugTracker.Domain.Entities;
 using MediatR;
 using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -16,16 +17,19 @@ namespace BugTracker.Application.Features.Comments.Commands.Create
         private readonly IMapper _mapper;
         private readonly ICommentRepository _commentRepository;
         private readonly ITicketRepository _ticketRepository;
+        private readonly IProjectRepository _projectRepository;
         private readonly ILoggedInUserService _loggedInUserService;
 
         public CreateCommentCommandHandler(IMapper mapper,
             ICommentRepository commentRepository,
             ITicketRepository ticketRepository,
+            IProjectRepository projectRepository,
             ILoggedInUserService loggedInUserService)
         {
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
             _commentRepository = commentRepository ?? throw new ArgumentNullException(nameof(commentRepository));
             _ticketRepository = ticketRepository ?? throw new ArgumentNullException(nameof(ticketRepository));
+            _projectRepository = projectRepository ?? throw new ArgumentNullException(nameof(projectRepository));
             _loggedInUserService = loggedInUserService ?? throw new ArgumentNullException(nameof(loggedInUserService));
         }
 
@@ -34,6 +38,7 @@ namespace BugTracker.Application.Features.Comments.Commands.Create
             var response = new ApiResponse<CommentDto>();
             if (!await IsAllowedToAccessTickets(response, request.TicketId))
             {
+                response.SetUnhautorizedResponse();
                 return response;
             }
             var comment = _mapper.Map<Comment>(request);
@@ -45,15 +50,22 @@ namespace BugTracker.Application.Features.Comments.Commands.Create
 
         private async Task<bool> IsAllowedToAccessTickets(ApiResponse<CommentDto> response, Guid ticketId)
         {
-            var belongsToTeam = await _ticketRepository.UserBelongsToTicketTeam(_loggedInUserService.UserId, ticketId);
             var isAdmin = _loggedInUserService.Roles.Contains("Admin");
-            if (!belongsToTeam && !isAdmin)
+            var isProjectManager = _loggedInUserService.Roles.Any(str => str == "Project Manager");
+            var isSubmitter = _loggedInUserService.Roles.Any(str => str == "Submitter");
+
+            if (isAdmin)
             {
-                response.SetUnhautorizedResponse();
-                return false;
+                return true;
+            }
+            else if (isProjectManager || isSubmitter)
+            {
+                var projectId = await _projectRepository.GetProjectIdByTicketId(ticketId);
+                return await _projectRepository.UserBelongsToProjectTeam(_loggedInUserService.UserId, projectId);
             }
 
-            return true;
+
+            return await _ticketRepository.UserBelongsToTicketTeam(_loggedInUserService.UserId, ticketId);
         }
     }
 }

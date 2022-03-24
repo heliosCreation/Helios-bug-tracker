@@ -22,7 +22,7 @@ namespace BugTracker.Areas.Tracker.Controllers
 
 
         [HttpPost]
-        [Authorize(Roles = "Admin, Project Manager")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Create([Bind(Prefix = "Command")] CreateProjectCommand command)
         {
             var response = await Mediator.Send(command);
@@ -34,7 +34,7 @@ namespace BugTracker.Areas.Tracker.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "Admin, Project Manager")]
+        [Authorize(Policy = "PriviledgedUser")]
         public async Task<IActionResult> Update([Bind(Prefix = "Command")] UpdateProjectCommand command, bool fromTicket = false)
         {
             var response = await Mediator.Send(command);
@@ -49,7 +49,7 @@ namespace BugTracker.Areas.Tracker.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "Admin, Project Manager")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(DeleteProjectCommand command)
         {
             var response = await Mediator.Send(command);
@@ -62,7 +62,7 @@ namespace BugTracker.Areas.Tracker.Controllers
         }
 
         [HttpGet]
-        [Authorize(Roles = "Admin, Project Manager, Demo Admin, Demo Project Manager")]
+        [Authorize(Roles = "Admin, Demo Admin")]
         public async Task<IActionResult> LoadCreateModal()
         {
             var dto = new CreateProjectDto();
@@ -73,7 +73,7 @@ namespace BugTracker.Areas.Tracker.Controllers
         }
 
         [HttpGet]
-        [Authorize(Roles = "Admin, Project Manager, Demo Admin, Demo Project Manager")]
+        [Authorize(Policy = "PriviledgedUserAndDemoPriviledged")]
         public async Task<IActionResult> LoadUpdateModal(Guid id, bool fromTicket = false)
         {
             ViewBag.fromTicket = fromTicket;
@@ -91,7 +91,7 @@ namespace BugTracker.Areas.Tracker.Controllers
         }
 
         [HttpGet]
-        [Authorize(Roles = "Admin, Project Manager, Demo Admin, Demo Project Manager")]
+        [Authorize(Roles = "Admin, Demo Admin")]
         public async Task<IActionResult> LoadDeleteModal(Guid id)
         {
             var response = await Mediator.Send(new GetProjectQuery(id));

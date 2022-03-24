@@ -32,7 +32,8 @@ namespace BugTracker.Application.Features.Projects.Queries.GetAll
             var response = new ApiResponse<ProjectVm>();
             var uid = _loggedInUserService.UserId;
             var roles = _loggedInUserService.Roles;
-            var param = roles.Contains("Admin") ? null : uid;
+            bool containsAdmin = roles.Any(str => str.Contains("Admin"));
+            var param = containsAdmin ? null : uid;
 
             var allProject = (await _projectRepository.ListAllWithTeam(param)).OrderByDescending(x => x.Project.CreatedDate);
             response.DataList = _mapper.Map<List<ProjectVm>>(allProject);

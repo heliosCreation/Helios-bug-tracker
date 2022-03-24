@@ -3,6 +3,7 @@ using BugTracker.Application.Contracts.Identity;
 using BugTracker.Application.Responses;
 using MediatR;
 using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -12,11 +13,13 @@ namespace BugTracker.Application.Features.Tickets.Commands.Delete
     {
         private readonly ITicketRepository _ticketRepository;
         private readonly ILoggedInUserService _loggedInUserService;
+        private readonly IProjectRepository _projectRepository;
 
-        public DeleteTicketCommandHandler(ITicketRepository ticketRepository, ILoggedInUserService loggedInUserService)
+        public DeleteTicketCommandHandler(ITicketRepository ticketRepository, ILoggedInUserService loggedInUserService, IProjectRepository projectRepository)
         {
             _ticketRepository = ticketRepository ?? throw new ArgumentNullException(nameof(ticketRepository));
             _loggedInUserService = loggedInUserService ?? throw new ArgumentNullException(nameof(loggedInUserService));
+            _projectRepository = projectRepository ?? throw new ArgumentNullException(nameof(projectRepository));
         }
         public async Task<ApiResponse<object>> Handle(DeleteTicketCommand request, CancellationToken cancellationToken)
         {
@@ -36,17 +39,24 @@ namespace BugTracker.Application.Features.Tickets.Commands.Delete
             return response;
         }
 
-        private async Task<bool> IsAllowedToAccessTickets(ApiResponse<object> response, Guid projectId)
+        private async Task<bool> IsAllowedToAccessTickets(ApiResponse<object> response, Guid ticketId)
         {
-            var belongsToTeam = await _ticketRepository.UserBelongsToTicketTeam(_loggedInUserService.UserId, projectId);
             var isAdmin = _loggedInUserService.Roles.Contains("Admin");
-            if (!belongsToTeam && !isAdmin)
+            var isProjectManager = _loggedInUserService.Roles.Any(str => str == "Project Manager");
+            var isSubmitter = _loggedInUserService.Roles.Any(str => str == "Submitter");
+
+            if (isAdmin)
             {
-                response.SetUnhautorizedResponse();
-                return false;
+                return true;
+            }
+            else if (isProjectManager || isSubmitter)
+            {
+                var projectId = await _projectRepository.GetProjectIdByTicketId(ticketId);
+                return await _projectRepository.UserBelongsToProjectTeam(_loggedInUserService.UserId, projectId);
             }
 
-            return true;
+
+            return await _ticketRepository.UserBelongsToTicketTeam(_loggedInUserService.UserId, ticketId);
         }
     }
 }

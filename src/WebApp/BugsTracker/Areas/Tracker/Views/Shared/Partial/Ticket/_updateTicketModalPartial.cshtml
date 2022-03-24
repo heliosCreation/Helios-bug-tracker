@@ -10,15 +10,19 @@
             <span aria-hidden="true">&times;</span>
         </button>
     </div>
-    <ul class="nav nav-tabs crupdate-ticket-tabs">
+    @if ((await AuthorizationService.AuthorizeAsync(User, "PriviledgedUserAndDemoPriviledged")).Succeeded)
+    {
+        <ul class="nav nav-tabs crupdate-ticket-tabs">
 
-        <li class="nav-item">
-            <a class="nav-link active" href="#">Ticket</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="#">Team</a>
-        </li>
-    </ul>
+            <li class="nav-item">
+                <a class="nav-link active" href="#">Ticket</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">Team</a>
+            </li>
+        </ul>
+    }
+
 </div>
 @if ((await AuthorizationService.AuthorizeAsync(User, "NoDemo")).Succeeded)
 {
@@ -31,10 +35,9 @@
                 <div class="form-group d-flex">
                     <div class="w-50 pr-2">
                         <label asp-for="Command.Name" class="col-form-label">Name:</label>
-                        <input asp-for="Command.Name" class="form-control" id="recipient-name">
+                        <input asp-for="Command.Name" class="form-control" id="recipient-name" readonly="@(User.IsInRole("Developer") ? true : false)">
                         <span asp-validation-for="Command.Name" class="text-danger"></span>
                     </div>
-
                     <div class="w-50 pl-2">
                         <label asp-for="Command.EstimatedAmountOfHours" class="col-form-label">Estimated hours</label>
                         <input asp-for="Command.EstimatedAmountOfHours" class="form-control" id="estimated-hours">
@@ -43,7 +46,7 @@
                 </div>
                 <div class="form-group">
                     <label asp-for="Command.Description" class="col-form-label">Description:</label>
-                    <textarea asp-for="Command.Description" class="form-control" id="message-text" rows="3"></textarea>
+                    <textarea asp-for="Command.Description" class="form-control" id="message-text" rows="3" readonly="@(User.IsInRole("Developer") ? true : false)"></textarea>
                     <span asp-validation-for="Command.Description" class="text-danger"></span>
                 </div>
 
@@ -89,26 +92,11 @@
 
                 <div class="form-group">
 
-                    <div class="p-2">
-                        <div class="d-flex">
-                            <label asp-for="Command.Team" class="col-form-label">Assigned Project manager</label>
 
-                            <div class="ml-auto d-flex justify-content-center align-items-center flex-wrap-reverse">
-                                <input type="button" class="x-btn purple small select-cleaner" value="Clear" />
-                            </div>
-                        </div>
-                        <select asp-for="Command.Team" class="form-control" id="pm-team-select" multiple>
-                            @foreach (var pm in Model.Team.Where(tm => tm.Role.ToLower() == "project manager"))
-                            {
-                                <option value="@pm.Id">@pm.Username - @pm.Role</option>
-                            }
-                        </select>
-                        <span asp-validation-for="Command.Team" class="text-danger"></span>
-                    </div>
                     <div class="p-2">
                         <div class="d-flex">
 
-                            <label class="col-form-label">Assigned Dev</label>
+                            <label class="col-form-label">Assigned Developers</label>
 
                             <div class="ml-auto d-flex justify-content-center align-items-center flex-wrap-reverse">
                                 <input type="button" class="x-btn purple small select-cleaner" value="Clear" />
@@ -125,18 +113,30 @@
                     </div>
 
                     <div class="p-2">
-                        <div class="d-flex">
-                            <label class="col-form-label">Assigned submitter</label>
-
-                            <div class="ml-auto d-flex justify-content-center align-items-center flex-wrap-reverse">
-                                <input type="button" class="x-btn purple small select-cleaner" value="Clear" />
-                            </div>
-                        </div>
-                        <select asp-for="Command.Team" class="form-control" id="sub-team-select" multiple>
-                            @foreach (var sub in Model.Team.Where(tm => tm.Role.ToLower() == "submitter"))
+                        <div class="d-flex justify-content-between align-items-center">
+                            <label asp-for="Command.Team" class="col-form-label">Assigned Demo developer</label>
+                            @if (!Model.Team.Any(tm => tm.Role.ToLower().Contains("demo dev")))
                             {
-                                <option value="@sub.Id">@sub.Username - @sub.Role </option>
+                                <button type="button" class="pill-rounded border-0"
+                                        data-toggle="popover"
+                                        data-trigger="hover"
+                                        data-html="true"
+                                        data-placement="right" title="Tips <i class='fas fa-lightbulb gradient-lightbulb'></i>"
+                                        data-content="Assign demo developer(s) to the project to access it here.">
+                                    ?
+                                </button>
                             }
+                        </div>
+
+                        <select asp-for="Command.Team" class="form-control" id="pm-team-select" multiple>
+                            @{
+
+                                foreach (var demo in Model.Team.Where(tm => tm.Role.ToLower().Contains("demo dev")))
+                                {
+                                    <option value="@demo.Id">@demo.Username - @demo.Role </option>
+                                }
+                            }
+
                         </select>
                         <span asp-validation-for="Command.Team" class="text-danger"></span>
                     </div>
@@ -153,91 +153,76 @@
 else
 {
 
-    <div class="modal-body">
-        <input type="hidden" asp-for="@Model.Command.TicketId" />
+<div class="modal-body">
+    <input type="hidden" asp-for="@Model.Command.TicketId" />
 
-        <div class="col-12" id="ticket-configuration">
-            <div class="form-group d-flex">
-                <div class="w-50 pr-2">
-                    <label asp-for="Command.Name" class="col-form-label">Name:</label>
-                    <input asp-for="Command.Name" class="form-control" id="recipient-name">
-                    <span asp-validation-for="Command.Name" class="text-danger"></span>
-                </div>
-
-                <div class="w-50 pl-2">
-                    <label asp-for="Command.EstimatedAmountOfHours" class="col-form-label">Estimated hours</label>
-                    <input asp-for="Command.EstimatedAmountOfHours" class="form-control" id="estimated-hours">
-                    <span asp-validation-for="Command.EstimatedAmountOfHours" class="text-danger"></span>
-                </div>
-            </div>
-            <div class="form-group">
-                <label asp-for="Command.Description" class="col-form-label">Description:</label>
-                <textarea asp-for="Command.Description" class="form-control" id="message-text" rows="3"></textarea>
-                <span asp-validation-for="Command.Description" class="text-danger"></span>
+    <div class="col-12" id="ticket-configuration">
+        <div class="form-group d-flex">
+            <div class="w-50 pr-2">
+                <label asp-for="Command.Name" class="col-form-label">Name:</label>
+                <input asp-for="Command.Name" class="form-control" id="recipient-name">
+                <span asp-validation-for="Command.Name" class="text-danger"></span>
             </div>
 
-            <div class="form-group row">
-                <div class="col-4">
-                    <label asp-for="Command.PriorityId" class="col-form-label">Priority:</label>
-                    <select asp-for="Command.PriorityId" class="form-control" id="recipient-name">
-                        @foreach (var priority in Model.TicketConfigurations.Priorities)
-                        {
-                            <option value="@priority.Id">@priority.Name</option>
-                        }
-                    </select>
-                    <span asp-validation-for="Command.PriorityId" class="text-danger"></span>
-
-                </div>
-                <div class="col-4">
-                    <label asp-for="Command.TypeId" class="col-form-label">Type:</label>
-                    <select asp-for="Command.TypeId" class="form-control" id="recipient-name">
-                        @foreach (var type in Model.TicketConfigurations.Types)
-                        {
-                            <option value="@type.Id">@type.Name</option>
-                        }
-                    </select>
-                    <span asp-validation-for="Command.TypeId" class="text-danger"></span>
-
-                </div>
-                <div class="col-4">
-                    <label asp-for="Command.StatusId" for="Name" class="col-form-label">Status</label>
-                    <select asp-for="Command.StatusId" class="form-control" id="recipient-name">
-                        @foreach (var status in Model.TicketConfigurations.Statuses)
-                        {
-                            <option value="@status.Id">@status.Name</option>
-                        }
-                    </select>
-                    <span asp-validation-for="Command.StatusId" class="text-danger"></span>
-
-                </div>
+            <div class="w-50 pl-2">
+                <label asp-for="Command.EstimatedAmountOfHours" class="col-form-label">Estimated hours</label>
+                <input asp-for="Command.EstimatedAmountOfHours" class="form-control" id="estimated-hours">
+                <span asp-validation-for="Command.EstimatedAmountOfHours" class="text-danger"></span>
             </div>
-
+        </div>
+        <div class="form-group">
+            <label asp-for="Command.Description" class="col-form-label">Description:</label>
+            <textarea asp-for="Command.Description" class="form-control" id="message-text" rows="3"></textarea>
+            <span asp-validation-for="Command.Description" class="text-danger"></span>
         </div>
 
+        <div class="form-group row">
+            <div class="col-4">
+                <label asp-for="Command.PriorityId" class="col-form-label">Priority:</label>
+                <select asp-for="Command.PriorityId" class="form-control" id="recipient-name">
+                    @foreach (var priority in Model.TicketConfigurations.Priorities)
+                    {
+                        <option value="@priority.Id">@priority.Name</option>
+                    }
+                </select>
+                <span asp-validation-for="Command.PriorityId" class="text-danger"></span>
+
+            </div>
+            <div class="col-4">
+                <label asp-for="Command.TypeId" class="col-form-label">Type:</label>
+                <select asp-for="Command.TypeId" class="form-control" id="recipient-name">
+                    @foreach (var type in Model.TicketConfigurations.Types)
+                    {
+                        <option value="@type.Id">@type.Name</option>
+                    }
+                </select>
+                <span asp-validation-for="Command.TypeId" class="text-danger"></span>
+
+            </div>
+            <div class="col-4">
+                <label asp-for="Command.StatusId" for="Name" class="col-form-label">Status</label>
+                <select asp-for="Command.StatusId" class="form-control" id="recipient-name">
+                    @foreach (var status in Model.TicketConfigurations.Statuses)
+                    {
+                        <option value="@status.Id">@status.Name</option>
+                    }
+                </select>
+                <span asp-validation-for="Command.StatusId" class="text-danger"></span>
+
+            </div>
+        </div>
+
+    </div>
+    @if (User.IsInRole("Demo Admin") || User.IsInRole("Demo Project Manager"))
+    {
         <div class="col-12 d-none" id="ticket-team">
 
             <div class="form-group">
 
                 <div class="p-2">
                     <div class="d-flex">
-                        <label asp-for="Command.Team" class="col-form-label">Assigned Project manager</label>
 
-                        <div class="ml-auto d-flex justify-content-center align-items-center flex-wrap-reverse">
-                            <input type="button" class="x-btn purple small select-cleaner" value="Clear" />
-                        </div>
-                    </div>
-                    <select asp-for="Command.Team" class="form-control" id="pm-team-select" multiple>
-                        @foreach (var pm in Model.Team.Where(tm => tm.Role.ToLower() == "project manager"))
-                        {
-                            <option value="@pm.Id">@pm.Username - @pm.Role</option>
-                        }
-                    </select>
-                    <span asp-validation-for="Command.Team" class="text-danger"></span>
-                </div>
-                <div class="p-2">
-                    <div class="d-flex">
-
-                        <label class="col-form-label">Assigned Dev</label>
+                        <label class="col-form-label">Assigned Developers</label>
 
                         <div class="ml-auto d-flex justify-content-center align-items-center flex-wrap-reverse">
                             <input type="button" class="x-btn purple small select-cleaner" value="Clear" />
@@ -254,25 +239,38 @@ else
                 </div>
 
                 <div class="p-2">
-                    <div class="d-flex">
-                        <label class="col-form-label">Assigned submitter</label>
-
-                        <div class="ml-auto d-flex justify-content-center align-items-center flex-wrap-reverse">
-                            <input type="button" class="x-btn purple small select-cleaner" value="Clear" />
-                        </div>
-                    </div>
-                    <select asp-for="Command.Team" class="form-control" id="sub-team-select" multiple>
-                        @foreach (var sub in Model.Team.Where(tm => tm.Role.ToLower() == "submitter"))
+                    <div class="d-flex justify-content-between align-items-center">
+                        <label asp-for="Command.Team" class="col-form-label">Assigned Demo user</label>
+                        @if (!Model.Team.Any(tm => tm.Role.ToLower().Contains("demo dev")))
                         {
-                            <option value="@sub.Id">@sub.Username - @sub.Role </option>
+                            <button type="button" class="pill-rounded border-0"
+                                    data-toggle="popover"
+                                    data-trigger="hover"
+                                    data-html="true"
+                                    data-placement="right" title="Tips <i class='fas fa-lightbulb gradient-lightbulb'></i>"
+                                    data-content="Assign demo developer(s) to the project to access it here.">
+                                ?
+                            </button>
                         }
+                    </div>
+
+                    <select asp-for="Command.Team" class="form-control" id="pm-team-select" multiple>
+                        @{
+
+                            foreach (var demo in Model.Team.Where(tm => tm.Role.ToLower().Contains("demo dev")))
+                            {
+                                <option value="@demo.Id">@demo.Username - @demo.Role </option>
+                            }
+                        }
+
                     </select>
                     <span asp-validation-for="Command.Team" class="text-danger"></span>
                 </div>
 
             </div>
         </div>
-    </div>
+    }
+</div>
     <div class="modal-footer">
         <button type="button" class="x-btn green ticket-save-btn">Update</button>
     </div>

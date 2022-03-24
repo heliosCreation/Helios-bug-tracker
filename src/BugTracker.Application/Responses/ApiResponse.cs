@@ -37,6 +37,7 @@ namespace BugTracker.Application.Responses
         {
             Succeeded = false;
             StatusCode = (int)HttpStatusCode.Unauthorized;
+            ErrorMessages.Add("You don't have the right to access this feature.");
             return this;
         }
         public ApiResponse<T> SetInternalServerErrorResponse()

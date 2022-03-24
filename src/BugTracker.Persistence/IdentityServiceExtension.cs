@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 
@@ -56,6 +57,54 @@ namespace BugTracker.Persistence
                         return ctx.User.Claims
                            .Where(c => c.Type == ClaimTypes.Role)
                            .Where(c => c.Value.Contains("Demo")).Select(c => c.Value)
+                           .ToList().Count == 0;
+                    });
+                });
+
+                options.AddPolicy("PriviledgedUser", policy =>
+                {
+                    policy.RequireAuthenticatedUser();
+                    policy.RequireAssertion(ctx =>
+                    {
+                        return ctx.User.Claims
+                           .Where(c => c.Type == ClaimTypes.Role)
+                           .Where(c => c.Value ==("Admin") || c.Value == ("Project Manager"))
+                           .ToList().Count > 0;
+                    });
+                });
+
+                options.AddPolicy("PriviledgedUserAndDemoPriviledged", policy =>
+                {
+                    policy.RequireAuthenticatedUser();
+                    policy.RequireAssertion(ctx =>
+                    {
+                        return ctx.User.Claims
+                           .Where(c => c.Type == ClaimTypes.Role)
+                           .Where(c => c.Value.Contains("Admin") || c.Value.Contains("Project Manager") || c.Value.Contains("Demo Admin") || c.Value.Contains("Demo Project Manager"))
+                           .ToList().Count > 0;
+                    });
+                });
+
+                options.AddPolicy("NotDev", policy =>
+                {
+                    policy.RequireAuthenticatedUser();
+                    policy.RequireAssertion(ctx =>
+                    {
+                        return ctx.User.Claims
+                           .Where(c => c.Type == ClaimTypes.Role)
+                           .Where(c => c.Value.ToLower().Contains("dev"))
+                           .ToList().Count == 0;
+                    });
+                });
+
+                options.AddPolicy("CanCreateTicket", policy =>
+                {
+                    policy.RequireAuthenticatedUser();
+                    policy.RequireAssertion(ctx =>
+                    {
+                        return ctx.User.Claims
+                           .Where(c => c.Type == ClaimTypes.Role)
+                           .Where(c => c.Value.ToLower().Contains("dev") || c.Value.ToLower().Contains("manager"))
                            .ToList().Count == 0;
                     });
                 });

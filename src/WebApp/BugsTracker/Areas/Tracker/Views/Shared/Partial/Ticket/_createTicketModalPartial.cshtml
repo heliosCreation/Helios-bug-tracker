@@ -10,15 +10,19 @@
             <span aria-hidden="true">&times;</span>
         </button>
     </div>
-    <ul class="nav nav-tabs crupdate-ticket-tabs">
+    @if ((await AuthorizationService.AuthorizeAsync(User, "PriviledgedUserAndDemoPriviledged")).Succeeded)
+    {
+        <ul class="nav nav-tabs crupdate-ticket-tabs">
 
-        <li class="nav-item configuration-tab">
-            <a class="nav-link active" href="#">Ticket</a>
-        </li>
-        <li class="nav-item team-tab">
-            <a class="nav-link" href="#">Team</a>
-        </li>
-    </ul>
+            <li class="nav-item configuration-tab">
+                <a class="nav-link active" href="#">Ticket</a>
+            </li>
+            <li class="nav-item team-tab">
+                <a class="nav-link" href="#">Team</a>
+            </li>
+        </ul>
+    }
+
 </div>
 
 @if ((await AuthorizationService.AuthorizeAsync(User, "NoDemo")).Succeeded)
@@ -83,119 +87,71 @@
                 </div>
 
             </div>
+            @if ((await AuthorizationService.AuthorizeAsync(User, "PriviledgedUser")).Succeeded)
+            {
+                <div class="col-12 d-none" id="ticket-team">
 
-            <div class="col-12 d-none" id="ticket-team">
+                    <div class="form-group">
 
-                <div class="form-group">
-
-                    <div class="p-2">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <label asp-for="Command.Team" class="col-form-label">Assigned Project manager</label>
-                            @if (Model.Team.Where(tm => tm.Role.ToLower() == "project manager").Count() <= 0)
-                            {
-                                <button type="button" class="pill-rounded border-0"
-                                        data-toggle="popover"
-                                        data-trigger="hover"
-                                        data-html="true"
-                                        data-placement="right" title="Tips <i class='fas fa-lightbulb gradient-lightbulb'></i>"
-                                        data-content="Assign project manager(s) to the project to access it here.">
-                                    ?
-                                </button>
-                            }
-                        </div>
-
-                        <select asp-for="Command.Team" class="form-control" id="pm-team-select" multiple>
-                            @{
-
-                                foreach (var pm in Model.Team.Where(tm => tm.Role.ToLower() == "project manager"))
+                        <div class="p-2">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <label class="col-form-label">Assigned Developers</label>
+                                @if (Model.Team.Where(tm => tm.Role.ToLower() == "developer").Count() <= 0)
                                 {
-                                    <option value="@pm.Id">@pm.Username - @pm.Role </option>
+                                    <button type="button" class="pill-rounded border-0"
+                                            data-toggle="popover"
+                                            data-trigger="hover"
+                                            data-html="true"
+                                            data-placement="right" title="Tips <i class='fas fa-lightbulb gradient-lightbulb'></i>"
+                                            data-content="Assign developper(s) to the project to access it here.">
+                                        ?
+                                    </button>
                                 }
-                            }
+                            </div>
 
-                        </select>
-                        <span asp-validation-for="Command.Team" class="text-danger"></span>
-                    </div>
-                    <div class="p-2">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <label class="col-form-label">Assigned Dev</label>
-                            @if (Model.Team.Where(tm => tm.Role.ToLower() == "developer").Count() <= 0)
-                            {
-                                <button type="button" class="pill-rounded border-0"
-                                        data-toggle="popover"
-                                        data-trigger="hover"
-                                        data-html="true"
-                                        data-placement="right" title="Tips <i class='fas fa-lightbulb gradient-lightbulb'></i>"
-                                        data-content="Assign developper(s) to the project to access it here.">
-                                    ?
-                                </button>
-                            }
-                        </div>
-
-                        <select asp-for="Command.Team" class="form-control" id="dev-team-select" multiple>
-                            @foreach (var dev in Model.Team.Where(tm => tm.Role.ToLower() == "developer"))
-                            {
-                                <option value="@dev.Id">@dev.Username - @dev.Role </option>
-                            }
-                        </select>
-                        <span asp-validation-for="Command.Team" class="text-danger"></span>
-                    </div>
-
-                    <div class="p-2">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <label class="col-form-label">Assigned submitter</label>
-                            @if (Model.Team.Where(tm => tm.Role.ToLower() == "submitter").Count() <= 0)
-                            {
-                                <button type="button" class="pill-rounded border-0"
-                                        data-toggle="popover"
-                                        data-trigger="hover"
-                                        data-html="true"
-                                        data-placement="right" title="Tips <i class='fas fa-lightbulb gradient-lightbulb'></i>"
-                                        data-content="Assign submitter(s) to the project to access it here.">
-                                    ?
-                                </button>
-                            }
-                        </div>
-
-                        <select asp-for="Command.Team" class="form-control" id="sub-team-select" multiple>
-                            @foreach (var sub in Model.Team.Where(tm => tm.Role.ToLower() == "submitter"))
-                            {
-                                <option value="@sub.Id">@sub.Username - @sub.Role </option>
-                            }
-                        </select>
-                        <span asp-validation-for="Command.Team" class="text-danger"></span>
-                    </div>
-                    <div class="p-2">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <label asp-for="Command.Team" class="col-form-label">Assigned Demo User</label>
-                            @if (Model.Team.Where(tm => tm.Role.ToLower() == "project manager").Count() <= 0)
-                            {
-                                <button type="button" class="pill-rounded border-0"
-                                        data-toggle="popover"
-                                        data-trigger="hover"
-                                        data-html="true"
-                                        data-placement="right" title="Tips <i class='fas fa-lightbulb gradient-lightbulb'></i>"
-                                        data-content="Assign demo user(s) to the project to access it here.">
-                                    ?
-                                </button>
-                            }
-                        </div>
-
-                        <select asp-for="Command.Team" class="form-control" id="pm-team-select" multiple>
-                            @{
-
-                                foreach (var demo in Model.Team.Where(tm => tm.Role.ToLower().Contains("demo")))
+                            <select asp-for="Command.Team" class="form-control" id="dev-team-select" multiple>
+                                @foreach (var dev in Model.Team.Where(tm => tm.Role.ToLower() == "developer"))
                                 {
-                                    <option value="@demo.Id">@demo.Username - @demo.Role </option>
+                                    <option value="@dev.Id">@dev.Username - @dev.Role </option>
                                 }
-                            }
+                            </select>
+                            <span asp-validation-for="Command.Team" class="text-danger"></span>
+                        </div>
 
-                        </select>
-                        <span asp-validation-for="Command.Team" class="text-danger"></span>
+                        <div class="p-2">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <label asp-for="Command.Team" class="col-form-label">Assigned demo developers</label>
+                                @if (Model.Team.Where(tm => tm.Role.ToLower().Contains("demo dev")).Count() <= 0)
+                                {
+                                    <button type="button" class="pill-rounded border-0"
+                                            data-toggle="popover"
+                                            data-trigger="hover"
+                                            data-html="true"
+                                            data-placement="right" title="Tips <i class='fas fa-lightbulb gradient-lightbulb'></i>"
+                                            data-content="Assign developer(s) to the project to access it here.">
+                                        ?
+                                    </button>
+                                }
+                            </div>
+
+                            <select asp-for="Command.Team" class="form-control" id="pm-team-select" multiple>
+                                @{
+
+                                    foreach (var demo in Model.Team.Where(tm => tm.Role.ToLower().Contains("demo dev")))
+                                    {
+                                        <option value="@demo.Id">@demo.Username - @demo.Role </option>
+                                    }
+                                }
+
+                            </select>
+                            <span asp-validation-for="Command.Team" class="text-danger"></span>
+                        </div>
+
                     </div>
-
                 </div>
-            </div>
+
+            }
+
         </div>
         <div class="modal-footer">
             <input type="submit" class="x-btn green ticket-save-btn" />
@@ -265,118 +221,69 @@ else
 
         </div>
 
-        <div class="col-12 d-none" id="ticket-team">
+        @if (User.IsInRole("Demo Admin") || User.IsInRole("Demo Project Manager"))
+        {
+            <div class="col-12 d-none" id="ticket-team">
 
-            <div class="form-group">
+                <div class="form-group">
 
-                <div class="p-2">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <label asp-for="Command.Team" class="col-form-label">Assigned Project manager</label>
-                        @if (Model.Team.Where(tm => tm.Role.ToLower() == "project manager").Count() <= 0)
-                        {
-                            <button type="button" class="pill-rounded border-0"
-                                    data-toggle="popover"
-                                    data-trigger="hover"
-                                    data-html="true"
-                                    data-placement="right" title="Tips <i class='fas fa-lightbulb gradient-lightbulb'></i>"
-                                    data-content="Assign project manager(s) to the project to access it here.">
-                                ?
-                            </button>
-                        }
-                    </div>
-
-                    <select asp-for="Command.Team" class="form-control" id="pm-team-select" multiple>
-                        @{
-
-                            foreach (var pm in Model.Team.Where(tm => tm.Role.ToLower() == "project manager"))
+                    <div class="p-2">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <label class="col-form-label">Assigned Developers</label>
+                            @if (Model.Team.Where(tm => tm.Role.ToLower() == "developer").Count() <= 0)
                             {
-                                <option value="@pm.Id">@pm.Username - @pm.Role </option>
+                                <button type="button" class="pill-rounded border-0"
+                                        data-toggle="popover"
+                                        data-trigger="hover"
+                                        data-html="true"
+                                        data-placement="right" title="Tips <i class='fas fa-lightbulb gradient-lightbulb'></i>"
+                                        data-content="Assign developper(s) to the project to access it here.">
+                                    ?
+                                </button>
                             }
-                        }
+                        </div>
 
-                    </select>
-                    <span asp-validation-for="Command.Team" class="text-danger"></span>
-                </div>
-                <div class="p-2">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <label class="col-form-label">Assigned Dev</label>
-                        @if (Model.Team.Where(tm => tm.Role.ToLower() == "developer").Count() <= 0)
-                        {
-                            <button type="button" class="pill-rounded border-0"
-                                    data-toggle="popover"
-                                    data-trigger="hover"
-                                    data-html="true"
-                                    data-placement="right" title="Tips <i class='fas fa-lightbulb gradient-lightbulb'></i>"
-                                    data-content="Assign developper(s) to the project to access it here.">
-                                ?
-                            </button>
-                        }
-                    </div>
-
-                    <select asp-for="Command.Team" class="form-control" id="dev-team-select" multiple>
-                        @foreach (var dev in Model.Team.Where(tm => tm.Role.ToLower() == "developer"))
-                        {
-                            <option value="@dev.Id">@dev.Username - @dev.Role </option>
-                        }
-                    </select>
-                    <span asp-validation-for="Command.Team" class="text-danger"></span>
-                </div>
-
-                <div class="p-2">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <label class="col-form-label">Assigned submitter</label>
-                        @if (Model.Team.Where(tm => tm.Role.ToLower() == "submitter").Count() <= 0)
-                        {
-                            <button type="button" class="pill-rounded border-0"
-                                    data-toggle="popover"
-                                    data-trigger="hover"
-                                    data-html="true"
-                                    data-placement="right" title="Tips <i class='fas fa-lightbulb gradient-lightbulb'></i>"
-                                    data-content="Assign submitter(s) to the project to access it here.">
-                                ?
-                            </button>
-                        }
-                    </div>
-
-                    <select asp-for="Command.Team" class="form-control" id="sub-team-select" multiple>
-                        @foreach (var sub in Model.Team.Where(tm => tm.Role.ToLower() == "submitter"))
-                        {
-                            <option value="@sub.Id">@sub.Username - @sub.Role </option>
-                        }
-                    </select>
-                    <span asp-validation-for="Command.Team" class="text-danger"></span>
-                </div>
-                <div class="p-2">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <label asp-for="Command.Team" class="col-form-label">Assigned Project manager</label>
-                        @if (Model.Team.Where(tm => tm.Role.ToLower() == "project manager").Count() <= 0)
-                        {
-                            <button type="button" class="pill-rounded border-0"
-                                    data-toggle="popover"
-                                    data-trigger="hover"
-                                    data-html="true"
-                                    data-placement="right" title="Tips <i class='fas fa-lightbulb gradient-lightbulb'></i>"
-                                    data-content="Assign project manager(s) to the project to access it here.">
-                                ?
-                            </button>
-                        }
-                    </div>
-
-                    <select asp-for="Command.Team" class="form-control" id="pm-team-select" multiple>
-                        @{
-
-                            foreach (var demo in Model.Team.Where(tm => tm.Role.ToLower().Contains("demo")))
+                        <select asp-for="Command.Team" class="form-control" id="dev-team-select" multiple>
+                            @foreach (var dev in Model.Team.Where(tm => tm.Role.ToLower() == "developer"))
                             {
-                                <option value="@demo.Id">@demo.Username - @demo.Role </option>
+                                <option value="@dev.Id">@dev.Username - @dev.Role </option>
                             }
-                        }
+                        </select>
+                        <span asp-validation-for="Command.Team" class="text-danger"></span>
+                    </div>
 
-                    </select>
-                    <span asp-validation-for="Command.Team" class="text-danger"></span>
+                    <div class="p-2">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <label asp-for="Command.Team" class="col-form-label">Assigned Demo developers</label>
+                            @if (!Model.Team.Any(tm => tm.Role.ToLower().Contains("demo dev")))
+                            {
+                                <button type="button" class="pill-rounded border-0"
+                                        data-toggle="popover"
+                                        data-trigger="hover"
+                                        data-html="true"
+                                        data-placement="right" title="Tips <i class='fas fa-lightbulb gradient-lightbulb'></i>"
+                                        data-content="Assign demo developers(s) to the project to access it here.">
+                                    ?
+                                </button>
+                            }
+                        </div>
+
+                        <select asp-for="Command.Team" class="form-control" id="pm-team-select" multiple>
+                            @{
+
+                                foreach (var demo in Model.Team.Where(tm => tm.Role.ToLower().Contains("demo dev")))
+                                {
+                                    <option value="@demo.Id">@demo.Username - @demo.Role </option>
+                                }
+                            }
+
+                        </select>
+                        <span asp-validation-for="Command.Team" class="text-danger"></span>
+                    </div>
+
                 </div>
-
             </div>
-        </div>
+        }
     </div>
     <div class="modal-footer">
         <button type="button" class="x-btn green ticket-save-btn">Create</button>

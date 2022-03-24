@@ -73,6 +73,7 @@ a {
     border-top-left-radius: 20px;
     animation: 0.5s slidein;
     background: #00cb72;
+    border:none;
 }
 
 button:focus {

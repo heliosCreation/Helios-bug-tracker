@@ -2,7 +2,7 @@
 @if (ViewBag.isSuccess == true)
 {
     <div class="alert alert-success alert-dismissible fade show m-0 " role="alert">
-        <strong>Success - </strong> <br /> Your @ViewBag.type was @ViewBag.actionReturned.
+        <strong>Success  <i class="fas fa-check"></i> </strong> <br /> Your @ViewBag.type was @ViewBag.actionReturned.
         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
             <span aria-hidden="true">&times;</span>
         </button>
@@ -12,7 +12,7 @@
 else if (ViewBag.isFailed == true)
 {
     <div class="alert alert-danger alert-dismissible fade show m-0 " role="alert">
-        <strong>Success - </strong> <br /> Your @ViewBag.type was not @ViewBag.actionReturned.
+        <strong>Error - </strong> <br /> Your @ViewBag.type was not @ViewBag.actionReturned.
         <ul>
             @foreach (var error in ViewBag.errors)
             {

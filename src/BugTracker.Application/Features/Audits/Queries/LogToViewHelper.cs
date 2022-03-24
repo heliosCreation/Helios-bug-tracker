@@ -98,12 +98,12 @@ namespace BugTracker.Application.Features.Audits.Queries
                 //If the key already exist, just concat a new value to the actual
                 if (targetParent.NewValues.ContainsKey(action))
                 {
-                    targetParent.NewValues[action] = targetParent.NewValues[action] + ";" + userName + "  " + userRoles;
+                    targetParent.NewValues[action] = targetParent.NewValues[action] + ";" + userName + " - " + userRoles;
                 }
                 //Otherwise add an entry
                 else
                 {
-                    targetParent.NewValues.Add(action, userName + " " + userRoles);
+                    targetParent.NewValues.Add(action, userName + " -  " + userRoles);
                 }
 
             }

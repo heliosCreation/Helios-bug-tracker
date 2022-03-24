@@ -20,6 +20,7 @@ using BugTracker.Filters.Validation;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -41,10 +42,12 @@ namespace BugTracker.Areas.Tracker.Controllers
         public async Task<IActionResult> ByUser(
             int page = 1,
             string searchString = "",
-            bool showOnlyCreated = true, bool showAll = false)
+            bool showOnlyCreated = false, bool showAll = true)
         {
             ViewData["showOnlyCreated"] = showOnlyCreated;
             var response = await Mediator.Send(new GetTicketByUserQuery(page, searchString, showOnlyCreated, showAll));
+            response.Data.Pager.SearchText = searchString != null ? searchString : "";
+            response.Data.ShowOnlyCreated = showOnlyCreated;
             return View(response.Data);
         }
 
@@ -52,22 +55,25 @@ namespace BugTracker.Areas.Tracker.Controllers
         [ValidationFilter]
         public async Task<IActionResult> ByProject(
             Guid projectId,
+            List<string> errors,
             int page = 1,
             string searchString ="",
             bool isSuccess = false, bool isFailed = false,
-            string type = null, string actionReturned = null)
+            string type = "ticket", string actionReturned = null)
         {
             ViewBag.isSuccess = isSuccess;
             ViewBag.isFailed = isFailed;
             ViewBag.Type = type;
             ViewBag.actionReturned = actionReturned;
+            ViewBag.errors = errors;
 
             var response = await Mediator.Send(new GetProjectTicketsQuery(projectId, page, searchString));
+            response.Data.Pager.SearchText = searchString != null ? searchString : "";
             return View("ProjectTickets", response);
         }
         
         [HttpPost]
-        [Authorize(Policy ="NoDemo")]
+        [Authorize(Roles ="Admin, Submitter")]
         public async Task<IActionResult> Create(CreateTicketCommand command)
         {
             var response = await Mediator.Send(command);
@@ -75,11 +81,11 @@ namespace BugTracker.Areas.Tracker.Controllers
             {
                 return RedirectToAction("ByProject", new { projectId = command.ProjectId, isSuccess = true, type = "ticket", actionReturned = "created" });
             }
-            return RedirectToAction("ByProject", new { projectId = command.ProjectId, isFailed = true });
+            return RedirectToAction("ByProject", new { projectId = command.ProjectId, isFailed = true, type = "ticket", actionReturned = "created" });
         }
 
         [HttpPost]
-        [Authorize(Policy = "NoDemo")]
+        [Authorize(Policy ="NoDemo")]
         public async Task<IActionResult> Update(UpdateTicketCommand command, Guid projectId)
         {
             var response = await Mediator.Send(command);
@@ -87,11 +93,11 @@ namespace BugTracker.Areas.Tracker.Controllers
             {
                 return RedirectToAction("ByProject", new { projectId = projectId, isSuccess = true, type = "ticket", actionReturned = "updated" });
             }
-            return RedirectToAction("ByProject", new { projectId = projectId, isFailed = true });
+            return RedirectToAction("ByProject", new { projectId = projectId, isFailed = true, actionReturned = "updated", errors = response.ErrorMessages});
         }
 
         [HttpPost]
-        [Authorize(Policy = "NoDemo")]
+        [Authorize(Policy = "PriviledgedUser")]
         public async Task<IActionResult> Delete(DeleteTicketCommand command, Guid projectId)
         {
             var response = await Mediator.Send(command);
@@ -103,7 +109,7 @@ namespace BugTracker.Areas.Tracker.Controllers
         }
 
         [HttpGet]
-        [Authorize(Policy = "NoDemo")]
+        [Authorize(Policy = "NotDev")]
         public async Task<IActionResult> LoadCreateModal(Guid projectId)
         {
             var dto = new CreateTicketDto(projectId);
@@ -143,6 +149,7 @@ namespace BugTracker.Areas.Tracker.Controllers
         }
         
         [HttpGet]
+        [Authorize(Policy = "NotDev")]
         public IActionResult LoadDeleteModal(Guid id, Guid projectId, string name)
         {
             var dto = new DeleteTicketDto(id, projectId, name);
@@ -167,6 +174,7 @@ namespace BugTracker.Areas.Tracker.Controllers
         }
 
         [HttpGet]
+        [Authorize(Policy = "PriviledgedUser")]
         public async Task<IActionResult> LoadProjectTeamModal(Guid projectId)
         {
             var dto = new ProjectTeamManagementDto();

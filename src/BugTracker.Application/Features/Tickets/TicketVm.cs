@@ -13,5 +13,6 @@ namespace BugTracker.Application.Features.Tickets
         public string Priority { get; set; }
         public int EstimatedAmountOfHours { get; set; }
         public string Project { get; set; }
+        public Guid ProjectId { get; set; }
     }
 }

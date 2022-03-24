@@ -32,8 +32,9 @@ namespace BugTracker.Application.Features.Tickets.Commands.Create
         public async Task<ApiResponse<IdResponse>> Handle(CreateTicketCommand request, CancellationToken cancellationToken)
         {
             var response = new ApiResponse<IdResponse>();
-            if (! await IsAllowedToAccessTickets(response, request.ProjectId))
+            if (! await IsAllowedToCreateTickets(request, request.ProjectId))
             {
+                response.SetUnhautorizedResponse();
                 return response;
             }
 
@@ -45,17 +46,22 @@ namespace BugTracker.Application.Features.Tickets.Commands.Create
             return response;
         }
 
-        private async Task<bool> IsAllowedToAccessTickets(ApiResponse<IdResponse> response, Guid projectId)
+        private async Task<bool> IsAllowedToCreateTickets(CreateTicketCommand request, Guid ticketId)
         {
-            var belongsToTeam = await _projectRepository.UserBelongsToProjectTeam(_loggedInUserService.UserId, projectId);
             var isAdmin = _loggedInUserService.Roles.Contains("Admin");
-            if (!belongsToTeam && !isAdmin)
+            var isSubmitter = _loggedInUserService.Roles.Any(str => str == "Submitter");
+
+            if (isAdmin)
             {
-                response.SetUnhautorizedResponse();
-                return false;
+                return true;
+            }
+            else if (isSubmitter)
+            {
+                return await _projectRepository.UserBelongsToProjectTeam(_loggedInUserService.UserId, request.ProjectId);
             }
 
-            return true;
+
+            return await _ticketRepository.UserBelongsToTicketTeam(_loggedInUserService.UserId, ticketId);
         }
     }
 }

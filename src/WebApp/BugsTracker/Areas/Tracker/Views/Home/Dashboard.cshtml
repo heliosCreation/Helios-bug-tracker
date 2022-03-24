@@ -1,5 +1,4 @@
 ﻿@model DashboardViewModel
-@using System.Security.Claims
 
 <partial name="../Shared/Partial/Common/_modalHolderPartial.cshtml" />
 
@@ -8,7 +7,7 @@
     <div class="first-row">
         <div class="first-row-header row d-flex px-3 py-2 w-100 justify-content-between">
             <div class="title"> Projects </div>
-            @if (User.IsInRole("Admin") || User.IsInRole("Project Manager") || User.IsInRole("Demo Admin") || User.IsInRole("Demo Project Manager"))
+            @if (User.IsInRole("Admin") || User.IsInRole("Demo Admin"))
             {
                 <div class="project-add-holder"><a href="#" id="create-project" data-toggle="modal" data-target="#crupdateProjectModal" class="x-btn blue"> New Project</a></div>
             }
@@ -21,8 +20,7 @@
                         <tr>
                             <th scope="col" class="text-muted">Project</th>
                             <th scope="col" class="text-muted">Description</th>
-                            <th scope="col" class="text-muted">Contributor</th>
-                            @if (User.IsInRole("Admin") || User.IsInRole("Project Manager") || User.IsInRole("Demo Admin") || User.IsInRole("Demo Project Manager"))
+                            @if (User.IsInRole("Admin") || User.IsInRole("Demo Admin"))
                             {
                                 <th scope="col" class="text-muted text-center">Action</th>
                             }
@@ -43,22 +41,7 @@
                                 </a>
                             </td>
                             <td>@project.Description</td>
-                            <td>
-                                <ul>
-                                    @if (project.TeamNames != null && project.TeamNames.Any())
-                                    {
-                                        @foreach (var teamMember in project.TeamNames)
-                                        {
-                                            <li>@teamMember</li>
-                                        }
-                                    }
-                                    else
-                                    {
-                                        <li class="text-muted">None</li>
-                                    }
-                                </ul>
-                            </td>
-                            @if (User.IsInRole("Admin") || User.IsInRole("Project Manager") || User.IsInRole("Demo Admin") || User.IsInRole("Demo Project Manager"))
+                            @if (User.IsInRole("Admin") || User.IsInRole("Demo Admin"))
                             {
                                 <td class="text-center">
                                     <div class="dropdown">
