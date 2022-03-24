@@ -91,7 +91,7 @@ namespace BugTracker.Application.Features.Tickets.Queries.GetTicketsByUser
         {
             if (request.ShowOnlyCreated || _loggedInUserService.Roles.Any(str => str.Contains("Sub")))
             {
-                return await _ticketRepository.GetTicketsByUser(_loggedInUserService.UserId, request.Page, request.Search, request.ShowOnlyCreated);
+                return await _ticketRepository.GetTicketsByUser(_loggedInUserService.UserId, request.Page, request.Search, true);
             }
 
             else if (_loggedInUserService.Roles.Any(str => str.Contains("Admin")))

@@ -155,7 +155,6 @@ namespace BugTracker.Persistence.Services.Data
             .FirstOrDefaultAsync();
 
             var projectName = await _dbContext.Projects.Where(p => p.Name.ToLower().Contains(searchString)).Select(p => p.Name).FirstOrDefaultAsync();
-            var userTicketsId = await _dbContext.TicketsTeamMembers.Where(ttm => ttm.UserId == uid).Select(ttm => ttm.TicketId).ToListAsync();
 
             if (await _userManager.IsInRoleAsync(new ApplicationUser { Id = uid}, "Admin"))
             {
@@ -171,7 +170,7 @@ namespace BugTracker.Persistence.Services.Data
             }
             return await _dbContext.Tickets
                 .Include(t => t.Priority).Include(t => t.Status).Include(t => t.Type).Include(t => t.Project)
-                    .Where(t => userTicketsId.Contains(t.Id))
+                    .Where(t => t.CreatedBy == Guid.Parse(uid))
                     .Where(t => t.Name.ToLower().Contains(searchString)
                    || t.Priority.Name.ToLower().Contains(searchString)
                    || t.Status.Name.ToLower().Contains(searchString)
