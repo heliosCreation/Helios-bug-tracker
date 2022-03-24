@@ -1,4 +1,5 @@
 ﻿using BugTracker.Application.Features.Projects.Queries.GetAll;
+using BugTracker.Application.Features.Tickets.Queries.GetTicketsByUser;
 using BugTracker.Application.ViewModel;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
@@ -20,5 +21,11 @@ namespace BugTracker.Areas.Tracker.Controllers
 
             return View(viewModel);
         }
+
+        //[Produces("application/json")]
+        //public async Task<IActionResult> GetDiagramsData()
+        //{
+
+        //}
     }
 }
