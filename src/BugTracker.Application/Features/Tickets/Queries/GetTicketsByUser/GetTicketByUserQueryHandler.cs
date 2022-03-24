@@ -61,6 +61,7 @@ namespace BugTracker.Application.Features.Tickets.Queries.GetTicketsByUser
                 target.Status = tickets[i].Status.Name;
                 target.Type = tickets[i].Type.Name;
                 target.Project = tickets[i].Project.Name;
+                target.ProjectId = tickets[i].ProjectId;
             }
         }
 

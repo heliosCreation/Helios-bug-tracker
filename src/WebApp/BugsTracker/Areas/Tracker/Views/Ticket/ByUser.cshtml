@@ -45,7 +45,6 @@
                         <th scope="col" class="text-muted">Type</th>
                         <th scope="col" class="text-muted">Estimated hours</th>
                         <th scope="col" class="text-muted">Status</th>
-                        <th scope="col" class="text-muted text-center">Action</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -55,28 +54,13 @@
                         <tr>
                             <td class="d-none ticket-id-holder">@ticket.Id</td>
                             <td class="d-none ticket-description-data" data-description="@ticket.Description"></td>
-                            <td scope="row" class="text-purple"><a class="ticket-link">@ticket.Name </a></td>
-                            <td scope="row" class="text-purple"><a class="ticket-link">@ticket.Project </a></td>
+                            <td scope="row">@ticket.Name</td>
+                            <td scope="row" class="text-purple"><a asp-action="ByProject" asp-route-projectId="@ticket.ProjectId" class="ticket-link">@ticket.Project </a></td>
                             <td>@ticket.Author</td>
                             <td><span class="pill @(ticket.Priority.ToLower())">@ticket.Priority</span></td>
                             <td>@ticket.Type</td>
                             <td class="text-center">@ticket.EstimatedAmountOfHours</td>
                             <td class="@(ticket.Status.ToLower() == "resolved"? "text-green font-weight-bold":"")">@ticket.Status</td>
-
-                            <td class="text-center">
-                                <div class="dropdown">
-                                    <a href="#" class="dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        <i class="fas fa-ellipsis-v"></i>
-                                    </a>
-                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                        <a class="dropdown-item update-btn" href="#" data-toggle="modal" data-target="#crupdateTicketModal">Edit</a>
-                                        @if (User.IsInRole("Admin") || User.IsInRole("Project Manager") || User.IsInRole("Demo Admin") || User.IsInRole("Demo Project Manager"))
-                                        {
-                                            <a class="dropdown-item delete-btn" href="#" data-toggle="modal" data-target="#deleteTicketModal">Delete</a>
-                                        }
-                                    </div>
-                                </div>
-                            </td>
                         </tr>
 
                     }
@@ -133,6 +117,7 @@
             $("#sectionName").text("@((bool)ViewData["showOnlyCreated"] == true ? "Your Tickets" : User.IsInRole("Admin") ? "All Tickets" : "Assigned Tickets")");
             $("#sidebar ul li.active").removeClass("active");
             $("#tickets-management-link").addClass("active");
+            $(".navbar").css("background", "linear-gradient(184deg, rgb(114 0 255) 0%, rgb(178, 143, 251) 100%) ")
 
         });
     </script>
