@@ -13,5 +13,6 @@ namespace BugTracker.Application.ViewModel
         }
         public List<TicketVm> Tickets { get; set; }
         public Pager Pager { get; set; }
+        public bool  ShowOnlyCreated { get; set; }
     }
 }

@@ -53,7 +53,7 @@ namespace BugTracker.Application.Features.Tickets.Queries.GetTicketsByUser
 
         private async Task AssignValueToHumanReadable(ApiResponse<UserTicketsVm> response, List<Ticket> tickets)
         {
-            for (int i = 0; i < response.Data.Tickets.Count ; i++)
+            for (int i = 0; i < response.Data.Tickets.Count; i++)
             {
                 var target = response.Data.Tickets[i];
                 target.Author = await _identityService.GetUserNameById(tickets[i].CreatedBy.ToString());
@@ -62,21 +62,22 @@ namespace BugTracker.Application.Features.Tickets.Queries.GetTicketsByUser
                 target.Type = tickets[i].Type.Name;
                 target.Project = tickets[i].Project.Name;
             }
-        }      
+        }
+
         private async Task<int> GetSetCount(GetTicketByUserQuery request)
         {
             var setCount = 0;
             if (request.ShowOnlyCreated || _loggedInUserService.Roles.Any(str => str.Contains("Sub")))
             {
-               return await _ticketRepository.GetUserCreatedTicketAmount(_loggedInUserService.UserId);
+               return await _ticketRepository.GetUserCreatedTicketAmount(_loggedInUserService.UserId, request.Search);
             }
             else if (_loggedInUserService.Roles.Any(str => str.Contains("Admin")))
             {
-                return (await _ticketRepository.ListAllAsync()).Count();
+                return await _ticketRepository.CountAllTickets(request.Search);
             }
             else if(_loggedInUserService.Roles.Any(str => str.Contains("Project Manager")))
             {
-                return await _ticketRepository.GetProjectManagerTicketCount(_loggedInUserService.UserId);
+                return await _ticketRepository.GetProjectManagerTicketCount(_loggedInUserService.UserId, request.Search);
             }
             else
             {

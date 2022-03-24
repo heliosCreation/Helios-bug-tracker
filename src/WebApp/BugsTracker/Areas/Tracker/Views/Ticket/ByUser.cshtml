@@ -5,7 +5,7 @@
     <div class="first-row col-11 p-0">
         <div class="first-row-header row d-flex px-3 py-2 w-100 justify-content-between">
             <div class="research-input-wrapper d-flex justify-content-center align-items-center">
-                <form asp-action="ByUser">
+                <form asp-action="ByUser" asp-route-showOnlyCreated="@Model.ShowOnlyCreated">
                     <input type="text" name="searchString" class="table-sorter-input ml-1" placeholder="Reseach..."
                            value="@(string.IsNullOrEmpty(Model.Pager.SearchText) ? "" : Model.Pager.SearchText)"/>
                     <button type="submit" class="x-btn blue mx-1">
@@ -88,10 +88,10 @@
             <div class="pagination-holder d-flex p-2">
                 @if (Model.Pager.CurrentPage > 1)
                 {
-                    <a class="purple-circle angle" asp-action="ByUser"  asp-route-page="1" asp-route-searchstring="@Model.Pager.SearchText">
+                    <a class="purple-circle angle" asp-action="ByUser" asp-route-showOnlyCreated="@Model.ShowOnlyCreated"  asp-route-page="1" asp-route-searchstring="@Model.Pager.SearchText">
                         <i class="fas fa-angle-double-left"></i>
                     </a>
-                    <a class="purple-circle angle" asp-action="ByUser" asp-route-page="@(Model.Pager.CurrentPage - 1)" asp-route-searchstring="@Model.Pager.SearchText">
+                    <a class="purple-circle angle" asp-action="ByUser" asp-route-showOnlyCreated="@Model.ShowOnlyCreated" asp-route-page="@(Model.Pager.CurrentPage - 1)" asp-route-searchstring="@Model.Pager.SearchText">
                         <i class="fas fa-angle-left"></i>
                     </a>
                 }
@@ -103,16 +103,16 @@
                     }
                     else
                     {
-                        <a class="purple-circle" asp-action="ByUser" asp-route-page="@i" asp-route-searchstring="@Model.Pager.SearchText">@i</a>
+                        <a class="purple-circle" asp-action="ByUser" asp-route-showOnlyCreated="@Model.ShowOnlyCreated" asp-route-page="@i" asp-route-searchstring="@Model.Pager.SearchText">@i</a>
                     }
                 }
 
                 @if (Model.Pager.CurrentPage < Model.Pager.EndPage)
                 {
-                    <a class="purple-circle angle" asp-action="ByUser"  asp-route-page="@(Model.Pager.CurrentPage + 1)" asp-route-searchstring="@Model.Pager.SearchText">
+                    <a class="purple-circle angle" asp-action="ByUser" asp-route-showOnlyCreated="@Model.ShowOnlyCreated"  asp-route-page="@(Model.Pager.CurrentPage + 1)" asp-route-searchstring="@Model.Pager.SearchText">
                         <i class="fas fa-angle-right"></i>
                     </a>
-                    <a class="purple-circle angle" asp-action="ByUser"  asp-route-page="@(Model.Pager.TotalPages)" asp-route-searchstring="@Model.Pager.SearchText">
+                    <a class="purple-circle angle" asp-action="ByUser" asp-route-showOnlyCreated="@Model.ShowOnlyCreated"  asp-route-page="@(Model.Pager.TotalPages)" asp-route-searchstring="@Model.Pager.SearchText">
                         <i class="fas fa-angle-double-right"></i>
                     </a>
                 }
@@ -130,7 +130,7 @@
 
     <script type="text/javascript">
         $(document).ready(function () {
-            $("#sectionName").text("@((bool)ViewData["showOnlyCreated"] == true && User.IsInRole("Admin") ? "Your Tickets" : "Assigned Tickets")");
+            $("#sectionName").text("@((bool)ViewData["showOnlyCreated"] == true ? "Your Tickets" : User.IsInRole("Admin") ? "All Tickets" : "Assigned Tickets")");
             $("#sidebar ul li.active").removeClass("active");
             $("#tickets-management-link").addClass("active");
 
