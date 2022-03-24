@@ -119,10 +119,34 @@
 
     <script type="text/javascript">
         $(document).ready(function () {
+            loadPieData();
             CreatePies();
             handleModals();
+
+
         });
 
+        function loadPieData() {
+            const ticketDiagramData = '/Tracker/Home/GetDiagramsData';
+
+            var return_first;
+
+            function callback(response) {
+                return_first = response;
+                console.log(return_first)
+                //use return_first variable here
+            }
+
+            $.ajax({
+                'type': "GET",
+                'global': false,
+                'dataType': 'json',
+                'url': ticketDiagramData,
+                'success': function (data) {
+                    callback(data);
+                },
+            });
+        }
         function CreatePies() {
             Chart.register(ChartDataLabels);
 

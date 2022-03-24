@@ -1,5 +1,6 @@
 ﻿using BugTracker.Application.Contracts.Data;
 using BugTracker.Application.Contracts.Identity;
+using BugTracker.Application.Dto.Tickets.Diagram;
 using BugTracker.Application.Responses;
 using BugTracker.Application.ViewModel;
 using BugTracker.Domain.Entities;
@@ -24,12 +25,18 @@ namespace BugTracker.Application.Features.Tickets.Queries.GetTicketDiagramDataBy
             _ticketRepository = ticketRepository ?? throw new ArgumentNullException(nameof(ticketRepository));
         }
 
-        public Task<ApiResponse<TicketDiagramDataModel>> Handle(GetTicketDiagramDataByUserQuery request, CancellationToken cancellationToken)
+        public async Task<ApiResponse<TicketDiagramDataModel>> Handle(GetTicketDiagramDataByUserQuery request, CancellationToken cancellationToken)
         {
             var response = new ApiResponse<TicketDiagramDataModel>();
             response.Data = new TicketDiagramDataModel();
 
+            var dbResult = await GetAppropriateTicketSet();
 
+            response.Data.TypesCount = SetTypeCount(dbResult);
+            response.Data.StatusesCount = SetStatusCount(dbResult);
+            response.Data.PrioritiesCount = SetPriorityCount(dbResult);
+
+            return response;
         }
 
         private async Task<IEnumerable<Ticket>> GetAppropriateTicketSet()
@@ -37,20 +44,56 @@ namespace BugTracker.Application.Features.Tickets.Queries.GetTicketDiagramDataBy
 
             if (_loggedInUserService.Roles.Any(str => str.Contains("Admin")))
             {
-                return await _ticketRepository.ListAllAsync(request.Page, request.Search);
+                return await _ticketRepository.ListAllAsync();
             }
 
             else if (_loggedInUserService.Roles.Any(str => str.Contains("Project Manager")))
             {
-                return await _ticketRepository.GetProjectManagerTickets(_loggedInUserService.UserId, request.Page, request.Search);
+                return await _ticketRepository.GetProjectManagerTickets(_loggedInUserService.UserId,0, null);
             }
-            else if (_loggedInUserService.Roles.Any(str => str.Contains("Project Manager"))
+            else if (_loggedInUserService.Roles.Any(str => str.Contains("Submitter")))
             {
-
+                return await _ticketRepository.GetTicketsByUser(_loggedInUserService.UserId, 0, null, true);
             }
 
-            return await _ticketRepository.GetTicketsByUser(_loggedInUserService.UserId, request.Page, request.Search, request.ShowOnlyCreated);
+            return await _ticketRepository.GetTicketsByUser(_loggedInUserService.UserId, 0, null, false);
 
+        }
+        
+        private TicketByTypeDto SetTypeCount(IEnumerable<Ticket> tickets)
+        {
+            var response = new TicketByTypeDto();
+
+            response.BugCount = tickets.Where(t => t.Type.Name == "Bug - Error").ToList().Count;
+            response.FeatureCount = tickets.Where(t => t.Type.Name == "Feature request").ToList().Count;
+            response.TrainingCount = tickets.Where(t => t.Type.Name == "Training").ToList().Count;
+            response.DocCount = tickets.Where(t => t.Type.Name == "Documentation").ToList().Count;
+
+            return response;
+        }
+
+        private TicketByStatusDto SetStatusCount(IEnumerable<Ticket> tickets)
+        {
+            var response = new TicketByStatusDto();
+
+            response.NewCount = tickets.Where(t => t.Status.Name == "New").ToList().Count;
+            response.OpenCount = tickets.Where(t => t.Status.Name == "Open").ToList().Count;
+            response.InProgressCount = tickets.Where(t => t.Status.Name == "In progress").ToList().Count;
+            response.ResolvedCount = tickets.Where(t => t.Status.Name == "Resolved").ToList().Count;
+
+            return response;
+        }
+
+        private TicketByPriorityDto SetPriorityCount(IEnumerable<Ticket> tickets)
+        {
+            var response = new TicketByPriorityDto();
+
+            response.LowCount = tickets.Where(t => t.Priority.Name == "Low").ToList().Count;
+            response.MediumCount = tickets.Where(t => t.Priority.Name == "Medium").ToList().Count;
+            response.HighCount = tickets.Where(t => t.Priority.Name == "High").ToList().Count;
+            response.ImmediateCount = tickets.Where(t => t.Priority.Name == "Immediate").ToList().Count;
+
+            return response;
         }
     }
 }
