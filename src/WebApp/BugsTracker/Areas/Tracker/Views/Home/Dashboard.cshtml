@@ -119,11 +119,26 @@
 
     <script type="text/javascript">
         $(document).ready(function () {
-            CreatePies();
+            const ticketDiagramData = '/Tracker/Home/GetDiagramsData';
+
+            $.ajax({
+                'type': "GET",
+                'global': false,
+                'dataType': 'json',
+                'url': ticketDiagramData,
+                'success': function (data) {
+                    console.log(data)
+                    CreatePies(data);
+
+                },
+            });
             handleModals();
         });
 
-        function CreatePies() {
+        function CreatePies(data) {
+            var priority = data.prioritiesCount;
+            var type = data.typesCount;
+            var status = data.statusesCount;
             Chart.register(ChartDataLabels);
 
             var ticketTypePie = new Chart($("#ticket-type-pie"),
@@ -131,14 +146,15 @@
                     type: 'doughnut',
 
                     data: {
-                        labels: ["Issue", "Bug", "Feature request"],
+                        labels: ["Bug", "Feature request", "Training", "Documentation"],
                         datasets: [{
-                            label: 'My First Dataset',
-                            data: [300, 50, 100],
+                            label: 'Tickets by type',
+                            data: [type.bugCount, type.featureCount, type.trainingCount, type.docCount],
                             backgroundColor: [
                                 'rgb(255, 99, 132)',
                                 'rgb(54, 162, 235)',
-                                'rgb(255, 205, 86)'
+                                'rgb(255, 205, 86)',
+                                'rgb(155, 205, 50)'
                             ],
                             hoverOffset: 4
                         }]
@@ -164,14 +180,15 @@
                 type: 'doughnut',
 
                 data: {
-                    labels: ["Resolved", "New", "In Progress"],
+                    labels: ["Resolved", "New", "In Progress", "Open"],
                     datasets: [{
-                        label: 'My First Dataset',
-                        data: [300, 50, 100],
+                        label: 'Ticket by status',
+                        data: [status.resolvedCount, status.newCount, status.inProgressCount, status.openCount],
                         backgroundColor: [
                             'rgb(255, 205, 86)',
                             'rgb(54, 162, 235)',
-                            'rgb(255, 99, 132)'
+                            'rgb(255, 99, 132)',
+                            'rgb(200, 17, 172)'
                         ],
                         hoverOffset: 4
                     }]
@@ -194,13 +211,14 @@
             });
 
             var ticketPriorityPie = new Chart($("#ticket-priority-pie"), {
+                
                 type: 'doughnut',
 
                 data: {
                     labels: ["Immediate", "High", "Medium", "Low"],
                     datasets: [{
-                        label: 'My First Dataset',
-                        data: [300, 50, 100, 60],
+                        label: 'Ticket priorities',
+                        data: [priority.immediateCount, priority.highCount, priority.mediumCount, priority.lowCount],
                         backgroundColor: [
                             'rgb(255, 99, 132)',
                             'rgb(54, 162, 235)',
