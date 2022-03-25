@@ -338,19 +338,26 @@ namespace BugTracker.Persistence.Services.Data
         }
         public override async Task<IEnumerable<Ticket>> ListAllAsync(int page, string searchString)
         {
-            var itemPerPage = 6;
-            var toSkip = (page - 1) * itemPerPage;
-            var result = new List<Ticket>();
+            if (page > 0)
+            {
+                var itemPerPage = 6;
+                var toSkip = (page - 1) * itemPerPage;
+                var result = new List<Ticket>();
 
-            if (!string.IsNullOrEmpty(searchString))
-            {
-                result = await LookoutTicketBySearchString(searchString, Guid.Empty, new List<Guid>(), toSkip, itemPerPage);
+                if (!string.IsNullOrEmpty(searchString))
+                {
+                    result = await LookoutTicketBySearchString(searchString, Guid.Empty, new List<Guid>(), toSkip, itemPerPage);
+                }
+                else
+                {
+                    result = await GetTicketPaginatedList(toSkip, itemPerPage, Guid.Empty, new List<Guid>());
+                }
+                return result;
             }
-            else
-            {
-                result = await GetTicketPaginatedList(toSkip, itemPerPage, Guid.Empty, new List<Guid>());
-            }
-            return result;
+
+            return await _dbContext.Tickets.Include(t => t.Priority).Include(t => t.Status).Include(t => t.Type).Include(t => t.Project).ToListAsync();
+
+
         }
         public async Task<IEnumerable<Ticket>> GetDevTicketByProject(string uid, Guid projectId, int page, string searchString)
         {

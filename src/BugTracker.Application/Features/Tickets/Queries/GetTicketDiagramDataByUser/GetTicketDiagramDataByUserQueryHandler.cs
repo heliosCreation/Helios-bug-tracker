@@ -44,7 +44,7 @@ namespace BugTracker.Application.Features.Tickets.Queries.GetTicketDiagramDataBy
 
             if (_loggedInUserService.Roles.Any(str => str.Contains("Admin")))
             {
-                return await _ticketRepository.ListAllAsync();
+                return await _ticketRepository.ListAllAsync(0, null);
             }
 
             else if (_loggedInUserService.Roles.Any(str => str.Contains("Project Manager")))
