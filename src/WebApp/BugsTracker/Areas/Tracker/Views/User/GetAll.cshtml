@@ -16,9 +16,13 @@
                 </form>
             </div>
 
-            <div class="ml-auto">
+            <div class="ml-auto d-flex">
+                <form asp-controller="user" asp-route-showNoRole="@true" class="mr-2">
+                    <input type="submit" class="x-btn purple" value="Pending user(s)" />
+                </form>
+
                 <form asp-controller="user" asp-route-showLocked="@true">
-                    <input type="submit" class="x-btn yellow" value="Locked user(s)"/>
+                    <input type="submit" class="x-btn yellow" value="Locked user(s)" />
                 </form>
             </div>
         </div>

@@ -28,7 +28,7 @@ namespace BugTracker.Application.Features.UserManagement.GetAllUsers
             var response = new ApiResponse<UserManagementViewModel>();
             response.Data = new UserManagementViewModel();
 
-            var users = _mapper.Map<List<UserViewModel>>(await _identityService.GetAllManageableUsers(request.Page,request.SearchString, request.ShowLocked));
+            var users = _mapper.Map<List<UserViewModel>>(await _identityService.GetAllManageableUsers(request.Page,request.SearchString, request.ShowLocked, request.ShowNoRole));
             var userCount = await GetUserCount(request, users);
             await AssignUserRole(users, response);
             response.Data.Pager = new Pager(userCount, request.Page);
