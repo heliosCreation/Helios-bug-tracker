@@ -40,7 +40,7 @@ namespace BugTracker.Application.Features.UserManagement.GetAllUsers
         {
             var userCount = 0;
 
-            if (request.SearchString != null || request.ShowLocked)
+            if (request.SearchString != null || request.ShowLocked || request.ShowNoRole)
             {
                 userCount = users.Count();
             }
