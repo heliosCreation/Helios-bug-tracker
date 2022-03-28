@@ -13,6 +13,11 @@
     <link href="~/lib/font-awesome/css/all.css" rel="stylesheet" />
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/tracker.css" />
+
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
 </head>
 <body>
     <div class="wrapper">
@@ -37,11 +42,7 @@
                         <i class="fas fa-chart-bar"></i><span>Dashboard</span>
                     </a>
                 </li>
-                <li>
-                    <a href="" data-toggle="collapse">
-                        <i class="fas fa-project-diagram"></i><span>Projects</span>
-                    </a>
-                </li>
+
                 <li id="tickets-management-link">
                     <a asp-controller="Ticket" asp-action="ByUser">
                         <i class="fas fa-ticket-alt"></i><span>Tickets</span>

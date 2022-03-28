@@ -1,0 +1,38 @@
+﻿* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body, html {
+    height:100%;
+    line-height: 1.8;
+    font-family: 'Roboto', sans-serif;
+    color: #555e58;
+    text-rendering: optimizeLegibility !important;
+    -webkit-font-smoothing: antialiased !important;
+    font-weight: 400;
+    margin: 0px;
+    padding: 0px;
+}
+
+body {
+    background: rgb(205,238,237);
+    background: linear-gradient(180deg, rgba(205,238,237,1) 0%, rgba(0,117,255,1) 50%, rgba(215,215,215,1) 100%);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.pending-img{
+    height:90%;
+}
+.pending-message{
+    z-index:1000;
+    background:white;
+    position:fixed;
+    padding:10px;
+    border:2px solid black;
+    border-radius:5px;text-align:center;
+}
