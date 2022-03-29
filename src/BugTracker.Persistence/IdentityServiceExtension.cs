@@ -111,7 +111,6 @@ namespace BugTracker.Persistence
 
                 options.AddPolicy("HasRole", policy =>
                 {
-                    policy.RequireAuthenticatedUser();
                     policy.RequireAssertion(ctx =>
                     {
                         return ctx.User.Claims
