@@ -17,12 +17,20 @@
             </div>
 
             <div class="ml-auto d-flex">
-                <form asp-controller="user" asp-route-showNoRole="@true" class="mr-2">
-                    <input type="submit" class="x-btn purple" value="Pending user(s)" />
+                <form asp-controller="user" asp-route-showNoRole="@true" class="mr-2" >
+                    <button type="submit" id="pending-btn" class="x-btn purple">
+                        <span class="pending-btn-text">Pending user(s)</span>
+                        <span class="pending-btn-icon">
+                            <i class="far fa-eye" aria-hidden="true"></i>
+                        </span>
+                    </button>
                 </form>
 
                 <form asp-controller="user" asp-route-showLocked="@true">
-                    <input type="submit" class="x-btn yellow" value="Locked user(s)" />
+                    <button type="submit" class="x-btn yellow">
+                        <span class="locked-user-text"> Locked user(s) </span>
+                        <span class="locked-btn-icon"> <i class="fas fa-lock"></i></span>
+                    </button>
                 </form>
             </div>
         </div>
@@ -81,8 +89,12 @@
                         <i class="fas fa-angle-left"></i>
                     </a>
                 }
-                @for (int i = Model.Pager.StartPage; i <= Model.Pager.EndPage; i++)
+                @for (int i = Model.Pager.StartPage; i <= Model.Pager.CurrentPage +3; i++)
                 {
+                    if (i > Model.Pager.EndPage)
+                    {
+                        break;
+                    }
                     if (Model.Pager.CurrentPage == i)
                     {
                         <a class="purple-circle  @(i == Model.Pager.CurrentPage ? "filled" : "")">@i</a>
@@ -152,6 +164,7 @@
             $("#sectionName").text("User Management");
             $("#sidebar ul li.active").removeClass("active");
             $("#user-management-link").addClass("active");
+
 
             const manageRoleUrl = '/Tracker/User/LoadManageRoleModal';
             const manageLockUrl = '/Tracker/User/LoadLockUserModal';

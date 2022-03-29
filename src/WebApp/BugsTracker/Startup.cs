@@ -70,6 +70,11 @@ namespace BugTracker
                     if (!result.Succeeded)
                     {
                         var path = $"/Identity/Account/Pending?ReturnUrl={ctx.Request.Path}";
+
+                        if (!ctx.User.Identity.IsAuthenticated)
+                        {
+                            path = $"/Identity/Account/Login?ReturnUrl={ctx.Request.Path}";
+                        }
                         ctx.Response.Redirect(path);
                         return;
                     }

@@ -11,8 +11,12 @@
                 <i class="fas fa-angle-left"></i>
             </a>
         }
-        @for (int i = Model.StartPage; i <= Model.EndPage; i++)
+        @for (int i = Model.CurrentPage; i <= Model.CurrentPage + 3; i++)
         {
+            if (i > Model.EndPage)
+            {
+                break;
+            }
             if (Model.CurrentPage == i)
             {
                 <a class="purple-circle  @(i == Model.CurrentPage ? "filled" : "")">@i</a>
@@ -34,7 +38,7 @@
         }
     </div>
 
-    <div class="p-2">
+    <div class="p-2 ml-auto">
         <p>
             Showing @Model.StartRecord to @Model.EndRecord of @Model.TotalItems Rows.
         </p>

@@ -922,8 +922,7 @@ tbody tr td a {
     #sidebar.active {
         width: 80px;
         height: 100% !important;
-        /*        position: absolute !important;
-*/ overflow: visible !important;
+         overflow: visible !important;
         top: 0 !important;
         z-index: 666;
         float: left !important;
@@ -969,6 +968,8 @@ tbody tr td a {
         border: 1px solid #dcd9d9;
         z-index: 4;
     }
+
+
 }
 
 
@@ -976,7 +977,6 @@ tbody tr td a {
 }
 
 
-/*===============small-screen overlay sidebar design media queries==============*/
 
 @media only screen and (max-width:992px) {
     #sidebar {
@@ -1004,8 +1004,39 @@ tbody tr td a {
         transition: all 150ms linear;
         background-color: rgba(0,0,0,0.5);
     }
+    /*Ticket table*/
+    .research-input-wrapper {
+        width: 45%;
+    }
+    .research-input-wrapper input {
+        width: 70%;
+    }
+    /*Ticket details*/
+    .modal.right .modal-dialog {
+        width: 100% !important;
+    }
+
+    #comments-holder{
+        max-height:530px;
+        height:530px;
+    }
+
+    #accordion .card {
+        width:89%;
+    }
+    /*Edit project*/
+    #project-team{
+        width:600px!important;
+    }
+    
+    /*User management*/
+    .locked-user-text{
+        display:none;
+    }
+    .pending-btn-text {
+        display: none;
+    }
 }
-/*===============small-screen overlay sidebar design media queries==============*/
 
 
 
