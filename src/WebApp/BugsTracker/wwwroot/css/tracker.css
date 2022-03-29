@@ -1005,8 +1005,19 @@ tbody tr td a {
         background-color: rgba(0,0,0,0.5);
     }
 
+
+    /*Ticket details*/
     .modal.right .modal-dialog {
         width: 100%!important;
+    }
+
+    #comments-holder{
+        max-height:530px;
+        height:530px;
+    }
+
+    #accordion .card {
+        width:89%;
     }
 }
 
