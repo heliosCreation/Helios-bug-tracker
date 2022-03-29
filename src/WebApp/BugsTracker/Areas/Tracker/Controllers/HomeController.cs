@@ -1,6 +1,5 @@
 ﻿using BugTracker.Application.Features.Projects.Queries.GetAll;
 using BugTracker.Application.Features.Tickets.Queries.GetTicketDiagramDataByUser;
-using BugTracker.Application.Features.Tickets.Queries.GetTicketsByUser;
 using BugTracker.Application.ViewModel;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
@@ -9,6 +8,10 @@ namespace BugTracker.Areas.Tracker.Controllers
 {
     public class HomeController : BaseController
     {
+        public HomeController()
+        {
+
+        }
         public async Task<IActionResult> DashBoard(bool isSuccess = false, string type = null, string actionReturned = null)
         {
             ViewBag.isSuccess = isSuccess;

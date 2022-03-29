@@ -108,6 +108,17 @@ namespace BugTracker.Persistence
                            .ToList().Count == 0;
                     });
                 });
+
+                options.AddPolicy("HasRole", policy =>
+                {
+                    policy.RequireAuthenticatedUser();
+                    policy.RequireAssertion(ctx =>
+                    {
+                        return ctx.User.Claims
+                           .Where(c => c.Type == ClaimTypes.Role)
+                           .ToList().Count > 0;
+                    });
+                });
             });
 
 

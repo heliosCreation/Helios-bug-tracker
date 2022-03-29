@@ -4,6 +4,7 @@ using BugTracker.Application.Enums;
 using BugTracker.Application.Model.Identity.Authentication;
 using BugTracker.Application.Model.Identity.ConfirmationAndReset;
 using BugTracker.Application.Model.Identity.Registration;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
@@ -15,11 +16,13 @@ namespace BugTracker.Areas.Identity.Controllers
     {
         private readonly IIdentityService _identityService;
         private readonly IEmailService _emailService;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public AccountController(IIdentityService identityService, IEmailService emailService)
+        public AccountController(IIdentityService identityService, IEmailService emailService, IHttpContextAccessor httpContextAccessor)
         {
             _identityService = identityService ?? throw new ArgumentNullException(nameof(identityService));
             _emailService = emailService ?? throw new ArgumentNullException(nameof(emailService));
+            _httpContextAccessor = httpContextAccessor ?? throw new ArgumentNullException(nameof(httpContextAccessor));
         }
 
         public IActionResult Register()
@@ -48,15 +51,16 @@ namespace BugTracker.Areas.Identity.Controllers
             var token = await _identityService.GenerateRegistrationEncodedToken(user.Id);
             var callbackLink = Url.ActionLink("ConfirmEmail", "Account", new { uid = user.Id, token = token });
 
-            var mailResult = await _emailService.SendRegistrationMail(model.Email, callbackLink);
-            if (mailResult == false)
-            {
-                throw new Exception();
-            }
+            //var mailResult = await _emailService.SendRegistrationMail(model.Email, callbackLink);
+            //if (mailResult == false)
+            //{
+            //    ModelState.AddModelError("", "There was a problem trying to send your mail. If the problem persists contact an administrator.");
+            //    return View(model);
+            //}
             return RedirectToAction("ConfirmEmail", new { email = model.Email });
 
         }
-        
+
         public IActionResult DemoLogin()
         {
             return View();
@@ -72,7 +76,7 @@ namespace BugTracker.Areas.Identity.Controllers
             var mail = dictionnary[model.Type];
             var password = "Pwd12345!";
 
-            var result = await _identityService.AuthenticateAsync(new AuthenticationModel() { Email = mail, Password = password});
+            var result = await _identityService.AuthenticateAsync(new AuthenticationModel() { Email = mail, Password = password });
 
             if (result.Succeeded)
             {
@@ -91,7 +95,7 @@ namespace BugTracker.Areas.Identity.Controllers
         {
             return View();
         }
-        
+
 
         [HttpPost]
         public async Task<IActionResult> Login(AuthenticationModel model)
@@ -107,6 +111,7 @@ namespace BugTracker.Areas.Identity.Controllers
 
                 if (result.Succeeded)
                 {
+
                     ModelState.Clear();
                     return RedirectToAction("Dashboard", "Home", new { area = "Tracker" });
                 }
@@ -123,7 +128,13 @@ namespace BugTracker.Areas.Identity.Controllers
             {
                 ModelState.AddModelError("", "Invalid Credential");
             }
+
             return View(model);
+        }
+
+        public IActionResult Pending()
+        {
+            return View();
         }
 
         public async Task<IActionResult> Logout()

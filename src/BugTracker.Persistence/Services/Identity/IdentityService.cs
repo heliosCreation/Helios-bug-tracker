@@ -38,7 +38,7 @@ namespace BugTracker.Persistence.Services.Identity
         {
             var user = new ApplicationUser
             {
-                UserName = model.Email,
+                UserName = $"{model.FirstName} {model.LastName}",
                 NormalizedUserName = model.Email.ToUpper(),
                 Email = model.Email,
                 NormalizedEmail = model.Email.ToUpper(),
@@ -163,7 +163,7 @@ namespace BugTracker.Persistence.Services.Identity
             return await _context.Users.Where(u => u.Id == id).Select(u => u.UserName).FirstOrDefaultAsync();
         }
         
-        public async Task<IEnumerable<ApplicationUser>> GetAllManageableUsers(int page, string searchString, bool showLocked)
+        public async Task<IEnumerable<ApplicationUser>> GetAllManageableUsers(int page, string searchString, bool showLocked, bool showNoRole)
         {
             var itemPerPage = 7;
             var toSkip = (page - 1) * itemPerPage;
@@ -199,6 +199,13 @@ namespace BugTracker.Persistence.Services.Identity
                 users = await _context.Users
                         .Where(u => u.LockoutEnabled == true)
                         .ToListAsync();
+            }
+            else if (showNoRole)
+            {
+                users = await _context.Users
+                    .Where(c => !_context.UserRoles
+                    .Select(b => b.UserId).Distinct()
+                    .Contains(c.Id)).ToListAsync();
             }
             else
             {
@@ -274,6 +281,8 @@ namespace BugTracker.Persistence.Services.Identity
 
             return ticketTeam;
         }
+       
+        
         public async Task<string> GeneratePasswordForgottenMailToken(string email)
         {
             var user = await _userManager.FindByEmailAsync(email);

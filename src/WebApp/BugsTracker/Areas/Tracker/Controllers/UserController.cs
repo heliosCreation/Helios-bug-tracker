@@ -25,7 +25,7 @@ namespace BugTracker.Areas.Tracker.Controllers
         private const string UnlockUserModalPath = ModalBasePath + "_unlock" + ModalType;
         private const string DeleteUserModalPath = ModalBasePath + "_delete" + ModalType;
 
-        public async Task<IActionResult> GetAll(int page = 1, string searchString = null, bool showLocked = false,
+        public async Task<IActionResult> GetAll(int page = 1, string searchString = null, bool showLocked = false, bool showNoRole = false,
             bool isSuccess = false, bool isFailed = false, List<string> errors = null, string type = null, string actionReturned = null)
         {
             ViewBag.isSuccess = isSuccess;
@@ -34,7 +34,7 @@ namespace BugTracker.Areas.Tracker.Controllers
             ViewBag.type = type;
             ViewBag.actionReturned = actionReturned;
 
-            var response = await Mediator.Send(new GetAllUsersQuery(page, searchString, showLocked));
+            var response = await Mediator.Send(new GetAllUsersQuery(page, searchString, showLocked, showNoRole));
             return View(response.Data);
         }
 

@@ -1,11 +1,13 @@
 using BugTracker.Application;
 using BugTracker.Application.Contracts.Identity;
-using BugTracker.Filters.Validation;
 using BugTracker.Infrastructure;
 using BugTracker.Persistence;
 using BugTracker.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http.Features;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -55,6 +57,25 @@ namespace BugTracker
             app.UseRouting();
 
             app.UseAuthentication();
+
+            app.Use(async (ctx, next) =>
+            {
+                var ep = ctx.Features.Get<IEndpointFeature>()?.Endpoint;
+                var authAttr = ep?.Metadata?.GetMetadata<AuthorizeAttribute>();
+
+                if (authAttr != null && authAttr.Policy == "HasRole")
+                {
+                    var authService = ctx.RequestServices.GetRequiredService<IAuthorizationService>();
+                    var result = await authService.AuthorizeAsync(ctx.User, ctx.GetRouteData(), authAttr.Policy);
+                    if (!result.Succeeded)
+                    {
+                        var path = $"/Identity/Account/Pending?ReturnUrl={ctx.Request.Path}";
+                        ctx.Response.Redirect(path);
+                        return;
+                    }
+                }
+                await next();
+            });
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
@@ -71,6 +92,8 @@ namespace BugTracker
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
             });
+
+
         }
     }
 }
