@@ -1004,11 +1004,16 @@ tbody tr td a {
         transition: all 150ms linear;
         background-color: rgba(0,0,0,0.5);
     }
-
-
+    /*Ticket table*/
+    .research-input-wrapper {
+        width: 50%;
+    }
+    .research-input-wrapper input {
+        width: 70%;
+    }
     /*Ticket details*/
     .modal.right .modal-dialog {
-        width: 100%!important;
+        width: 100% !important;
     }
 
     #comments-holder{
