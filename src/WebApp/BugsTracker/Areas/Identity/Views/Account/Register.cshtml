@@ -15,8 +15,8 @@
         </div>
     }
     <form class="p-3 mt-3" asp-controller="Account" asp-action="Register">
-        <div class="d-flex">
-            <div class="col-lg-6">
+        <div class="d-flex flex-column flex-lg-row">
+            <div class="col-12 col-lg-6">
                 <div class="form-field d-flex align-items-center">
                     <span class="far fa-user"></span> <input type="text" asp-for="Email" id="email" placeholder="Email">
                 </div>
@@ -33,7 +33,7 @@
                 <span asp-validation-for="LastName" class="text-danger"></span>
             </div>
 
-            <div class="col-lg-6">
+            <div class="col-12 col-lg-6">
                 <div class="form-field d-flex align-items-center">
                     <span class="fas fa-key"></span> <input asp-for="Password" placeholder="Password">
                 </div>
