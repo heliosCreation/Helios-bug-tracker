@@ -12,18 +12,16 @@ namespace BugTracker.Areas.Tracker.Controllers
         {
 
         }
-        public async Task<IActionResult> DashBoard(bool isSuccess = false, string type = null, string actionReturned = null)
+        public async Task<IActionResult> DashBoard(int page = 1, bool isSuccess = false, string type = null, string actionReturned = null)
         {
             ViewBag.isSuccess = isSuccess;
             ViewBag.type = type;
             ViewBag.actionReturned = actionReturned;
-            var viewModel = new DashboardViewModel();
 
-            var projectResponse = await Mediator.Send(new GetAllProjectQuery());
+            var projectResponse = await Mediator.Send(new GetAllProjectQuery(page));
 
-            viewModel.Projects = projectResponse.DataList;
 
-            return View(viewModel);
+            return View(projectResponse.Data);
         }
 
         [Produces("application/json")]

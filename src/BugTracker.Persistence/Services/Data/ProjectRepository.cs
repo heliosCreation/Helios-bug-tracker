@@ -55,38 +55,50 @@ namespace BugTracker.Persistence.Services.Data
 
             await _dbContext.SaveChangesAsync();
         }
-        public async Task<ICollection<ProjectWithTeamDto>> ListAllWithTeam(string uid)
+        public async Task<ICollection<Project>> ListAll(string uid, int page)
         {
-            var response = new List<ProjectWithTeamDto>();
             var projects = new List<Project>();
+            var itemPerPage = 6;
+            var tickets = new List<Ticket>();
+            var toSkip = (page - 1) * itemPerPage;
 
             if (uid == null)
             {
-                projects = await _dbContext.Projects.OrderBy(p => p.CreatedDate).ToListAsync();
+                projects = await _dbContext.Projects
+                    .Skip(toSkip)
+                    .Take(itemPerPage)
+                    .OrderBy(p => p.CreatedDate)
+                    .ToListAsync();
             }
             else
             {
                 var pids = await _dbContext.ProjectTeamMembers.Where(ptm => ptm.UserId == uid).Select(ptm => ptm.ProjectId).ToListAsync();
-                projects = await _dbContext.Projects.Where(p => pids.Contains(p.Id)).OrderBy(p => p.CreatedDate).ToListAsync();
+                projects = await _dbContext.Projects
+                            .Where(p => pids.Contains(p.Id))
+                            .Skip(toSkip)
+                            .Take(itemPerPage)
+                            .OrderBy(p => p.CreatedDate)
+                            .ToListAsync();
             }
 
-            foreach (var project in projects)
-            {
-                var projectWithTeamDto = new ProjectWithTeamDto();
-                projectWithTeamDto.Project = project;
-                var projectTeamMembers = await _dbContext.ProjectTeamMembers.Where(ptm => ptm.ProjectId == project.Id).ToListAsync();
-                foreach (var projectTeamMember in projectTeamMembers)
-                {
-                    var teamMember = await _dbContext.Users.FindAsync(projectTeamMember.UserId);
-                    projectWithTeamDto.Team.Add(teamMember);
-                }
 
-                response.Add(projectWithTeamDto);
-            }
-
-            return response;
+            return projects;
         }
         
+        public async Task<int> CountProject(string uid)
+        {
+            if (uid == null)
+            {
+                return await _dbContext.Projects.CountAsync();
+            }
+            else
+            {
+                var pids = await _dbContext.ProjectTeamMembers.Where(ptm => ptm.UserId == uid).Select(ptm => ptm.ProjectId).ToListAsync();
+                return await _dbContext.Projects
+                            .Where(p => pids.Contains(p.Id))
+                            .CountAsync();
+            }
+        }
         public async Task<Guid> GetProjectIdByTicketId(Guid ticketId)
         {
             return await _dbContext.Tickets.Where(t => t.Id == ticketId).Select(t => t.ProjectId).FirstOrDefaultAsync();
