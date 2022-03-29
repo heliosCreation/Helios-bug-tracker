@@ -51,11 +51,12 @@ namespace BugTracker.Areas.Identity.Controllers
             var token = await _identityService.GenerateRegistrationEncodedToken(user.Id);
             var callbackLink = Url.ActionLink("ConfirmEmail", "Account", new { uid = user.Id, token = token });
 
-            var mailResult = await _emailService.SendRegistrationMail(model.Email, callbackLink);
-            if (mailResult == false)
-            {
-                throw new Exception();
-            }
+            //var mailResult = await _emailService.SendRegistrationMail(model.Email, callbackLink);
+            //if (mailResult == false)
+            //{
+            //    ModelState.AddModelError("", "There was a problem trying to send your mail. If the problem persists contact an administrator.");
+            //    return View(model);
+            //}
             return RedirectToAction("ConfirmEmail", new { email = model.Email });
 
         }

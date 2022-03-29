@@ -7,6 +7,7 @@
 <div class="wrapper">
     <div class="logo"><i class="fas fa-user-secret"></i> </div>
     <div class="text-center mt-4 name"> Register </div>
+
     @if (!ViewData.ModelState.IsValid)
     {
         <div asp-validation-summary="All" class="text-danger text-center  validation-summary-errors">
@@ -14,21 +15,38 @@
         </div>
     }
     <form class="p-3 mt-3" asp-controller="Account" asp-action="Register">
-        <div class="form-field d-flex align-items-center">
-            <span class="far fa-user"></span> <input type="text" asp-for="Email" id="email" placeholder="Email">
-        </div>
-        <span asp-validation-for="Email" class="text-danger"></span>
+        <div class="d-flex">
+            <div class="col-lg-6">
+                <div class="form-field d-flex align-items-center">
+                    <span class="far fa-user"></span> <input type="text" asp-for="Email" id="email" placeholder="Email">
+                </div>
+                <span asp-validation-for="Email" class="text-danger"></span>
 
-        <div class="form-field d-flex align-items-center">
-            <span class="fas fa-key"></span> <input asp-for="Password" placeholder="Password">
-        </div>
-        <span asp-validation-for="Password" class="text-danger"></span>
+                <div class="form-field d-flex align-items-center">
+                    <span class="far fa-user"></span> <input type="text" asp-for="FirstName" id="email" placeholder="First name">
+                </div>
+                <span asp-validation-for="FirstName" class="text-danger"></span>
 
-        <div class="form-field d-flex align-items-center">
-            <span class="fas fa-key"></span> <input asp-for="ConfirmationPassword" placeholder="Confirmation Password">
+                <div class="form-field d-flex align-items-center">
+                    <span class="far fa-user"></span> <input type="text" asp-for="LastName" id="email" placeholder="Last Name">
+                </div>
+                <span asp-validation-for="LastName" class="text-danger"></span>
+            </div>
+
+            <div class="col-lg-6">
+                <div class="form-field d-flex align-items-center">
+                    <span class="fas fa-key"></span> <input asp-for="Password" placeholder="Password">
+                </div>
+                <span asp-validation-for="Password" class="text-danger"></span>
+
+                <div class="form-field d-flex align-items-center">
+                    <span class="fas fa-key"></span> <input asp-for="ConfirmationPassword" placeholder="Confirmation Password">
+                </div>
+                <span asp-validation-for="ConfirmationPassword" class="text-danger"></span>
+            </div>
         </div>
-        <span asp-validation-for="ConfirmationPassword" class="text-danger"></span>
         <button class="btn mt-3">Register</button>
+
     </form>
     <div class="text-center fs-6"> <a asp-action="Login">Login</a></div>
 </div>

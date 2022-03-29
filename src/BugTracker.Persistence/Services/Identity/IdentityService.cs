@@ -38,7 +38,7 @@ namespace BugTracker.Persistence.Services.Identity
         {
             var user = new ApplicationUser
             {
-                UserName = model.Email,
+                UserName = $"{model.FirstName} {model.LastName}",
                 NormalizedUserName = model.Email.ToUpper(),
                 Email = model.Email,
                 NormalizedEmail = model.Email.ToUpper(),
@@ -281,6 +281,8 @@ namespace BugTracker.Persistence.Services.Identity
 
             return ticketTeam;
         }
+       
+        
         public async Task<string> GeneratePasswordForgottenMailToken(string email)
         {
             var user = await _userManager.FindByEmailAsync(email);

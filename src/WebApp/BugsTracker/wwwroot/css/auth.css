@@ -8,15 +8,15 @@
 }
 html {
     position: relative;
-    min-height: 100vh;
 }
 body {
     background: rgb(2,0,36);
     background: linear-gradient(356deg, rgba(2,0,36,1) 0%, rgba(9,9,121,1) 35%, rgba(0,212,255,1) 100%);
     background-repeat: no-repeat;
-    min-height: 100vh;
 }
-
+html,body{
+    height:100%;
+}
 input:-webkit-autofill,
 input:-webkit-autofill:hover,
 input:-webkit-autofill:focus,
