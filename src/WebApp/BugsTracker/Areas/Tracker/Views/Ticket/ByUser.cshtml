@@ -79,8 +79,12 @@
                         <i class="fas fa-angle-left"></i>
                     </a>
                 }
-                @for (int i = Model.Pager.StartPage; i <= Model.Pager.EndPage; i++)
+                @for (int i = Model.Pager.StartPage; i <= Model.Pager.CurrentPage + 3; i++)
                 {
+                    if (i > Model.Pager.EndPage)
+                    {
+                        break;
+                    }
                     if (Model.Pager.CurrentPage == i)
                     {
                         <a class="purple-circle  @(i == Model.Pager.CurrentPage ? "filled" : "")">@i</a>
