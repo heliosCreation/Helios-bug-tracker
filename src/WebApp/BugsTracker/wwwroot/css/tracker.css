@@ -1006,7 +1006,7 @@ tbody tr td a {
     }
     /*Ticket table*/
     .research-input-wrapper {
-        width: 50%;
+        width: 45%;
     }
     .research-input-wrapper input {
         width: 70%;
@@ -1023,6 +1023,18 @@ tbody tr td a {
 
     #accordion .card {
         width:89%;
+    }
+    /*Edit project*/
+    #project-team{
+        width:600px!important;
+    }
+    
+    /*User management*/
+    .locked-user-text{
+        display:none;
+    }
+    .pending-btn-text {
+        display: none;
     }
 }
 
