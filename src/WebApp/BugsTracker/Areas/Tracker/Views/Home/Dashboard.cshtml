@@ -63,12 +63,48 @@
                 </table>
             </div>
         </div>
-
-        <div class="row d-flex justify-content-start align-items-start w-100">
+        <div class="row d-flex justify-content-sm-between align-items-center w-100">
             <div class="pagination-holder d-flex p-2">
-                <div class="purple-circle"><i class="fas fa-angle-left"></i></div>
-                <div class="purple-circle filled">1</div>
-                <div class="purple-circle"><i class="fas fa-angle-right"></i></div>
+                @if (Model.Pager.CurrentPage > 1)
+                {
+                    <a class="purple-circle angle" asp-action="Dashboard" asp-route-page="1">
+                        <i class="fas fa-angle-double-left"></i>
+                    </a>
+                    <a class="purple-circle angle" asp-action="Dashboard" asp-route-page="@(Model.Pager.CurrentPage - 1)">
+                        <i class="fas fa-angle-left"></i>
+                    </a>
+                }
+                @for (int i = Model.Pager.CurrentPage; i <= Model.Pager.CurrentPage + 3; i++)
+                {
+                    if (i > Model.Pager.EndPage)
+                    {
+                        break;
+                    }
+                    if (Model.Pager.CurrentPage == i)
+                    {
+                        <a class="purple-circle  @(i == Model.Pager.CurrentPage ? "filled" : "")">@i</a>
+                    }
+                    else
+                    {
+                        <a class="purple-circle" asp-action="Dashboard" asp-route-page="@i">@i</a>
+                    }
+                }
+
+                @if (Model.Pager.CurrentPage < Model.Pager.EndPage)
+                {
+                    <a class="purple-circle angle" asp-action="Dashboard" asp-route-page="@(Model.Pager.CurrentPage + 1)">
+                        <i class="fas fa-angle-right"></i>
+                    </a>
+                    <a class="purple-circle angle" asp-action="Dashboard" asp-route-page="@(Model.Pager.TotalPages)">
+                        <i class="fas fa-angle-double-right"></i>
+                    </a>
+                }
+            </div>
+
+            <div class="p-2 ml-auto">
+                <p>
+                    Showing @Model.Pager.StartRecord to @Model.Pager.EndRecord of @Model.Pager.TotalItems Rows.
+                </p>
             </div>
         </div>
     </div>
