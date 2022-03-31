@@ -112,7 +112,7 @@ namespace BugTracker.Persistence.LogHelpers
                     if (auditEntry.TableName == "ApplicationUser")
                     {
                         auditEntry.NewValues.Clear();
-                        auditEntry.NewValues.Add("User", ((ApplicationUser)entry.Entity).UserName);
+                        auditEntry.NewValues["User"] = ((ApplicationUser)entry.Entity).UserName;
                     }
                     else
                     {
@@ -125,7 +125,7 @@ namespace BugTracker.Persistence.LogHelpers
                     if (auditEntry.TableName == "ApplicationUser")
                     {
                         auditEntry.OldValues.Clear();
-                        auditEntry.OldValues.Add("User", ((ApplicationUser)entry.Entity).UserName);
+                        auditEntry.OldValues["User"] = ((ApplicationUser)entry.Entity).UserName;
                     }
                     else
                     {
@@ -141,8 +141,8 @@ namespace BugTracker.Persistence.LogHelpers
                         auditEntry.NewValues[property.Metadata.Name] = current;
                         if (auditEntry.TableName == "ApplicationUser")
                         {
-                            auditEntry.NewValues.Add("User", ((ApplicationUser)entry.Entity).UserName);
-                            auditEntry.OldValues.Add("User", ((ApplicationUser)entry.Entity).UserName);
+                            auditEntry.NewValues["User"] = ((ApplicationUser)entry.Entity).UserName;
+                            auditEntry.OldValues["User"] = ((ApplicationUser)entry.Entity).UserName;
                         }
                     }
                     break;
