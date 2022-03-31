@@ -2,6 +2,7 @@
 using BugTracker.Domain.Common;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json;
@@ -51,8 +52,10 @@ namespace BugTracker.Persistence.LogHelpers
             foreach (var property in entry.Properties)
             {
                 var current = property.CurrentValue;
-
-                MapPKToAuditEntryValue(property, auditEntry, current);
+                if (property.Metadata.IsForeignKey())
+                {
+                    current = await MapPKToAuditEntryValue(property, auditEntry, current);
+                }
                 if (property.Metadata.Name == "UserId")
                 {
                     current = await MapUserIdToLogValues(property);
@@ -61,12 +64,28 @@ namespace BugTracker.Persistence.LogHelpers
             }
 
         }
-        private void MapPKToAuditEntryValue(PropertyEntry property, AuditEntry auditEntry, object current)
+        private async Task<object> MapPKToAuditEntryValue(PropertyEntry property, AuditEntry auditEntry, object current)
         {
-            if (property.Metadata.IsPrimaryKey())
+            var name = property.Metadata.Name.ToLower();
+
+           if (name.Contains("priority"))
             {
-                auditEntry.KeyValues[property.Metadata.Name] = current;
+                current = await _dbContext.Priority.Where(p => p.Id == (Guid)current).Select(p => p.Name).FirstOrDefaultAsync();
             }
+            else if (name.Contains("type"))
+            {
+                current = await _dbContext.Type.Where(p => p.Id == (Guid)current).Select(p => p.Name).FirstOrDefaultAsync();
+            }
+            else if (name.Contains("status"))
+            {
+                current = await _dbContext.Status.Where(p => p.Id == (Guid)current).Select(p => p.Name).FirstOrDefaultAsync();
+            }
+           else if(name.Contains("project"))
+           {
+                current = await _dbContext.Projects.Where(p => p.Id == (Guid)current).Select(p => p.Name).FirstOrDefaultAsync();
+            }
+            
+            return current; 
         }
         private async Task<object> MapUserIdToLogValues(PropertyEntry property)
         {
@@ -82,6 +101,11 @@ namespace BugTracker.Persistence.LogHelpers
         }
         private void AssignValuesBasedOnEntryState(AuditEntry auditEntry, object current, PropertyEntry property, EntityEntry entry)
         {
+            var blackList = new List<string> {"Id", "CreatedBy", "LastModifiedBy", "CreatedDate", "LastModifiedDate", "ApplicationUserId" };
+            if (blackList.Contains(property.Metadata.Name))
+            {
+                return;
+            }
             switch (entry.State)
             {
                 case EntityState.Added:
