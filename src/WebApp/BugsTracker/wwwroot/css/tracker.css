@@ -349,23 +349,23 @@ a:focus {
     flex-grow: 1;
 }
 
-    #sidebar ul li {
-        padding: 2px 7px;
-        display: flex;
-        align-items: center;
-        font-size: 10px;
-        color: black;
-    }
+#sidebar ul li {
+    padding: 2px 7px;
+    display: flex;
+    align-items: center;
+    font-size: 10px;
+    color: black;
+}
 
-        #sidebar ul li.active > a {
-            color: #333;
-            background-color: rgba(23 172 246 / 20%);
-        }
+#sidebar ul li.active > a {
+    color: #333;
+    background-color: rgba(23 172 246 / 20%);
+}
 
-        #sidebar ul li:not(.active):not(#logout-holder) a:hover {
-            color: #333;
-            background-color: rgba(23 172 246 / 10%);
-        }
+#sidebar ul li:not(.active):not(#logout-holder) a:hover {
+    color: #333;
+    background-color: rgba(23 172 246 / 10%);
+}
 
 .dropdown-toggle::after {
     display: none;
@@ -403,17 +403,31 @@ a:focus {
     text-align: center;
 }
 
-#logout-link {
+#logout-link{
     line-height: 5px !important;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+#logout-link span {
     color: white !important;
 }
-/* ---------------------------------------------------
+#logout-link i {
+    color:white!important;
+    display:none;
+    transform:rotate(180deg);
+}
+
+#sidebar.active #logout-icon {
+    display:flex;
+}
+    /* ---------------------------------------------------
    sidebar end
 ----------------------------------------------------- */
-/*=======================================================
+    /*=======================================================
    main-content navbar-design start
    ===============================================*/
-#content {
+    #content {
     position: relative;
     background-color: #fefefe;
     font-size: 13px !important;
@@ -481,16 +495,17 @@ a:focus {
     border: none;
     color: #FFFFFF;
     background-color: rgba(0, 0, 0, 0.09);
+    transform: rotate(0deg);
 }
 
-    #sidebar-collapse.active {
-        transform: rotate(180deg);
-    }
+#sidebar-collapse.active {
+    transform: rotate(180deg);
+}
 
-    #sidebar-collapse span {
-        margin: 9px;
-        padding: 0px;
-    }
+#sidebar-collapse span {
+    margin: 9px;
+    padding: 0px;
+}
 
 
 
