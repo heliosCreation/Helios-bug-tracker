@@ -65,31 +65,34 @@
         </div>
         <div class="row d-flex justify-content-sm-between align-items-center w-100">
             <div class="pagination-holder d-flex p-2">
-                @if (Model.Pager.CurrentPage > 1)
-                {
-                    <a class="purple-circle angle" asp-action="Dashboard" asp-route-page="1">
-                        <i class="fas fa-angle-double-left"></i>
-                    </a>
-                    <a class="purple-circle angle" asp-action="Dashboard" asp-route-page="@(Model.Pager.CurrentPage - 1)">
-                        <i class="fas fa-angle-left"></i>
-                    </a>
-                }
-                @for (int i = Model.Pager.CurrentPage; i <= Model.Pager.CurrentPage + 3; i++)
-                {
-                    if (i > Model.Pager.EndPage)
-                    {
-                        break;
-                    }
-                    if (Model.Pager.CurrentPage == i)
-                    {
-                        <a class="purple-circle  @(i == Model.Pager.CurrentPage ? "filled" : "")">@i</a>
-                    }
-                    else
-                    {
-                        <a class="purple-circle" asp-action="Dashboard" asp-route-page="@i">@i</a>
-                    }
-                }
 
+                @if (Model.Pager.EndPage > 1)
+                {
+                    @if (Model.Pager.CurrentPage > 1)
+                    {
+                        <a class="purple-circle angle" asp-action="Dashboard" asp-route-page="1">
+                            <i class="fas fa-angle-double-left"></i>
+                        </a>
+                        <a class="purple-circle angle" asp-action="Dashboard" asp-route-page="@(Model.Pager.CurrentPage - 1)">
+                            <i class="fas fa-angle-left"></i>
+                        </a>
+                    }
+                    @for (int i = Model.Pager.CurrentPage; i <= Model.Pager.CurrentPage + 3; i++)
+                    {
+                        if (i > Model.Pager.EndPage)
+                        {
+                            break;
+                        }
+                        if (Model.Pager.CurrentPage == i)
+                        {
+                            <a class="purple-circle  @(i == Model.Pager.CurrentPage ? "filled" : "")">@i</a>
+                        }
+                        else
+                        {
+                            <a class="purple-circle" asp-action="Dashboard" asp-route-page="@i">@i</a>
+                        }
+                    }   
+                }
                 @if (Model.Pager.CurrentPage < Model.Pager.EndPage)
                 {
                     <a class="purple-circle angle" asp-action="Dashboard" asp-route-page="@(Model.Pager.CurrentPage + 1)">
