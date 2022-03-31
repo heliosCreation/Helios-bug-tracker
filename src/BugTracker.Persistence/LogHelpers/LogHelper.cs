@@ -113,7 +113,6 @@ namespace BugTracker.Persistence.LogHelpers
                     {
                         auditEntry.NewValues.Clear();
                         auditEntry.NewValues.Add("User", ((ApplicationUser)entry.Entity).UserName);
-                        auditEntry.NewValues.Add("User", ((ApplicationUser)entry.Entity).Email);
                     }
                     else
                     {
@@ -127,7 +126,6 @@ namespace BugTracker.Persistence.LogHelpers
                     {
                         auditEntry.OldValues.Clear();
                         auditEntry.OldValues.Add("User", ((ApplicationUser)entry.Entity).UserName);
-                        auditEntry.OldValues.Add("User", ((ApplicationUser)entry.Entity).Email);
                     }
                     else
                     {
