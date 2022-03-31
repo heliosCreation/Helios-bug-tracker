@@ -36,6 +36,16 @@ namespace BugTracker.Persistence.Services.Identity
 
         public async Task<IdentityResult> Register(RegistrationModel model)
         {
+            bool emailExist = await _context.Users.AnyAsync(u => u.Email == model.Email);
+            if (emailExist)
+            {
+                var errorMessage = new IdentityError
+                {
+                    Description = "Someone's already using that email."
+                };
+
+                return IdentityResult.Failed(errorMessage);
+            }
             var user = new ApplicationUser
             {
                 UserName = $"{model.FirstName} {model.LastName}",
