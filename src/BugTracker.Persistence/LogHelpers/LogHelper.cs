@@ -1,5 +1,6 @@
 ﻿using BugTracker.Application.Model.Auditing;
 using BugTracker.Domain.Common;
+using BugTracker.Domain.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System;
@@ -44,6 +45,7 @@ namespace BugTracker.Persistence.LogHelpers
                 auditEntry.UserId = userId;
                 auditEntries.Add(auditEntry);
                 await MapPropertiesToEntryValue(entry, auditEntry);
+
             }
 
         }
@@ -54,21 +56,17 @@ namespace BugTracker.Persistence.LogHelpers
                 var current = property.CurrentValue;
                 if (property.Metadata.IsForeignKey())
                 {
-                    current = await MapPKToAuditEntryValue(property, auditEntry, current);
-                }
-                if (property.Metadata.Name == "UserId")
-                {
-                    current = await MapUserIdToLogValues(property);
+                    current = await MapFKToAuditEntryValue(property, auditEntry, current);
                 }
                 AssignValuesBasedOnEntryState(auditEntry, current, property, entry);
             }
 
         }
-        private async Task<object> MapPKToAuditEntryValue(PropertyEntry property, AuditEntry auditEntry, object current)
+        private async Task<object> MapFKToAuditEntryValue(PropertyEntry property, AuditEntry auditEntry, object current)
         {
             var name = property.Metadata.Name.ToLower();
 
-           if (name.Contains("priority"))
+            if (name.Contains("priority"))
             {
                 current = await _dbContext.Priority.Where(p => p.Id == (Guid)current).Select(p => p.Name).FirstOrDefaultAsync();
             }
@@ -80,26 +78,22 @@ namespace BugTracker.Persistence.LogHelpers
             {
                 current = await _dbContext.Status.Where(p => p.Id == (Guid)current).Select(p => p.Name).FirstOrDefaultAsync();
             }
-           else if(name.Contains("project"))
-           {
+            else if(name.Contains("project"))
+            {
                 current = await _dbContext.Projects.Where(p => p.Id == (Guid)current).Select(p => p.Name).FirstOrDefaultAsync();
             }
-            
+            else if (name.Contains("user"))
+            {
+                current = await _dbContext.Users.Where(u => u.Id == (string)property.CurrentValue).Select(u => u.UserName).FirstOrDefaultAsync();
+            }
+            else if (name.Contains("role"))
+            {
+                current = await _dbContext.Roles.Where(r => r.Id == (string)current).Select(p => p.Name).FirstOrDefaultAsync();
+            }
             return current; 
         }
-        private async Task<object> MapUserIdToLogValues(PropertyEntry property)
-        {
-            var rolesId = await _dbContext.UserRoles.Where(ur => ur.UserId == (string)property.CurrentValue).Select(ur => ur.RoleId).ToListAsync();
-            var roles = await _dbContext.Roles.Where(r => rolesId.Any(roleId => r.Id == roleId)).Select(r => r.Name).ToListAsync();
 
-            return JsonSerializer.Serialize(new
-            {
-                Id = property.CurrentValue,
-                Name = await _dbContext.Users.Where(u => u.Id == (string)property.CurrentValue).Select(u => u.UserName).FirstOrDefaultAsync(),
-                Roles = roles
-            });
-        }
-        private void AssignValuesBasedOnEntryState(AuditEntry auditEntry, object current, PropertyEntry property, EntityEntry entry)
+        private async Task AssignValuesBasedOnEntryState(AuditEntry auditEntry, object current, PropertyEntry property, EntityEntry entry)
         {
             var blackList = new List<string> {"Id", "CreatedBy", "LastModifiedBy", "CreatedDate", "LastModifiedDate", "ApplicationUserId" };
             if (blackList.Contains(property.Metadata.Name))
@@ -111,6 +105,7 @@ namespace BugTracker.Persistence.LogHelpers
                 case EntityState.Added:
                     auditEntry.AuditType = Application.Enums.AuditType.Create;
                     auditEntry.NewValues[property.Metadata.Name] = current;
+
                     break;
                 case EntityState.Deleted:
                     auditEntry.AuditType = Application.Enums.AuditType.Delete;
@@ -123,6 +118,11 @@ namespace BugTracker.Persistence.LogHelpers
                         auditEntry.AuditType = Application.Enums.AuditType.Update;
                         auditEntry.OldValues[property.Metadata.Name] = property.OriginalValue;
                         auditEntry.NewValues[property.Metadata.Name] = current;
+                        if (auditEntry.TableName == "ApplicationUser")
+                        {
+                            auditEntry.NewValues.Add("User", ((ApplicationUser)entry.Entity).UserName);
+                            auditEntry.OldValues.Add("User", ((ApplicationUser)entry.Entity).UserName);
+                        }
                     }
                     break;
             }
