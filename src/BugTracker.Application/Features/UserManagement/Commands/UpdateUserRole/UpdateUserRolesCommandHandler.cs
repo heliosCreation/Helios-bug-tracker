@@ -19,7 +19,7 @@ namespace BugTracker.Application.Features.UserManagement.Commands.UpdateUserRole
         {
             var response = new ApiResponse<object>();
 
-            var updated = await _identityService.UpdateUserRoles(request.UserId, request.RoleIds);
+            var updated = await _identityService.UpdateUserRoles(request.UserId, request.RoleId);
             if (!updated)
             {
                 return response.SetBadRequestResponse("There was one or more errors trying to update you user roles.");

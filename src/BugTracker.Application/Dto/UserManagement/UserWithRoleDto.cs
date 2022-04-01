@@ -15,6 +15,6 @@ namespace BugTracker.Application.Dto.UserManagement
         public string UserId { get; set; }
         public string UserName { get; set; }
         public List<RoleDto> RolesDto { get; set; } = new List<RoleDto>();
-        public List<string> SelectedRoles { get; set; }
+        public string SelectedRoles { get; set; }
     }
 }

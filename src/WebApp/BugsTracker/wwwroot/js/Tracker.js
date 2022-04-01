@@ -158,7 +158,7 @@ function setTicketTabsListener() {
 
 function setSelectListHandler() {
     //assign css on load
-    var selectedOptions = $("#ticket-team option:selected, #project-team option:selected, #role-mgmt-select option:selected");
+    var selectedOptions = $("#ticket-team option:selected, #project-team option:selected");
     selectedOptions.each(function (elem) {
         $(this).addClass("selected");
         $(this).attr('selected', 'selected');
@@ -186,6 +186,25 @@ function setSelectListHandler() {
 
 }
 
+function setRoleSelectListHandler() {
+
+    var selectedOptions = $("option:selected");
+    selectedOptions.each(function (elem) {
+        $(this).addClass("selected");
+        $(this).attr('selected', 'selected');
+    })
+
+    $('select[multiple] option').on('mousedown', function (e) {
+        e.preventDefault();
+        $("#role-mgmt-select option").each((i,elem) => {
+            $(elem).removeClass("selected");
+            $(elem).prop("selected", false);
+        })
+        var $this = $(this);
+        $this.prop('selected', !$this.prop('selected'));
+        $(this).toggleClass("selected");
+    });
+}
 function setCoverListeners() {
     var imageInput = document.getElementById("cover-input");
     var imageBtn = document.getElementById("cover-btn");

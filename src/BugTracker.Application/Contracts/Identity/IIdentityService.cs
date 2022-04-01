@@ -32,7 +32,7 @@ namespace BugTracker.Application.Contracts.Identity
         Task<IdentityResult> ResetPassword(ResetPasswordModel model);
         Task SignOutAsync();
         Task<bool> UnlockUser(string uid);
-        Task<bool> UpdateUserRoles(string uid, List<string> rolesIds);
+        Task<bool> UpdateUserRoles(string uid, string rolesId);
         Task<bool> UserEmailExist(string email);
         Task<bool> UserIdExists(string id);
         Task<bool> UsernameExist(string name);
