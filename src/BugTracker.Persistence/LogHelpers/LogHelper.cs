@@ -55,6 +55,12 @@ namespace BugTracker.Persistence.LogHelpers
             foreach (var property in entry.Properties)
             {
                 var current = property.CurrentValue;
+
+                if (property.Metadata.IsPrimaryKey())
+                {
+                    auditEntry.KeyValues[property.Metadata.Name] = current;
+                }
+
                 if (property.Metadata.IsForeignKey())
                 {
                     current = await MapFKToAuditEntryValue(entries, property, auditEntry, current);
@@ -63,6 +69,7 @@ namespace BugTracker.Persistence.LogHelpers
             }
 
         }
+
         private async Task<object> MapFKToAuditEntryValue(IEnumerable<EntityEntry> entries, PropertyEntry property, AuditEntry auditEntry, object current)
         {
             var name = property.Metadata.Name.ToLower();
@@ -100,7 +107,7 @@ namespace BugTracker.Persistence.LogHelpers
 
         private void AssignValuesBasedOnEntryState(AuditEntry auditEntry, object current, PropertyEntry property, EntityEntry entry)
         {
-            var blackList = new List<string> {"Id", "CreatedBy", "LastModifiedBy", "CreatedDate", "LastModifiedDate", "ApplicationUserId" };
+            var blackList = new List<string> {"CreatedBy", "LastModifiedBy", "CreatedDate", "LastModifiedDate", "ApplicationUserId" };
             if (blackList.Contains(property.Metadata.Name))
             {
                 return;
