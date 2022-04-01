@@ -120,40 +120,15 @@ namespace BugTracker.Persistence.Services.Identity
             return await _userManager.RemoveFromRoleAsync(user, role);
         }
         
-        public async Task<bool> UpdateUserRoles(string uid, List<string> rolesIds)
+        public async Task<bool> UpdateUserRoles(string uid, string roleId)
         {
-            //Get the list of associated role id of the user
-            var userRoles = (await GetUserRolesById(uid)).Select(ur => ur.Id).ToList();
-            if (rolesIds != null)
-            {
-                foreach (var roleId in rolesIds)
-                {
-                    if (!userRoles.Contains(roleId))
-                    {
-                        await _context.UserRoles.AddAsync(new IdentityUserRole<string>
-                        {
-                            RoleId = roleId,
-                            UserId = uid
-                        });
-                    }
-                }
+            var role = await _roleManager.FindByIdAsync(roleId);
+            var user = await _userManager.FindByIdAsync(uid);
 
-                foreach (var userRoleId in userRoles)
-                {
-                    if (!rolesIds.Contains(userRoleId))
-                    {
-                        _context.UserRoles.Remove(new IdentityUserRole<string>
-                        {
-                            RoleId = userRoleId,
-                            UserId = uid
-                        });
-                    }
-                }
-            }
-            else
-            {
-                 _context.UserRoles.RemoveRange(_context.UserRoles.Where(u => u.UserId == uid));
-            }
+            var currentRoles = await _userManager.GetRolesAsync(user);
+
+            await _userManager.RemoveFromRolesAsync(user, currentRoles);
+            await _userManager.AddToRoleAsync(user, role.Name);
 
             return await _context.SaveChangesAsync() > 0;
         }

@@ -187,6 +187,13 @@ function setSelectListHandler() {
 }
 
 function setRoleSelectListHandler() {
+
+    var selectedOptions = $("option:selected");
+    selectedOptions.each(function (elem) {
+        $(this).addClass("selected");
+        $(this).attr('selected', 'selected');
+    })
+
     $('select[multiple] option').on('mousedown', function (e) {
         e.preventDefault();
         $("#role-mgmt-select option").each((i,elem) => {

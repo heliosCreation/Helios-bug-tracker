@@ -14,7 +14,7 @@
             <p>User: <span class="text-purple">@Model.UserWithRoles.UserName</span></p>
             <input type="hidden" asp-for="UserWithRoles.UserId" />
             <div class="form-group">
-                <label class="font-weight-bold">Add or remove roles linked to this user.</label>
+                <label class="font-weight-bold">Assign or modify role linked to this user.</label>
                 <select asp-for="UserWithRoles.SelectedRoles" class="form-control h-100" id="role-mgmt-select" multiple>
                     @foreach (var role in Model.AvailableRoles)
                     {

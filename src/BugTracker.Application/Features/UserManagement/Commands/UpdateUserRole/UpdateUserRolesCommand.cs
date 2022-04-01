@@ -1,6 +1,5 @@
 ﻿using BugTracker.Application.Responses;
 using MediatR;
-using System.Collections.Generic;
 
 namespace BugTracker.Application.Features.UserManagement.Commands.UpdateUserRole
 {
@@ -10,13 +9,13 @@ namespace BugTracker.Application.Features.UserManagement.Commands.UpdateUserRole
         {
 
         }
-        public UpdateUserRolesCommand(string userId, List<string> roleIds)
+        public UpdateUserRolesCommand(string userId, string roleId)
         {
             UserId = userId;
-            RoleIds = roleIds;
+            RoleId = roleId;
         }
 
         public string UserId { get; set; }
-        public List<string> RoleIds { get; set; }
+        public string RoleId { get; set; }
     }
 }
