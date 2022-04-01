@@ -122,13 +122,12 @@ namespace BugTracker.Persistence.Services.Identity
         
         public async Task<bool> UpdateUserRoles(string uid, string roleId)
         {
-            var role = await _roleManager.FindByIdAsync(roleId);
-            var user = await _userManager.FindByIdAsync(uid);
-
-            var currentRoles = await _userManager.GetRolesAsync(user);
-
-            await _userManager.RemoveFromRolesAsync(user, currentRoles);
-            await _userManager.AddToRoleAsync(user, role.Name);
+            var userRole = await _context.UserRoles.Where(ur => ur.UserId == uid).FirstOrDefaultAsync();
+            if (userRole != null)
+            {
+                _context.UserRoles.Remove(userRole);
+            }
+            await _context.UserRoles.AddAsync(new IdentityUserRole<string> { UserId = uid, RoleId = roleId });
 
             return await _context.SaveChangesAsync() > 0;
         }
