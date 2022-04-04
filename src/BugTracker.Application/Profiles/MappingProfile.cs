@@ -72,7 +72,9 @@ namespace BugTracker.Application.Profiles
                 .ForMember(dest => dest.User, opt => opt.MapFrom(src => src.UserId))
                 .ForMember(dest => dest.AffectedColumns, opt => opt.MapFrom(src => JsonConvert.DeserializeObject<List<string>>(src.AffectedColumns)))
                 .ForMember(dest => dest.OldValues, opt => opt.MapFrom(src => JsonConvert.DeserializeObject<Dictionary<string, string>>(src.OldValues)))
-                .ForMember(dest => dest.NewValues, opt => opt.MapFrom(src => JsonConvert.DeserializeObject<Dictionary<string, string>>(src.NewValues)));
+                .ForMember(dest => dest.NewValues, opt => opt.MapFrom(src => JsonConvert.DeserializeObject<Dictionary<string, string>>(src.NewValues)))
+                .ForMember(dest => dest.PrimaryKey, opt => opt.MapFrom(src => JsonConvert.DeserializeObject<Dictionary<string, string>>(src.PrimaryKey)))
+                ;
             #endregion
 
             #region roles

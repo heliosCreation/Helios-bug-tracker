@@ -13,6 +13,7 @@ namespace BugTracker.Application.Dto.Audits
         public string Type { get; set; }
         public List<string> AffectedColumns { get; } = new List<string>();
         public DateTime DateTime { get; set; }
+        public Dictionary<string, string> PrimaryKey { get; set; } = new Dictionary<string, string>();
 
     }
 }
