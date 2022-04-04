@@ -55,6 +55,7 @@ namespace BugTracker.Persistence.LogHelpers
             foreach (var property in entry.Properties)
             {
                 var current = property.CurrentValue;
+                var old = property.OriginalValue;
 
                 if (property.Metadata.IsPrimaryKey())
                 {
@@ -64,8 +65,9 @@ namespace BugTracker.Persistence.LogHelpers
                 if (property.Metadata.IsForeignKey())
                 {
                     current = await MapFKToAuditEntryValue(entries, property, auditEntry, current);
+                    old = await MapFKToAuditEntryValue(entries, property, auditEntry, old);
                 }
-                AssignValuesBasedOnEntryState(auditEntry, current, property, entry);
+                AssignValuesBasedOnEntryState(auditEntry, current,old, property, entry);
             }
 
         }
@@ -105,7 +107,7 @@ namespace BugTracker.Persistence.LogHelpers
             return current; 
         }
 
-        private void AssignValuesBasedOnEntryState(AuditEntry auditEntry, object current, PropertyEntry property, EntityEntry entry)
+        private void AssignValuesBasedOnEntryState(AuditEntry auditEntry, object current, object old, PropertyEntry property, EntityEntry entry)
         {
             var blackList = new List<string> {"CreatedBy", "LastModifiedBy", "CreatedDate", "LastModifiedDate", "ApplicationUserId" };
             if (blackList.Contains(property.Metadata.Name))
@@ -144,7 +146,7 @@ namespace BugTracker.Persistence.LogHelpers
                     {
                         auditEntry.ChangedColumns.Add(property.Metadata.Name);
                         auditEntry.AuditType = Application.Enums.AuditType.Update;
-                        auditEntry.OldValues[property.Metadata.Name] = property.OriginalValue;
+                        auditEntry.OldValues[property.Metadata.Name] = old;
                         auditEntry.NewValues[property.Metadata.Name] = current;
                         if (auditEntry.TableName == "ApplicationUser")
                         {

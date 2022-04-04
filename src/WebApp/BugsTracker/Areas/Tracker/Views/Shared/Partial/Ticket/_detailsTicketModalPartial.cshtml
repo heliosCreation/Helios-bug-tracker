@@ -33,8 +33,8 @@
     </div>
 
     <div id="ticket-history" class="w-100 h-100 p-2 tab-content d-none">
-        <div id="accordion" class="@(Model.History.Count > 6 ? "d-flex flex-column-reverse" : "")">
-            <div class="w-100 d-flex  align-items-center flex-column-reverse overflow-auto" id="history-holder">
+        <div id="accordion" class="@(Model.History.Count >= 6 ? "d-flex flex-column" : "flex-column-reverse")">
+            <div class="w-100 d-flex align-items-center @(Model.History.Count >= 6 ? "flex-column" : "flex-column-reverse")" overflow-auto" id="history-holder">
                 @foreach (var item in Model.History)
                 {
                     <div class="card p-3">
@@ -73,23 +73,24 @@
                                             }
 
                                             <p>
-                                                <span class="font-weight-bold">@itemKey:</span> <br />
+                                                <span class="font-weight-bold">@itemKey.Replace("Id",""):</span> <br />
                                                 <span class="text-success">New Value:</span> @(string.IsNullOrEmpty((string)current.Value) ? "Empty" : current.Value)  <br />
                                                 <span class="text-warning">Old value</span>: @(string.IsNullOrEmpty((string)old.Value) ? "Empty" : old.Value)
                                             </p>
                                         }
                                         else
                                         {
-                                            <p>
-                                                <span class="font-weight-bold">@current.Key </span> <br />
-                                                @{
-                                                    var userList = current.Value.Split(";").OrderBy(u => u.Split("-")[1]);
-                                                    foreach (var user in userList)
-                                                    {
-                                                        @user <br />
-                                                    }
-                                                }
-                                            </p>
+                            <p>
+                                <span class="font-weight-bold">@current.Key </span> <br />
+                                @{
+                                    var userList = current.Value.Split(";").OrderBy(u => u.Split("-")[1]);
+                                    foreach (var user in userList)
+                                    {
+                                        <span class="pill @(user.Split("-")[1].ToLower())">@user</span>
+                                        <br />
+                                    }
+                                }
+                            </p>
                                         }
 
                                     }
