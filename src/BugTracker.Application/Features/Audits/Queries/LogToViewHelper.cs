@@ -34,7 +34,7 @@ namespace BugTracker.Application.Features.Audits.Queries
                 }
                 if (item.TableName == "TicketsTeamMembers")
                 {
-                    ManageTeam(item, auditLogs);
+                    await ManageTeam(item, auditLogs);
                 }
 
             }
@@ -76,14 +76,14 @@ namespace BugTracker.Application.Features.Audits.Queries
 
         }
 
-        public void ManageTeam(AuditLogDto item, List<AuditLogDto> auditLogs)
+        public async Task ManageTeam(AuditLogDto item, List<AuditLogDto> auditLogs)
         {
             string action = item.Type == AuditType.Delete.ToString() ? "User deleted" : "User added";
             var target = item.Type == AuditType.Delete.ToString() ? item.OldValues : item.NewValues;
 
-            JObject userJson = JObject.Parse(target["UserId"]);
-            var userName = userJson.GetValue("Name");
-            var userRoles = userJson.GetValue("Roles");
+            var userId = item.PrimaryKey["UserId"];
+            var userName = target["UserId"];
+            var userRole = (await _identityService.GetUserRolesById(userId)).ToList().First();
 
 
             var targetParent = auditLogs
@@ -98,12 +98,12 @@ namespace BugTracker.Application.Features.Audits.Queries
                 //If the key already exist, just concat a new value to the actual
                 if (targetParent.NewValues.ContainsKey(action))
                 {
-                    targetParent.NewValues[action] = targetParent.NewValues[action] + ";" + userName + " - " + userRoles;
+                    targetParent.NewValues[action] = targetParent.NewValues[action] + ";" + userName + " - " + userRole;
                 }
                 //Otherwise add an entry
                 else
                 {
-                    targetParent.NewValues.Add(action, userName + " -  " + userRoles);
+                    targetParent.NewValues.Add(action, userName + " -  " + userRole);
                 }
 
             }
@@ -117,7 +117,7 @@ namespace BugTracker.Application.Features.Audits.Queries
                     DateTime = item.DateTime,
                     User = item.User,
                     TableName = "Ticket",
-                    NewValues = new Dictionary<string, string>() { { action, userName + " - " + userRoles } },
+                    NewValues = new Dictionary<string, string>() { { action, userName + " - " + userRole } },
                     Type = AuditType.Update.ToString()
                 });
 
