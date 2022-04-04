@@ -28,10 +28,10 @@ namespace BugTracker.Application.Features.Audits.Queries
             {
                 item.User = await _identityService.GetUserNameById(item.User);
 
-                if (item.Type == AuditType.Update.ToString())
-                {
-                    await ManageUpdate(item);
-                }
+                //if (item.Type == AuditType.Update.ToString())
+                //{
+                //    await ManageUpdate(item);
+                //}
                 if (item.TableName == "TicketsTeamMembers")
                 {
                     await ManageTeam(item, auditLogs);
@@ -42,39 +42,39 @@ namespace BugTracker.Application.Features.Audits.Queries
             return auditLogs.OrderByDescending(al => al.DateTime).ToList();
         }
 
-        public async Task<Dictionary<string, string>> ReworkEntityFields(Dictionary<string, string> prop, string key)
-        {
-            Type type = _ticketConfigurationRepository.GetType();
-            MethodInfo method = type.GetMethod("Get" + key.Replace("Id", "") + "Name");
+        //public async Task<Dictionary<string, string>> ReworkEntityFields(Dictionary<string, string> prop, string key)
+        //{
+        //    Type type = _ticketConfigurationRepository.GetType();
+        //    MethodInfo method = type.GetMethod("Get" + key.Replace("Id", "") + "Name");
 
-            var value = Guid.Parse(prop.Where(nv => nv.Key == key).First().Value);
-            Task<string> newName = (Task<string>)method.Invoke(_ticketConfigurationRepository, new object[] { value });
+        //    var value = Guid.Parse(prop.Where(nv => nv.Key == key).First().Value);
+        //    Task<string> newName = (Task<string>)method.Invoke(_ticketConfigurationRepository, new object[] { value });
 
-            prop.Remove(key);
-            prop.Add(key.Replace("Id", ""), (await newName).ToString());
-            return prop;
-        }
+        //    prop.Remove(key);
+        //    prop.Add(key.Replace("Id", ""), (await newName).ToString());
+        //    return prop;
+        //}
 
-        public async Task ManageUpdate(AuditLogDto item)
-        {
-            if (item.AffectedColumns.Contains("PriorityId"))
-            {
-                item.NewValues = await ReworkEntityFields(item.NewValues, "PriorityId");
-                item.OldValues = await ReworkEntityFields(item.OldValues, "PriorityId");
-            }
-            if (item.AffectedColumns.Contains("TypeId"))
-            {
-                item.NewValues = await ReworkEntityFields(item.NewValues, "TypeId");
-                item.OldValues = await ReworkEntityFields(item.OldValues, "TypeId");
-            }
-            if (item.AffectedColumns.Contains("StatusId"))
-            {
-                item.NewValues = await ReworkEntityFields(item.NewValues, "StatusId");
-                item.OldValues = await ReworkEntityFields(item.OldValues, "StatusId");
-            }
+        //public async Task ManageUpdate(AuditLogDto item)
+        //{
+        //    if (item.AffectedColumns.Contains("PriorityId"))
+        //    {
+        //        item.NewValues = await ReworkEntityFields(item.NewValues, "PriorityId");
+        //        item.OldValues = await ReworkEntityFields(item.OldValues, "PriorityId");
+        //    }
+        //    if (item.AffectedColumns.Contains("TypeId"))
+        //    {
+        //        item.NewValues = await ReworkEntityFields(item.NewValues, "TypeId");
+        //        item.OldValues = await ReworkEntityFields(item.OldValues, "TypeId");
+        //    }
+        //    if (item.AffectedColumns.Contains("StatusId"))
+        //    {
+        //        item.NewValues = await ReworkEntityFields(item.NewValues, "StatusId");
+        //        item.OldValues = await ReworkEntityFields(item.OldValues, "StatusId");
+        //    }
 
 
-        }
+        //}
 
         public async Task ManageTeam(AuditLogDto item, List<AuditLogDto> auditLogs)
         {
