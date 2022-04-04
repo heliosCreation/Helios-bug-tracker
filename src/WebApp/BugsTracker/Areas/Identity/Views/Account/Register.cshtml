@@ -1,4 +1,5 @@
 ﻿@model RegistrationModel
+
 @{
     ViewData["Title"] = "Register";
 }
@@ -23,12 +24,12 @@
                 <span asp-validation-for="Email" class="text-danger"></span>
 
                 <div class="form-field d-flex align-items-center">
-                    <span class="far fa-user"></span> <input type="text" asp-for="FirstName" id="email" placeholder="First name">
+                    <span class="far fa-user"></span> <input type="text" asp-for="FirstName" id="firstName" placeholder="First name">
                 </div>
                 <span asp-validation-for="FirstName" class="text-danger"></span>
 
                 <div class="form-field d-flex align-items-center">
-                    <span class="far fa-user"></span> <input type="text" asp-for="LastName" id="email" placeholder="Last Name">
+                    <span class="far fa-user"></span> <input type="text" asp-for="LastName" id="lastName" placeholder="Last Name">
                 </div>
                 <span asp-validation-for="LastName" class="text-danger"></span>
             </div>
