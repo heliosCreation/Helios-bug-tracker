@@ -86,7 +86,7 @@
                                     var userList = current.Value.Split(";").OrderBy(u => u.Split("-")[1]);
                                     foreach (var user in userList)
                                     {
-                                        <span class="pill @(user.Split("-")[1].ToLower())">@user</span>
+                                        <span>@user</span>
                                         <br />
                                     }
                                 }
