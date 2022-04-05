@@ -1,4 +1,6 @@
-﻿namespace BugTracker.Application.Model.Mail
+﻿using System.Collections.Generic;
+
+namespace BugTracker.Application.Model.Mail
 {
     public class Email
     {
