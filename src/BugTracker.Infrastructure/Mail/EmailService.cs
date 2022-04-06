@@ -55,7 +55,7 @@ namespace BugTracker.Infrastructure.Mail
 
         public async Task SendForgotPasswordMail(string address, string url)
         {
-            var kvp = new List<KeyValuePair<string, string>> { new KeyValuePair<string, string>("{{ConfirmationLink}}", url) };
+            var kvp = new List<KeyValuePair<string, string>> { new KeyValuePair<string, string>("{{ResetLink}}", url) };
             string body = UpdatePlaceHolders(GetAccountEmailBody("ForgetPassword"), kvp);
 
             var email = new Email
