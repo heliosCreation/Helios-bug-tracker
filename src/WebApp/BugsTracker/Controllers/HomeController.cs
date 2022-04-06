@@ -18,13 +18,9 @@ namespace BugTracker.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            return RedirectToAction("",new { area = "Tracker" });
         }
 
-        public IActionResult Privacy()
-        {
-            return View();
-        }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
