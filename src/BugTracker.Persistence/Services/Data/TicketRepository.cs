@@ -454,7 +454,14 @@ namespace BugTracker.Persistence.Services.Data
                 RemoveFromTicketTeam(entity, dbTicketMemberIds, teamIds);
                 await AddToTicketTeam(entity, dbTicketMemberIds, teamIds);
             }
-
+            else
+            {
+                var ticketTeam = await _dbContext.TicketsTeamMembers.Where(ttm => ttm.TicketId == entity.Id).ToListAsync();
+                if (ticketTeam.Count > 0)
+                {
+                    _dbContext.TicketsTeamMembers.RemoveRange(ticketTeam);
+                }
+            }
 
             var result =  await _dbContext.SaveChangesAsync();
 

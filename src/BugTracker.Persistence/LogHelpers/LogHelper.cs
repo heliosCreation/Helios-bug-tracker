@@ -1,12 +1,12 @@
 ﻿using BugTracker.Application.Model.Auditing;
 using BugTracker.Domain.Common;
+using BugTracker.Domain.Entities;
 using BugTracker.Domain.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace BugTracker.Persistence.LogHelpers
@@ -67,7 +67,7 @@ namespace BugTracker.Persistence.LogHelpers
                     current = await MapFKToAuditEntryValue(entries, property, auditEntry, current);
                     old = await MapFKToAuditEntryValue(entries, property, auditEntry, old);
                 }
-                AssignValuesBasedOnEntryState(auditEntry, current,old, property, entry);
+                await AssignValuesBasedOnEntryState(auditEntry, current, old, property, entry);
             }
 
         }
@@ -78,19 +78,23 @@ namespace BugTracker.Persistence.LogHelpers
 
             if (name.Contains("priority"))
             {
-                current = await _dbContext.Priority.Where(p => p.Id == (Guid)current).Select(p => p.Name).FirstOrDefaultAsync();
+                current = await _dbContext.Priority.AsNoTracking().Where(p => p.Id == (Guid)current).Select(p => p.Name).FirstOrDefaultAsync();
             }
             else if (name.Contains("type"))
             {
-                current = await _dbContext.Type.Where(p => p.Id == (Guid)current).Select(p => p.Name).FirstOrDefaultAsync();
+                current = await _dbContext.Type.AsNoTracking().Where(p => p.Id == (Guid)current).Select(p => p.Name).FirstOrDefaultAsync();
             }
             else if (name.Contains("status"))
             {
-                current = await _dbContext.Status.Where(p => p.Id == (Guid)current).Select(p => p.Name).FirstOrDefaultAsync();
+                current = await _dbContext.Status.AsNoTracking().Where(p => p.Id == (Guid)current).Select(p => p.Name).FirstOrDefaultAsync();
             }
-            else if(name.Contains("project"))
+            else if (name.Contains("ticket"))
             {
-                current = await _dbContext.Projects.Where(p => p.Id == (Guid)current).Select(p => p.Name).FirstOrDefaultAsync();
+                current = await _dbContext.Tickets.AsNoTracking().Where(t => t.Id == (Guid)current).Select(p => p.Name).FirstOrDefaultAsync();
+            }
+            else if (name.Contains("project"))
+            {
+                current = await _dbContext.Projects.AsNoTracking().Where(p => p.Id == (Guid)current).Select(p => p.Name).FirstOrDefaultAsync();
                 if (current == null)
                 {
                     current = entries.ToList()[0].Property("Name").CurrentValue;
@@ -98,18 +102,18 @@ namespace BugTracker.Persistence.LogHelpers
             }
             else if (name.Contains("user"))
             {
-                current = await _dbContext.Users.Where(u => u.Id == (string)property.CurrentValue).Select(u => u.UserName).FirstOrDefaultAsync();
+                current = await _dbContext.Users.AsNoTracking().Where(u => u.Id == (string)property.CurrentValue).Select(u => u.UserName).FirstOrDefaultAsync();
             }
             else if (name.Contains("role"))
             {
-                current = await _dbContext.Roles.Where(r => r.Id == (string)current).Select(p => p.Name).FirstOrDefaultAsync();
+                current = await _dbContext.Roles.AsNoTracking().Where(r => r.Id == (string)current).Select(p => p.Name).FirstOrDefaultAsync();
             }
-            return current; 
+            return current;
         }
 
-        private void AssignValuesBasedOnEntryState(AuditEntry auditEntry, object current, object old, PropertyEntry property, EntityEntry entry)
+        private async Task AssignValuesBasedOnEntryState(AuditEntry auditEntry, object current, object old, PropertyEntry property, EntityEntry entry)
         {
-            var blackList = new List<string> {"CreatedBy", "LastModifiedBy", "CreatedDate", "LastModifiedDate", "ApplicationUserId" };
+            var blackList = new List<string> { "CreatedBy", "LastModifiedBy", "CreatedDate", "LastModifiedDate", "ApplicationUserId" };
             if (blackList.Contains(property.Metadata.Name))
             {
                 return;
@@ -123,8 +127,15 @@ namespace BugTracker.Persistence.LogHelpers
                         auditEntry.NewValues.Clear();
                         auditEntry.NewValues["User"] = ((ApplicationUser)entry.Entity).UserName;
                     }
+
                     else
                     {
+                        if (auditEntry.TableName == "TicketsTeamMembers")
+                        {
+                            var pid = ((TicketsTeamMembers)entry.Entity).Ticket.ProjectId;
+                            auditEntry.NewValues["Project"] = await _dbContext.Projects.AsNoTracking().Where(p => p.Id == pid).Select(p => p.Name).FirstOrDefaultAsync();
+
+                        }
                         auditEntry.NewValues[property.Metadata.Name] = current;
                     }
 
@@ -138,6 +149,12 @@ namespace BugTracker.Persistence.LogHelpers
                     }
                     else
                     {
+                        if (auditEntry.TableName == "TicketsTeamMembers")
+                        {
+                            var pid = ((TicketsTeamMembers)entry.Entity).Ticket.ProjectId;
+                            auditEntry.OldValues["Project"] = await _dbContext.Projects.AsNoTracking().Where(p => p.Id == pid).Select(p => p.Name).FirstOrDefaultAsync();
+
+                        }
                         auditEntry.OldValues[property.Metadata.Name] = current;
                     }
                     break;
