@@ -136,6 +136,12 @@ namespace BugTracker.Persistence.LogHelpers
                             auditEntry.NewValues["Project"] = await _dbContext.Projects.AsNoTracking().Where(p => p.Id == pid).Select(p => p.Name).FirstOrDefaultAsync();
 
                         }
+                        else if(auditEntry.TableName == "Comment")
+                        {
+                            var tid = ((Comment)entry.Entity).TicketId;
+
+                            auditEntry.NewValues["Project"] = await _dbContext.Tickets.AsNoTracking().Where(t => t.Id == tid).Select(t => t.Project.Name).FirstOrDefaultAsync();
+                        }
                         auditEntry.NewValues[property.Metadata.Name] = current;
                     }
 
