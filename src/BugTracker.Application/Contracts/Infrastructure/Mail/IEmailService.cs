@@ -8,6 +8,5 @@ namespace BugTracker.Application.Contracts.Infrastructure.Mail
         Task SendForgotPasswordMail(string address, string url);
         Task<bool> SendMail(Email email);
         Task<bool> SendRegistrationMail(string address, string code);
-        string tester();
     }
 }
