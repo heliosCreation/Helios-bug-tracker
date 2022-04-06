@@ -43,6 +43,7 @@ namespace BugTracker.Infrastructure.Mail
         {
             var kvp = new List<KeyValuePair<string, string>> { new KeyValuePair<string, string>("{{ConfirmationLink}}", url) };
             string body = UpdatePlaceHolders(GetAccountEmailBody("SignupConfirmation"), kvp);
+
             var email = new Email
             {
                 To = address,
@@ -54,19 +55,18 @@ namespace BugTracker.Infrastructure.Mail
 
         public async Task SendForgotPasswordMail(string address, string url)
         {
+            var kvp = new List<KeyValuePair<string, string>> { new KeyValuePair<string, string>("{{ConfirmationLink}}", url) };
+            string body = UpdatePlaceHolders(GetAccountEmailBody("ForgetPassword"), kvp);
+
             var email = new Email
             {
                 To = address,
-                Subject = "Forgot password",
-                Body = $"<p> To reset your password click <a href=\"{url}\">here</a>.</p>"
+                Subject = "Reset your password",
+                Body = body
             };
             var result = await SendMail(email);
         }
 
-        public string tester()
-        {
-            return GetAccountEmailBody("SignupConfirmation");
-        }
 
 
         private string GetAccountEmailBody(string templateName)
