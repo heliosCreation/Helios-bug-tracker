@@ -34,4 +34,9 @@
 	<ItemGroup>
 	  <Folder Include="wwwroot\MockBlob\Img\" />
 	</ItemGroup>
+
+
+	<ItemGroup>
+	  <Folder Include="wwwroot\Templates\" />
+	</ItemGroup>
 </Project>

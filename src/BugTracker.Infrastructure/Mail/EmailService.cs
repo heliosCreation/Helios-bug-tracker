@@ -11,7 +11,7 @@ namespace BugTracker.Infrastructure.Mail
 {
     public class EmailService : IEmailService
     {
-        private const string accountTemplatePath = @"Templates/Account/{0}.html";
+        private const string accountTemplatePath = @"wwwroot/Templates/Account/{0}.html";
         public EmailSettings _emailSettings { get; }
 
         public EmailService(IOptions<EmailSettings> emailSettings)
@@ -42,7 +42,7 @@ namespace BugTracker.Infrastructure.Mail
         public async Task<bool> SendRegistrationMail(string address, string url)
         {
             var kvp = new List<KeyValuePair<string, string>> { new KeyValuePair<string, string>("{{ConfirmationLink}}", url) };
-            string body = UpdatePlaceHolders(GetAccountEmailBody("SignUpConfirmation"), kvp);
+            string body = UpdatePlaceHolders(GetAccountEmailBody("SignupConfirmation"), kvp);
             var email = new Email
             {
                 To = address,
