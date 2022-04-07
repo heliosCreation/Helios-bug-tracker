@@ -167,12 +167,30 @@ namespace BugTracker.Persistence.LogHelpers
                 case EntityState.Modified:
                     if (property.IsModified)
                     {
+                        if (auditEntry.TableName == "ApplicationUser" && AppUserUpdateShouldBeDisplayed(auditEntry) == false)
+                        {
+                            break;
+                        }
+
                         auditEntry.ChangedColumns.Add(property.Metadata.Name);
                         auditEntry.AuditType = Application.Enums.AuditType.Update;
                         auditEntry.OldValues[property.Metadata.Name] = old;
                         auditEntry.NewValues[property.Metadata.Name] = current;
                         if (auditEntry.TableName == "ApplicationUser")
                         {
+                            if (auditEntry.NewValues.ContainsKey("PasswordHash") && auditEntry.OldValues.ContainsKey("PasswordHash"))
+                            {
+                                if (auditEntry.NewValues["PasswordHash"] != auditEntry.OldValues["PasswordHash"])
+                                {
+                                    auditEntry.OldValues.Clear();
+                                    auditEntry.NewValues.Clear();
+                                    auditEntry.NewValues["Action"] = "Password Updated";
+                                    auditEntry.NewValues["User"] = ((ApplicationUser)entry.Entity).UserName;
+                                    break;
+                                }
+
+                            }
+                            ClearApplicationUserNonDesiredFields(auditEntry);
                             auditEntry.NewValues["User"] = ((ApplicationUser)entry.Entity).UserName;
                             auditEntry.OldValues["User"] = ((ApplicationUser)entry.Entity).UserName;
                         }
@@ -180,6 +198,42 @@ namespace BugTracker.Persistence.LogHelpers
                     break;
             }
 
+        }
+    
+        private void ClearApplicationUserNonDesiredFields(AuditEntry auditEntry)
+        {
+            var blackList = new List<string> { "ConcurrencyStamp", "FirstName", "LastName", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" };
+
+            foreach (var val in blackList)
+            {
+                if (auditEntry.NewValues.ContainsKey(val))
+                {
+                    auditEntry.NewValues.Remove(val);
+                }
+
+                if (auditEntry.OldValues.ContainsKey(val))
+                {
+                    auditEntry.OldValues.Remove(val);
+                }
+            }
+        }
+
+        private bool AppUserUpdateShouldBeDisplayed(AuditEntry auditEntry)
+        {
+            int tick = 0;
+            if (!auditEntry.NewValues.ContainsKey("ConcurrencyStamp") && !auditEntry.NewValues.ContainsKey("SecurityStamp"))
+            {
+                return true;
+            }
+            foreach (var key in auditEntry.NewValues.Keys)
+            {
+                if (auditEntry.NewValues[key] != auditEntry.OldValues[key])
+                {
+                    tick += 1;
+                }
+            }
+
+            return tick > 2;
         }
     }
 }
