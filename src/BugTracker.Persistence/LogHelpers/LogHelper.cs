@@ -167,10 +167,6 @@ namespace BugTracker.Persistence.LogHelpers
                 case EntityState.Modified:
                     if (property.IsModified)
                     {
-                        if (auditEntry.TableName == "ApplicationUser" && AppUserUpdateShouldBeDisplayed(auditEntry) == false)
-                        {
-                            break;
-                        }
 
                         auditEntry.ChangedColumns.Add(property.Metadata.Name);
                         auditEntry.AuditType = Application.Enums.AuditType.Update;
@@ -178,19 +174,14 @@ namespace BugTracker.Persistence.LogHelpers
                         auditEntry.NewValues[property.Metadata.Name] = current;
                         if (auditEntry.TableName == "ApplicationUser")
                         {
-                            if (auditEntry.NewValues.ContainsKey("PasswordHash") && auditEntry.OldValues.ContainsKey("PasswordHash"))
+                            if (ManagePasswordUpdate(auditEntry, entry))
                             {
-                                if (auditEntry.NewValues["PasswordHash"] != auditEntry.OldValues["PasswordHash"])
-                                {
-                                    auditEntry.OldValues.Clear();
-                                    auditEntry.NewValues.Clear();
-                                    auditEntry.NewValues["Action"] = "Password Updated";
-                                    auditEntry.NewValues["User"] = ((ApplicationUser)entry.Entity).UserName;
-                                    break;
-                                }
-
+                                break;
                             }
-                            ClearApplicationUserNonDesiredFields(auditEntry);
+                            if (ManageEmailConfirmation(auditEntry, entry))
+                            {
+                                break;
+                            }
                             auditEntry.NewValues["User"] = ((ApplicationUser)entry.Entity).UserName;
                             auditEntry.OldValues["User"] = ((ApplicationUser)entry.Entity).UserName;
                         }
@@ -200,40 +191,46 @@ namespace BugTracker.Persistence.LogHelpers
 
         }
     
-        private void ClearApplicationUserNonDesiredFields(AuditEntry auditEntry)
+
+        private bool ManagePasswordUpdate(AuditEntry auditEntry, EntityEntry entry)
         {
-            var blackList = new List<string> { "ConcurrencyStamp", "FirstName", "LastName", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" };
-
-            foreach (var val in blackList)
+            if (auditEntry.NewValues.ContainsKey("PasswordHash") && auditEntry.OldValues.ContainsKey("PasswordHash"))
             {
-                if (auditEntry.NewValues.ContainsKey(val))
+                if (auditEntry.NewValues["PasswordHash"] != auditEntry.OldValues["PasswordHash"])
                 {
-                    auditEntry.NewValues.Remove(val);
-                }
+                    auditEntry.OldValues.Clear();
+                    auditEntry.NewValues.Clear();
+                    auditEntry.NewValues["Action"] = "Password Updated";
+                    auditEntry.NewValues["User"] = ((ApplicationUser)entry.Entity).UserName;
 
-                if (auditEntry.OldValues.ContainsKey(val))
-                {
-                    auditEntry.OldValues.Remove(val);
+                    return true;
                 }
             }
+            return false;
+
         }
 
-        private bool AppUserUpdateShouldBeDisplayed(AuditEntry auditEntry)
+
+        private bool ManageEmailConfirmation(AuditEntry auditEntry, EntityEntry entry)
         {
-            int tick = 0;
-            if (!auditEntry.NewValues.ContainsKey("ConcurrencyStamp") && !auditEntry.NewValues.ContainsKey("SecurityStamp"))
+            if (auditEntry.NewValues.ContainsKey("EmailConfirmed") && auditEntry.OldValues.ContainsKey("EmailConfirmed"))
             {
-                return true;
-            }
-            foreach (var key in auditEntry.NewValues.Keys)
-            {
-                if (auditEntry.NewValues[key] != auditEntry.OldValues[key])
+                if (auditEntry.NewValues["EmailConfirmed"] != auditEntry.OldValues["EmailConfirmed"])
                 {
-                    tick += 1;
+                    auditEntry.OldValues.Clear();
+                    auditEntry.NewValues.Clear();
+                    auditEntry.NewValues["EmailConfirmed"] = true;
+                    auditEntry.OldValues["EmailConfirmed"] = false;
+                    auditEntry.NewValues["User"] = ((ApplicationUser)entry.Entity).UserName;
+                    auditEntry.OldValues["User"] = ((ApplicationUser)entry.Entity).UserName;
+
+                    return true;
                 }
             }
+            return false;
 
-            return tick > 2;
         }
+
+
     }
 }

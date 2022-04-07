@@ -16,13 +16,11 @@ namespace BugTracker.Areas.Identity.Controllers
     {
         private readonly IIdentityService _identityService;
         private readonly IEmailService _emailService;
-        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public AccountController(IIdentityService identityService, IEmailService emailService, IHttpContextAccessor httpContextAccessor)
+        public AccountController(IIdentityService identityService, IEmailService emailService)
         {
             _identityService = identityService ?? throw new ArgumentNullException(nameof(identityService));
             _emailService = emailService ?? throw new ArgumentNullException(nameof(emailService));
-            _httpContextAccessor = httpContextAccessor ?? throw new ArgumentNullException(nameof(httpContextAccessor));
         }
 
         public IActionResult Register()
