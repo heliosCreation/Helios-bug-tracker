@@ -185,6 +185,17 @@ namespace BugTracker.Persistence.LogHelpers
                             auditEntry.NewValues["User"] = ((ApplicationUser)entry.Entity).UserName;
                             auditEntry.OldValues["User"] = ((ApplicationUser)entry.Entity).UserName;
                         }
+
+                        if (auditEntry.TableName == "Ticket")
+                        {
+                            auditEntry.NewValues["Name"] = ((Ticket)entry.Entity).Name;
+                            auditEntry.OldValues["Name"] = ((Ticket)entry.Entity).Name;
+
+                            var projectName = await _dbContext.Projects.Where(p => p.Id == ((Ticket)entry.Entity).ProjectId).Select(p => p.Name).FirstOrDefaultAsync();
+                            auditEntry.NewValues["ProjectId"] = projectName;
+                            auditEntry.OldValues["ProjectId"] = projectName;
+
+                        }
                     }
                     break;
             }
