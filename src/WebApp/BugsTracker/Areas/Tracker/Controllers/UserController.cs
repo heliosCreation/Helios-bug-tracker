@@ -38,7 +38,7 @@ namespace BugTracker.Areas.Tracker.Controllers
             return View(response.Data);
         }
 
-        public async Task<IActionResult> LoadManageRoleModal(string uid)
+        public async Task<IActionResult> LoadManageRoleModal(string uid, [FromQuery] int page)
         {
             var vm = new ManageUserRoleViewModel();
 
@@ -47,12 +47,13 @@ namespace BugTracker.Areas.Tracker.Controllers
 
             vm.UserWithRoles = userRolesResponse.Data; 
             vm.AvailableRoles = rolesResponse.DataList;
+            vm.Page = page;
 
             return PartialView(ManageRolesModalPath, vm);
         }
 
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> ManageUserRoles(UserWithRoleDto userWithRoles)
+        public async Task<IActionResult> ManageUserRoles(UserWithRoleDto userWithRoles,int page)
         {
             var response = await Mediator.Send(new UpdateUserRolesCommand(userWithRoles.UserId, userWithRoles.SelectedRoles));
             if (!response.Succeeded)
@@ -60,50 +61,54 @@ namespace BugTracker.Areas.Tracker.Controllers
                 //TODO manage errors
             }
 
-            return RedirectToAction("GetAll");
+            return RedirectToAction("GetAll", new { isSuccess = true, type = "user role", actionReturned = "uptaded", page = page });
         }
         
-        public IActionResult LoadLockUserModal(string uid)
+        public IActionResult LoadLockUserModal(string uid, [FromQuery] int page)
         {
-            return PartialView(LockUserModalPath, uid);
+            var vm = new ManageUserStateViewModel(uid,page);
+            return PartialView(LockUserModalPath, vm);
         }
 
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult>Lock(string uid)
+        public async Task<IActionResult>Lock(string uid, int page)
         {
             var lockResponse = await Mediator.Send(new LockUserCommand(uid));
             if (!lockResponse.Succeeded)
             {
-                return RedirectToAction("GetAll", new {isFailed = true, errors = lockResponse.ErrorMessages });
+                return RedirectToAction("GetAll", new {isFailed = true, errors = lockResponse.ErrorMessages, page = page });
             }
 
-            return RedirectToAction("GetAll", new { isSuccess = true, type = "user", actionReturned = "locked"});
+            return RedirectToAction("GetAll", new { isSuccess = true, type = "user", actionReturned = "locked", page = page});
         }
         
-        public IActionResult LoadUnlockUserModal(string uid)
+        public IActionResult LoadUnlockUserModal(string uid, [FromQuery] int page)
         {
-            return PartialView(UnlockUserModalPath, uid);
+            var vm = new ManageUserStateViewModel(uid, page);
+
+            return PartialView(UnlockUserModalPath, vm);
         }
 
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> UnLock(string uid)
+        public async Task<IActionResult> UnLock(string uid, int page)
         {
             var lockResponse = await Mediator.Send(new UnlockUserCommand(uid));
             if (!lockResponse.Succeeded)
             {
-                return RedirectToAction("GetAll", new {isFailed = true, errors = lockResponse.ErrorMessages, type = "user", actionReturned = "unlocked" });
+                return RedirectToAction("GetAll", new {isFailed = true, errors = lockResponse.ErrorMessages, type = "user", actionReturned = "unlocked", page = page });
             }
 
-            return RedirectToAction("GetAll", new { isSuccess = true, type = "user", actionReturned = "unlocked" });
+            return RedirectToAction("GetAll", new { isSuccess = true, type = "user", actionReturned = "unlocked",page = page });
         }
         
-        public IActionResult LoadDeleteUserModal(string uid)
+        public IActionResult LoadDeleteUserModal(string uid, [FromQuery]int page)
         {
-            return PartialView(DeleteUserModalPath, uid);
+            var vm = new ManageUserStateViewModel(uid, page);
+            return PartialView(DeleteUserModalPath, vm);
         }
 
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Delete(string uid)
+        public async Task<IActionResult> Delete(string uid, int page)
         {
             var deleteResponse = await Mediator.Send(new DeleteUserCommand(uid));
             if (!deleteResponse.Succeeded)
@@ -111,7 +116,7 @@ namespace BugTracker.Areas.Tracker.Controllers
                 return RedirectToAction("GetAll", new { isFailed = true, errors = deleteResponse.ErrorMessages, type = "user", actionReturned = "deleted" });
             }
 
-            return RedirectToAction("GetAll", new { isSuccess = true, type = "user", actionReturned = "deleted" });
+            return RedirectToAction("GetAll", new { isSuccess = true, type = "user", actionReturned = "deleted", page = page });
         }
     }
 }

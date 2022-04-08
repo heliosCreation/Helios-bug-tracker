@@ -9,7 +9,7 @@
 
 @if (User.IsInRole("Admin"))
 {
-    <form asp-controller="User" asp-action="ManageUserRoles" class="py-5">
+    <form asp-controller="User" asp-action="ManageUserRoles" asp-route-page="@Model.Page"  class="py-5">
         <div class="modal-body">
             <p>User: <span class="text-purple">@Model.UserWithRoles.UserName</span></p>
             <input type="hidden" asp-for="UserWithRoles.UserId" />

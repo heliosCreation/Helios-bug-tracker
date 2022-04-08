@@ -165,18 +165,19 @@
             $("#sidebar ul li.active").removeClass("active");
             $("#user-management-link").addClass("active");
 
+            var page = @( string.IsNullOrEmpty(Context.Request.Query["page"]) ? 1 : Context.Request.Query["page"]);
 
-            const manageRoleUrl = '/Tracker/User/LoadManageRoleModal';
-            const manageLockUrl = '/Tracker/User/LoadLockUserModal';
-            const manageUnlockUrl = '/Tracker/User/LoadUnlockUserModal';
-            const manageDeleteUrl = '/Tracker/User/LoadDeleteUserModal';
+            const manageRoleUrl = '/Tracker/User/LoadManageRoleModal?page='+page;
+            const manageLockUrl = '/Tracker/User/LoadLockUserModal?page=' + page;
+            const manageUnlockUrl = '/Tracker/User/LoadUnlockUserModal?page=' + page;
+            const manageDeleteUrl = '/Tracker/User/LoadDeleteUserModal?page=' + page;
 
             attachManagementModal(".role-management-btn", manageRoleUrl);
             attachManagementModal(".lock-management-btn", manageLockUrl);
             attachManagementModal(".unlock-management-btn", manageUnlockUrl);
             attachManagementModal(".delete-management-btn", manageDeleteUrl);
 
-        });
+            });
 
 
         function attachManagementModal(classBtn ,url) {
