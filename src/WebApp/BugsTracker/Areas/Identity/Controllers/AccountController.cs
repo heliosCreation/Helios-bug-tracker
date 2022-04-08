@@ -180,7 +180,7 @@ namespace BugTracker.Areas.Identity.Controllers
                     var token = await _identityService.GeneratePasswordForgottenMailToken(user.Email);
                     var callbackLink = Url.ActionLink("ResetPassword", "Account", new { uid = user.Id, token = token });
 
-                    //await _emailService.SendForgotPasswordMail(user.Email, callbackLink);
+                    await _emailService.SendForgotPasswordMail(user.Email, callbackLink);
                 }
                 ModelState.Clear();
                 model.EmailSent = true;

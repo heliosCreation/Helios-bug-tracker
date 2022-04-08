@@ -206,6 +206,13 @@ namespace BugTracker.Persistence.LogHelpers
                     return true;
                 }
             }
+            else if(auditEntry.NewValues.ContainsKey("Action"))
+            {
+                auditEntry.OldValues.Clear();
+                auditEntry.NewValues.Clear();
+                auditEntry.NewValues["Action"] = "Password Updated";
+                auditEntry.NewValues["User"] = ((ApplicationUser)entry.Entity).UserName;
+            }
             return false;
 
         }
