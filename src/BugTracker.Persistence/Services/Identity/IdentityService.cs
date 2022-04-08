@@ -193,6 +193,10 @@ namespace BugTracker.Persistence.Services.Identity
             }
             else
             {
+                if ((await _context.Users.ToListAsync()).Count <= itemPerPage)
+                {
+                    toSkip = 0;
+                }
                 users = await _context.Users
                     .Skip(toSkip)
                     .Take(itemPerPage)
