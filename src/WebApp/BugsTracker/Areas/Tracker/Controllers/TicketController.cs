@@ -74,43 +74,43 @@ namespace BugTracker.Areas.Tracker.Controllers
         
         [HttpPost]
         [Authorize(Roles ="Admin, Submitter")]
-        public async Task<IActionResult> Create(CreateTicketCommand command)
+        public async Task<IActionResult> Create(CreateTicketCommand command, int page)
         {
             var response = await Mediator.Send(command);
             if (response.Succeeded)
             {
-                return RedirectToAction("ByProject", new { projectId = command.ProjectId, isSuccess = true, type = "ticket", actionReturned = "created" });
+                return RedirectToAction("ByProject", new { projectId = command.ProjectId, isSuccess = true, type = "ticket", actionReturned = "created", page = page });
             }
-            return RedirectToAction("ByProject", new { projectId = command.ProjectId, isFailed = true, type = "ticket", actionReturned = "created" });
+            return RedirectToAction("ByProject", new { projectId = command.ProjectId, isFailed = true, type = "ticket", actionReturned = "created", page = page });
         }
 
         [HttpPost]
         [Authorize(Policy ="NoDemo")]
-        public async Task<IActionResult> Update(UpdateTicketCommand command, Guid projectId)
+        public async Task<IActionResult> Update(UpdateTicketCommand command, Guid projectId, int page)
         {
             var response = await Mediator.Send(command);
             if (response.Succeeded)
             {
-                return RedirectToAction("ByProject", new { projectId = projectId, isSuccess = true, type = "ticket", actionReturned = "updated" });
+                return RedirectToAction("ByProject", new { projectId = projectId, isSuccess = true, type = "ticket", actionReturned = "updated", page = page });
             }
-            return RedirectToAction("ByProject", new { projectId = projectId, isFailed = true, actionReturned = "updated", errors = response.ErrorMessages});
+            return RedirectToAction("ByProject", new { projectId = projectId, isFailed = true, actionReturned = "updated", errors = response.ErrorMessages, page = page});
         }
 
         [HttpPost]
         [Authorize(Policy = "PriviledgedUser")]
-        public async Task<IActionResult> Delete(DeleteTicketCommand command, Guid projectId)
+        public async Task<IActionResult> Delete(DeleteTicketCommand command, Guid projectId, int page)
         {
             var response = await Mediator.Send(command);
             if (response.Succeeded)
             {
-                return RedirectToAction("ByProject", new { projectId = projectId, isSuccess = true, type = "ticket", actionReturned = "deleted" });
+                return RedirectToAction("ByProject", new { projectId = projectId, isSuccess = true, type = "ticket", actionReturned = "deleted", page = page });
             }
-            return RedirectToAction("ByProject", new { isFailed = true });
+            return RedirectToAction("ByProject", new { isFailed = true, page = page });
         }
 
         [HttpGet]
         [Authorize(Policy = "NotDev")]
-        public async Task<IActionResult> LoadCreateModal(Guid projectId)
+        public async Task<IActionResult> LoadCreateModal(Guid projectId, [FromQuery] int page)
         {
             var dto = new CreateTicketDto(projectId);
 

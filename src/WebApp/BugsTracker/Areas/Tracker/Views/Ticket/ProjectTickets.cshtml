@@ -112,11 +112,13 @@
 
         function handleModals() {
             var projectId = '@data.Id';
+            var page = @( string.IsNullOrEmpty(Context.Request.Query["page"]) ? 1 : Context.Request.Query["page"]);
 
-            const createModalUrl = '/Tracker/Ticket/loadCreateModal?projectId=' + projectId;
-            const updateModalUrl = '/Tracker/Ticket/loadUpdateModal?projectId=' + projectId;
-            const deleteModalUrl = '/Tracker/Ticket/loadDeleteModal?projectId=' + projectId;
-            const updateProjectModalUrl = '/Tracker/Project/loadUpdateModal?id=' + projectId + '&fromTicket=' + true;
+
+            const createModalUrl = '/Tracker/Ticket/loadCreateModal?projectId=' + projectId + "&page=" + page;
+            const updateModalUrl = '/Tracker/Ticket/loadUpdateModal?projectId=' + projectId + "&page=" + page;
+            const deleteModalUrl = '/Tracker/Ticket/loadDeleteModal?projectId=' + projectId + "&page=" + page;
+            const updateProjectModalUrl = '/Tracker/Project/loadUpdateModal?id=' + projectId + '&fromTicket=' + true + "&page=" + page;
             const ticketDetailsUrl = '/Tracker/Ticket/loadDetailsModal?projectId=' + projectId;
 
             var createBtn = $("#create-ticket");

@@ -42,39 +42,7 @@ namespace BugTracker.Application.Features.Audits.Queries
             return auditLogs.OrderByDescending(al => al.DateTime).ToList();
         }
 
-        //public async Task<Dictionary<string, string>> ReworkEntityFields(Dictionary<string, string> prop, string key)
-        //{
-        //    Type type = _ticketConfigurationRepository.GetType();
-        //    MethodInfo method = type.GetMethod("Get" + key.Replace("Id", "") + "Name");
 
-        //    var value = Guid.Parse(prop.Where(nv => nv.Key == key).First().Value);
-        //    Task<string> newName = (Task<string>)method.Invoke(_ticketConfigurationRepository, new object[] { value });
-
-        //    prop.Remove(key);
-        //    prop.Add(key.Replace("Id", ""), (await newName).ToString());
-        //    return prop;
-        //}
-
-        //public async Task ManageUpdate(AuditLogDto item)
-        //{
-        //    if (item.AffectedColumns.Contains("PriorityId"))
-        //    {
-        //        item.NewValues = await ReworkEntityFields(item.NewValues, "PriorityId");
-        //        item.OldValues = await ReworkEntityFields(item.OldValues, "PriorityId");
-        //    }
-        //    if (item.AffectedColumns.Contains("TypeId"))
-        //    {
-        //        item.NewValues = await ReworkEntityFields(item.NewValues, "TypeId");
-        //        item.OldValues = await ReworkEntityFields(item.OldValues, "TypeId");
-        //    }
-        //    if (item.AffectedColumns.Contains("StatusId"))
-        //    {
-        //        item.NewValues = await ReworkEntityFields(item.NewValues, "StatusId");
-        //        item.OldValues = await ReworkEntityFields(item.OldValues, "StatusId");
-        //    }
-
-
-        //}
 
         public async Task ManageTeam(AuditLogDto item, List<AuditLogDto> auditLogs)
         {
@@ -83,8 +51,8 @@ namespace BugTracker.Application.Features.Audits.Queries
 
             var userId = item.PrimaryKey["UserId"];
             var userName = target["UserId"];
-            var userRole = (await _identityService.GetUserRolesById(userId)).ToList().First();
-
+            var userRoles = (await _identityService.GetUserRolesById(userId)).ToList();
+            object userRole = userRoles.Count > 0 ? userRoles.First() : "None";
 
             var targetParent = auditLogs
                 .Where(
