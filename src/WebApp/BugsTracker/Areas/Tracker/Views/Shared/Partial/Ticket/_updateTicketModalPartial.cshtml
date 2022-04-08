@@ -26,7 +26,7 @@
 </div>
 @if ((await AuthorizationService.AuthorizeAsync(User, "NoDemo")).Succeeded)
 {
-    <form asp-controller="Ticket" asp-action="Update" asp-route-projectId="@Model.ProjectId">
+    <form asp-controller="Ticket" asp-action="Update" asp-route-projectId="@Model.ProjectId" asp-route-page="@Context.Request.Query["page"]">
 
         <div class="modal-body">
             <input type="hidden" asp-for="@Model.Command.TicketId" />

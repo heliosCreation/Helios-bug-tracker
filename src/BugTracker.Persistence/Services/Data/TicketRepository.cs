@@ -574,8 +574,13 @@ namespace BugTracker.Persistence.Services.Data
         
         private async Task<List<Ticket>> GetTicketPaginatedList(int skip, int itemPerPage, Guid projectId, List<Guid> projectIds)
         {
+            //Get ticket by project
             if (projectId != Guid.Empty)
             {
+                if ((await _dbContext.Tickets.Where(t => t.ProjectId == projectId).ToListAsync()).Count <= 6)
+                {
+                    skip = 0;
+                }
                 return await _dbContext.Tickets
                                 .Include(t => t.Priority).Include(t => t.Status).Include(t => t.Type).Include(t => t.Project)
                                 .Where(t => t.ProjectId == projectId)
@@ -584,7 +589,8 @@ namespace BugTracker.Persistence.Services.Data
                                 .Take(itemPerPage)
                                 .ToListAsync();
             }
-            if (projectIds.Count > 0)
+            //Get tickets by projects
+            else if (projectIds.Count > 0)
             {
                 return await _dbContext.Tickets
                         .Include(t => t.Priority).Include(t => t.Status).Include(t => t.Type).Include(t => t.Project)

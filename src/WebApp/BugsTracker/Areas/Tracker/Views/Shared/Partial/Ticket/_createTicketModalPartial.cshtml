@@ -5,7 +5,6 @@
 <div class="modal-header  d-flex flex-column pl-0 pb-0">
     <div class="w-100 d-flex align-items-center pl-2 pb-2">
         <h5 class="modal-title" id="ticket-update-modal-label">Create ticket</h5>
-
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
         </button>
@@ -27,7 +26,7 @@
 
 @if ((await AuthorizationService.AuthorizeAsync(User, "NoDemo")).Succeeded)
 {
-    <form asp-controller="Ticket" asp-action="Create">
+    <form asp-controller="Ticket" asp-action="Create" asp-route-page="@Context.Request.Query["page"]">
         <input type="hidden" asp-for="Command.ProjectId" />
         <div class="modal-body">
             <div class="col-12" id="ticket-configuration">
