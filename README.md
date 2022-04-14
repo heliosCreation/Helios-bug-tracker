@@ -85,24 +85,31 @@ being that you won't be able to modify any data on the server with those users:
 <br/>
 
 # II - The application :fire:
-## Home Page
+
+<br/>
+
+## A - Home Page
 Upon successful authentication, you will be redirected to the main page. As for the demo, I decided to register as the admin to display all the features available. 
-Here, it adds the User management, and system logs tabs.
+Here, it adds the User management, and system logs tabs. You have the choice to fold the sidebar for a better view if you decide so.
 <kbd>
-  <img src="https://user-images.githubusercontent.com/71494857/163166592-f25e99b4-1488-4760-9f25-9cd250922fa1.PNG"/>
+  <img alt="Home page" src="https://user-images.githubusercontent.com/71494857/163367084-a66ca5a0-0d35-475d-b555-e67cba793972.jpg"/>
 </kbd>
 
 The upper part of the page will be in charge to display the projects while the lower part will display ticket related statistics to get an immediate idea of the state of the organization.
+<br/>
+## B - Project
 
-## Project
 #### Creation
 From the home page, an admin can create new project to work with through the organization and assign a team to it. Only the users linked to this project will have access to it and its tickets.
 <kbd>
   <img src="https://user-images.githubusercontent.com/71494857/163176737-fdfed0b0-4297-4a23-85d9-7053f7c08b90.jpg"/>
 <kbd>
   
-
+<br/>
+  
 #### Update / Delete
+  
+  <br/>
 From the same page, by hitting the triple dots in the action section of the table, you are able to update or delete the projects. 
 The update being pretty similar in term of UI to the creation, no sreenshot will be provided. The deletion is fairly different.
 Upon using the corresponding button, you will be prompted with a modal asking you to confirm your action. Deleting a project will as well delete every ticket linked to the project.
@@ -110,23 +117,38 @@ Upon using the corresponding button, you will be prompted with a modal asking yo
   <img src="https://user-images.githubusercontent.com/71494857/163179821-b7b5d687-22fe-45e7-9448-96a8d4157597.PNG"/>
 </kbd>
 
-## Tickets
+  <br/>
+  
+## C - Tickets
+  
+  <br/>
 Upon clicking one of the purple project name, you will be taken to the tickets linked to the projects. They are sorted from the newest to the oldest and can be access by performing query corresponding to any of the fields presents in the table below.
+  <br/>
+  
 <kbd>
   <img width="959" alt="TicketList" src="https://user-images.githubusercontent.com/71494857/163184883-88013069-a394-43a9-87ee-133f3b5ba5b5.PNG">
 </kbd>
-
+  
+<br/>
+  
   #### Create
+  
 <br/>
 Clicking on the blue "New Ticket" button will open a modal with two tabs allowing you to create the specific fields of your new ticket and assign the developers that will work on it. 
+  <br/>
+  
 <kbd>
   <img alt="Ticket creation" src="https://user-images.githubusercontent.com/71494857/163187126-75ba49e8-8689-40e5-a6ce-20f9283b24e1.jpg"/>
 </kbd>
+  
 <br/>
   
 ### Update / Delete
+  
+  <br/>
 Once again, by clicking on the three dots, you will gain access to the update and delete modal. The flow of updating a ticket is again very similar to the creation. Choosing the "Delete" option will prompt you with a modal asking for confirmation. 
-
+<br/>
+  
 ### Details
 If you choose to click on the ticket name, rendered in purple in the table, you will access the ticket details.<br/>
 Those details are divided in 4 categories:
@@ -140,3 +162,20 @@ Those details are divided in 4 categories:
       <img alt="Ticket details" src="https://user-images.githubusercontent.com/71494857/163348938-1a407283-b157-4d5f-945e-192e9a35d7e8.jpg"/>
   <img alt="Ticket details" src="https://user-images.githubusercontent.com/71494857/163348937-2ed46a2f-9923-48a2-807b-dc3e45b2874f.jpg"/>   
   </kbd>
+<br/>
+  
+### Assigned tickets
+On the left hand side resides the main tabs of the application. If a user click on the ticket tab, it will take him to a page holding all ticket relatid to him/her.
+The way tickets would be fetch will depend on the role assigned to the user:
+  - <ins>Admin:</ins> Will fetch all the tickets of the system. Has the possibility to filter the result down to the tickets he/she created.
+  - <ins>Project Manager:</ins> Will fetch all the tickets linked to the projects the PM is assigned to. 
+  - <ins>Developer</ins>: Will fetch all the tickets they are assigned to.
+  - <ins>Submitter</ins>: Will fetch all the tickets they created.
+  
+  <br/>
+  
+  <kbd>
+    <img width="959" alt="TicketByUser" src="https://user-images.githubusercontent.com/71494857/163365177-0b108c35-fd51-4875-966f-50b90b83dda1.PNG">
+  </kbd>
+  
+## C - User Management 
