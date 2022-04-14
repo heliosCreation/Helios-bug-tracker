@@ -110,7 +110,7 @@
 
                         </div>
                         <select asp-for="Command.Team" class="form-control" id="dev-team-select" multiple>
-                            @foreach (var demo in Model.Team.Where(tm => tm.Role.ToLower().Contains("demo dev") || tm.Role.ToLower().Contains("demo sub")))
+                            @foreach (var demo in Model.Team.Where(tm => tm.Role.ToLower().Contains("demo") && !tm.Role.ToLower().Contains("admin")))
                             {
                                 <option value="@demo.Id">@demo.Username - @demo.Role </option>
                             }
