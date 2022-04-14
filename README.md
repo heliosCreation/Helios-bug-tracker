@@ -179,3 +179,10 @@ The way tickets would be fetch will depend on the role assigned to the user:
   </kbd>
   
 ## C - User Management 
+If the user is logged in as an Admin, he/she will have the option to click on the User management tab. <br/>
+This page will fetch all the user in the system, display their name, email and roles, and allow the admin to perform diverse operations.
+<br/>
+  
+  <kbd>
+    <img width="959" alt="User management" src="https://user-images.githubusercontent.com/71494857/163371145-d520743f-7d50-4d8b-8423-2ec7442bfff2.PNG">
+</kdb>
