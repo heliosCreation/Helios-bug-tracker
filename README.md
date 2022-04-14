@@ -181,8 +181,16 @@ The way tickets would be fetch will depend on the role assigned to the user:
 ## C - User Management 
 If the user is logged in as an Admin, he/she will have the option to click on the User management tab. <br/>
 This page will fetch all the user in the system, display their name, email and roles, and allow the admin to perform diverse operations.
-<br/>
+
+  <kbd>    <img alt="User management" src="https://user-images.githubusercontent.com/71494857/163371145-d520743f-7d50-4d8b-8423-2ec7442bfff2.PNG"/></kbd>
+
   
-  <kbd>
-    <img width="959" alt="User management" src="https://user-images.githubusercontent.com/71494857/163371145-d520743f-7d50-4d8b-8423-2ec7442bfff2.PNG">
-</kdb>
+
+  By clicking on the triple dot of each row, the admin will be able to perform three type of action: 
+  
+### Manage role
+Each user of the system can and should be associated to a role. That's the responsability of the admin to assign and modify said roles. <br/> Clicking on the manage role button will result in the display of this modal:
+
+<kbd>
+<img width="943" alt="Role management" src="https://user-images.githubusercontent.com/71494857/163376915-f344f5a3-164d-46b0-a5d8-de989352f0cc.PNG"/>
+</kbd>
