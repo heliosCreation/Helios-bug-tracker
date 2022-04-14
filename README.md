@@ -111,15 +111,32 @@ Upon using the corresponding button, you will be prompted with a modal asking yo
 </kbd>
 
 ## Tickets
-Upon clicking one of the purple project name, you will be taken to the tickets linked to the projects. They are sorted from the newest to the oldest and can be access by perform query corresponding to any of the fiels presents in the table below.
+Upon clicking one of the purple project name, you will be taken to the tickets linked to the projects. They are sorted from the newest to the oldest and can be access by performing query corresponding to any of the fields presents in the table below.
 <kbd>
   <img width="959" alt="TicketList" src="https://user-images.githubusercontent.com/71494857/163184883-88013069-a394-43a9-87ee-133f3b5ba5b5.PNG">
 </kbd>
 
+  #### Create
 <br/>
 Clicking on the blue "New Ticket" button will open a modal with two tabs allowing you to create the specific fields of your new ticket and assign the developers that will work on it. 
 <kbd>
   <img alt="Ticket creation" src="https://user-images.githubusercontent.com/71494857/163187126-75ba49e8-8689-40e5-a6ce-20f9283b24e1.jpg"/>
 </kbd>
+<br/>
   
+### Update / Delete
+Once again, by clicking on the three dots, you will gain access to the update and delete modal. The flow of updating a ticket is again very similar to the creation. Choosing the "Delete" option will prompt you with a modal asking for confirmation. 
+
+### Details
+If you choose to click on the ticket name, rendered in purple in the table, you will access the ticket details.<br/>
+Those details are divided in 4 categories:
+  - <ins>Description</ins>: A description of the tickets and its necessities.
+  - <ins>Comments</ins>: Let's you discuss with the members of the ticket.
+  - <ins>Team</ins>: Show the other developers assigned to the ticket and the project manager.
+  - <ins>History</ins>: Give information about the ticket creation and each update it when through. 
+<br/>
   
+  <kbd>
+      <img alt="Ticket details" src="https://user-images.githubusercontent.com/71494857/163348938-1a407283-b157-4d5f-945e-192e9a35d7e8.jpg"/>
+  <img alt="Ticket details" src="https://user-images.githubusercontent.com/71494857/163348937-2ed46a2f-9923-48a2-807b-dc3e45b2874f.jpg"/>   
+  </kbd>
