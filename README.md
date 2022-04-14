@@ -189,8 +189,21 @@ This page will fetch all the user in the system, display their name, email and r
   By clicking on the triple dot of each row, the admin will be able to perform three type of action: 
   
 ### Manage role
-Each user of the system can and should be associated to a role. That's the responsability of the admin to assign and modify said roles. <br/> Clicking on the manage role button will result in the display of this modal:
+Each user of the system can and should be associated to a role. That's the responsability of the admin to assign and modify said roles. <br/> Clicking on the manage role button will result in the display of the bellow modal. All that will be left will to click and validate your choice.
 
 <kbd>
 <img width="943" alt="Role management" src="https://user-images.githubusercontent.com/71494857/163376915-f344f5a3-164d-46b0-a5d8-de989352f0cc.PNG"/>
+</kbd>
+
+  ### Lock / Unlock user
+Users can be both locked and unlocked from the system. Still by clicking the triple dots the admin will be able to access the below modal. If the user is locked, the option will be defaulted to unlock and vice-versa.
+<kbd>
+  <img alt="Lock and unlock" src="https://user-images.githubusercontent.com/71494857/163384768-02246056-5a4e-403f-abc1-e19d52793112.jpg"/>
+  </kbd>
+  
+### Delete user
+  
+Finally, the admin might want to remove permanently somebody from the organization. If he/she wish to do so, the triple dots also give access to a delete user modal. He/She, will be asked for confirmation and will then be able to validate the action.
+<kbd>
+<img width="959" alt="DeleteUser" src="https://user-images.githubusercontent.com/71494857/163405273-970d5d9e-eb7a-4c5c-9e40-60a382e491b2.PNG">  
 </kbd>
