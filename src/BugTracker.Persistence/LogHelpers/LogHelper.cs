@@ -157,7 +157,8 @@ namespace BugTracker.Persistence.LogHelpers
                     {
                         if (auditEntry.TableName == "TicketsTeamMembers")
                         {
-                            var pid = ((TicketsTeamMembers)entry.Entity).Ticket.ProjectId;
+                            var tid = ((TicketsTeamMembers)entry.Entity).TicketId;
+                            var pid = await _dbContext.Tickets.Where(t => t.Id == tid).Select(t => t.ProjectId).FirstOrDefaultAsync();
                             auditEntry.OldValues["Project"] = await _dbContext.Projects.AsNoTracking().Where(p => p.Id == pid).Select(p => p.Name).FirstOrDefaultAsync();
 
                         }
