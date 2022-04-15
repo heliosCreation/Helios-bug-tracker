@@ -228,12 +228,12 @@ a precise search through multiple keywords.
 
 ## Show your support
 
-Please ⭐️ this repository if this project helped you!
+Please ⭐️ this repository if you liked the project!
 
 
 ## 📝 License
 
 Copyright © 2022 [@Quentin Couissinier](https://github.com/heliosCreation).<br />
-This project is [MIT]() licensed.
+This project is [MIT](https://github.com/heliosCreation/BugsTracker/blob/main/LICENSE) licensed.
 
 ---
