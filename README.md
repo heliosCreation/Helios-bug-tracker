@@ -207,3 +207,33 @@ Finally, the admin might want to remove permanently somebody from the organizati
 <kbd>
 <img width="959" alt="DeleteUser" src="https://user-images.githubusercontent.com/71494857/163405273-970d5d9e-eb7a-4c5c-9e40-60a382e491b2.PNG">  
 </kbd>
+
+## D - Change Tracker
+On top of tracking the history of the tickets in their Details modal, the application is keeping a track of most of interaction operated in the server. <br/>
+Those change are prettyfied to human readable data and displayed in form of a table. Each column of the table is queryable to allow the admin to perform
+a precise search through multiple keywords.
+
+  <kbd>
+<img width="945" alt="Change" src="https://user-images.githubusercontent.com/71494857/163547565-e02f914b-2ebb-4d41-b3c9-b77dc88d08a9.PNG">
+  </kbd>
+  
+  ##### And that wraps it up ! 
+  
+  ## Author
+
+👤 **Quentin Couissinier**
+
+- Linkedin: [@Quentin Couissinier](https://www.linkedin.com/in/quentin-couissinier/)
+- Github: [@Quentin Couissinier](https://github.com/heliosCreation)
+
+## Show your support
+
+Please ⭐️ this repository if this project helped you!
+
+
+## 📝 License
+
+Copyright © 2022 [@Quentin Couissinier](https://github.com/heliosCreation).<br />
+This project is [MIT]() licensed.
+
+---
